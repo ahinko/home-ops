@@ -1,0 +1,48 @@
+terraform {
+
+  backend "remote" {
+    organization = "my-homelab"
+    workspaces {
+      name = "homelab-cloudflare"
+    }
+  }
+
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "3.14.0"
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "2.1.0"
+    }
+    sops = {
+      source  = "carlpett/sops"
+      version = "0.7.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.11.0"
+    }
+  }
+}
+
+data "sops_file" "cloudflare_secrets" {
+  source_file = "sops.secrets.yaml"
+}
+
+provider "cloudflare" {
+  email     = data.sops_file.cloudflare_secrets.data["cloudflare_email"]
+  api_token = data.sops_file.cloudflare_secrets.data["cloudflare_api_token"]
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/configs/old"
+  config_context = "old"
+}
+
+data "cloudflare_zones" "domain" {
+  filter {
+    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
+  }
+}
