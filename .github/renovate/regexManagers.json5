@@ -1,0 +1,48 @@
+{
+    "regexManagers": [
+        {
+            "description": "Process Sidero configurations for Talos updates",
+            "fileMatch": [
+                "kubernetes/management/sidero-system/.+/.+\\.yaml$"
+            ],
+            "matchStrings": [
+                "https:\/\/github.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>.*)\/",
+                "depName=(?<depName>.*?)\n *talosVersion: (?<currentValue>.*)\n"
+            ],
+            "datasourceTemplate": "github-releases"
+        },
+        {
+            "description": "Process Sidero configurations for Talos updates",
+            "fileMatch": [
+                "kubernetes/management/sidero-system/.+/.+\\.yaml$",
+                ".taskfiles/sidero.yaml"
+            ],
+            "matchStrings": [
+                "\/image\n *value: (?<depName>.*?):(?<currentValue>.*)",
+                "depName=(?<depName>.*?)\n *version: (?<currentValue>.*)\n",
+                "--image (?<depName>.*?):(?<currentValue>.*)"
+            ],
+            "datasourceTemplate": "docker"
+        },
+        {
+            "description": "Process Cilium Quick Install for new versions",
+            "fileMatch": [
+                ".task/.+\\.yaml$"
+            ],
+            "matchStrings": [
+                "add (?<depName>.*?) (?<registryUrl>.*)\n .* --version (?<currentValue>.*) [a-z\/]* -f"
+            ],
+            "datasourceTemplate": "helm"
+        },
+        {
+            "description": "Process Kubelet Serving Cert Appriver",
+            "fileMatch": [
+                "kubernetes/management/sidero-system/serverclasses/.+\\.yaml$"
+            ],
+            "matchStrings": [
+                "depName=(?<depName>.*?)\n ([a-z0-9 .\\-\":\/\/]*)\/(?<currentValue>.*)\/deploy"
+            ],
+            "datasourceTemplate": "docker"
+        },
+    ],
+}
