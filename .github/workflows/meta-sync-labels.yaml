@@ -1,0 +1,23 @@
+---
+
+name: Meta - Sync labels
+
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/labels.yaml'
+
+jobs:
+  labels:
+    name: Sync Labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Sync Labels
+        uses: EndBug/label-sync@v2
+        with:
+          config-file: .github/labels.yaml
+          token: ${{ secrets.GITHUB_TOKEN }}
