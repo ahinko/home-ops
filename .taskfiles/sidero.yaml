@@ -1,0 +1,42 @@
+---
+
+version: 3
+
+tasks:
+  update-cilium:
+    desc: Update Cilium quick-install
+    cmds:
+      - helm repo add cilium https://helm.cilium.io/
+      - helm repo update cilium
+      - helm template --version 1.11.4 cilium/cilium -f ./kubernetes/management/integrations/cilium-quick-install/values.yaml > ./kubernetes/management/integrations/cilium-quick-install/quick-install.yaml -n kube-system
+    silent: true
+
+  prepare-rpi:
+    desc: Write Talos image to SSD to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://github.com/siderolabs/talos/releases/latest/download/metal-rpi_4-arm64.img.xz && xz -d metal-rpi_4-arm64.img.xz"
+      - |
+        echo "Path to SSD:"
+        read path;
+        echo "Writing image to: ${path}";
+        sudo dd if=metal-rpi_4-arm64.img of=${path} bs=4m
+      - "rm metal-rpi_4-arm64.img"
+
+  upgrade-talos:
+    desc: Upgrade Talos on Management plane
+    silent: true
+    cmds:
+      - talosctl upgrade --stage --force --preserve=true --nodes ${SIDERO_ENDPOINT} --image ghcr.io/siderolabs/installer:v1.0.4
+
+  upgrade-sidero:
+    desc: Upgrade Sidero
+    silent: true
+    cmds:
+      - echo "how?"
+
+  bootstrap:
+    desc: Bootstrapping Talos & Sidero
+    silent: true
+    cmds:
+      - ./scripts/provision-sidero.sh
