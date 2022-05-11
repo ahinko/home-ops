@@ -1,0 +1,16 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: flux-system
+  name: cluster-settings
+data:
+  METALLB_ARP_RANGE: "192.168.25.150-192.168.25.200"
+  NFS_SERVER_ADDR: "192.168.20.2"
+  LB_HASS: "192.168.25.201"
+  LB_EMQX: "192.168.25.203"
+  LB_POSTGRES: "192.168.25.204"
+  LB_INGRESS: "192.168.25.205"
+  LB_MINECRAFT: "192.168.25.206"
+  TIMEZONE: "Europe/Stockholm"
