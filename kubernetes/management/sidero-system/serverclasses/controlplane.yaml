@@ -1,0 +1,80 @@
+---
+
+apiVersion: metal.sidero.dev/v1alpha1
+kind: ServerClass
+metadata:
+  name: controlplane
+  namespace: sidero-system
+spec:
+  selector:
+    matchLabels:
+      controlplane: "true"
+  configPatches:
+    - op: replace
+      path: /cluster/apiServer/image
+      value: k8s.gcr.io/kube-apiserver:v1.24.0
+
+    - op: replace
+      path: /cluster/controllerManager/image
+      value: k8s.gcr.io/kube-controller-manager:v1.24.0
+
+    - op: replace
+      path: /cluster/scheduler/image
+      value: k8s.gcr.io/kube-scheduler:v1.24.0
+
+    - op: replace
+      path: /machine/kubelet/image
+      value: ghcr.io/siderolabs/kubelet:v1.24.0
+
+    - op: replace
+      path: /cluster/etcd/image
+      value: gcr.io/etcd-development/etcd:v3.5.4
+
+    - op: add
+      path: /cluster/secret
+      value: ${METAL_CLUSTER_SECRET}
+
+    - op: add
+      path: /cluster/coreDNS
+      value:
+        image: docker.io/coredns/coredns:1.9.2
+
+    # Indicates whether to pull the machine config upon every boot.
+    - op: replace
+      path: /persist
+      value: false
+
+    # Disable kube proxy to let Cilium replace it
+    - op: replace
+      path: /cluster/proxy/disabled
+      value: true
+
+    - op: replace
+      path: /cluster/network/cni
+      value:
+        name: "custom"
+        urls:
+          - "${CILIUM_QUICK_INSTALL_MANIFEST_URL}"
+
+    - op: replace
+      path: /cluster/extraManifests
+      value:
+        # renovate: depName=ghcr.io/alex1989hu/kubelet-serving-cert-approver
+        - "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/0.4.4/deploy/ha-install.yaml"
+
+    - op: add
+      path: /machine/kubelet/extraArgs
+      value:
+        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+        rotate-server-certificates: "true"
+
+    - op: add
+      path: /cluster/apiServer/extraArgs
+      value:
+        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+
+    - op: add
+      path: /machine/sysctls
+      value:
+        fs.inotify.max_user_watches: "1048576"
+        fs.inotify.max_user_instances: "8192"

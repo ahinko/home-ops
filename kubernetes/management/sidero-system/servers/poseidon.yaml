@@ -1,0 +1,32 @@
+---
+
+apiVersion: metal.sidero.dev/v1alpha1
+kind: Server
+metadata:
+  name: 00000000-0000-0000-0000-d05099d333e0
+  labels:
+    worker: "true"
+spec:
+  pxeBootAlways: true
+  accepted: true
+  hostname: poseidon
+  configPatches:
+    - op: replace
+      path: /machine/install/disk
+      value: /dev/nvme0n1
+
+    - op: add
+      path: /machine/network/hostname
+      value: poseidon
+
+    - op: add
+      path: /machine/network/interfaces
+      value:
+        - interface: eno1
+          dhcp: true
+
+  cpu:
+    manufacturer: Intel(R) Corporation
+    version: Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz
+  system:
+    manufacturer: Dell Inc.

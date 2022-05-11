@@ -1,0 +1,39 @@
+---
+
+apiVersion: metal.sidero.dev/v1alpha1
+kind: Server
+metadata:
+  name: 6cfb89e4-1dd7-ff1a-66ce-1c697a0b8ae8
+  labels:
+    controlplane: "true"
+spec:
+  pxeBootAlways: true
+  accepted: true
+  hostname: helios
+  configPatches:
+    - op: replace
+      path: /machine/install/disk
+      value: /dev/nvme0n1
+
+    - op: add
+      path: /machine/network/hostname
+      value: helios
+
+    - op: add
+      path: /machine/network/interfaces
+      value:
+        - interface: eno1
+          dhcp: true
+          vip:
+            ip: ${METAL_CLUSTER_VIP}
+
+  cpu:
+    manufacturer: Intel(R) Corporation
+    version: Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
+  system:
+    family: BE
+    manufacturer: Intel(R) Client Systems
+    productName: NUC8i5BEH
+    serialNumber: G6BE946006L8
+    skuNumber: BOXNUC8i5BEH
+    version: J72753-303

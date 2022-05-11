@@ -1,0 +1,129 @@
+---
+
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: metal
+  namespace: sidero-system
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+        - 10.244.0.0/16
+    services:
+      cidrBlocks:
+        - 10.96.0.0/12
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    kind: TalosControlPlane
+    name: metal-controlplane
+    namespace: sidero-system
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: MetalCluster
+    name: metal
+    namespace: sidero-system
+
+---
+
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: MetalCluster
+metadata:
+  name: metal
+  namespace: sidero-system
+spec:
+  controlPlaneEndpoint:
+    host: ${METAL_CLUSTER_VIP}
+    port: 6443
+
+---
+
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: MetalMachineTemplate
+metadata:
+  name: metal-controlplane
+  namespace: sidero-system
+spec:
+  template:
+    spec:
+      serverClassRef:
+        apiVersion: metal.sidero.dev/v1alpha1
+        kind: ServerClass
+        name: controlplane
+
+---
+
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: TalosControlPlane
+metadata:
+  name: metal-controlplane
+  namespace: sidero-system
+spec:
+  controlPlaneConfig:
+    controlplane:
+      generateType: controlplane
+      # renovate: depName=siderolabs/talos
+      talosVersion: v1.0.4
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: MetalMachineTemplate
+    name: metal-controlplane
+  replicas: 1
+  # renovate: depName=ghcr.io/siderolabs/kubelet
+  version: v1.24.0
+
+---
+
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: TalosConfigTemplate
+metadata:
+  name: metal-nodes
+  namespace: sidero-system
+spec:
+  template:
+    spec:
+      generateType: join
+      # renovate: depName=siderolabs/talos
+      talosVersion: v1.0.4
+
+---
+
+apiVersion: cluster.x-k8s.io/v1alpha4
+kind: MachineDeployment
+metadata:
+  name: metal-nodes
+  namespace: sidero-system
+spec:
+  selector:
+    matchLabels:
+  clusterName: metal
+  replicas: 0
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+          kind: TalosConfigTemplate
+          name: metal-nodes
+      clusterName: metal
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        kind: MetalMachineTemplate
+        name: metal-nodes
+      # renovate: depName=ghcr.io/siderolabs/kubelet
+      version: v1.24.0
+
+---
+
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: MetalMachineTemplate
+metadata:
+  name: metal-nodes
+  namespace: sidero-system
+spec:
+  template:
+    spec:
+      serverClassRef:
+        apiVersion: metal.sidero.dev/v1alpha1
+        kind: ServerClass
+        name: node

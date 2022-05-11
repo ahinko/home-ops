@@ -1,0 +1,26 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dhcpd-config
+  namespace: kube-system
+data:
+  dhcpd.conf: |
+    authoritative;
+
+    default-lease-time 86400;
+    max-lease-time 86400;
+
+    option option-43 code 43 = string;
+    option client-system-arch code 93 = unsigned integer 16;
+
+    # Host Address Range ${VLAN_NET}.1 - ${VLAN_NET}.254
+    subnet ${VLAN_NET}.0 netmask ${VLAN_NETMASK} {
+            option domain-name-servers ${VLAN_NAMESERVER};
+            option routers ${VLAN_GATEWAY};
+            option subnet-mask ${VLAN_NETMASK};
+            range ${VLAN_RANGE_START} ${VLAN_RANGE_STOP};
+            option broadcast-address ${VLAN_NET}.255;
+            include "/etc/dhcp/ipxe-metal.conf";
+    }
