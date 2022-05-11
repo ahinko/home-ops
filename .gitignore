@@ -1,0 +1,16 @@
+# Trash
+.DS_Store
+Thumbs.db
+# Terraform
+.terraform
+.terraform.tfstate*
+terraform.tfstate*
+# Sops
+**/raw.secrets.yaml
+.decrypted~*
+*.agekey
+# Kubernetes
+kubeconfig*
+talosconfig*
+# Other
+.env

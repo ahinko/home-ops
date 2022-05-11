@@ -1,0 +1,1 @@
+*.sops.* diff=sopsdiffer
