@@ -1,0 +1,46 @@
+---
+
+- block:
+    - name: Upgrade system
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+    - name: Install packages
+      community.general.pacman:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - dnsutils
+        - ffmpeg
+    - name: Set timezone
+      community.general.timezone:
+        name: "{{ os_timezone | default('Europe/Stockholm') }}"
+    - name: Set hostname to inventory hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+      when:
+        - ansible_hostname != inventory_hostname
+    - name: Add additional user SSH public keys
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ item }}"
+      loop: "{{ os_ssh_authorized_keys | default([]) }}"
+  rescue:
+    - name: Mount read-only
+      ansible.builtin.command: /usr/local/bin/ro
+
+- block:
+    - name: Create kvmd override configuration
+      ansible.builtin.template:
+        src: override.yaml.j2
+        dest: "/etc/kvmd/override.yaml"
+        mode: 0644
+    - name: Load custom EDID file
+      ansible.builtin.template:
+        src: tc358743-edid.hex.j2
+        dest: "/etc/kvmd/tc358743-edid.hex"
+        mode: 0644
+  rescue:
+    - name: Mount read-only
+      ansible.builtin.command: /usr/local/bin/ro
+  notify: Restart kvmd
