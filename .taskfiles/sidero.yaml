@@ -35,8 +35,8 @@ tasks:
     cmds:
       - echo "how?"
 
-  bootstrap:
-    desc: Bootstrapping Talos & Sidero
+  provision:
+    desc: Provision Talos & Sidero
     silent: true
     cmds:
       - ./scripts/provision-sidero.sh

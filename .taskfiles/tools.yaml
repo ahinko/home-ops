@@ -22,7 +22,7 @@ tasks:
       - pre-commit install-hooks
 
   base64-clipboard:
-    desc: Base64 encode whatever is in the clipboard and put the base64 encoded value back to the clipboard
+    desc: Base64 encode whatever is in the clipboard
     silent: true
     cmds:
       - pbpaste | base64 | pbcopy

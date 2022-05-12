@@ -64,7 +64,7 @@ To generate and start using a new encyption key run the following commands on yo
 $ age-keygen -o homelab.agekey
 ```
 
-## Bootstrap Sidero management cluster
+## Provision Sidero management cluster
 > [Talos](https://talos.dev) is a Linux OS designed for secure, immutable, and minimal installations on both baremetal hardware and cloud-native environments. Talos is available on both amd64 and various single board computers, like the Raspberry Pi.
 
 > [Sidero](https://sidero.dev) Metal uses Cluster API to automate bare metal server provisioning and lifecycle management. Clusters are provisioned (or re-provisioned) automatically, delivering a secure Kubernetes deployment.
@@ -108,12 +108,12 @@ GITHUB_TOKEN=***
 ```
 
 Update/verify the two `cluster-settings.yaml` files:
-- [kubernetes/management/base/cluster-settings.yaml](kubernetes/management/base/cluster-settings.yaml)
-- [kubernetes/metal/base/cluster-settings.yaml](kubernetes/management/metal/cluster-settings.yaml)
+- [../kubernetes/management/base/cluster-settings.yaml](kubernetes/management/base/cluster-settings.yaml)
+- [../kubernetes/metal/base/cluster-settings.yaml](kubernetes/management/metal/cluster-settings.yaml)
 
 And while we are at it you might as well update/verify the secrets files for the clusters:
-- [kubernetes/management/base/sops.cluster-secrets.yaml](kubernetes/management/base/sops.cluster-secrets.yaml)
-- [kubernetes/metal/base/sops.cluster-secrets.yaml](kubernetes/management/metal/sops.cluster-secrets.yaml)
+- [../kubernetes/management/base/sops.cluster-secrets.yaml](kubernetes/management/base/sops.cluster-secrets.yaml)
+- [../kubernetes/metal/base/sops.cluster-secrets.yaml](kubernetes/management/metal/sops.cluster-secrets.yaml)
 
 ### Install Sidero
 Time to bootstrap Talos and install Sidero. This script aims at automating as much as possible by using the variables in `.env` and then run the different needed commands to bootstrap Talos and install Sidero.
