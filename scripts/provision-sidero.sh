@@ -85,7 +85,7 @@ echo "Bootstrapping Flux"
 # Bootstrap Flux
 flux bootstrap github \
     --owner=$GITHUB_USER \
-    --repository=homelab \
+    --repository=home-ops \
     --branch=main \
     --path=./kubernetes/management/base/ \
     --personal
