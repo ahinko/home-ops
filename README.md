@@ -39,11 +39,11 @@ Why do things manually when you can automate it? I try to automate as many aspec
 
 * I use [Sidero](sidero.md) as a management cluster that manages my main cluster.
 * [Talos](https://talos.dev) is the OS on all Kubernetes nodes.
-* [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate) keeps track of third party dependencies and creates a pull request when there is something to update.
-*  I then merge those pull requests in to the main branch
-*  [Flux](https://fluxcd.io) will then update both the management cluster and the main cluster.
-*  Sidero will start update  Kubernetes nodes in my main cluster if there are updates of the Talos OS or Kubernetes itself.
-* If there are updates to any of the services I run in the main cluster those services will automatically be updated (and restarted if needed).
+* [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate) keeps track of dependencies and creates a pull request when there is something to update.
+* I then merge those pull requests in to the main branch
+* [Flux](https://fluxcd.io) will then update both the management cluster and the main cluster.
+* Sidero will automatically update and reboot Kubernetes nodes if needed.
+* Services will automatically be updated (and restarted if needed).
 
 Updates to the Docker containers running on my NAS are handled in a similar way.
 
