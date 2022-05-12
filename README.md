@@ -10,6 +10,7 @@ This allows me to:
 * Version control and declare hardware provisioning (Now using Sidero & Talos), ensuring repeatable and robust hardware configuration.
 * This can be achieved with tools such as Terraform and Ansible for those wanting to use a more standard OS & deployment.
 * With Sidero and Talos, I can define and provision a cluster by plugging nodes into the network, and having them network PXE boot, install the OS Talos, and have a configuration file applied to them. This automates and watches my cluster, with no manual intervention required.
+* Sidero also manages Talos and Kubernetes updates. Renovate will create pull requests when new updates are available. When the pull requests are merged to the main branch Flux will update the manifests with the specified versions in the management cluster. Sidero will then update the metal nodes and restart them if needed.
 
 ## 🧪 Why a homelab?
 
@@ -36,12 +37,32 @@ These are what I consider the main features of my homelab. You can also see this
 ## 🤖 Automate all the things
 Why do things manually when you can automate it? I try to automate as many aspects of my homelab as possible.
 
-I have set up [Sidero](sidero.md) to manage my main cluster. My main cluster uses [Talos](https://talos.dev) as its OS on all nodes. [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate) is set up to update the needed files when there are a new version of Talos or Kubernetes available. As soon as that pull request is merged in to the main branch [Flux](https://fluxcd.io) will update Sideros configuration and Sidero will then start updating the nodes.
+* I use [Sidero](sidero.md) as a management cluster that manages my main cluster.
+* [Talos](https://talos.dev) is the OS on all Kubernetes nodes.
+* [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate) keeps track of third party dependencies and creates a pull request when there is something to update.
+*  I then merge those pull requests in to the main branch
+*  [Flux](https://fluxcd.io) will then update both the management cluster and the main cluster.
+*  Sidero will start update  Kubernetes nodes in my main cluster if there are updates of the Talos OS or Kubernetes itself.
+* If there are updates to any of the services I run in the main cluster those services will automatically be updated (and restarted if needed).
 
-The same principle applies to the main cluster when there are any new releases of anything running in the cluster. Renovate creates a pull request, I merge the pull request to the main branch and Flux will then update the configuration in the cluster and if a pod needs to be upgraded or restarted that will be done automatically.
+Updates to the Docker containers running on my NAS are handled in a similar way.
 
-Updates to the Docker containers running on my NAS are handled in a similar way. There is a clone of the repository on the NAS and when Renovate creates pull requests and when those are merged to the main branch a [cronjob](scripts/automatic-docker-updates.sh) pulls the updates and then does a `docker-compose up -d --build` to update the Docker containers.
+* There is a clone of the repository on the NAS
+* A [cronjob](scripts/automatic-docker-updates.sh) pulls the updates and does a `docker-compose up -d --build` to update the Docker containers.
 
 I use [Ansible](https://ansible.com) to provision and configure other hardware in my homelab like my NAS, backup server and pikvm.
 
 As a last resort I use [Taskfile](http://taskfile.dev) and write bash scripts to run repetitive tasks.
+
+## 🐳 Docker
+I have a few services that I've choosen to host outside of the Kubernetes cluster. For example I host a [Minio](https://min.io) instance that is mainly used for backing up persistant volumes within the Kubernetes cluster.
+
+I also host a [Plex](https://plex.tv) server that I wan't to run on the more powerfull server/NAS so there is no point in including that in the Kubernetes cluster and then force it to run on the specific server.
+
+There is also a NFS and a Samba server running in Docker on the NAS for easier access to file shares, backups and media.
+
+## 📓 Snippets & notes
+Every now and then I run in to problems and I usually do one of two things when I fix them:
+
+* I either create a [task](.taskfiles/) using Taskfile so it's easy to do the same thing over and over again
+* Or [I write down the solution](docs/snippets.md). This is usually done when it's to complex to create a task for it.
