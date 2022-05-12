@@ -36,7 +36,9 @@ talosctl apply-config --insecure -n ${SIDERO_ENDPOINT} -f controlplane.yaml
 talosctl config merge talosconfig
 talosctl config endpoints ${SIDERO_ENDPOINT}
 talosctl config nodes ${SIDERO_ENDPOINT}
-talosctl version
+
+echo "Wait for Talos to become ready"
+while ! talosctl version >/dev/null 2>&1; do sleep 3; done
 
 # Remove temp files
 rm controlplane.yaml worker.yaml talosconfig
@@ -47,15 +49,12 @@ talosctl bootstrap
 # Download kubeconfig
 mkdir -p ~/.kube/configs
 talosctl kubeconfig ~/.kube/configs/sidero
-kubectl config rename-context admin@sidero ${KUBECTL_CONTEXT_SIDERO}
-
-echo "Switch kubectl context"
-kubectx ${KUBECTL_CONTEXT_SIDERO}
 
 # Export values used during cluster init
 export SIDERO_CONTROLLER_MANAGER_HOST_NETWORK=true
 export SIDERO_CONTROLLER_MANAGER_DEPLOYMENT_STRATEGY=Recreate
 export SIDERO_CONTROLLER_MANAGER_API_ENDPOINT=${SIDERO_ENDPOINT}
+export SIDERO_CONTROLLER_MANAGER_SIDEROLINK_ENDPOINT=${SIDERO_ENDPOINT}
 echo "Installing Sidero on ${SIDERO_ENDPOINT}"
 clusterctl init -i sidero -b talos -c talos --kubeconfig ~/.kube/configs/sidero
 
@@ -72,6 +71,11 @@ if [[ "$status_code" -ne 200 ]] ; then
 else
   echo "all good!"
 fi
+
+kubectl config rename-context admin@sidero ${KUBECTL_CONTEXT_SIDERO}
+
+echo "Switch kubectl context"
+kubectx ${KUBECTL_CONTEXT_SIDERO}
 
 # Create flux-system namespace
 echo "Creating flux-system namespace"
