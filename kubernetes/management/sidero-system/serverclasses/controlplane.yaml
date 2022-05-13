@@ -42,7 +42,7 @@ spec:
     # Indicates whether to pull the machine config upon every boot.
     - op: replace
       path: /persist
-      value: false
+      value: true
 
     # Disable kube proxy to let Cilium replace it
     - op: replace

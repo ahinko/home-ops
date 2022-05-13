@@ -16,7 +16,7 @@ spec:
 
     - op: replace
       path: /persist
-      value: false
+      value: true
 
     - op: add
       path: /cluster/secret
