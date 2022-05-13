@@ -495,7 +495,7 @@ spec:
               key: custom-cni-conf
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: "192.168.25.100"
+          value: "192.168.25.21"
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         lifecycle:
@@ -583,7 +583,7 @@ spec:
               key: clean-cilium-bpf-state
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: "192.168.25.100"
+          value: "192.168.25.21"
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         securityContext:
@@ -728,7 +728,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: "192.168.25.100"
+          value: "192.168.25.21"
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         livenessProbe:
