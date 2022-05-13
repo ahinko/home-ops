@@ -63,7 +63,7 @@ spec:
     controlplane:
       generateType: controlplane
       # renovate: depName=siderolabs/talos
-      talosVersion: v1.0.4
+      talosVersion: v1.0.5
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
@@ -84,7 +84,7 @@ spec:
     spec:
       generateType: join
       # renovate: depName=siderolabs/talos
-      talosVersion: v1.0.4
+      talosVersion: v1.0.5
 
 ---
 
