@@ -24,3 +24,8 @@ data:
             option broadcast-address ${VLAN_NET}.255;
             include "/etc/dhcp/ipxe-metal.conf";
     }
+
+    host helios {
+      hardware ethernet 1c:69:7a:0b:8a:e8;
+      fixed-address ${VLAN_NET}.21;
+    }

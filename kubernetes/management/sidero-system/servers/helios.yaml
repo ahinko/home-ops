@@ -19,7 +19,7 @@ spec:
       path: /machine/network/hostname
       value: helios
 
-    - op: add
+    - op: replace
       path: /machine/network/interfaces
       value:
         - interface: eno1
