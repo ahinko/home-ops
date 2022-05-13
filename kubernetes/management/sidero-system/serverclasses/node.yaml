@@ -22,10 +22,10 @@ spec:
       path: /cluster/secret
       value: ${METAL_CLUSTER_SECRET}
 
-    - op: add
-      path: /machine/kubelet/extraArgs
-      value:
-        rotate-server-certificates: "true"
+    #- op: add
+      #path: /machine/kubelet/extraArgs
+      #value:
+        #rotate-server-certificates: "true"
 
     - op: add
       path: /machine/sysctls

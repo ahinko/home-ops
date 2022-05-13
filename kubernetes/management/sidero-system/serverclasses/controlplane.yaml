@@ -30,9 +30,9 @@ spec:
       path: /cluster/etcd/image
       value: gcr.io/etcd-development/etcd:v3.5.4
 
-    #- op: add
-      #path: /cluster/secret
-      #value: ${METAL_CLUSTER_SECRET}
+    - op: add
+      path: /cluster/secret
+      value: ${METAL_CLUSTER_SECRET}
 
     - op: add
       path: /cluster/coreDNS
@@ -66,7 +66,7 @@ spec:
       path: /machine/kubelet/extraArgs
       value:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-        rotate-server-certificates: "true"
+        #rotate-server-certificates: "true"
 
     - op: add
       path: /cluster/apiServer/extraArgs
