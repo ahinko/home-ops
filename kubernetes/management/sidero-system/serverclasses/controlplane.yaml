@@ -30,9 +30,9 @@ spec:
       path: /cluster/etcd/image
       value: gcr.io/etcd-development/etcd:v3.5.4
 
-    - op: add
-      path: /cluster/secret
-      value: ${METAL_CLUSTER_SECRET}
+    #- op: add
+      #path: /cluster/secret
+      #value: ${METAL_CLUSTER_SECRET}
 
     - op: add
       path: /cluster/coreDNS
@@ -56,11 +56,11 @@ spec:
         urls:
           - "${CILIUM_QUICK_INSTALL_MANIFEST_URL}"
 
-    - op: replace
-      path: /cluster/extraManifests
-      value:
+    #- op: replace
+      #path: /cluster/extraManifests
+      #value:
         # renovate: depName=ghcr.io/alex1989hu/kubelet-serving-cert-approver
-        - "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.4.4/deploy/ha-install.yaml"
+        #- "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.4.4/deploy/ha-install.yaml"
 
     - op: add
       path: /machine/kubelet/extraArgs
