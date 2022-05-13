@@ -24,19 +24,19 @@ tasks:
       - "rm metal-rpi_4-arm64.img"
 
   upgrade-talos:
-    desc: Upgrade Talos on Management plane
+    desc: Upgrade Talos on Management cluster
     silent: true
     cmds:
       - talosctl upgrade --stage --force --preserve=true --nodes ${SIDERO_ENDPOINT} --image ghcr.io/siderolabs/installer:v1.0.4
 
   upgrade-sidero:
-    desc: Upgrade Sidero
+    desc: Upgrade Sidero on Management cluster
     silent: true
     cmds:
       - echo "how?"
 
   provision:
-    desc: Provision Talos & Sidero
+    desc: Provision Talos & Sidero on Management cluster
     silent: true
     cmds:
       - ./scripts/provision-sidero.sh
