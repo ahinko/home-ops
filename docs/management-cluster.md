@@ -11,6 +11,8 @@ I decided to run a DHCP server on the Sidero cluster, this gives me more flexibi
 
 In my router settings for the VLAN the DHCP setting is set to `DHCP relay` and point to the Sidero management node.
 
+**I have not found a way to modify the network configuration in Talos before booting the Sidero node so until Sidero has been provisioned I have my router act as the DHCP server for the VLAN.** After Sidero has been provisionend I update my router settings to `DHCP relay`.
+
 All the nodes in the main cluster is set to always network boot since Sidero runs an iPXE server that they can connect to.
 
 ### Manage kubeconfigs

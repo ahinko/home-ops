@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#############################################################################################
+# Script for provisioning Talos and Sidero to set up a Management cluster that then manages #
+# metal/workload clusters.                                                                  #
+#                                                                                           #
+# Tested with Talos version 1.0.4 and Sidero 0.5                                            #
+#############################################################################################
+
 # Read variables from environment file
 set -o allexport; source .env; set +o allexport
 
@@ -37,7 +44,7 @@ talosctl config merge talosconfig
 talosctl config endpoints ${SIDERO_ENDPOINT}
 talosctl config nodes ${SIDERO_ENDPOINT}
 
-echo "Wait for Talos to become ready"
+echo "Wait for Talos OS to become ready"
 while ! talosctl version >/dev/null 2>&1; do sleep 3; done
 
 # Remove temp files
@@ -50,6 +57,9 @@ talosctl bootstrap
 mkdir -p ~/.kube/configs
 talosctl kubeconfig ~/.kube/configs/sidero
 
+echo "Waiting for the Management cluster to get up and running"
+while ! curl -k "https://${SIDERO_ENDPOINT}:6443/version?timeout=30s" >/dev/null 2>&1; do sleep 3; done
+
 # Export values used during cluster init
 export SIDERO_CONTROLLER_MANAGER_HOST_NETWORK=true
 export SIDERO_CONTROLLER_MANAGER_DEPLOYMENT_STRATEGY=Recreate
@@ -58,7 +68,20 @@ export SIDERO_CONTROLLER_MANAGER_SIDEROLINK_ENDPOINT=${SIDERO_ENDPOINT}
 echo "Installing Sidero on ${SIDERO_ENDPOINT}"
 clusterctl init -i sidero -b talos -c talos --kubeconfig ~/.kube/configs/sidero
 
+kubectl config rename-context admin@sidero ${KUBECTL_CONTEXT_SIDERO}
+
+echo "Switch kubectl context"
+kubectx ${KUBECTL_CONTEXT_SIDERO}
+
 echo "Waiting for Sidero to be ready"
+sleep 15
+
+CLUSTER_INITED=`kubectl -n sidero-system get pod -l app=sidero 2>&1`
+if [[ $CLUSTER_INITED == "No resources found"* ]]; then
+    echo "Seems like clusterctl init failed to initialize the cluster. Exiting..."
+    exit 1
+fi
+
 kubectl -n sidero-system wait --for=condition=ready pod -l app=sidero
 kubectl -n sidero-system wait --for=condition=ready environment default
 
@@ -72,21 +95,16 @@ else
   echo "all good!"
 fi
 
-kubectl config rename-context admin@sidero ${KUBECTL_CONTEXT_SIDERO}
-
-echo "Switch kubectl context"
-kubectx ${KUBECTL_CONTEXT_SIDERO}
-
 # Create flux-system namespace
 echo "Creating flux-system namespace"
 kubectl create namespace flux-system
 
-echo "Import SOPS key to cluster"
 # Create a secret in the cluster containing the decryption key for SOPS
+echo "Import SOPS key to cluster"
 cat homelab.agekey | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin
 
-echo "Bootstrapping Flux"
 # Bootstrap Flux
+echo "Bootstrapping Flux"
 flux bootstrap github \
     --owner=$GITHUB_USER \
     --repository=home-ops \
