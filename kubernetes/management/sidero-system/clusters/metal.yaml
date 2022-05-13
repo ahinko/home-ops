@@ -33,7 +33,7 @@ metadata:
   namespace: sidero-system
 spec:
   controlPlaneEndpoint:
-    host: ${METAL_CLUSTER_VIP}
+    host: ${CONTROLPLANE_ENDPOINT}
     port: 6443
 
 ---

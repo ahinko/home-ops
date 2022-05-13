@@ -7,6 +7,7 @@ metadata:
   name: cluster-settings
 data:
   METAL_CLUSTER_VIP: "192.168.25.100"
+  CONTROLPLANE_ENDPOINT: "192.168.25.24"
   SIDERO_ENDPOINT: "192.168.25.10"
 
   VLAN_NET: "192.168.25"

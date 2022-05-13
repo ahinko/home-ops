@@ -60,7 +60,7 @@ spec:
       path: /cluster/extraManifests
       value:
         # renovate: depName=ghcr.io/alex1989hu/kubelet-serving-cert-approver
-        - "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/0.4.4/deploy/ha-install.yaml"
+        - "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.4.4/deploy/ha-install.yaml"
 
     - op: add
       path: /machine/kubelet/extraArgs

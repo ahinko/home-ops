@@ -25,7 +25,6 @@ spec:
       - random.trust_cpu=on
       - slab_nomerge=
       - talos.platform=metal
-      - talos.config=http://${SIDERO_ENDPOINT}:8081/configdata?uuid=
   initrd:
     url: "https://github.com/siderolabs/talos/releases/download/v1.0.4/initramfs-amd64.xz"
     sha512: ""
