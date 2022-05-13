@@ -30,9 +30,9 @@ spec:
       path: /cluster/etcd/image
       value: gcr.io/etcd-development/etcd:v3.5.4
 
-    - op: add
-      path: /cluster/secret
-      value: ${METAL_CLUSTER_SECRET}
+    #- op: add
+      #path: /cluster/secret
+      #value: ${METAL_CLUSTER_SECRET}
 
     - op: add
       path: /cluster/coreDNS
