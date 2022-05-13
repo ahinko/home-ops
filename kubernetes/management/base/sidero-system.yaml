@@ -7,6 +7,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 60m
+  dependsOn:
+    - name: charts
+    - name: config
   path: ./kubernetes/management/sidero-system
   prune: true
   sourceRef:
