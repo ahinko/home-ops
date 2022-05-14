@@ -22,14 +22,14 @@ Besides that I'm also running some services that are used daily by myself, famil
 These are what I consider the main features of my homelab. You can also see this list as an index to the documentation. If you want to set up your own cluster and use my repo as a guide I suggest that you read through the documentation in this order:
 
 - [x] [Automated provisioning of Management cluster and it's bare metal nodes](docs/management-cluster.md)
-- [ ] 🚧 Automated bare metal provisioning of Kubernetes nodes
-- [ ] 🚧 Automated Kubernetes installation and management
-- [ ] 🚧 Installing and managing applications using GitOps
+- [x] Automated bare metal provisioning of Kubernetes nodes
+- [x] [Automated Kubernetes installation and management](docs/metal-cluster.md)
+- [x] Installing and managing applications using GitOps
 - [ ] 🚧 Automatic rolling upgrade for OS and Kubernetes
-- [ ] 🚧 Automatically update apps (with approval)
-- [ ] 🚧 Modular architecture, easy to add or remove features/components
+- [x] Automatically update apps (with approval)
+- [x] Modular architecture, easy to add or remove features/components
 - [ ] Automated certificate management
-- [ ] Automatically update DNS records for exposed services
+- [ ] [Automatically update DNS records for exposed services](docs/expose-services.md)
 - [ ] Distributed storage
 - [ ] Monitoring and alerting
 - [ ] Automated offsite backups
