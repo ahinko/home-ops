@@ -1,5 +1,4 @@
 ---
-
 os_timezone: "Europe/Stockholm"
 os_ssh_authorized_keys:
   - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5Yw1MlnY1gs9/fX9zz8qgTjTcdJfjXFXg58Icb7KLE/CPc86qYSg3j+3Fy/5FNDj31KhPHL0JenEWaLPMruGwwn4or2By5GQZGOJggx9qjyyZcgQCPuGO7V4GPlDKRX+SyZ+FAY4/aZPUL2Ig2vZz0bt/nnovg1EOwaXvnTaYAAXspgn/6YoLj4SOeIz1p7VVFxQNmiyNrjfq0cK8YFfL1Z2+kTsa0jJxyFjTD22IBX7aUIbhjSGeFpwLYo52/WKhVOycNaHu0Evz6C9pu9DzSADTCsw5TdQxcsGQDtZ8M1tvDpGLPFABTmflMznYmYlXvCWSn+KTUolSsiEbFQEt peter@macbook"

@@ -1,5 +1,4 @@
 ---
-
 # kubeProxyReplacement enables kube-proxy replacement in Cilium BPF datapath
 kubeProxyReplacement: "strict"
 

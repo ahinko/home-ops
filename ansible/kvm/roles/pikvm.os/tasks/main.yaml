@@ -1,5 +1,4 @@
 ---
-
 - block:
     - name: Upgrade system
       community.general.pacman:

@@ -1,5 +1,4 @@
 ---
-
 kvm:
   hosts:
     pikvm:

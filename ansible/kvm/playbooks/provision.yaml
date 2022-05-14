@@ -1,5 +1,4 @@
 ---
-
 - hosts:
     - pikvm
   become: true

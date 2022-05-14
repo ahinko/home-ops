@@ -1,5 +1,4 @@
 ---
-
 - name: Restart kvmd
   ansible.builtin.systemd:
     name: "kvmd.service"

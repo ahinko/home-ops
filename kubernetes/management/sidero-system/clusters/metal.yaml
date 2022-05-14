@@ -1,5 +1,4 @@
 ---
-
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
@@ -25,7 +24,6 @@ spec:
     namespace: sidero-system
 
 ---
-
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalCluster
 metadata:
@@ -37,7 +35,6 @@ spec:
     port: 6443
 
 ---
-
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalMachineTemplate
 metadata:
@@ -52,7 +49,6 @@ spec:
         name: controlplane
 
 ---
-
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
 metadata:
@@ -73,7 +69,6 @@ spec:
   version: v1.24.0
 
 ---
-
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
 kind: TalosConfigTemplate
 metadata:
@@ -87,7 +82,6 @@ spec:
       talosVersion: v1.0.5
 
 ---
-
 apiVersion: cluster.x-k8s.io/v1alpha4
 kind: MachineDeployment
 metadata:
@@ -114,7 +108,6 @@ spec:
       version: v1.24.0
 
 ---
-
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalMachineTemplate
 metadata:

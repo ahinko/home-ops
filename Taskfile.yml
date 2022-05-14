@@ -1,8 +1,7 @@
 ---
+version: "3"
 
-version: '3'
-
-dotenv: ['.env']
+dotenv: [".env"]
 
 vars:
   PROJECT_ROOT:

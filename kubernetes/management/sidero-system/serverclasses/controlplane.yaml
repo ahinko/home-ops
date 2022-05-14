@@ -1,5 +1,4 @@
 ---
-
 apiVersion: metal.sidero.dev/v1alpha1
 kind: ServerClass
 metadata:
@@ -31,8 +30,8 @@ spec:
       value: gcr.io/etcd-development/etcd:v3.5.4
 
     #- op: add
-      #path: /cluster/secret
-      #value: ${METAL_CLUSTER_SECRET}
+    #path: /cluster/secret
+    #value: ${METAL_CLUSTER_SECRET}
 
     - op: add
       path: /cluster/coreDNS
@@ -57,10 +56,10 @@ spec:
           - "${CILIUM_QUICK_INSTALL_MANIFEST_URL}"
 
     #- op: replace
-      #path: /cluster/extraManifests
-      #value:
-        # renovate: depName=ghcr.io/alex1989hu/kubelet-serving-cert-approver
-        #- "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.4.4/deploy/ha-install.yaml"
+    #path: /cluster/extraManifests
+    #value:
+    # renovate: depName=ghcr.io/alex1989hu/kubelet-serving-cert-approver
+    #- "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.4.4/deploy/ha-install.yaml"
 
     - op: add
       path: /machine/kubelet/extraArgs
