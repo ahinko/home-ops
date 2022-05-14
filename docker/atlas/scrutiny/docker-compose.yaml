@@ -1,0 +1,28 @@
+---
+
+version: '3.8'
+
+services:
+  scrutiny:
+    container_name: scrutiny
+    image: ghcr.io/analogj/scrutiny:v0.4.4-omnibus
+    restart: always
+    ports:
+      - 8080:8080
+    cap_add:
+      - SYS_RAWIO
+    volumes:
+      - /lib/udev:/run/udev:ro
+      - /tank/volumes/scrutiny:/scrutiny/config
+    devices:
+      - "/dev/sda"
+      - "/dev/sdb"
+      - "/dev/sdc"
+      - "/dev/sdd"
+      - "/dev/sde"
+      - "/dev/sdf"
+      - "/dev/sdg"
+      - "/dev/sdh"
+      - "/dev/sdi"
+      - "/dev/sdj"
+      - "/dev/sdk"

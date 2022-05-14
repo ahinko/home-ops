@@ -1,0 +1,22 @@
+---
+
+version: '3.8'
+
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:2.2.0-alpine
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - /tank/volumes/influxdb/data:/var/lib/influxdb2
+      - /tank/volumes/influxdb/config:/etc/influxdb2
+    environment:
+      - TZ=Europe/Stockholm
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${DOCKER_INFLUXDB_INIT_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=homelab
+      - DOCKER_INFLUXDB_INIT_BUCKET=hass
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
