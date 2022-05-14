@@ -146,7 +146,7 @@ providers:
 ```
 
 ### Change DHCP settings
-First look at the files in `kubernetes/management/apps/kube-system/dhcpd` and update any IP addresses to match your environment. Commit and push your changes so that they are pushed to the cluster.
+First look at the files in `kubernetes/management/apps/kube-system/dhcpd` and update any IP addresses to match your environment. I would also recommend modifying the static IPs in [dhcpd-config.yaml](../kubernetes/management/apps/kube-system/dhcpd/dhcpd-config.yaml) to match your environment. Commit and push your changes so that they are pushed to the cluster.
 
 Also update your DHCP router settings and set the IP address to the IP address of the Sidero node (same as the environment variable $SIDERO_ENDPOINT).
 
