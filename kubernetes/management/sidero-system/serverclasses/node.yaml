@@ -17,9 +17,9 @@ spec:
       path: /persist
       value: true
 
-    #- op: add
-    #path: /cluster/secret
-    #value: ${METAL_CLUSTER_SECRET}
+    - op: add
+      path: /cluster/secret
+      value: ${METAL_CLUSTER_SECRET}
 
     #- op: add
     #path: /machine/kubelet/extraArgs
