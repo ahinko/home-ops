@@ -1,5 +1,4 @@
 ---
-
 name: Meta - Sync labels
 
 on: # yamllint disable-line rule:truthy
@@ -7,7 +6,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - '.github/labels.yaml'
+      - ".github/labels.yaml"
 
 jobs:
   labels:

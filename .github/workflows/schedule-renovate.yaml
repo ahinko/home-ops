@@ -1,5 +1,4 @@
 ---
-
 name: Schedule - Renovate
 
 on: # yamllint disable-line rule:truthy

@@ -1,5 +1,4 @@
 ---
-
 name: Meta - Label Size
 
 on: # yamllint disable-line rule:truthy

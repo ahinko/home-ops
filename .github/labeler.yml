@@ -1,5 +1,4 @@
 ---
-
 area/ansible:
   - "ansible/**/*"
 area/ci:

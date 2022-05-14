@@ -1,28 +1,25 @@
 {
-    "packageRules": [
-        {
-            "description": "Talos releases",
-            "matchDatasources": ["docker", "github-releases"],
-            "matchPackageNames": [
-                "ghcr.io/siderolabs/installer",
-                "siderolabs/talos"
-            ],
-            "groupName": "siderolabs/talos",
-            "additionalBranchPrefix": "",
-            "separateMinorPatch": true,
-        },
-        {
-            "description": "Kubernetes images",
-            "matchDatasources": ["docker"],
-            "matchPackageNames": [
-                "k8s.gcr.io/kube-apiserver",
-                "k8s.gcr.io/kube-controller-manager",
-                "k8s.gcr.io/kube-scheduler",
-                "ghcr.io/siderolabs/kubelet"
-            ],
-            "groupName": "kubernetes",
-            "additionalBranchPrefix": "",
-            "separateMinorPatch": true,
-        },
-    ]
+  packageRules: [
+    {
+      description: 'Talos releases',
+      matchDatasources: ['docker', 'github-releases'],
+      matchPackageNames: ['ghcr.io/siderolabs/installer', 'siderolabs/talos'],
+      groupName: 'siderolabs/talos',
+      additionalBranchPrefix: '',
+      separateMinorPatch: true
+    },
+    {
+      description: 'Kubernetes images',
+      matchDatasources: ['docker'],
+      matchPackageNames: [
+        'k8s.gcr.io/kube-apiserver',
+        'k8s.gcr.io/kube-controller-manager',
+        'k8s.gcr.io/kube-scheduler',
+        'ghcr.io/siderolabs/kubelet'
+      ],
+      groupName: 'kubernetes',
+      additionalBranchPrefix: '',
+      separateMinorPatch: true
+    }
+  ]
 }
