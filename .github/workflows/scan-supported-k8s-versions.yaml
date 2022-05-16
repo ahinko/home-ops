@@ -31,7 +31,7 @@ jobs:
         with:
           title: "feat(container): update allowed Kubernetes version"
           branch: "update-allowed-kubernetes-version"
-          path: "lib/"
+          path: ".github/renovate"
           commit-message: "My commit message for uncommitted changes in lib/ folder"
           author: "Lorem J. Ipsum <lorem@example.com>"
           update-pull-request-title-and-body: false
