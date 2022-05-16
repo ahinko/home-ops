@@ -26,7 +26,7 @@
       description: 'Process Cilium Quick Install for new versions',
       fileMatch: ['.task/.+\\.yaml$'],
       matchStrings: [
-        'add (?<depName>.*?) (?<registryUrl>.*)\n .*\n .* --version (?<currentValue>.*) [a-z/]* -f'
+        'add (?<depName>.*?) (?<registryUrl>.*)\n .*\n .* --version (?<currentValue>.*) cilium'
       ],
       datasourceTemplate: 'helm'
     },
