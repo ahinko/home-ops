@@ -1,7 +1,7 @@
 {
   packageRules: [
     {
-      allowedVersions: '<=1.22', // Talos dependency
+      allowedVersions: '<=1.23', // Talos dependency
       matchDatasources: ['docker'],
       matchPackageNames: [
         'k8s.gcr.io/kube-apiserver',
