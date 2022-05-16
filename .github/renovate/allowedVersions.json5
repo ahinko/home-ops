@@ -1,14 +1,14 @@
 {
-  "packageRules": [
+  packageRules: [
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "k8s.gcr.io/kube-apiserver",
-        "k8s.gcr.io/kube-controller-manager",
-        "k8s.gcr.io/kube-scheduler",
-        "ghcr.io/siderolabs/kubelet"
-      ],
-      "allowedVersions": "<=1.23"
+      allowedVersions: '<=1.22', // Talos dependency
+      matchDatasources: ['docker'],
+      matchPackageNames: [
+        'k8s.gcr.io/kube-apiserver',
+        'k8s.gcr.io/kube-controller-manager',
+        'k8s.gcr.io/kube-scheduler',
+        'ghcr.io/siderolabs/kubelet'
+      ]
     }
   ]
 }
