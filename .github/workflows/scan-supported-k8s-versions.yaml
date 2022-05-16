@@ -27,11 +27,12 @@ jobs:
           .github/scripts/kubernetes-version.sh
       - uses: gr2m/create-or-update-pull-request-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
         with:
           title: "feat(container): update allowed Kubernetes version"
+          body: "Talos supports a new Kubernetes version. The allowedVersions file has been updated with this new minor version."
           branch: "update-allowed-kubernetes-version"
           path: ".github/renovate"
-          commit-message: "My commit message for uncommitted changes in lib/ folder"
-          author: "Lorem J. Ipsum <lorem@example.com>"
-          update-pull-request-title-and-body: false
+          commit-message: "Update allowedVersions.json5 with new minor version of Kubernetes."
+          labels: size/XS, area/cluster, type/minor
+          update-pull-request-title-and-body: true
