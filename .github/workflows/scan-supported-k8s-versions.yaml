@@ -16,8 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false
       - name: Generate Token
         uses: tibdex/github-app-token@v1
         id: generate-token
@@ -30,3 +28,10 @@ jobs:
       - uses: gr2m/create-or-update-pull-request-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: "feat(container): update allowed Kubernetes version"
+          branch: "update-allowed-kubernetes-version"
+          path: "lib/"
+          commit-message: "My commit message for uncommitted changes in lib/ folder"
+          author: "Lorem J. Ipsum <lorem@example.com>"
+          update-pull-request-title-and-body: false
