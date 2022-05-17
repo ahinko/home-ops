@@ -5,7 +5,7 @@ metadata:
   name: cilium
   namespace: kube-system
 spec:
-  interval: 60m
+  interval: 5m
   chart:
     spec:
       chart: cilium
@@ -14,14 +14,23 @@ spec:
         kind: HelmRepository
         name: cilium-charts
         namespace: flux-system
-      interval: 60m
+      interval: 5m
   values:
+    cluster:
+      name: "${CLUSTER_NAME}"
+      id: "${CLUSTER_ID}"
+
     rollOutCiliumPods: true
 
     localRedirectPolicy: true
 
     kubeProxyReplacement: "strict"
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
+    nativeRoutingCIDR: ${NETWORK_K8S_POD_CIDR}
+
+    k8sServiceHost: 192.168.25.21
+    k8sServicePort: 6443
 
     loadBalancer:
       algorithm: "maglev"
@@ -44,7 +53,7 @@ spec:
       integration: containerd
 
     hubble:
-      enabled: true
+      enabled: false
       serviceMonitor:
         enabled: true
       metrics:
@@ -64,20 +73,14 @@ spec:
         rollOutPods: true
         ingress:
           enabled: false
-          ingressClassName: "nginx"
           annotations:
-            hajimari.io/appName: hubble
-            hajimari.io/icon: lan
+            cert-manager.io/cluster-issuer: letsencrypt-production
           hosts:
             - "hubble.${SECRET_DOMAIN}"
           tls:
-            hosts:
-              - "hubble.${SECRET_DOMAIN}"
+            - secretName: hubble-tls
+              hosts:
+                - "hubble.${SECRET_DOMAIN}"
 
     bgp:
-      enabled: false
-      announce:
-        loadbalancerIP: true
-
-    externalIPs:
       enabled: false
