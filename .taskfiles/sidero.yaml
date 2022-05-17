@@ -14,7 +14,7 @@ tasks:
     desc: Write Talos image to SSD to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LO https://github.com/siderolabs/talos/releases/latest/download/metal-rpi_4-arm64.img.xz && xz -d metal-rpi_4-arm64.img.xz"
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.0.5/metal-rpi_4-arm64.img.xz && xz -d metal-rpi_4-arm64.img.xz"
       - |
         echo "Path to SSD:"
         read path;

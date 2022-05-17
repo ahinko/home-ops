@@ -2,9 +2,12 @@
   regexManagers: [
     {
       description: 'Process Sidero configurations for Talos updates',
-      fileMatch: ['kubernetes/management/sidero-system/.+/.+\\.yaml$'],
+      fileMatch: [
+        'kubernetes/management/sidero-system/.+/.+\\.yaml$',
+        '.taskfiles/tools.yaml'
+      ],
       matchStrings: [
-        'https://github.com/(?<depName>.*?)/releases/download/(?<currentValue>.*)/',
+        'github.com/(?<depName>.*?)/releases/download/(?<currentValue>[v0-9.]*)/',
         'depName=(?<depName>.*?)\n *talosVersion: (?<currentValue>.*)\n'
       ],
       datasourceTemplate: 'github-releases'
