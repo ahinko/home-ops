@@ -60,10 +60,10 @@ spec:
         enabled: true
         rollOutPods: true
       ui:
-        enabled: true
+        enabled: false
         rollOutPods: true
         ingress:
-          enabled: true
+          enabled: false
           ingressClassName: "nginx"
           annotations:
             hajimari.io/appName: hubble
