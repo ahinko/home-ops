@@ -65,7 +65,7 @@ spec:
       path: /machine/kubelet/extraArgs
       value:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-        #rotate-server-certificates: "true"
+        rotate-server-certificates: "true"
 
     - op: add
       path: /cluster/apiServer/extraArgs
