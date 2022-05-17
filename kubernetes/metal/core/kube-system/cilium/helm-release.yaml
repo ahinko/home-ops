@@ -53,7 +53,7 @@ spec:
       integration: containerd
 
     hubble:
-      enabled: false
+      enabled: true
       serviceMonitor:
         enabled: true
       metrics:
