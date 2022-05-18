@@ -24,7 +24,7 @@ spec:
     - op: add
       path: /machine/kubelet/extraArgs
       value:
-      rotate-server-certificates: "true"
+        rotate-server-certificates: "true"
 
     - op: add
       path: /machine/sysctls
