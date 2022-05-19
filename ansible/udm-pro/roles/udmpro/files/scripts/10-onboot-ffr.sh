@@ -15,4 +15,4 @@ podman run --mount="type=bind,source=/mnt/data/$CONTAINER_NAME,destination=/etc/
   --privileged \
   --restart always \
   $DEBUG \
-  docker.io/frrouting/frr:v8.1.0 # renovate
+  docker.io/frrouting/frr:v8.2.2 # renovate
