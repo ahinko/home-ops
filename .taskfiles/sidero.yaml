@@ -32,7 +32,8 @@ tasks:
     desc: Upgrade Sidero on Management cluster
     silent: true
     cmds:
-      - echo "how?"
+      - clusterctl upgrade plan
+      - clusterctl upgrade apply --contract v1beta1
 
   provision:
     desc: Provision Talos & Sidero on Management cluster
