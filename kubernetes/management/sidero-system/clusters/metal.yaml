@@ -66,7 +66,7 @@ spec:
     name: metal-controlplane
   replicas: 1
   # renovate: depName=ghcr.io/siderolabs/kubelet
-  version: v1.24.0
+  version: v1.23.6
 
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
@@ -105,7 +105,7 @@ spec:
         kind: MetalMachineTemplate
         name: metal-nodes
       # renovate: depName=ghcr.io/siderolabs/kubelet
-      version: v1.24.0
+      version: v1.23.6
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
