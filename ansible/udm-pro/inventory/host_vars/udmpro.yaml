@@ -11,7 +11,7 @@ masquerade_nat_rules:
       dest: "192.168.40.64/24",
     }
   - {
-      name: "Zues to Xiaomi Roborock S7",
+      name: "Zeus to Xiaomi Roborock S7",
       src: "192.168.20.7/24",
       dest: "192.168.40.64/24",
     }
