@@ -34,7 +34,7 @@
       datasourceTemplate: 'helm'
     },
     {
-      description: 'Process Kubelet Serving Cert Appriver',
+      description: 'Process Kubelet Serving Cert Approver',
       fileMatch: [
         'kubernetes/management/sidero-system/serverclasses/.+\\.yaml$'
       ],
@@ -42,6 +42,12 @@
         'depName=(?<depName>.*?)\n ([a-z0-9 .\\-"://]*)/(?<currentValue>.*)/deploy'
       ],
       datasourceTemplate: 'docker'
+    },
+    {
+      description: 'Process UDM-PRO dependencies in Ansible playbook + role',
+      fileMatch: ['ansible/udm-pro/.+\\.yaml$'],
+      matchStrings: ['depName=(?<depName>.*?)\n[a-z_]*: (?<currentValue>.*)'],
+      datasourceTemplate: 'github-releases'
     }
   ]
 }
