@@ -1,32 +1,26 @@
 {
-  "cniVersion": "0.4.0",
-  "name": "haproxy",
-  "plugins": [
-      {
-         "type": "bridge",
-         "bridge": "br5",
-         "ipam": {
-            "type": "host-local",
-            "ranges": [
-                [
+    "cniVersion": "0.4.0",
+    "name": "haproxy",
+    "plugins": [
+        {
+            "type": "macvlan",
+            "mode": "bridge",
+            "master": "br5",
+            "mac": "00:15:6D:16:C6:02",
+            "ipam": {
+                "type": "static",
+                "addresses": [
                     {
-                        "subnet": "192.168.5.0/24",
-                        "rangeStart": "192.168.5.20",
-                        "rangeEnd": "192.168.5.20",
+                        "address": "192.168.5.20/24",
                         "gateway": "192.168.5.1"
                     }
+                ],
+                "routes": [
+                    {
+                        "dst": "0.0.0.0/0"
+                    }
                 ]
-            ],
-            "routes": [
-                {"dst": "0.0.0.0/0"}
-            ]
-         }
-      },
-      {
-         "type": "tuning",
-         "capabilities": {
-            "mac": true
-         }
-      }
-  ]
+            }
+        }
+    ]
 }
