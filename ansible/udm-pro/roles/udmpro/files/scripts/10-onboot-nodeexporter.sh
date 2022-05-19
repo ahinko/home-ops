@@ -16,4 +16,4 @@ podman run  --name "$CONTAINER_NAME" \
   -v "/:/host:ro,rslave" \
   --path.rootfs=/host \
   $DEBUG \
-  quay.io/prometheus/node-exporter:v1.3.0 # renovate
+  quay.io/prometheus/node-exporter:v1.3.1 # renovate
