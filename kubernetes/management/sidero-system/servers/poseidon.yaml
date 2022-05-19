@@ -2,7 +2,7 @@
 apiVersion: metal.sidero.dev/v1alpha1
 kind: Server
 metadata:
-  name: 00000000-0000-0000-0000-d05099d333e0
+  name: 3a1f52f7-b852-da59-f7f8-1c697aaa442d
   labels:
     worker: "true"
 spec:
@@ -28,4 +28,9 @@ spec:
     manufacturer: Intel(R) Corporation
     version: Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz
   system:
-    manufacturer: Dell Inc.
+    family: BE
+    manufacturer: Intel(R) Client Systems
+    productName: NUC10i5FNH
+    serialNumber: G6FN131005EL
+    skuNumber: BXNUC10i5FNHN
+    version: M38014-308

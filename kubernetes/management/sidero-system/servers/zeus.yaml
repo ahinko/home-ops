@@ -2,7 +2,7 @@
 apiVersion: metal.sidero.dev/v1alpha1
 kind: Server
 metadata:
-  name: 00000000-0000-0000-0000-d05099d333e0
+  name: 6a84d8c2-2cb8-6132-a3cb-1c697a68a401
   labels:
     controlplane: "true"
 spec:
@@ -28,4 +28,9 @@ spec:
     manufacturer: Intel(R) Corporation
     version: Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
   system:
-    manufacturer: Dell Inc.
+    family: BE
+    manufacturer: Intel(R) Client Systems
+    productName: NUC8i5BEH
+    serialNumber: G6BE0210027J
+    skuNumber: BOXNUC8i5BEH
+    version: J72747-307
