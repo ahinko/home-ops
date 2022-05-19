@@ -40,11 +40,7 @@
   // Set up Renovate managers
   // --
   'docker-compose': {
-    fileMatch: [
-      '(^|/)docker-compose.*\\.yaml$',
-      '.task/.\\.yaml$',
-      'ansible/.\\.sh$'
-    ]
+    fileMatch: ['(^|/)docker-compose.*\\.yaml$', '.task/.\\.yaml$']
   },
   flux: {
     fileMatch: ['kubernetes/.+\\.yaml$']

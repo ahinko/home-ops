@@ -3,15 +3,17 @@
 DEBUG=${DEBUG:--d}
 CONTAINER_NAME="nodexporter"
 
-if podman container exists ${CONTAINER_NAME}; then
-  podman start ${CONTAINER_NAME}
-else
-  podman run  --name "$CONTAINER_NAME" \
-            --network=host \
-            --restart always \
-            --pid="host" \
-            -v "/:/host:ro,rslave" \
-            $DEBUG \
-            quay.io/prometheus/node-exporter:v1.3.0 \
-            --path.rootfs=/host
+if podman container exists "$CONTAINER"; then
+  podman pull $CONTAINER
+  podman stop $CONTAINER
+  podman rm $CONTAINER
 fi
+
+podman run  --name "$CONTAINER_NAME" \
+  --network=host \
+  --restart always \
+  --pid="host" \
+  -v "/:/host:ro,rslave" \
+  --path.rootfs=/host \
+  $DEBUG \
+  quay.io/prometheus/node-exporter:v1.3.0 # renovate
