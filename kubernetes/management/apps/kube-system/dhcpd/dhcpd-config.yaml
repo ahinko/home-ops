@@ -25,6 +25,21 @@ data:
     }
 
     host helios {
-      hardware ethernet 1c:69:7a:0b:8a:e8;
-      fixed-address ${VLAN_NET}.21;
+      hardware ethernet ${HELIOS_MAC};
+      fixed-address ${HELIOS_IP};
+    }
+
+    host iris {
+      hardware ethernet ${IRIS_MAC};
+      fixed-address ${IRIS_IP};
+    }
+
+    host zeus {
+      hardware ethernet ${ZEUS_MAC};
+      fixed-address ${ZEUS_IP};
+    }
+
+    host poseidon {
+      hardware ethernet ${POSEIDON_MAC};
+      fixed-address ${POSEIDON_IP};
     }
