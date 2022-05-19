@@ -15,10 +15,6 @@ if [ -z "$SIDERO_ENDPOINT" ] ; then
     echo "Environment variable SIDERO_ENDPOINT not set. Either export it or create an .env file in the root of the repo!"
     exit 1
 fi
-if [ -z "$METAL_CLUSTER_VIP" ] ; then
-    echo "Environment variable METAL_CLUSTER_VIP not set. Either export it or create an .env file in the root of the repo!"
-    exit 1
-fi
 if [ -z "$VLAN_NAMESERVER" ] ; then
     echo "Environment variable VLAN_NAMESERVER not set. Either export it or create an .env file in the root of the repo!"
     exit 1

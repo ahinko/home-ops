@@ -4,8 +4,28 @@
 set -o allexport; source .env; set +o allexport
 
 # Verify that we have the needed environment variables
-if [ -z "$METAL_CLUSTER_VIP" ] ; then
-    echo "Environment variable METAL_CLUSTER_VIP not set. Either export it or create an .env file in the root of the repo!"
+if [ -z "$METAL_CLUSTER_CP_LB" ] ; then
+    echo "Environment variable METAL_CLUSTER_CP_LB not set. Either export it or create an .env file in the root of the repo!"
+    exit 1
+fi
+if [ -z "$METAL_CLUSTER_NODES" ] ; then
+    echo "Environment variable METAL_CLUSTER_NODES not set. Either export it or create an .env file in the root of the repo!"
+    exit 1
+fi
+if [ -z "$KUBECTL_CONTEXT_SIDERO" ] ; then
+    echo "Environment variable KUBECTL_CONTEXT_SIDERO not set. Either export it or create an .env file in the root of the repo!"
+    exit 1
+fi
+if [ -z "$KUBECTL_CONTEXT_METAL" ] ; then
+    echo "Environment variable KUBECTL_CONTEXT_METAL not set. Either export it or create an .env file in the root of the repo!"
+    exit 1
+fi
+if [ -z "$GITHUB_USER" ] ; then
+    echo "Environment variable GITHUB_USER not set. Either export it or create an .env file in the root of the repo!"
+    exit 1
+fi
+if [ -z "$GITHUB_TOKEN" ] ; then
+    echo "Environment variable GITHUB_TOKEN not set. Either export it or create an .env file in the root of the repo!"
     exit 1
 fi
 
