@@ -1,0 +1,71 @@
+---
+
+- name: kernel-tools - check kernel tools version
+  register: kernel_tool_version
+  raw: "{{ unifi_os_cmd }} dpkg-query --showformat='${Version}' --show udm-kernel-tools"
+
+- name: kernel-tools - installation
+  when: kernel_tool_version is not defined or ( kernel_tool_version.stdout != udm_kernel_tool_version)
+  block:
+    - name: kernel-tools - download package
+      raw: curl -L "{{ udm_kernel_tool_download_uri }}" -o "{{ unifi_mount_path }}/unifi-os/udm-kernel-tools_{{ udm_kernel_tool_version }}.deb"
+    - name: kernel-tools - install package
+      raw: "{{ unifi_os_cmd }} dpkg -i {{ unifi_os_mount_path }}/udm-kernel-tools_{{ udm_kernel_tool_version }}.deb"
+
+- name: kernel-tools - fetch current kernel version
+  block:
+    - name: kernel-tools - get current kernel version
+      raw: "{{ unifi_os_cmd }} uname -r"
+      register: current_kernel_version_raw
+
+    - name: kernel-tools - update fact current kernel version
+      set_fact:
+        current_kernel_version: "{{ current_kernel_version_raw.stdout_lines[0] }}"
+
+- name: kernel-tools - download latest kernel
+  when: udm_kernel_tools_kernel_version is not defined
+  block:
+    - name: kernel-tools - check latest udm-kernel
+      uri:
+        url: "{{ udm_kernel_release_url }}"
+        return_content: true
+      register: udm_kernel_latest_data
+
+    - name: "kernel-tools - download kernel {{ udm_kernel_latest_data.json.tag_name }}"
+      loop: "{{ udm_kernel_latest_data.json.assets }}"
+      when: "'udm-kernel' in item.name"
+      no_log: true
+      raw: curl -s -L "{{ item.browser_download_url }}" -o "{{ unifi_mount_path }}/unifi-os/{{ item.name }}"
+
+    - name: kernel-tools - set fact about downloaded kernel version
+      loop: "{{ udm_kernel_latest_data.json.assets }}"
+      when: "'udm-kernel' in item.name"
+      no_log: true
+      set_fact:
+        downloaded_file: "{{ item.name }}"
+        udm_kernel_tools_kernel_version: "{{ udm_kernel_latest_data.json.tag_name | regex_replace('^v(.*)', '\\1') }}"
+
+    - name: kernel-tools - install package
+      when: current_kernel_version != udm_kernel_tools_kernel_version
+      raw: "{{ unifi_os_cmd }} dpkg -i {{ unifi_os_mount_path }}/{{ downloaded_file }}"
+
+- name: kernel-tools - verify kernel version
+  raw: "{{ unifi_os_cmd }} udm-bootctl list | awk '{print $1}' | tail -n +2"
+  register: installed_kernel_versions
+
+- name: "kernel-tools - check if {{ udm_kernel_tools_kernel_version }} is installed..."
+  when: not udm_kernel_tools_kernel_version in installed_kernel_versions.stdout_lines
+  fail:
+    msg: "{{ udm_kernel_tools_kernel_version }} is not installed"
+
+- name: kernel-tools - set default kernel version
+  when: current_kernel_version != udm_kernel_tools_kernel_version
+  raw: "{{ unifi_os_cmd }} udm-bootctl set-default {{ udm_kernel_tools_kernel_version }}"
+
+- name: kernel-tools - ensure udm-autoboot is enabled
+  when: udm_kernel_tools_autoboot
+  raw: "{{ unifi_os_cmd }} systemctl enable udm-autoboot.service"
+
+- name: "kernel-tools - boost custom kernel {{ udm_kernel_latest_data.json.tag_name }}"
+  when: current_kernel_version != udm_kernel_tools_kernel_version
+  raw: "{{ unifi_os_cmd }} udm-bootctl boot {{ udm_kernel_tools_kernel_version }}"

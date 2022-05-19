@@ -1,0 +1,26 @@
+masquerade_enabled: yes
+masquerade_nat_rules:
+  - {
+      name: "Helios to Xiaomi Roborock S7",
+      src: "192.168.25.21/24",
+      dest: "192.168.40.64/24",
+    }
+  - {
+      name: "Iris to Xiaomi Roborock S7",
+      src: "192.168.20.6/24",
+      dest: "192.168.40.64/24",
+    }
+  - {
+      name: "Zues to Xiaomi Roborock S7",
+      src: "192.168.20.7/24",
+      dest: "192.168.40.64/24",
+    }
+  - {
+      name: "Poseidon to Xiaomi Roborock S7",
+      src: "192.168.20.7/24",
+      dest: "192.168.40.64/24",
+    }
+
+haproxy_enabled: yes
+haproxy_balancing_servers:
+  - { name: "helios", ip: "192.168.25.21" }

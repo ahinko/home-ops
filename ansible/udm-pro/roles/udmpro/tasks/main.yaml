@@ -1,0 +1,13 @@
+---
+- name: deploy onboot
+  include_tasks: onboot.yaml
+
+- name: deploy udm-kernel-tools
+  when: install_kernel_tools
+  include_tasks: kernel-tools.yaml
+
+- name: custom services and configuration
+  include_tasks: configuration.yaml
+
+- name: run udm boot service
+  raw: "{{ unifi_os_cmd }} systemctl restart udm-boot"

@@ -1,0 +1,12 @@
+---
+- name: onboot - query package version
+  register: onboot_version
+  raw: "{{ unifi_os_cmd }} dpkg-query --showformat='${Version}' --show udm-boot"
+
+- name: onboot - installation
+  when: onboot_version is not defined or ( onboot_version.stdout is defined and onboot_version.stdout != udm_onboot_version )
+  block:
+    - name: onboot - download package
+      raw: curl -L "{{ udm_onboot_download_uri }}" -o "{{ unifi_mount_path }}/unifi-os/udm-boot-{{ udm_onboot_version }}.deb"
+    - name: onboot - install package
+      raw: "{{ unifi_os_cmd }} dpkg -i {{ unifi_os_mount_path }}/udm-boot-{{ udm_onboot_version }}.deb"
