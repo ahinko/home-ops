@@ -5,9 +5,10 @@ metadata:
   namespace: flux-system
   name: cluster-settings
 data:
-  METAL_CLUSTER_VIP: "192.168.25.100"
-  CONTROLPLANE_ENDPOINT: "192.168.25.21"
+  CONTROLPLANE_ENDPOINT: "192.168.5.20"
   SIDERO_ENDPOINT: "192.168.25.10"
+
+  CILIUM_QUICK_INSTALL_MANIFEST_URL: "https://raw.githubusercontent.com/ahinko/home-ops/main/kubernetes/management/integrations/cilium-quick-install/quick-install.yaml"
 
   VLAN_NET: "192.168.25"
   VLAN_DHCP: "192.168.25.10"
@@ -17,4 +18,3 @@ data:
   VLAN_RANGE_START: "192.168.25.20"
   VLAN_RANGE_STOP: "192.168.25.99"
 
-  CILIUM_QUICK_INSTALL_MANIFEST_URL: "https://raw.githubusercontent.com/ahinko/home-ops/main/kubernetes/management/integrations/cilium-quick-install/quick-install.yaml"

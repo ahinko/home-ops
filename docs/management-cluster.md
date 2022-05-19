@@ -101,12 +101,18 @@ Create/update an `.env` file and add the IP address that the Raspberry Pi got so
 
 ```env
 SIDERO_ENDPOINT=192.168.25.10
-METAL_CLUSTER_VIP=192.168.25.100
+
+METAL_CLUSTER_NODES="192.168.25.21 192.168.25.22 192.168.25.23 192.168.25.24"
+METAL_CLUSTER_CP_LB=192.168.5.20
+
 VLAN_NAMESERVER=192.168.25.1
 VLAN_GATEWAY=192.168.25.1
 
 GITHUB_USER=username
-GITHUB_TOKEN=***
+GITHUB_TOKEN=******
+
+KUBECTL_CONTEXT_SIDERO=sidero
+KUBECTL_CONTEXT_METAL=metal
 ```
 
 Update/verify the two `cluster-settings.yaml` files:

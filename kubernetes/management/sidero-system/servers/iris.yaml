@@ -23,8 +23,6 @@ spec:
       value:
         - interface: eno1
           dhcp: true
-          vip:
-            ip: ${METAL_CLUSTER_VIP}
 
   cpu:
     manufacturer: Intel(R) Corporation

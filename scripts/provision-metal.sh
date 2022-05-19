@@ -22,8 +22,8 @@ fi
 kubectl get talosconfig -n sidero-system -o yaml ${TALOS_CONFIG} -o jsonpath='{.status.talosConfig}' > metal-talosconfig.yaml
 talosctl config merge metal-talosconfig.yaml
 talosctl config context admin@metal
-talosctl config endpoints ${METAL_CLUSTER_BOOTSTRAP_NODE}
-talosctl config nodes ${METAL_CLUSTER_BOOTSTRAP_NODE}
+talosctl config endpoints ${METAL_CLUSTER_CP_LB}
+talosctl config nodes ${METAL_CLUSTER_NODES}
 
 rm metal-talosconfig.yaml
 
