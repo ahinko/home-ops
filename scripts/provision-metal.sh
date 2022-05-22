@@ -4,8 +4,8 @@
 set -o allexport; source .env; set +o allexport
 
 # Verify that we have the needed environment variables
-if [ -z "$METAL_CLUSTER_CP_LB" ] ; then
-    echo "Environment variable METAL_CLUSTER_CP_LB not set. Either export it or create an .env file in the root of the repo!"
+if [ -z "$METAL_CLUSTER_TALOS_ENDPOINTS" ] ; then
+    echo "Environment variable METAL_CLUSTER_TALOS_ENDPOINTS not set. Either export it or create an .env file in the root of the repo!"
     exit 1
 fi
 if [ -z "$METAL_CLUSTER_NODES" ] ; then
@@ -32,6 +32,7 @@ fi
 kubectx ${KUBECTL_CONTEXT_SIDERO}
 
 # Find the name of the talos config
+echo "Find name of talos config for metal cluster"
 TALOS_CONFIG=`kubectl get talosconfig -n sidero-system| grep 'metal'|cut -f1 -d ' '`
 if [ -z "$TALOS_CONFIG" ] ; then
     echo "Could not parse talosconfig from 'kubectl get talosconfig'. This is needed when getting the talosconfig from the cluster."
@@ -39,26 +40,30 @@ if [ -z "$TALOS_CONFIG" ] ; then
 fi
 
 # Get talos config and keep it
+echo "Get talos config for metal cluster"
 kubectl get talosconfig -n sidero-system -o yaml ${TALOS_CONFIG} -o jsonpath='{.status.talosConfig}' > metal-talosconfig.yaml
 talosctl config merge metal-talosconfig.yaml
-talosctl config context admin@metal
-talosctl config endpoints ${METAL_CLUSTER_CP_LB}
+talosctl config context metal
+talosctl config endpoints ${METAL_CLUSTER_TALOS_ENDPOINTS}
 talosctl config nodes ${METAL_CLUSTER_NODES}
 
 rm metal-talosconfig.yaml
 
 # Bootstrap etcd on one of the nodes
+echo "Bootstrap metal cluster"
 talosctl bootstrap
 
 # Get kube config
 mkdir -p ~/.kube/configs
 talosctl kubeconfig ~/.kube/configs/metal
 kubectl config rename-context admin@metal ${KUBECTL_CONTEXT_METAL}
-talosctl config context metal
 
 # switch context
 echo "Switch kubectl context"
 kubectx ${KUBECTL_CONTEXT_METAL}
+
+echo "Untaint control plane nodes"
+kubectl taint node helios node-role.kubernetes.io/master:NoSchedule-
 
 # Create flux-system namespace
 echo "Creating flux-system namespace"
