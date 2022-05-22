@@ -34,9 +34,16 @@ tasks:
     cmds:
       - clusterctl upgrade plan
       - clusterctl upgrade apply --contract v1beta1
+      - echo "It seems like the Sidero controller manager loses the host networking setting on upgrade so don't forget to re-enable it using the sidero:patch-host-networking task if you notice any problems."
+
+  patch-host-networking:
+    desc: Patch Sidero to enable host networking
+    silent: true
+    cmds:
+      - 'kubectl patch deploy -n sidero-system sidero-controller-manager --type="json" -p=''[{"op": "add", "path": "/spec/template/spec/hostNetwork", "value": true}]'''
 
   provision:
-    desc: Provision Talos & Sidero on Management cluster
+    desc: Provision Management cluster
     silent: true
     cmds:
       - ./scripts/provision-sidero.sh
