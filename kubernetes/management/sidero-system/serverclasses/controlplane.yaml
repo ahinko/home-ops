@@ -36,7 +36,7 @@ spec:
     - op: add
       path: /cluster/coreDNS
       value:
-        image: docker.io/coredns/coredns:1.9.2
+        image: docker.io/coredns/coredns:1.9.3
 
     # Indicates whether to pull the machine config upon every boot.
     - op: replace
