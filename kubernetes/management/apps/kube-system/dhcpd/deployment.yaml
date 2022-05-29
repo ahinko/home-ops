@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: dhcpd-server
-          image: ghcr.io/ahinko/simple-dhcp:v1.0.0
+          image: ghcr.io/ahinko/simple-dhcp:v1.0.1
           ports:
             - name: tcp-port
               containerPort: 67
