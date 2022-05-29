@@ -21,7 +21,7 @@ services:
       - ADVERTISE_IP=http://192.168.20.2:32400/
     hostname: Atlas
     volumes:
-      - /tank/volumes/plex/database:/config
+      - /tank/plex/database:/config
       - /pool/media:/data
       - /tank/shares/ahinko/Bilder:/bilder
     devices:
