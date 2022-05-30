@@ -73,7 +73,7 @@ $ age-keygen -o homelab.agekey
 >
 > Sidero includes a metadata service, PXE and TFTP servers, as well as BMC and IPMI management for automation.
 
-My initial thought was to skip Sidero since it adds more complexity and I will only have one cluster so I did not see a point in running it. But then I watched Sidero labs Youtube video [Hack Sesh: K8s@Home Edition](https://www.youtube.com/watch?v=ZbXwTXSI9lk) that goes through the whole process of setting up Sidero and in the last 10 minutes you can see what made me decide to use Sidero: upgrading Talos and Kubernetes on my cluster by editing and committing a few files to the git repo. Sidero will then handle the upgrade automatically.
+My initial thought was to skip Sidero since it adds more complexity and I will only have one cluster so I did not see a point in running it. But then I watched Sidero labs Youtube video [Hack Sesh: K8s@Home Edition](https://www.youtube.com/watch?v=ZbXwTXSI9lk) that goes through the whole process of setting up Sidero and in the last 10 minutes you can see what made me decide to use Sidero: upgrading Talos and Kubernetes on my cluster by editing and committing a few files to the git repo. ~~Sidero will then handle the upgrade automatically.~~ Until Sidero can handle rolling updates [we have to reset each node](metal-cluster.md) one at the time.
 
 We use a Raspberry Pi 4 4GB (arm64) with a POE hat and an SSD for storage for our Sidero management plane.
 
