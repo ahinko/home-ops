@@ -36,7 +36,7 @@
       "      repository: ",
       "      tag: ",
       "    env:",
-      "      TZ: \"${TIMEZONE}\"",
+      "      TZ: \"\\${TIMEZONE}\"",
       "",
       "",
       ""
