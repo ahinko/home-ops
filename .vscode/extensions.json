@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+      "HashiCorp.terraform",
+      "mitchdenny.ecdc",
+      "ms-kubernetes-tools.vscode-kubernetes-tools",
+      "redhat.ansible",
+      "signageos.signageos-vscode-sops",
+      "usernamehw.errorlens",
+      "mrmlnc.vscode-json5",
+      "paulvarache.vscode-taskfile"
+  ]
+}
