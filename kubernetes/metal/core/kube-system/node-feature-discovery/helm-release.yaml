@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app node-feature-disovery
+  name: &app node-feature-discovery
   namespace: kube-system
 spec:
   interval: 60m
