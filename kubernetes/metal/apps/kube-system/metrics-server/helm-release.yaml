@@ -8,10 +8,22 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: metrics-server
+      chart: *app
       version: 3.8.2
       sourceRef:
         kind: HelmRepository
         name: kubernetes-sigs-metrics-server-charts
         namespace: flux-system
       interval: 60m
+  install:
+    createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  # Values link: https://github.com/kubernetes-sigs/metrics-server/blob/master/charts/metrics-server/values.yaml
+  values:
+    nameOverride: *app
