@@ -26,7 +26,7 @@ tasks:
     desc: Upgrade Talos on Management cluster
     silent: true
     cmds:
-      - talosctl upgrade --stage --force --preserve=true --context sidero --nodes ${SIDERO_ENDPOINT} --image ghcr.io/siderolabs/installer:v1.0.5
+      - talosctl upgrade --stage --force --preserve=true --context sidero --nodes ${SIDERO_ENDPOINT} --image ghcr.io/siderolabs/installer:v1.0.6
 
   upgrade-sidero:
     desc: Upgrade Sidero on Management cluster
