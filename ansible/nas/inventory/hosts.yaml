@@ -1,0 +1,6 @@
+---
+nas:
+  hosts:
+    atlas:
+      ansible_host: 192.168.20.2
+      mac: 70:85:c2:a7:61:bf
