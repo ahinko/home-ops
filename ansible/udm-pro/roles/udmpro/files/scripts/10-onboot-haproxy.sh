@@ -8,6 +8,9 @@ IPV4_IP="192.168.5.20"
 # As above, this should match the gateway of the VLAN for the container
 # network as above which is usually the .1/24 range of the IPV4_IP
 IPV4_GW="192.168.5.1/24"
+# Set which DNS server should be used instead of /etc/resolv.conf in the container.
+# Without this some IPV6 addresses would be added and HAProxy would fail to start.
+DNS="192.168.5.1"
 
 # container name
 CONTAINER=haproxy
@@ -53,5 +56,6 @@ fi
 podman run -d --network haproxy --restart always \
   --name "$CONTAINER" \
   --hostname haproxy \
+  --dns $DNS \
   -v "/mnt/data/haproxy/:/usr/local/etc/haproxy/" \
   docker.io/library/haproxy:2.6.0-alpine # renovate

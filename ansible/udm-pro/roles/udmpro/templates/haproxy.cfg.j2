@@ -1,53 +1,42 @@
-#---------------------------------------------------------------------
-# Global settings
-#---------------------------------------------------------------------
 global
     daemon
-    maxconn     4000
-    user        root
-    group       root
+    stats                       socket ipv4@127.0.0.1:9999 level admin
+    nbthread                    1
+    tune.ssl.default-dh-param   1024
+    ssl-server-verify           none
+    spread-checks               0
+    tune.lua.maxmem             0
+    #log 10.0.0.20:514 local0 debug
 
-#---------------------------------------------------------------------
-# common defaults that all the 'listen' and 'backend' sections will
-# use if not designated in their block
-#---------------------------------------------------------------------
 defaults
-    mode                    http
-    log                     global
-    option                  dontlognull
-    option                  http-server-close
-    option                  redispatch
-    retries                 5
-    timeout http-request    5m
-    timeout queue           5m
-    timeout connect         30s
-    timeout client          15m
-    timeout server          15m
-    timeout http-keep-alive 30s
-    timeout check           30s
-    maxconn                 4000
+    log global
+    option redispatch -1
+    timeout client 4h
+    timeout connect 10s
+    timeout server 4h
+    retries 3
+    default-server init-addr none
 
-#---------------------------------------------------------------------
-# apiserver frontend which proxys to the masters
-#---------------------------------------------------------------------
-frontend apiserver
+frontend k8s-master-server
     bind :6443
     mode tcp
-    default_backend apiserver
+    default_backend k8s-pool-server
     timeout client 4h
 
-#---------------------------------------------------------------------
-# round robin balancing for apiserver
-#---------------------------------------------------------------------
-backend apiserver
+backend k8s-pool-server
+    # health check: k8s-health-apiserver
+    option httpchk
+    http-check send meth GET uri /healthz ver HTTP/1.1 hdr Host localhost
     mode tcp
-    balance leastconn
-    default-server inter 15s downinter 15s rise 2 fall 2 slowstart 60s maxconn 1000 maxqueue 256 weight 100
-    option httpchk GET /readyz
-    http-check expect status 200
-
+    balance source
+    # stickiness
+    stick-table type ip size 50k expire 30m
+    stick on src
+    # tuning options
+    timeout connect 10s
+    timeout server 4h
 {% for balancing_server in haproxy_balancing_servers %}
-    server {{ balancing_server.name }} {{ balancing_server.ip }}:6443 check check-ssl verify none
+    server {{ balancing_server.name }} {{ balancing_server.ip }}:6443 check inter 2s check-ssl verify none
 {% endfor %}
 
 listen local_statistics
