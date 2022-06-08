@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   #- descheduler
   - metrics-server
-  #- node-problem-detector
+  - node-problem-detector
   - reloader
