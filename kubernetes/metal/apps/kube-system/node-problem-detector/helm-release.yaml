@@ -17,6 +17,13 @@ spec:
       interval: 60m
   install:
     createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
   # Values link: https://github.com/deliveryhero/helm-charts/blob/master/stable/node-problem-detector/values.yaml
   values:
     global:
