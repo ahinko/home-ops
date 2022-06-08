@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - cilium-charts.yaml
-  - delivery-hero-charts.yaml
+  - deliveryhero-charts.yaml
   - k8s-at-home-charts.yaml
   - kubernetes-sigs-metrics-server-charts.yaml
   - kubernetes-sigs-node-feature-discovery-charts.yaml
