@@ -7,3 +7,4 @@ resources:
   - k8s-at-home-charts.yaml
   - kubernetes-sigs-metrics-server-charts.yaml
   - kubernetes-sigs-node-feature-discovery-charts.yaml
+  - stakater-charts.yaml
