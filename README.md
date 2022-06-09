@@ -55,9 +55,7 @@ I use [Ansible](https://ansible.com) to provision and configure other hardware i
 As a last resort I use [Taskfile](http://taskfile.dev) and write bash scripts to run repetitive tasks.
 
 ## 🐳 Docker
-I have a few services that I've choosen to host outside of the Kubernetes cluster. For example I host a [Minio](https://min.io) instance that is mainly used for backing up persistant volumes within the Kubernetes cluster.
-
-I also host a [Plex](https://plex.tv) server that I wan't to run on the more powerfull server/NAS so there is no point in including that in the Kubernetes cluster and then force it to run on the specific server.
+I have a few services that I've choosen to host outside of the Kubernetes cluster. I host a [Plex](https://plex.tv) server that I wan't to run on the more powerfull server/NAS so there is no point in including that in the Kubernetes cluster and then force it to run on the specific server.
 
 There is also a NFS and a Samba server running in Docker on the NAS for easier access to file shares, backups and media.
 
