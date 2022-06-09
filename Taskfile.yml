@@ -15,5 +15,6 @@ tasks:
 
 includes:
   tools: .taskfiles/tools.yaml
-  sidero: .taskfiles/sidero.yaml
+  management: .taskfiles/management.yaml
+  metal: .taskfiles/metal.yaml
   flux: .taskfiles/flux.yaml

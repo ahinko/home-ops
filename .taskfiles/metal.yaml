@@ -1,0 +1,9 @@
+---
+version: 3
+
+tasks:
+  provision:
+    desc: Provision Metal cluster
+    silent: true
+    cmds:
+      - ./infrastructure/clusters/metal/provision.sh

@@ -46,4 +46,4 @@ tasks:
     desc: Provision Management cluster
     silent: true
     cmds:
-      - ./scripts/provision-sidero.sh
+      - ./infrastructure/clusters/management/provision.sh

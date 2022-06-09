@@ -7,7 +7,7 @@ on: # yamllint disable-line rule:truthy
       - main
     paths:
       - "kubernetes/management/sidero-system/**.yaml"
-      - ".taskfiles/sidero.yaml"
+      - ".taskfiles/management.yaml"
 
 jobs:
   scan-versions:
