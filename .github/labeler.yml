@@ -1,6 +1,8 @@
 ---
 area/ansible:
-  - "ansible/**/*"
+  - "infrastructure/kvm/**/*"
+  - "infrastructure/nas/**/*"
+  - "infrastructure/udm-pro/**/*"
 area/ci:
   - ".github/**/*"
 area/cluster:

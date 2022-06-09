@@ -3,7 +3,7 @@
 .task/
 .taskfiles/
 .vscode/
-ansible/
+infrastructure/
 docker/
 docs/
 scripts/

@@ -8,12 +8,11 @@ env:
 tasks:
   install:
     desc: Install/update all required dependencies
-    dir: ansible
     silent: true
     cmds:
       # Install Ansible dependencies
-      - "ansible-galaxy install -r requirements.yaml --force"
-      - "ansible-galaxy collection install -r requirements.yaml --force"
+      - "ansible-galaxy install -r infrastructure/requirements.yaml --force"
+      - "ansible-galaxy collection install -r infrastructure/requirements.yaml --force"
       # Install dependencies using Brew
       - "arch -arm64 brew install {{.BREW}}"
       # Install Talosctl

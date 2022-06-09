@@ -1,7 +1,6 @@
 ---
 ignore: |
   .github/
-  ansible/
   *-crds.yaml
   crds.yaml
   sops.secrets.yaml

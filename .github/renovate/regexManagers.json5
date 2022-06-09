@@ -45,13 +45,13 @@
     },
     {
       description: 'Process UDM-PRO dependencies in Ansible playbook + role',
-      fileMatch: ['ansible/udm-pro/.+\\.yaml$'],
+      fileMatch: ['infrastructure/udm-pro/.+\\.yaml$'],
       matchStrings: ['depName=(?<depName>.*?)\n[a-z_]*: (?<currentValue>.*)'],
       datasourceTemplate: 'github-releases'
     },
     {
       description: 'Process UDM-PRO dependencies in UDM-PRO scripts',
-      fileMatch: ['ansible/udm-pro/.+\\.sh$'],
+      fileMatch: ['infrastructure/udm-pro/.+\\.sh$'],
       matchStrings: ['\n  (?<depName>.*?):(?<currentValue>.*) # renovate'],
       datasourceTemplate: 'docker'
     }
