@@ -18,11 +18,13 @@ spec:
       path: /machine/network/hostname
       value: zeus
 
-    - op: add
+    - op: replace
       path: /machine/network/interfaces
       value:
         - interface: eno1
           dhcp: true
+          vip:
+            ip: ${METAL_CONTROLPLANE_VIP}
 
   cpu:
     manufacturer: Intel(R) Corporation
