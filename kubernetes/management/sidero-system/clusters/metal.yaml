@@ -31,7 +31,7 @@ metadata:
   namespace: sidero-system
 spec:
   controlPlaneEndpoint:
-    host: ${CONTROLPLANE_ENDPOINT}
+    host: ${METAL_CONTROLPLANE_ENDPOINT}
     port: 6443
 
 ---
