@@ -91,7 +91,7 @@ The Raspberry Pi will boot from USB/SSD if one exist, else it will try and boot 
 Prepare the SSD with the Talos RPi4 image:
 
 ```shell
-task talos:prepare-rpi
+task management:prepare-rpi
 ```
 
 Connect the SSD to the Raspberry Pi and boot it up. Make sure the system booted from the correct media. Talos should drop into maintenance mode printing the acquired IP address. Notice the IP address you will need it soon.
@@ -127,7 +127,7 @@ And while we are at it you might as well update/verify the secrets files for the
 Time to bootstrap Talos and install Sidero. This script aims at automating as much as possible by using the variables in `.env` and then run the different needed commands to bootstrap Talos and install Sidero.
 
 ```shell
-$ task sidero:provision
+$ task management:provision
 ```
 
 #### Known issues

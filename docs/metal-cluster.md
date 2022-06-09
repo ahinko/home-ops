@@ -12,7 +12,7 @@ If everything is set up correctly the nodes should automatically network boot fr
 Finally run:
 
 ```shell
-$ task metal:bootstrap
+$ task metal:provision
 ```
 
 This script will for example get the `kubeconfig` and do some final setup to create the metal cluster.
