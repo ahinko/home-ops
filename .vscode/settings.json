@@ -2,10 +2,10 @@
   "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
   "files.associations": {
       "*.json5": "jsonc",
-      "**/terraform/**/*.tf": "terraform"
       "**/infrastructure/**/*.yaml": "ansible",
       "**/infrastructure/**/*.sops.yaml": "yaml",
       "**/infrastructure/**/inventory/**/*.yaml": "yaml",
+      "**/cloud/cloudflare/**/*.tf": "terraform"
   },
   "material-icon-theme.folders.associations": {
       ".taskfiles": "utils"

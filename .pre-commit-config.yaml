@@ -1,5 +1,4 @@
 ---
-
 fail_fast: false
 repos:
   - repo: https://github.com/adrienverge/yamllint.git
@@ -48,7 +47,7 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_tfsec
-        files: ^terraform/
+        files: ^cloud/cloudflare/
       - id: terraform_validate
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks

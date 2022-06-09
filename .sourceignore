@@ -7,7 +7,7 @@ infrastructure/
 docker/
 docs/
 scripts/
-terraform/
+cloud/
 tools/
 .env
 .gitattributes
