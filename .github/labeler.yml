@@ -5,8 +5,8 @@ area/ansible:
   - "infrastructure/udm-pro/**/*"
 area/ci:
   - ".github/**/*"
-area/cluster:
-  - "cluster/**/*"
+area/kubernetes:
+  - "kubernetes/**/*"
 area/docs:
   - "docs/**/*"
 area/docker:

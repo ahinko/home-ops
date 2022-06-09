@@ -4,7 +4,7 @@
   color: "72ccf3"
 - name: area/ci
   color: "72ccf3"
-- name: area/cluster
+- name: area/kubernetes
   color: "72ccf3"
 - name: area/terraform
   color: "72ccf3"
