@@ -1,7 +1,7 @@
 {
   "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
   "files.associations": {
-      "*.json5": "jsonc",
+      "*.json5": "json5",
       "**/infrastructure/**/*.yaml": "ansible",
       "**/infrastructure/**/*.sops.yaml": "yaml",
       "**/infrastructure/**/inventory/**/*.yaml": "yaml",
