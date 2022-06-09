@@ -38,6 +38,12 @@ spec:
       value:
         image: docker.io/coredns/coredns:1.9.3
 
+    - op: replace
+      path: /machine/network/interfaces
+      value:
+        - vip:
+            ip: ${METAL_CONTROLPLANE_VIP}
+
     # Indicates whether to pull the machine config upon every boot.
     - op: replace
       path: /persist

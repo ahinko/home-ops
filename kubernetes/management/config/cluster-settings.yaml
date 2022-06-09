@@ -6,6 +6,7 @@ metadata:
   name: cluster-settings
 data:
   METAL_CONTROLPLANE_ENDPOINT: "192.168.5.20"
+  METAL_CONTROLPLANE_VIP: "192.168.25.20"
   SIDERO_ENDPOINT: "192.168.25.10"
 
   CILIUM_QUICK_INSTALL_MANIFEST_URL: "https://raw.githubusercontent.com/ahinko/home-ops/main/kubernetes/management/integrations/cilium-quick-install/quick-install.yaml"
