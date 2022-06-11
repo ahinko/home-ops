@@ -5,7 +5,7 @@ version: '3.8'
 services:
   scrutiny:
     container_name: scrutiny
-    image: ghcr.io/analogj/scrutiny:v0.4.10-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.4.11-omnibus
     restart: always
     ports:
       - 8080:8080
