@@ -18,3 +18,4 @@ includes:
   management: .taskfiles/management.yaml
   metal: .taskfiles/metal.yaml
   flux: .taskfiles/flux.yaml
+  maintenance: .taskfiles/maintenance.yaml
