@@ -1,0 +1,36 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restore-minecraft
+  namespace: games
+spec:
+  template:
+    spec:
+      containers:
+        - name: restore-minecraft
+          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.3
+          args:
+            - /run.sh
+          env:
+            - name: FORCE_RESTORE
+              value: "1"
+            - name: MINIO_ACCESS_KEY
+              value: "${SECRET_MINIO_ACCESS_KEY}"
+            - name: MINIO_SECRET_KEY
+              value: "${SECRET_MINIO_SECRET_KEY}"
+            - name: MINIO_HOST
+              value: "https://s3.${SECRET_DOMAIN}"
+            - name: MINIO_BUCKET
+              value: "backups"
+            - name: BACKUP_NAME
+              value: "minecraft"
+          volumeMounts:
+            - name: minecraft-storage
+              mountPath: /minecraft
+      volumes:
+        - name: minecraft-storage
+          persistentVolumeClaim:
+            claimName: minecraft-data
+      restartPolicy: Never
+  backoffLimit: 4

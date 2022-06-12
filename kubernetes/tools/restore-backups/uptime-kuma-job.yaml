@@ -1,0 +1,36 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restore-uptime-kuma
+  namespace: apps
+spec:
+  template:
+    spec:
+      containers:
+        - name: restore-uptime-kuma
+          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.3
+          args:
+            - /run.sh
+          env:
+            - name: FORCE_RESTORE
+              value: "1"
+            - name: MINIO_ACCESS_KEY
+              value: "${SECRET_MINIO_ACCESS_KEY}"
+            - name: MINIO_SECRET_KEY
+              value: "${SECRET_MINIO_SECRET_KEY}"
+            - name: MINIO_HOST
+              value: "https://s3.${SECRET_DOMAIN}"
+            - name: MINIO_BUCKET
+              value: "backups"
+            - name: BACKUP_NAME
+              value: "uptime-kuma"
+          volumeMounts:
+            - name: uptime-kuma-storage
+              mountPath: /uptime-kuma
+      volumes:
+        - name: uptime-kuma-storage
+          persistentVolumeClaim:
+            claimName: uptime-kuma-config
+      restartPolicy: Never
+  backoffLimit: 4

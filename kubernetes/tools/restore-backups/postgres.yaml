@@ -1,0 +1,36 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restore-postgres
+  namespace: databases
+spec:
+  template:
+    spec:
+      containers:
+        - name: restore-postgres
+          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.3
+          args:
+            - /run.sh
+          env:
+            - name: FORCE_RESTORE
+              value: "1"
+            - name: MINIO_ACCESS_KEY
+              value: "${SECRET_MINIO_ACCESS_KEY}"
+            - name: MINIO_SECRET_KEY
+              value: "${SECRET_MINIO_SECRET_KEY}"
+            - name: MINIO_HOST
+              value: "https://s3.${SECRET_DOMAIN}"
+            - name: MINIO_BUCKET
+              value: "backups"
+            - name: BACKUP_NAME
+              value: "postgres"
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /postgres
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-backup-pvc
+      restartPolicy: Never
+  backoffLimit: 4
