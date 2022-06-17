@@ -11,7 +11,7 @@ spec:
   configPatches:
     - op: replace
       path: /machine/kubelet/image
-      value: ghcr.io/siderolabs/kubelet:v1.23.7
+      value: ghcr.io/siderolabs/kubelet:v1.23.8
 
     - op: replace
       path: /persist
