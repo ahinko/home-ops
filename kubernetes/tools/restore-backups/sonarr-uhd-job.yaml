@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-sonarr-uhd
-          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.3
+          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.4
           args:
             - /run.sh
           env:
