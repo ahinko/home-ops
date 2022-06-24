@@ -33,6 +33,7 @@ data:
   #   setting it to "kvstore".
   identity-allocation-mode: crd
   cilium-endpoint-gc-interval: "5m0s"
+  nodes-gc-interval: "5m0s"
   # Disable the usage of CiliumEndpoint CRD
   disable-endpoint-crd: "false"
 
@@ -147,6 +148,11 @@ data:
   disable-cnp-status-updates: "true"
   cgroup-root: "/run/cilium/cgroupv2"
   enable-k8s-terminating-endpoint: "true"
+  annotate-k8s-node: "true"
+  remove-cilium-node-taints: "true"
+  set-cilium-is-up-condition: "true"
+  unmanaged-pod-watcher-interval: "15"
+  agent-not-ready-taint-key: "node.cilium.io/agent-not-ready"
 ---
 # Source: cilium/templates/cilium-agent/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -175,34 +181,19 @@ rules:
   resources:
   - namespaces
   - services
-  - nodes
-  - endpoints
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ""
-  resources:
-  - pods/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - ""
-  resources:
-  - nodes
   - pods
+  - endpoints
+  - nodes
   verbs:
   - get
   - list
   - watch
-  - update
 - apiGroups:
   - ""
   resources:
-  - nodes
   - nodes/status
   verbs:
+  # To annotate the k8s node with Cilium's metadata
   - patch
 - apiGroups:
   - apiextensions.k8s.io
@@ -224,21 +215,15 @@ rules:
   resources:
   - ciliumnetworkpolicies
   - ciliumnetworkpolicies/status
-  - ciliumnetworkpolicies/finalizers
   - ciliumclusterwidenetworkpolicies
   - ciliumclusterwidenetworkpolicies/status
-  - ciliumclusterwidenetworkpolicies/finalizers
   - ciliumendpoints
   - ciliumendpoints/status
-  - ciliumendpoints/finalizers
   - ciliumnodes
   - ciliumnodes/status
-  - ciliumnodes/finalizers
   - ciliumidentities
-  - ciliumidentities/finalizers
   - ciliumlocalredirectpolicies
   - ciliumlocalredirectpolicies/status
-  - ciliumlocalredirectpolicies/finalizers
   - ciliumegressnatpolicies
   - ciliumendpointslices
   verbs:
@@ -253,14 +238,30 @@ rules:
 - apiGroups:
   - ""
   resources:
-  # to automatically delete [core|kube]dns pods so that are starting to being
-  # managed by Cilium
   - pods
   verbs:
   - get
   - list
   - watch
+  # to automatically delete [core|kube]dns pods so that are starting to being
+  # managed by Cilium
   - delete
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  # To remove node taints
+  - nodes
+  # To set NetworkUnavailable false on startup
+  - nodes/status
+  verbs:
+  - patch
 - apiGroups:
   - discovery.k8s.io
   resources:
@@ -392,11 +393,6 @@ spec:
   template:
     metadata:
       annotations:
-        # This annotation plus the CriticalAddonsOnly toleration makes
-        # cilium to be a critical pod in the cluster, which ensures cilium
-        # gets priority scheduling.
-        # https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/
-        scheduler.alpha.kubernetes.io/critical-pod: ""
       labels:
         k8s-app: cilium
     spec:
@@ -425,7 +421,7 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: cilium-agent
-        image: "quay.io/cilium/cilium:v1.11.4@sha256:d9d4c7759175db31aa32eaa68274bb9355d468fbc87e23123c80052e3ed63116"
+        image: "quay.io/cilium/cilium:v1.11.6@sha256:f7f93c26739b6641a3fa3d76b1e1605b15989f25d06625260099e01c8243f54c"
         imagePullPolicy: IfNotPresent
         command:
         - cilium-agent
@@ -435,7 +431,7 @@ spec:
           httpGet:
             host: "127.0.0.1"
             path: /healthz
-            port: 9876
+            port: 9879
             scheme: HTTP
             httpHeaders:
             - name: "brief"
@@ -447,7 +443,7 @@ spec:
           httpGet:
             host: "127.0.0.1"
             path: /healthz
-            port: 9876
+            port: 9879
             scheme: HTTP
             httpHeaders:
             - name: "brief"
@@ -460,7 +456,7 @@ spec:
           httpGet:
             host: "127.0.0.1"
             path: /healthz
-            port: 9876
+            port: 9879
             scheme: HTTP
             httpHeaders:
             - name: "brief"
@@ -495,7 +491,7 @@ spec:
               key: custom-cni-conf
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: "192.168.5.20"
+          value: "192.168.20.21"
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         lifecycle:
@@ -538,7 +534,7 @@ spec:
       # Required to mount cgroup2 filesystem on the underlying Kubernetes node.
       # We use nsenter command with host's cgroup and mount namespaces enabled.
       - name: mount-cgroup
-        image: "quay.io/cilium/cilium:v1.11.4@sha256:d9d4c7759175db31aa32eaa68274bb9355d468fbc87e23123c80052e3ed63116"
+        image: "quay.io/cilium/cilium:v1.11.6@sha256:f7f93c26739b6641a3fa3d76b1e1605b15989f25d06625260099e01c8243f54c"
         imagePullPolicy: IfNotPresent
         env:
         - name: CGROUP_ROOT
@@ -565,7 +561,7 @@ spec:
         securityContext:
           privileged: true
       - name: clean-cilium-state
-        image: "quay.io/cilium/cilium:v1.11.4@sha256:d9d4c7759175db31aa32eaa68274bb9355d468fbc87e23123c80052e3ed63116"
+        image: "quay.io/cilium/cilium:v1.11.6@sha256:f7f93c26739b6641a3fa3d76b1e1605b15989f25d06625260099e01c8243f54c"
         imagePullPolicy: IfNotPresent
         command:
         - /init-container.sh
@@ -583,7 +579,7 @@ spec:
               key: clean-cilium-bpf-state
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: "192.168.5.20"
+          value: "192.168.20.21"
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         securityContext:
@@ -703,7 +699,7 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: cilium-operator
-        image: quay.io/cilium/operator-generic:v1.11.4@sha256:bf75ad0dc47691a3a519b8ab148ed3a792ffa2f1e309e6efa955f30a40e95adc
+        image: quay.io/cilium/operator-generic:v1.11.6@sha256:9f6063c7bcaede801a39315ec7c166309f6a6783e98665f6693939cf1701bc17
         imagePullPolicy: IfNotPresent
         command:
         - cilium-operator-generic
@@ -728,7 +724,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: "192.168.5.20"
+          value: "192.168.20.21"
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         livenessProbe:
