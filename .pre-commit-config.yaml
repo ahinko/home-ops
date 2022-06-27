@@ -38,7 +38,7 @@ repos:
       - id: forbid-secrets
 
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.8.9
+    rev: v8.8.10
     hooks:
       - id: gitleaks
 
