@@ -16,7 +16,7 @@ tasks:
       # Install dependencies using Brew
       - "arch -arm64 brew install {{.BREW}}"
       # Install Talosctl
-      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.1.0/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-arm64 && sudo chmod +x /usr/local/bin/talosctl
+      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.1.1/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-arm64 && sudo chmod +x /usr/local/bin/talosctl
       # Set up pre-commit hooks
       - pre-commit install-hooks
 
