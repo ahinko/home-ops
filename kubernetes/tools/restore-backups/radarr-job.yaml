@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-radarr
-          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.5
+          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.6
           args:
             - /run.sh
           env:
