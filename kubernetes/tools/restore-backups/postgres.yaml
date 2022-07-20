@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-postgres
-          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.6
+          image: ghcr.io/ahinko/simple-k8s-backup:v3.0.7
           args:
             - /run.sh
           env:
