@@ -7,7 +7,7 @@
       "kind: HelmRelease",
       "metadata:",
       "  name: &app $1",
-			"  namespace: $2",
+            "  namespace: $2",
       "spec:",
       "  interval: 60m",
       "  chart:",
@@ -80,7 +80,7 @@
       ""
     ],
     "description": "secret"
-	},
+    },
   "ingress": {
     "prefix": "ingress",
     "body": [
@@ -99,7 +99,7 @@
       ""
     ],
     "description": "ingress"
-	},
+    },
   "backup": {
     "prefix": "backup",
     "body": [
@@ -140,5 +140,5 @@
       ""
     ],
     "description": "backup"
-	},
+    },
 }
