@@ -123,7 +123,7 @@ download()
   if ! checksum_test ${CNI_CHECKSUM} ${CNI_CACHE}/${CNI_TAR} ${CNI_CACHE}/${CNI_TAR}.${CNI_CHECKSUM}; then
     echo "Corrupt tar file, deleting tar and checksum"
     rm -f "${CNI_CACHE}/${CNI_TAR}" "${CNI_CACHE}/${CNI_TAR}.${CNI_CHECKSUM}"
-    MAX_TRIES=${(MAX_TRIES - 1)}
+    MAX_TRIES--
     # try again on fallback of latest until retries are exhausted
     download
   else
