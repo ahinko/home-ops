@@ -1,0 +1,69 @@
+---
+version: 3
+
+tasks:
+  write-eeprom-to-sd:
+    desc: Write
+    silent: true
+    cmds:
+      - echo "Use Raspberry Pi Imager"
+
+  write-talos-arm64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.1.2/metal-rpi_4-arm64.img.xz && xz -d metal-rpi_4-arm64.img.xz"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=metal-rpi_4-arm64.img of=${path} bs=4m
+      - "rm metal-rpi_4-arm64.img"
+
+  write-talos-amd64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.1.2/talos-amd64.iso"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=talos-amd64.iso of=${path} bs=4m && sync
+      - "rm talos-amd64.iso"
+
+  update-cilium-quick-install:
+    desc: Update Cilium quick-install
+    cmds:
+      - helm repo add cilium https://helm.cilium.io/
+      - helm repo update cilium
+      - helm template --version 1.12.0 cilium/cilium -f ./infrastructure/kubernetes/integrations/cilium-quick-install/values.yaml > ./infrastructure/kubernetes/integrations/cilium-quick-install/quick-install.yaml -n kube-system
+    silent: true
+
+  provision:
+    desc: Provision cluster
+    silent: true
+    cmds:
+      - ./infrastructure/kubernetes/provision.sh
+
+  upgrade-talos:
+    desc: Upgrade Talos on cluster
+    silent: true
+    cmds:
+      - ./infrastructure/kubernetes/upgrade-talos.sh
+
+  upgrade-k8s:
+    desc: Upgrade Kubernetes on cluster
+    silent: true
+    cmds:
+      - ./infrastructure/kubernetes/upgrade-k8s.sh
+
+  restore-backup-all:
+    desc: Restore backups for all services, usefull when re-provisioning
+    silent: true
+    cmds:
+      - ./infrastructure/kubernetes/restore-backups.sh

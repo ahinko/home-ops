@@ -15,7 +15,6 @@ tasks:
 
 includes:
   tools: .taskfiles/tools.yaml
-  management: .taskfiles/management.yaml
-  metal: .taskfiles/metal.yaml
+  k8s: .taskfiles/kubernetes.yaml
   flux: .taskfiles/flux.yaml
   maintenance: .taskfiles/maintenance.yaml

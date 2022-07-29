@@ -3,20 +3,28 @@ version: 3
 
 env:
   BREW: |-
-    ansible fluxcd/tap/flux kubectl kubectx kubie clusterctl terraform pre-commit shellcheck yamllint sops age libpq coreutils tfsec
+    ansible fluxcd/tap/flux kubectl kubectx kubie terraform pre-commit shellcheck yamllint sops age libpq coreutils tfsec yq
 
 tasks:
   install:
     desc: Install/update all required dependencies
     silent: true
     cmds:
+      # Install dependencies using Brew
+      - "arch -arm64 brew install {{.BREW}}"
+      # Upgrade brew formulaes
+      - brew upgrade
+
       # Install Ansible dependencies
       - "ansible-galaxy install -r infrastructure/requirements.yaml --force"
       - "ansible-galaxy collection install -r infrastructure/requirements.yaml --force"
-      # Install dependencies using Brew
-      - "arch -arm64 brew install {{.BREW}}"
+
       # Install Talosctl
       - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.1.2/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-arm64 && sudo chmod +x /usr/local/bin/talosctl
+      # Install talhelper
+      - sudo rm -f /usr/local/bin/talhelper
+      - curl -Lo talhelper.tar.gz https://github.com/budimanjojo/talhelper/releases/download/v1.2.3/talhelper_$(uname -s | tr "[:upper:]" "[:lower:]")_arm64.tar.gz && sudo tar -xzvf talhelper.tar.gz -C /usr/local/bin/ talhelper && sudo chmod +x /usr/local/bin/talhelper && rm talhelper.tar.gz
+
       # Set up pre-commit hooks
       - pre-commit install-hooks
 
