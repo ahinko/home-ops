@@ -65,7 +65,7 @@ spec:
       # prepare osd pods failing. Might also have been due to resource limitations. Did change both at the same time
       # so I'm not exactly sure what the fix was.
       cephVersion:
-        image: quay.io/ceph/ceph:v17.2.1
+        image: quay.io/ceph/ceph:v17.2.3
       dataDirHostPath: /var/lib/rook
       mon:
         count: 3
