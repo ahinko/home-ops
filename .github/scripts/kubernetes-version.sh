@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Find current Talos version .taskfiles/sidero.yaml
-TALOS_VERSION="$(sed -n 's/.*siderolabs\/installer:\([v0-9.]*\)/\1/p' .taskfiles/management.yaml)"
+TALOS_VERSION="$(sed -n 's/.*talosVersion: \([v0-9.]*\)/\1/p' infrastructure/kubernetes/talconfig.yaml)"
 
 # Get file from Talos repo that includes default Kubernetes version
 SOURCE_CONSTANTS=$(curl -s https://raw.githubusercontent.com/siderolabs/talos/$TALOS_VERSION/pkg/machinery/constants/constants.go)

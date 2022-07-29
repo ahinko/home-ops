@@ -1,14 +1,25 @@
 {
-  packageRules: [
+  "packageRules": [
     {
-      matchDatasources: ['docker'],
-      versioning: 'regex:RELEASE\\.(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})T([0-9-]*)Z$',
-      matchPackageNames: ['quay.io/minio/minio']
+      "matchDatasources": [
+        "docker"
+      ],
+      "versioning": "regex:^(?<major>\\d{2}).(?<minor>\\d{1,2})-(?<compatibility>.*)$",
+      "matchPackageNames": [
+        "postgres"
+      ]
     },
     {
-      matchDatasources: ['docker', 'github-releases'],
-      versioning: 'loose',
-      matchPackageNames: ['plexinc/pms-docker', 'reactive-tech/kubegres']
-    }
+      "matchDatasources": [
+        "docker",
+        "github-releases"
+      ],
+      "versioning": "loose",
+      "matchPackageNames": [
+        "plexinc/pms-docker",
+        "reactive-tech/kubegres",
+        "raspberrypi/rpi-eeprom",
+      ]
+    },
   ]
 }

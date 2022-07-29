@@ -5,13 +5,16 @@ ignore: |
   crds.yaml
   sops.secrets.yaml
   sops.cluster-secrets.yaml
-  kubernetes/management/integrations/cilium-quick-install/quick-install.yaml
+  sops.backup-secrets.yaml
+  infrastructure/integrations/cilium-quick-install/quick-install.yaml
+  infrastructure/udm-pro/inventory/host_vars/udmpro.yaml
+  infrastructure/kubernetes/*.yaml
 
 extends: default
 
 rules:
   truthy:
-    allowed-values: ["true", "false", "on", "yes"]
+    allowed-values: ["true", "false", "on", "yes", "no"]
   comments:
     min-spaces-from-content: 1
   line-length: disable

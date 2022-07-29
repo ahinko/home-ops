@@ -1,63 +1,64 @@
 {
-  extends: [
-    ':enableRenovate',
-    'config:base',
-    ':disableRateLimiting',
-    ':dependencyDashboard',
-    ':semanticCommits',
-    ':separatePatchReleases',
-    'docker:enableMajor',
-    ':enablePreCommit',
-    'github>ahinko/home-ops//.github/renovate/allowedVersions.json5',
-    'github>ahinko/home-ops//.github/renovate/groups.json5',
-    'github>ahinko/home-ops//.github/renovate/labels.json5',
-    'github>ahinko/home-ops//.github/renovate/regexManagers.json5',
-    'github>ahinko/home-ops//.github/renovate/semanticCommits.json5',
-    'github>ahinko/home-ops//.github/renovate/versioning.json5'
+  "extends": [
+    ":enableRenovate",
+    "config:base",
+    ":disableRateLimiting",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separatePatchReleases",
+    "docker:enableMajor",
+    ":enablePreCommit",
+    "github>ahinko/home-ops//.github/renovate/allowedVersions.json5",
+    "github>ahinko/home-ops//.github/renovate/autoMerge.json5",
+    "github>ahinko/home-ops//.github/renovate/commitMessage.json5",
+    "github>ahinko/home-ops//.github/renovate/groups.json5",
+    "github>ahinko/home-ops//.github/renovate/labels.json5",
+    "github>ahinko/home-ops//.github/renovate/regexManagers.json5",
+    "github>ahinko/home-ops//.github/renovate/semanticCommits.json5",
+    "github>ahinko/home-ops//.github/renovate/versioning.json5"
   ],
-  platform: 'github',
-  username: 'homeops-bot[bot]',
-  repositories: ['ahinko/home-ops'],
-  timezone: 'Europe/Stockholm',
-  onboarding: false,
-  requireConfig: false,
-  gitAuthor: 'homeops-bot <104016614+homeops-bot[bot]@users.noreply.github.com>',
-  dependencyDashboardTitle: '🤖 Renovate Dashboard',
-  suppressNotifications: ['prIgnoreNotification'],
-  rebaseWhen: 'conflicted',
-  commitBodyTable: true,
-  // set up ignored deps
-  ignoreDeps: [
-    'ghcr.io/fluxcd/helm-controller',
-    'ghcr.io/fluxcd/image-automation-controller',
-    'ghcr.io/fluxcd/image-reflector-controller',
-    'ghcr.io/fluxcd/kustomize-controller',
-    'ghcr.io/fluxcd/notification-controller',
-    'ghcr.io/fluxcd/source-controller'
+  "platform": "github",
+  "username": "homeops-bot[bot]",
+  "repositories": ["ahinko/home-ops"],
+  "timezone": "Europe/Stockholm",
+  "onboarding": false,
+  "requireConfig": "optional",
+  "gitAuthor": "homeops-bot <104016614+homeops-bot[bot]@users.noreply.github.com>",
+  "dependencyDashboardTitle": "🤖 Renovate Dashboard",
+  "suppressNotifications": ["prIgnoreNotification"],
+  "rebaseWhen": "conflicted",
+  "commitBodyTable": true,
+  "ignorePaths": [
+    "infrastructure/kubernetes/integrations/"
   ],
-  ignorePaths: ['kubernetes/management/integrations/'],
-  // --
-  // Set up Renovate managers
-  // --
-  'docker-compose': {
-    fileMatch: ['(^|/)docker-compose.*\\.yaml$', '.task/.\\.yaml$']
+  "ignoreDeps": [
+    "ghcr.io/fluxcd/helm-controller",
+    "ghcr.io/fluxcd/image-automation-controller",
+    "ghcr.io/fluxcd/image-reflector-controller",
+    "ghcr.io/fluxcd/kustomize-controller",
+    "ghcr.io/fluxcd/notification-controller",
+    "ghcr.io/fluxcd/source-controller"
+  ],
+  "docker-compose": {
+    "fileMatch": [
+      "(^|/)docker-compose.*\\.yaml$",
+      ".taskfiles/.+\\.yaml$",
+      "infrastructure/kubernetes/.+\\.sh$"
+    ]
   },
-  flux: {
-    fileMatch: ['kubernetes/.+\\.yaml$']
+  "flux": {
+    "fileMatch": [
+      "kubernetes/.+\\.yaml$"
+    ]
   },
-  'helm-values': {
-    fileMatch: ['kubernetes/.+\\.yaml$', '.task/.+\\.yaml$']
+  "helm-values": {
+    "fileMatch": [
+      "kubernetes/.+\\.yaml$",
+    ]
   },
-  helmv3: {
-    fileMatch: ['charts/.+/Chart\\.yaml$']
+  "kubernetes": {
+    "fileMatch": [
+      "kubernetes/.+\\.yaml$"
+    ]
   },
-  kubernetes: {
-    fileMatch: ['kubernetes/.+\\.yaml$']
-  },
-  packageRules: [
-    {
-      matchDatasources: ['docker'],
-      commitMessageExtra: 'to {{newVersion}}'
-    }
-  ]
 }

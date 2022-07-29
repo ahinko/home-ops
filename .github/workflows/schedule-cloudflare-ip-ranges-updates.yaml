@@ -1,0 +1,47 @@
+---
+name: Schedule - Cloudflare IP Ranges Update
+
+on: # yamllint disable-line rule:truthy
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  CLOUDFLARE_IP_RANGES_FILE: >-
+    kubernetes/apps/networking/ingress-nginx/cloudflare-ip-ranges.txt
+
+jobs:
+  cloudflare-ip-ranges-update:
+    name: Cloudflare IP Ranges
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: tibdex/github-app-token@v1.6.0
+        id: generate-token
+        with:
+          app_id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
+          private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v3.0.2
+      - name: Cloudflare IP Ranges
+        run: |
+          bash ./.github/scripts/cloudflare-ip-ranges.sh > ${{ env.CLOUDFLARE_IP_RANGES_FILE }}
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v4.0.4
+        with:
+          token: "${{ steps.generate-token.outputs.token }}"
+          branch: ci/update-cloudflare-ip-ranges
+          delete-branch: true
+          title: "chore(ci): update cloudflare IP ranges"
+          signoff: true
+          committer: "Peter Ahinko <ahinko@users.noreply.github.com>"
+          author: "Peter Ahinko <ahinko@users.noreply.github.com>"
+          assignees: "ahinko"
+          commit-message: "chore(ci): update cloudflare IP ranges"
+          body: |
+            Update Cloudflare IP ranges from https://www.cloudflare.com/ips/
+          labels: area/ci

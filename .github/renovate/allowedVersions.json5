@@ -1,13 +1,10 @@
 {
   packageRules: [
     {
-      allowedVersions: '<=1.23', // Talos dependency
-      matchDatasources: ['docker'],
+      allowedVersions: '<=1.24', // Talos dependency
+      matchDatasources: ['github-releases'],
       matchPackageNames: [
-        'k8s.gcr.io/kube-apiserver',
-        'k8s.gcr.io/kube-controller-manager',
-        'k8s.gcr.io/kube-scheduler',
-        'ghcr.io/siderolabs/kubelet'
+        'kubernetes/kubernetes'
       ]
     }
   ]

@@ -1,78 +1,78 @@
 {
-  packageRules: [
+  "packageRules": [
     {
-      matchDatasources: ['docker'],
-      matchUpdateTypes: ['major'],
-      commitMessagePrefix: 'feat(container): '
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(container): "
     },
     {
-      matchDatasources: ['docker'],
-      matchUpdateTypes: ['minor'],
-      semanticCommitType: 'feat',
-      semanticCommitScope: 'container'
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "container"
     },
     {
-      matchDatasources: ['docker'],
-      matchUpdateTypes: ['patch'],
-      semanticCommitType: 'fix',
-      semanticCommitScope: 'container'
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "container"
     },
     {
-      matchDatasources: ['helm'],
-      matchUpdateTypes: ['major'],
-      commitMessagePrefix: 'feat(helm): '
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(helm): "
     },
     {
-      matchDatasources: ['helm'],
-      matchUpdateTypes: ['minor'],
-      semanticCommitType: 'feat',
-      semanticCommitScope: 'helm'
-    },
-
-    {
-      matchDatasources: ['helm'],
-      matchUpdateTypes: ['patch'],
-      semanticCommitType: 'fix',
-      semanticCommitScope: 'helm'
-    },
-    {
-      matchDatasources: ['galaxy'],
-      matchUpdateTypes: ['major'],
-      commitMessagePrefix: 'feat(ansible): '
-    },
-    {
-      matchDatasources: ['galaxy'],
-      matchUpdateTypes: ['minor'],
-      semanticCommitType: 'feat',
-      semanticCommitScope: 'ansible'
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "helm"
     },
 
     {
-      matchDatasources: ['galaxy'],
-      matchUpdateTypes: ['patch'],
-      semanticCommitType: 'fix',
-      semanticCommitScope: 'ansible'
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "helm"
     },
     {
-      matchDatasources: ['terraform-provider'],
-      matchUpdateTypes: ['major'],
-      commitMessagePrefix: 'feat(terraform)!: '
+      "matchDatasources": ["galaxy"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(ansible): "
     },
     {
-      matchDatasources: ['terraform-provider'],
-      matchUpdateTypes: ['minor'],
-      semanticCommitType: 'feat',
-      semanticCommitScope: 'terraform'
+      "matchDatasources": ["galaxy"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "ansible"
+    },
+
+    {
+      "matchDatasources": ["galaxy"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "ansible"
     },
     {
-      matchDatasources: ['terraform-provider'],
-      matchUpdateTypes: ['patch'],
-      semanticCommitType: 'fix',
-      semanticCommitScope: 'terraform'
+      "matchDatasources": ["terraform-provider"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(terraform)!: "
     },
     {
-      matchManagers: ['github-actions'],
-      semanticCommitType: 'ci'
+      "matchDatasources": ["terraform-provider"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "terraform"
+    },
+    {
+      "matchDatasources": ["terraform-provider"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "terraform"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "semanticCommitType": "ci"
     }
   ]
 }

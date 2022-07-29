@@ -1,28 +1,28 @@
 {
-  packageRules: [
+  "packageRules": [
     {
-      matchUpdateTypes: ['major'],
-      labels: ['type/major']
+      "matchUpdateTypes": ["major"],
+      "labels": ["type/major"]
     },
     {
-      matchUpdateTypes: ['minor'],
-      labels: ['type/minor']
+      "matchUpdateTypes": ["minor"],
+      "labels": ["type/minor"]
     },
     {
-      matchUpdateTypes: ['patch'],
-      labels: ['type/patch']
+      "matchUpdateTypes": ["patch"],
+      "labels": ["type/patch"]
     },
     {
-      matchDatasources: ['docker'],
-      addLabels: ['renovate/container']
+      "matchDatasources": ["docker"],
+      "addLabels": ["renovate/container"]
     },
     {
-      matchDatasources: ['helm'],
-      addLabels: ['renovate/helm']
+      "matchDatasources": ["helm"],
+      "addLabels": ["renovate/helm"]
     },
     {
-      matchDatasources: ['galaxy', 'galaxy-collection'],
-      addLabels: ['renovate/ansible']
+      "matchDatasources": ["galaxy", "galaxy-collection"],
+      "addLabels": ["renovate/ansible"]
     }
   ]
 }

@@ -1,33 +1,46 @@
 {
   regexManagers: [
     {
-      description: 'Process Sidero configurations for Talos updates',
+      description: 'Process Kubernetes versions',
       fileMatch: [
-        'kubernetes/management/sidero-system/.+/.+\\.yaml$',
-        '.taskfiles/tools.yaml'
+        'infrastructure/kubernetes/upgrade-k8s.sh',
+        'infrastructure/kubernetes/talconfig.yaml'
       ],
       matchStrings: [
-        'github.com/(?<depName>.*?)/releases/download/(?<currentValue>[v0-9.]*)/',
-        'depName=(?<depName>.*?)\n *talosVersion: (?<currentValue>.*)\n'
+        'kubernetesVersion: (?<currentValue>.*)',
+        '--to (?<currentValue>.*)'
+      ],
+      depNameTemplate: 'kubernetes/kubernetes',
+      datasourceTemplate: 'github-releases'
+    },
+    {
+      description: 'Process Talos versions',
+      fileMatch: [
+          'infrastructure/kubernetes/upgrade-talos.sh',
+          'infrastructure/kubernetes/talconfig.yaml',
+      ],
+      matchStrings: [
+        'talosVersion: (?<currentValue>.*)',
+        'installer:(?<currentValue>.*)',
+      ],
+      depNameTemplate: 'ghcr.io/siderolabs/installer',
+      datasourceTemplate: 'docker'
+    },
+    {
+      description: 'Process CLI versions',
+      fileMatch: [
+          '.taskfiles/.+\\.yaml$'
+      ],
+      matchStrings: [
+        'github.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>[a-z0-9.]*)',
       ],
       datasourceTemplate: 'github-releases'
     },
     {
-      description: 'Process Sidero configurations for Talos updates',
-      fileMatch: [
-        'kubernetes/management/sidero-system/.+/.+\\.yaml$',
-        '.taskfiles/sidero.yaml'
-      ],
-      matchStrings: [
-        '/image\n *value: (?<depName>.*?):(?<currentValue>.*)',
-        'depName=(?<depName>.*?)\n *version: (?<currentValue>.*)\n',
-        '--image (?<depName>.*?):(?<currentValue>.*)'
-      ],
-      datasourceTemplate: 'docker'
-    },
-    {
       description: 'Process Cilium Quick Install for new versions',
-      fileMatch: ['.task/.+\\.yaml$'],
+      fileMatch: [
+        '.taskfiles/kubernetes.yaml$'
+      ],
       matchStrings: [
         'add (?<depName>.*?) (?<registryUrl>.*)\n .*\n .* --version (?<currentValue>.*) cilium'
       ],
@@ -45,15 +58,54 @@
     },
     {
       description: 'Process UDM-PRO dependencies in Ansible playbook + role',
-      fileMatch: ['infrastructure/udm-pro/.+\\.yaml$'],
-      matchStrings: ['depName=(?<depName>.*?)\n[a-z_]*: (?<currentValue>.*)'],
+      fileMatch: [
+        'infrastructure/udm-pro/.+\\.yaml$'
+      ],
+      matchStrings: [
+        'depName=(?<depName>.*?)\n[a-z_]*: (?<currentValue>.*)'
+      ],
       datasourceTemplate: 'github-releases'
     },
     {
       description: 'Process UDM-PRO dependencies in UDM-PRO scripts',
-      fileMatch: ['infrastructure/udm-pro/.+\\.sh$'],
-      matchStrings: ['\n  (?<depName>.*?):(?<currentValue>.*) # renovate'],
+      fileMatch: [
+        'infrastructure/udm-pro/.+\\.sh$',
+      ],
+      matchStrings: [
+        '\n  (?<depName>.*?):(?<currentValue>.*) # renovate'
+      ],
       datasourceTemplate: 'docker'
+    },
+    {
+      "description": "Process git repository resources like CRDs etc",
+      "fileMatch": [
+        "kubernetes/.+\\.yaml$",
+      ],
+      "matchStrings": [
+        "renovate\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n",
+        "renovate\n  - https:\/\/github\\.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>[a-z0-9.]*)",
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "description": "Process CRD dependencies",
+      "fileMatch": ["kubernetes/.+\\.ya?ml$"],
+      "matchStrings": [
+        // GitRepository where 'Git release/tag' matches 'Helm' version
+        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
+        // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
+        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)\/(?<currentValue>[^/]+)\/[^/]+\n"
+      ],
+      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
+    },
+    {
+      "description": "Process raw GitHub URLs",
+      "fileMatch": ["kubernetes/.+\\.ya?ml$"],
+      "matchStrings": [
+        "https:\\/\\/raw.githubusercontent.com\\/(?<depName>[\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*"
+      ],
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
     }
-  ]
+  ],
 }

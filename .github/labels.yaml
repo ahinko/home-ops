@@ -62,3 +62,9 @@
   color: "84b6eb"
 - name: question
   color: "cc317c"
+- name: doing-next
+  color: "0E8A16"
+- name: on-hold
+  color: "B60205"
+- name: needs-attention
+  color: "B60205"

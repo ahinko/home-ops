@@ -1,25 +1,91 @@
 {
-  packageRules: [
-    {
-      description: 'Talos releases',
-      matchDatasources: ['docker', 'github-releases'],
-      matchPackageNames: ['ghcr.io/siderolabs/installer', 'siderolabs/talos'],
-      groupName: 'siderolabs/talos',
-      additionalBranchPrefix: '',
-      separateMinorPatch: true
-    },
-    {
-      description: 'Kubernetes images',
-      matchDatasources: ['docker'],
-      matchPackageNames: [
-        'k8s.gcr.io/kube-apiserver',
-        'k8s.gcr.io/kube-controller-manager',
-        'k8s.gcr.io/kube-scheduler',
-        'ghcr.io/siderolabs/kubelet'
-      ],
-      groupName: 'kubernetes',
-      additionalBranchPrefix: '',
-      separateMinorPatch: true
-    }
-  ]
+    "packageRules": [
+        {
+            "description": "HAProxy",
+            "matchDatasources": [
+                "helm",
+                "docker"
+            ],
+            "matchPackageNames": [
+                "docker.io/haproxytech/haproxy-alpine",
+                "haproxytech/haproxy-alpine"
+            ],
+            "groupName": "haproxytech/haproxy-alpine",
+            "additionalBranchPrefix": "",
+            "separateMinorPatch": true
+        },
+        {
+            "description": "Cert manager chart and CRDs",
+            "matchDatasources": [
+                "helm",
+                "github-releases",
+                "docker",
+            ],
+            "matchPackageNames": [
+                "cert-manager",
+                "cert-manager/cert-manager",
+                "quay.io/jetstack/cert-manager-controller",
+            ],
+            "groupName": "cert-manager",
+            "additionalBranchPrefix": "",
+            "separateMinorPatch": true
+        },
+        {
+            "description": "Redis chart & images",
+            "matchDatasources": [
+                "helm",
+                "docker"
+            ],
+            "matchPackageNames": [
+                "redis",
+                "bitnami/redis",
+                "bitnami/redis-sentinel"
+            ],
+            "groupName": "redis/redis",
+            "additionalBranchPrefix": "",
+            "separateMinorPatch": true
+        },
+        {
+            "description": "MetalLB chart & images",
+            "matchDatasources": [
+                "helm",
+                "github-releases"
+            ],
+            "matchPackageNames": [
+                "metallb",
+                "metallb/metallb"
+            ],
+            "groupName": "metallb/metallb",
+            "additionalBranchPrefix": "",
+            "separateMinorPatch": true
+        },
+        {
+            "description": "Rook/Ceph chart & images",
+            "matchDatasources": [
+                "helm",
+                "docker",
+                "github-releases"
+            ],
+            "matchPackagePatterns": [
+                "^rook",
+            ],
+            "groupName": "rook-ceph-suite",
+            "additionalBranchPrefix": "",
+            "separateMinorPatch": true
+        },
+        {
+            description: 'Talos releases',
+            matchDatasources: [
+                'docker',
+                'github-releases'
+            ],
+            matchPackageNames: [
+                'ghcr.io/siderolabs/installer',
+                'siderolabs/talos'
+            ],
+            groupName: 'siderolabs/talos',
+            additionalBranchPrefix: '',
+            separateMinorPatch: true
+        },
+    ]
 }

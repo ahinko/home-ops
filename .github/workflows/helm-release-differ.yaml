@@ -6,7 +6,11 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "kubernetes/**.yaml"
+      - "**/helm-release.yaml"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 
 env:
   # Currently no way to detect automatically
@@ -18,7 +22,7 @@ jobs:
     name: Detect File Changes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -37,20 +41,20 @@ jobs:
         file: ${{ fromJSON(needs.detect-file-changes.outputs.yaml_files) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.0.2
       - name: Generate Token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v1.6.0
         id: generate-token
         with:
           app_id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
           private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
       - name: Checkout default branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.0.2
         with:
           ref: "${{ env.DEFAULT_BRANCH }}"
           path: default
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v3.3
         with:
           version: v3.6.3
       - name: Helm Release Differ
@@ -63,14 +67,14 @@ jobs:
           diff="${diff//$'\r'/'%0D'}"
           echo "::set-output name=diff::$(echo ${diff})"
       - name: Find Comment
-        uses: peter-evans/find-comment@v2
+        uses: peter-evans/find-comment@v2.0.0
         id: find-comment
         with:
           issue-number: "${{ github.event.pull_request.number }}"
           comment-author: "${{ env.BOT_USERNAME }}"
           body-includes: "${{ matrix.file }}"
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v2.0.0
         with:
           token: "${{ steps.generate-token.outputs.token }}"
           comment-id: "${{ steps.find-comment.outputs.comment-id }}"
