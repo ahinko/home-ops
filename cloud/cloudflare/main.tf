@@ -32,13 +32,12 @@ data "sops_file" "cloudflare_secrets" {
 }
 
 provider "cloudflare" {
-  email     = data.sops_file.cloudflare_secrets.data["cloudflare_email"]
   api_token = data.sops_file.cloudflare_secrets.data["cloudflare_api_token"]
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/configs/old"
-  config_context = "old"
+  config_path    = "~/.kube/configs/metal"
+  config_context = "metal"
 }
 
 data "cloudflare_zones" "domain" {
