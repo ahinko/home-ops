@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - bitnami-charts.yaml
+  - cilium-charts.yaml
+  - crowdsec-charts.yaml
+  - deliveryhero-charts.yaml
+  - emqx-charts.yaml
+  - external-dns-charts.yaml
+  - fairwinds-charts.yaml
+  - hajimari-charts.yaml
+  - haproxy-charts.yaml
+  - influxdata-charts.yaml
+  - infracloudio-charts.yaml
+  - ingress-nginx.yaml
+  - itzg-minecraft-server-charts.yaml
+  - jetstack-charts.yaml
+  - k8s-at-home-charts.yaml
+  - kubernetes-sigs-descheduler-charts.yaml
+  - kubernetes-sigs-metrics-server-charts.yaml
+  - kubernetes-sigs-node-feature-discovery-charts.yaml
+  - metallb-charts.yaml
+  - nextcloud-charts.yaml
+  - rook-ceph-charts.yaml
+  - stakater-charts.yaml

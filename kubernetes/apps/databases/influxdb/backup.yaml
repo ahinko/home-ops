@@ -1,0 +1,56 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-influxdb
+  namespace: databases
+spec:
+  schedule: "25 9 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            botkube.io/disable: "true"
+        spec:
+          containers:
+            - name: backup-influxdb
+              image: ghcr.io/ahinko/simple-k8s-backup:v3.0.8
+              args:
+                - /run.sh
+              env:
+                - name: TZ
+                  value: "${TIMEZONE}"
+                - name: MINIO_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup-secrets
+                      key: SECRET_MINIO_ACCESS_KEY
+                - name: MINIO_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup-secrets
+                      key: SECRET_MINIO_SECRET_KEY
+                - name: MINIO_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup-secrets
+                      key: SECRET_MINIO_DOMAIN
+                - name: MINIO_BUCKET
+                  value: "backups"
+                - name: DELETE_OLDER_THAN
+                  value: "14d"
+                - name: BACKUP_NAME
+                  value: "influxdb"
+                - name: HEALTCHECK_URL
+                  value: "https://uptime.${SECRET_DOMAIN}/api/push/Wm00WAPfx5?status=up&msg=OK&ping="
+              volumeMounts:
+                - name: influxdb-persistent-storage
+                  mountPath: /influxdb
+          restartPolicy: Never
+          volumes:
+            - name: influxdb-persistent-storage
+              persistentVolumeClaim:
+                claimName: influxdb-data

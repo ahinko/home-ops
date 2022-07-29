@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: itzg-minecraft-server-charts
+  namespace: flux-system
+spec:
+  interval: 4h
+  url: https://itzg.github.io/minecraft-server-charts/
+  timeout: 3m

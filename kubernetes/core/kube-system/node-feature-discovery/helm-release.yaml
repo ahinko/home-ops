@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app node-feature-discovery
+  namespace: kube-system
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: 0.11.1
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-sigs-node-feature-discovery-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  # Values link: https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
+  values:
+    nameOverride: *app
+
+    nodeFeatureRule:
+      createCRD: false
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "nfd-worker-conf"
+    image:
+      repository: k8s.gcr.io/nfd/node-feature-discovery
+      tag: v0.11.1
+
+    worker:
+      config:
+        core:
+          labelSources:
+            - "custom"
+            - "pci"
+            - "usb"
+        sources:
+          usb:
+            deviceClassWhitelist:
+              - "02"
+              - "03"
+              - "0e"
+              - "ef"
+              - "fe"
+              - "ff"
+            deviceLabelFields:
+              - "class"
+              - "vendor"
+              - "device"
+          custom:
+            - name: "zwave"
+              matchOn:
+                - usbId:
+                    class: ["02"]
+                    vendor: ["0658"]
+                    device: ["0200"]
+            - name: "intel-gpu"
+              matchOn:
+                - pciId:
+                    class: ["0300"]
+                    vendor: ["8086"]
+            - name: "coral-tpu"
+              matchOn:
+                - usbId:
+                    vendor: ["1a6e", "18d1"]

@@ -1,0 +1,35 @@
+---
+apiVersion: kubegres.reactive-tech.io/v1
+kind: Kubegres
+metadata:
+  name: postgres
+  namespace: databases
+spec:
+  replicas: 3
+  image: postgres:14.4-alpine
+  port: 5432
+
+  database:
+    size: 20Gi
+    storageClassName: rook-cephfs
+
+  failover:
+    isDisabled: false
+
+  backup:
+    schedule: "1 0,12 * * *"
+    pvcName: postgres-backup-pvc
+    volumeMount: /var/lib/backup
+
+  env:
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: postgres-secrets
+          key: superUserPassword
+
+    - name: POSTGRES_REPLICATION_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: postgres-secrets
+          key: replicationUserPassword

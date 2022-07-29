@@ -1,0 +1,71 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app sonarr-uhd
+  namespace: media
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: sonarr
+      version: 16.2.3
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/sonarr/values.yaml
+  values:
+    global:
+      nameOverride: *app
+    image:
+      repository: ghcr.io/k8s-at-home/sonarr
+      tag: v3.0.8.1507
+
+    env:
+      TZ: "${TIMEZONE}"
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "television"
+        hosts:
+          - host: "sonarr-uhd.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "sonarr-uhd.${SECRET_DOMAIN}"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "sonarr-uhd-config"
+      media:
+        enabled: true
+        mountPath: "/media"
+        existingClaim: media-nfs
+
+    resources:
+      requests:
+        memory: 300M
+        cpu: 20m
+      limits:
+        memory: 2000M
+        cpu: 750m

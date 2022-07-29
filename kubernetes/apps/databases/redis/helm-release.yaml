@@ -1,0 +1,156 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app redis
+  namespace: databases
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: 17.0.6
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  # Values link:
+  values:
+    env:
+      TZ: "${TIMEZONE}"
+
+    global:
+      storageClass: "rook-cephfs"
+      redis:
+        password: "${SECRET_REDIS_PASSWORD}"
+
+    image:
+      repository: bitnami/redis
+      tag: 7.0.4
+
+    architecture: replication
+
+    auth:
+      enabled: true
+      sentinel: true
+      password: "${SECRET_REDIS_PASSWORD}"
+
+    master:
+      persistence:
+        enabled: true
+        path: /data
+        storageClass: "rook-cephfs"
+        accessModes:
+          - ReadWriteMany
+        size: 8Gi
+
+      readinessProbe:
+        enabled: true
+        periodSeconds: 10
+        timeoutSeconds: 10
+      startupProbe:
+        enabled: true
+        periodSeconds: 10
+        timeoutSeconds: 10
+
+    replica:
+      replicaCount: 3
+      persistence:
+        enabled: true
+        path: /data
+        storageClass: "rook-cephfs"
+        accessModes:
+          - ReadWriteMany
+        size: 8Gi
+
+      readinessProbe:
+        enabled: true
+        periodSeconds: 10
+        timeoutSeconds: 10
+      startupProbe:
+        enabled: true
+        periodSeconds: 10
+        timeoutSeconds: 10
+
+    sentinel:
+      enabled: true
+
+      image:
+        repository: bitnami/redis-sentinel
+        tag: 7.0.4
+
+      readinessProbe:
+        enabled: true
+        periodSeconds: 10
+        timeoutSeconds: 10
+      startupProbe:
+        enabled: true
+        periodSeconds: 10
+        timeoutSeconds: 10
+
+    metrics:
+      enabled: false
+
+      image:
+        repository: bitnami/redis-exporter
+        tag: 1.43.0
+        pullPolicy: Always
+
+      redisTargetHost: "localhost"
+
+      prometheusRule:
+        ## @param metrics.prometheusRule.enabled Create a custom prometheusRule Resource for scraping metrics using PrometheusOperator
+        ##
+        enabled: false
+        ## @param metrics.prometheusRule.namespace The namespace in which the prometheusRule will be created
+        ##
+        namespace: ""
+        ## @param metrics.prometheusRule.additionalLabels Additional labels for the prometheusRule
+        ##
+        additionalLabels: {}
+        ## @param metrics.prometheusRule.rules Custom Prometheus rules
+        ## e.g:
+        ## rules:
+        ##   - alert: RedisDown
+        ##     expr: redis_up{service="{{ template "common.names.fullname" . }}-metrics"} == 0
+        ##     for: 2m
+        ##     labels:
+        ##       severity: error
+        ##     annotations:
+        ##       summary: Redis&trade; instance {{ "{{ $labels.instance }}" }} down
+        ##       description: Redis&trade; instance {{ "{{ $labels.instance }}" }} is down
+        ##    - alert: RedisMemoryHigh
+        ##      expr: >
+        ##        redis_memory_used_bytes{service="{{ template "common.names.fullname" . }}-metrics"} * 100
+        ##        /
+        ##        redis_memory_max_bytes{service="{{ template "common.names.fullname" . }}-metrics"}
+        ##        > 90
+        ##      for: 2m
+        ##      labels:
+        ##        severity: error
+        ##      annotations:
+        ##        summary: Redis&trade; instance {{ "{{ $labels.instance }}" }} is using too much memory
+        ##        description: |
+        ##          Redis&trade; instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
+        ##    - alert: RedisKeyEviction
+        ##      expr: |
+        ##        increase(redis_evicted_keys_total{service="{{ template "common.names.fullname" . }}-metrics"}[5m]) > 0
+        ##      for: 1s
+        ##      labels:
+        ##        severity: error
+        ##      annotations:
+        ##        summary: Redis&trade; instance {{ "{{ $labels.instance }}" }} has evicted keys
+        ##        description: |
+        ##          Redis&trade; instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
+        ##
+        rules: []

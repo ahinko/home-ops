@@ -1,0 +1,346 @@
+---
+mqtt:
+  host: emqx
+  user: ${SECRET_MQTT_USERNAME}
+  password: ${SECRET_MQTT_PASSWORD}
+
+logger:
+  # Optional: default log level (default: shown below)
+  # Available log levels are: debug, info, warning, error, critical
+  default: error
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+# Optional: birdseye configuration
+birdseye:
+  # Optional: Enable birdseye view (default: shown below)
+  enabled: True
+  # Optional: Width of the output resolution (default: shown below)
+  width: 1280
+  # Optional: Height of the output resolution (default: shown below)
+  height: 720
+  # Optional: Encoding quality of the mpeg1 feed (default: shown below)
+  # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
+  quality: 8
+  # Optional: Mode of the view. Available options are: objects, motion, and continuous
+  #   objects - cameras are included if they have had a tracked object within the last 30 seconds
+  #   motion - cameras are included if motion was detected in the last 30 seconds
+  #   continuous - all cameras are included always
+  mode: continuous
+
+ffmpeg:
+  hwaccel_args:
+    - -hwaccel
+    - vaapi
+    - -hwaccel_device
+    - /dev/dri/renderD128
+    - -hwaccel_output_format
+    - yuv420p
+
+  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -an
+
+  output_args:
+    # Optional: output args for detect streams (default: shown below)
+    detect: -f rawvideo -pix_fmt yuv420p -vf fps=fps=5
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy
+
+# Optional: Detect configuration
+# NOTE: Can be overridden at the camera level
+detect:
+  # Optional: width of the frame for the input with the detect role (default: shown below)
+  width: 1920
+  # Optional: height of the frame for the input with the detect role (default: shown below)
+  height: 1080
+  # Optional: desired fps for your camera for the input with the detect role (default: shown below)
+  # NOTE: Recommended value of 5. Ideally, try and reduce your FPS on the camera.
+  fps: 5
+  # Optional: enables detection for the camera (default: True)
+  # This value can be set via MQTT and will be updated in startup based on retained value
+  enabled: True
+  # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
+  max_disappeared: 50
+
+  stationary:
+    # Optional: Frequency for running detection on stationary objects (default: shown below)
+    # When set to 0, object detection will never be run on stationary objects. If set to 10,
+    # it will be run on every 10th frame.
+    interval: 10
+    # Optional: Number of frames without a position change for an object to be considered
+    # stationary (default: 10x the frame rate or 10s)
+    threshold: 50
+    # Optional: Define a maximum number of frames for tracking a stationary object (default: not set, track forever)
+    # This can help with false positives for objects that should only be stationary for a limited amount of time.
+    # It can also be used to disable stationary object tracking. For example, you may want to set a value for person,
+    # but leave car at the default.
+    max_frames:
+      # Optional: Object specific values
+      objects:
+        person: 1000
+
+objects:
+  track:
+    - person
+  filters:
+    person:
+      # Optional: minimum width*height of the bounding box for the detected object (default: 0)
+      min_area: 4000
+      # Optional: maximum width*height of the bounding box for the detected object (default: 24000000)
+      max_area: 1000000
+      # Optional: minimum score for the object to initiate tracking (default: shown below)
+      min_score: 0.4
+      # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+      threshold: 0.7
+
+# Optional: Motion configuration
+# NOTE: Can be overridden at the camera level
+motion:
+  # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
+  # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
+  # The value should be between 1 and 255.
+  threshold: 25
+  # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
+  # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
+  # moving objects.
+  contour_area: 50
+  # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
+  # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
+  # Too low and a fast moving person wont be detected as motion.
+  delta_alpha: 0.4
+  # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
+  # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
+  # Low values will cause things like moving shadows to be detected as motion for longer.
+  # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
+  frame_alpha: 0.2
+
+# Optional: Record configuration
+# NOTE: Can be overridden at the camera level
+record:
+  # Optional: Enable recording (default: shown below)
+  enabled: True
+  # Optional: Number of days to retain recordings regardless of events (default: shown below)
+  # NOTE: This should be set to 0 and retention should be defined in events section below
+  #       if you only want to retain recordings of events.
+  retain:
+    days: 0
+    mode: motion
+
+  # Optional: Event recording settings
+  events:
+    # Optional: Maximum length of time to retain video during long events. (default: shown below)
+    # NOTE: If an object is being tracked for longer than this amount of time, the retained recordings
+    #       will be the last x seconds of the event unless retain_days under record is > 0.
+    max_seconds: 300
+    # Optional: Number of seconds before the event to include (default: shown below)
+    pre_capture: 3
+    # Optional: Number of seconds after the event to include (default: shown below)
+    post_capture: 3
+    # Optional: Objects to save recordings for. (default: all tracked objects)
+    objects:
+      - person
+    # Optional: Retention settings for recordings of events
+    retain:
+      # Required: Default retention days (default: shown below)
+      default: 14
+      # Optional: Per object retention days
+      mode: active_objects
+
+# Optional: Configuration for the jpg snapshots written to the clips directory for each event
+# NOTE: Can be overridden at the camera level
+snapshots:
+  # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
+  # This value can be set via MQTT and will be updated in startup based on retained value
+  enabled: True
+  # Optional: print a timestamp on the snapshots (default: shown below)
+  timestamp: False
+  # Optional: draw bounding box on the snapshots (default: shown below)
+  bounding_box: True
+  # Optional: crop the snapshot (default: shown below)
+  crop: False
+  # Optional: Camera override for retention settings (default: global values)
+  retain:
+    # Required: Default retention days (default: shown below)
+    default: 14
+
+# Optional: RTMP configuration
+# NOTE: Can be overridden at the camera level
+rtmp:
+  # Optional: Enable the RTMP stream (default: True)
+  enabled: False
+
+# Optional: Live stream configuration for WebUI
+# NOTE: Can be overridden at the camera level
+live:
+  # Optional: Set the height of the live stream. (default: 720)
+  # This must be less than or equal to the height of the detect stream. Lower resolutions
+  # reduce bandwidth required for viewing the live stream. Width is computed to match known aspect ratio.
+  height: 720
+  # Optional: Set the encode quality of the live stream (default: shown below)
+  # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
+  quality: 8
+
+cameras:
+  # Required: name of the camera
+  frontyard_terrace:
+    # Required: ffmpeg settings for the camera
+    ffmpeg:
+      # Required: A list of input streams for the camera. See documentation for more information.
+      inputs:
+        # Required: the path to the stream
+        # NOTE: Environment variables that begin with 'FRIGATE_' may be referenced in {}
+        - path: rtsps://192.168.0.1:7441/lGu1g2SYbl1bOuvU?enableSrtp
+          # Required: list of roles for this stream. valid values are: detect,record,clips,rtmp
+          # NOTICE: In addition to assigning the record, clips, and rtmp roles,
+          # they must also be enabled in the camera config.
+          roles:
+            - record
+
+        - path: rtsps://192.168.0.1:7441/fm9zsQYZQdve1qZN?enableSrtp
+          # Required: list of roles for this stream. valid values are: detect,record,clips,rtmp
+          # NOTICE: In addition to assigning the record, clips, and rtmp roles,
+          # they must also be enabled in the camera config.
+          roles:
+            - detect
+
+    # Optional: timeout for highest scoring image before allowing it
+    # to be replaced by a newer image. (default: shown below)
+    best_image_timeout: 10
+
+    motion:
+      threshold: 15
+
+    # Optional: Configuration for the jpg snapshots published via MQTT
+    mqtt:
+      # Optional: Enable publishing snapshot via mqtt for camera (default: shown below)
+      # NOTE: Only applies to publishing image data to MQTT via 'frigate/<camera_name>/<object_name>/snapshot'.
+      # All other messages will still be published.
+      enabled: True
+      # Optional: print a timestamp on the snapshots (default: shown below)
+      timestamp: False
+      # Optional: draw bounding box on the snapshots (default: shown below)
+      bounding_box: True
+      # Optional: crop the snapshot (default: shown below)
+      crop: False
+
+    objects:
+      track:
+        - person
+      filters:
+        person:
+          min_area: 3000
+          max_area: 1000000
+          min_score: 0.4
+          threshold: 0.7
+          mask:
+            - 1469,1080,1920,1080,1920,637,1676,634
+
+  backyard_livingroom:
+    ffmpeg:
+      inputs:
+        - path: rtsps://192.168.0.1:7441/k8xv9uFTcVuVz4Pi?enableSrtp
+          roles:
+            - record
+        - path: rtsps://192.168.0.1:7441/yXykgTX4qnP3xzOE?enableSrtp
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: True
+      timestamp: False
+      bounding_box: True
+      crop: False
+
+  backyard_terrace:
+    ffmpeg:
+      inputs:
+        - path: rtsps://192.168.0.1:7441/UCfkcmaIYCQanbjj?enableSrtp
+          roles:
+            - record
+        - path: rtsps://192.168.0.1:7441/MeQnTvehpe9mNOy0?enableSrtp
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: True
+      timestamp: False
+      bounding_box: True
+      crop: False
+
+    objects:
+      track:
+        - person
+      filters:
+        person:
+          min_area: 30000
+          max_area: 1000000
+          min_score: 0.4
+          threshold: 0.7
+          mask:
+            - 87,770,204,1022,844,668,837,552,727,505
+
+  east_side:
+    ffmpeg:
+      inputs:
+        - path: rtsps://192.168.0.1:7441/bD35LvIY0mVXDGAV?enableSrtp
+          roles:
+            - record
+        - path: rtsps://192.168.0.1:7441/7Cmt7IGfBgRFnY6y?enableSrtp
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    objects:
+      filters:
+        person:
+          mask:
+            - 932,1080,59,1080,87,636,909,581
+            - 1920,1080,1920,594,1367,1080
+
+    mqtt:
+      enabled: True
+      timestamp: False
+      bounding_box: True
+      crop: False
+
+  utility_entrance:
+    ffmpeg:
+      inputs:
+        - path: rtsps://192.168.0.1:7441/4HGg2c1YLJSwtsNW?enableSrtp
+          roles:
+            - record
+        - path: rtsps://192.168.0.1:7441/qEj5EZEGjdLZP9O6?enableSrtp
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: True
+      timestamp: False
+      bounding_box: True
+      crop: False
+
+  frontyard_garage:
+    ffmpeg:
+      inputs:
+        - path: rtsps://192.168.0.1:7441/cVT8xcvPAE1o0Rt4?enableSrtp
+          roles:
+            - record
+        - path: rtsps://192.168.0.1:7441/TJSnSTiDZ6AjqPvt?enableSrtp
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: True
+      timestamp: False
+      bounding_box: True
+      crop: False

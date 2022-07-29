@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: flux-system
+  name: cluster-settings
+data:
+  METALLB_ARP_RANGE: "192.168.20.200-192.168.20.255"
+  CONTROLPLANE_ENDPOINT: "192.168.20.20"
+
+  TIMEZONE: "Europe/Stockholm"
+  CLUSTER_NAME: "metal"
+  CLUSTER_ID: "1"
+
+  NETWORK_K8S_POD_CIDR: "10.244.0.0/16"
+
+  NFS_SERVER_ADDR: "192.168.20.2"
+
+  # Load balancers
+  LB_HASS: "192.168.20.201"
+  LB_EMQX: "192.168.20.203"
+  LB_POSTGRES: "192.168.20.204"
+  LB_INGRESS: "192.168.20.205"
+  LB_MINECRAFT: "192.168.20.206"

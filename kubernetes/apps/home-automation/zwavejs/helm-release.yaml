@@ -1,0 +1,97 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app zwavejs
+  namespace: home-automation
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: zwavejs2mqtt
+      version: 5.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/zwavejs2mqtt/values.yaml
+  values:
+    global:
+      fullnameOverride: *app
+
+    strategy:
+      type: Recreate
+    image:
+      repository: ghcr.io/zwave-js/zwavejs2mqtt
+      tag: 6.14.1
+    env:
+      TZ: "${TIMEZONE}"
+
+    service:
+      main:
+        ports:
+          http:
+            enabled: true
+            port: 8091
+          websocket:
+            enabled: true
+            port: 3000
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "zwave"
+          hajimari.io/appName: "Z-wave JS"
+        hosts:
+          - host: zwavejs.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "zwavejs.${SECRET_DOMAIN}"
+
+    # Privileged may be required if USB controller is accessed directly through the host machine
+    securityContext:
+      privileged: true
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /usr/src/app/store
+        existingClaim: "zwavejs-config"
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-0658_0200-if00
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: feature.node.kubernetes.io/custom-zwave
+                  operator: In
+                  values:
+                    - "true"
+
+    resources:
+      requests:
+        memory: 100M
+        cpu: 30m
+      limits:
+        memory: 512M
+        cpu: 500m

@@ -1,0 +1,38 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: tainter
+  namespace: kube-system
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: "Forbid"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 5
+  startingDeadlineSeconds: 10
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 300
+      template:
+        metadata:
+          annotations:
+            botkube.io/disable: "true"
+        spec:
+          restartPolicy: Never
+          containers:
+            # Tainter is a simple job that removes the NoSchedule taint on one of my control planes since the hardware
+            # on that control plane is a lot more powerfull than the other two control planes. So I want to be able to
+            # use that extra horse power and run more workloads on the control plane
+            - name: tainter
+              image: ghcr.io/k8s-at-home/kubectl:v1.24.3
+              command:
+                - "/bin/sh"
+                - "-c"
+                - |
+                  CURRENT=$(kubectl describe node helios | grep Taints)
+
+                  if echo "$CURRENT" | grep -q 'NoSchedule'; then
+                    echo "Lets remove NoSchedule taint!"
+                    /usr/local/bin/kubectl taint node helios node-role.kubernetes.io/master:NoSchedule-
+                  fi

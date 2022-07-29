@@ -1,0 +1,14 @@
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minecraft-data
+  namespace: games
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: rook-cephfs

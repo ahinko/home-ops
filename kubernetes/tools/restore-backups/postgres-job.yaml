@@ -16,11 +16,20 @@ spec:
             - name: FORCE_RESTORE
               value: "1"
             - name: MINIO_ACCESS_KEY
-              value: "${SECRET_MINIO_ACCESS_KEY}"
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: SECRET_MINIO_ACCESS_KEY
             - name: MINIO_SECRET_KEY
-              value: "${SECRET_MINIO_SECRET_KEY}"
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: SECRET_MINIO_SECRET_KEY
             - name: MINIO_HOST
-              value: "https://s3.${SECRET_DOMAIN}"
+              valueFrom:
+                secretKeyRef:
+                  name: backup-secrets
+                  key: SECRET_MINIO_DOMAIN
             - name: MINIO_BUCKET
               value: "backups"
             - name: BACKUP_NAME
