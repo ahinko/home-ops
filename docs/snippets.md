@@ -1,5 +1,5 @@
 # Snippets & notes
-Snippets and notes about how to fix problems where a [task](.taskfiles/) was to complex to set up.
+Snippets and notes about how to fix problems where a [task](../.taskfiles/) was to complex to set up.
 
 ## Postgres restore backup
 
