@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: backup-zwavejs
-              image: ghcr.io/ahinko/simple-k8s-backup:v3.0.8
+              image: ghcr.io/ahinko/simple-k8s-backup:v3.0.9
               args:
                 - /run.sh
               env:
