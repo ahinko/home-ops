@@ -30,7 +30,7 @@ spec:
       nameOverride: *app
     image:
       repository: k8s.gcr.io/external-dns/external-dns
-      tag: v0.12.0
+      tag: v0.12.2
     interval: 60m
     logLevel: warning
     provider: cloudflare
