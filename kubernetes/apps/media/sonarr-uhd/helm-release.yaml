@@ -68,4 +68,3 @@ spec:
         cpu: 20m
       limits:
         memory: 2000M
-        cpu: 750m

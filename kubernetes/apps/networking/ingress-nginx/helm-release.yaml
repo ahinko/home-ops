@@ -133,7 +133,6 @@ spec:
           cpu: 30m
         limits:
           memory: 2000M
-          cpu: 500m
 
     defaultBackend:
       enabled: true

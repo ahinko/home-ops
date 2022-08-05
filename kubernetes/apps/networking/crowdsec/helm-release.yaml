@@ -55,7 +55,6 @@ spec:
           enabled: false
       resources:
         limits:
-          cpu: 500m
           memory: 100Mi
         requests:
           cpu: 30m
@@ -76,7 +75,6 @@ spec:
           enabled: false
       resources:
         limits:
-          cpu: 200m
           memory: 100Mi
         requests:
           cpu: 30m

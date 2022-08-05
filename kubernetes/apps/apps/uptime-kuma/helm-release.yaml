@@ -61,4 +61,3 @@ spec:
         cpu: 100m
       limits:
         memory: 1500Mi
-        cpu: 1

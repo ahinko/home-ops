@@ -90,7 +90,6 @@ spec:
         cpu: 100m
         memory: 400M
       limits:
-        cpu: 1000m
         memory: 2500M
 
     addons:

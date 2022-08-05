@@ -81,7 +81,6 @@ spec:
         cpu: 20m
       limits:
         memory: 256M
-        cpu: 300m
 
     config:
       homeassistant: true

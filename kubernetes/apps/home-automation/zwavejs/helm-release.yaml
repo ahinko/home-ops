@@ -94,4 +94,3 @@ spec:
         cpu: 30m
       limits:
         memory: 512M
-        cpu: 500m
