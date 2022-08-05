@@ -2,5 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  #- https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/v0.11.1/deployment/helm/node-feature-discovery/manifests/nodefeaturerule-crd.yaml
+  # renovate: registryUrl=https://kubernetes-sigs.github.io/node-feature-discovery/charts chart=node-feature-discovery
+  - github.com/kubernetes-sigs/node-feature-discovery//deployment/base/nfd-crds?ref=v0.11.1
   - helm-release.yaml

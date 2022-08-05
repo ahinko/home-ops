@@ -10,7 +10,6 @@ spec:
     - name: charts
     - name: config
     - name: core
-    - name: crds
   path: ./kubernetes/apps
   prune: true
   sourceRef:
