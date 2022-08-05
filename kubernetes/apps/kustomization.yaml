@@ -12,3 +12,4 @@ resources:
   - media
   - monitoring
   - networking
+  - testing
