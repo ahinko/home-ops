@@ -30,7 +30,6 @@ spec:
       logLevel: warn
       resources:
         limits:
-          cpu: 100m
           memory: 100Mi
         requests:
           memory: 25Mi
@@ -44,11 +43,10 @@ spec:
       logLevel: warn
       resources:
         limits:
-          cpu: 100m
           memory: 100Mi
         requests:
           memory: 25Mi
           cpu: 25m
 
     crds:
-      enabled: true
+      enabled: false
