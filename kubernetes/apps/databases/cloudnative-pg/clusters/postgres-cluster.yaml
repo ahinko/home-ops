@@ -1,0 +1,39 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: databases
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:14.4
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: rook-cephfs
+  superuserSecret:
+    name: postgres-superuser
+  bootstrap:
+    initdb:
+      database: nextcloud
+      owner: nextcloud
+      secret:
+        name: postgres-nextcloud
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://postgresql/
+      endpointURL: http://minio.default:9000
+      serverName: postgres-v1
+      s3Credentials:
+        accessKeyId:
+          name: backup-secrets
+          key: SECRET_MINIO_ACCESS_KEY
+        secretAccessKey:
+          name: backup-secrets
+          key: SECRET_MINIO_SECRET_KEY

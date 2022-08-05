@@ -11,6 +11,15 @@
     },
     {
       "matchDatasources": [
+        "helm"
+      ],
+      "versioning": "regex:^[\\w-]*(?<major>\\d{1,2}).(?<minor>\\d{1,2}).(?<patch>\\d{1,2})$",
+      "matchPackageNames": [
+        "cloudnative-pg/cloudnative-pg"
+      ]
+    },
+    {
+      "matchDatasources": [
         "docker",
         "github-releases"
       ],

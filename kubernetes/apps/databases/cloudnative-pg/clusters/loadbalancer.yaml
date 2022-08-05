@@ -5,14 +5,14 @@ metadata:
   name: postgres-loadbalancer
   namespace: databases
   labels:
-    app: postgres
-    replicationRole: primary
+    postgresql: postgres
+    role: primary
 spec:
   ports:
     - protocol: TCP
       port: 5432
   selector:
-    app: postgres
-    replicationRole: primary
+    postgresql: postgres
+    role: primary
   type: LoadBalancer
   loadBalancerIP: ${LB_POSTGRES}

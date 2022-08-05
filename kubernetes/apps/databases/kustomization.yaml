@@ -4,6 +4,5 @@ kind: Kustomization
 resources:
   - sops.backup-secrets.yaml
   - influxdb
-  - kubegres
-  - postgres
+  - cloudnative-pg
   - redis

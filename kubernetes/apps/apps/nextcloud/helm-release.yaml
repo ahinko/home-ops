@@ -175,7 +175,7 @@ spec:
       type: postgresql
 
       ## Database host
-      host: postgres.databases
+      host: postgres-rw.databases
 
       ## Database name
       database: nextcloud

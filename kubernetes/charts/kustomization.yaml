@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - bitnami-charts.yaml
   - cilium-charts.yaml
+  - cloudnative-pg-charts.yaml
   - crowdsec-charts.yaml
   - deliveryhero-charts.yaml
   - emqx-charts.yaml
