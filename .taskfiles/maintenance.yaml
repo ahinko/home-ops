@@ -55,8 +55,6 @@ tasks:
       - kubectl scale -n apps deploy/nextcloud --replicas 1
       - flux resume hr -n media sabnzbd
       - kubectl scale -n media deploy/sabnzbd --replicas 1
-      - flux resume hr -n media bazarr
-      - kubectl scale -n media deploy/bazarr --replicas 1
       - flux resume hr -n media lidarr
       - kubectl scale -n media deploy/lidarr --replicas 1
       - flux resume hr -n media radarr
@@ -65,3 +63,5 @@ tasks:
       - kubectl scale -n media deploy/sonarr --replicas 1
       - flux resume hr -n media sonarr-uhd
       - kubectl scale -n media deploy/sonarr-uhd --replicas 1
+      - flux resume hr -n media bazarr
+      - kubectl scale -n media deploy/bazarr --replicas 1

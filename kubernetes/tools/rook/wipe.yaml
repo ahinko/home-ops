@@ -22,7 +22,6 @@ spec:
           cpu: 100m
           memory: 400M
         limits:
-          cpu: 500m
           memory: 2500M
 
 ---
@@ -49,7 +48,6 @@ spec:
           cpu: 100m
           memory: 400M
         limits:
-          cpu: 500m
           memory: 2500M
 
 ---
@@ -76,7 +74,6 @@ spec:
           cpu: 100m
           memory: 400M
         limits:
-          cpu: 500m
           memory: 2500M
 
 ---
@@ -103,5 +100,4 @@ spec:
           cpu: 100m
           memory: 400M
         limits:
-          cpu: 500m
           memory: 2500M
