@@ -21,6 +21,7 @@ resources:
   - kubernetes-sigs-descheduler-charts.yaml
   - kubernetes-sigs-metrics-server-charts.yaml
   - kubernetes-sigs-node-feature-discovery-charts.yaml
+  - kyverno-charts.yaml
   - metallb-charts.yaml
   - nextcloud-charts.yaml
   - rook-ceph-charts.yaml
