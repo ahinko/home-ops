@@ -63,8 +63,7 @@ spec:
         ingressClassName: "nginx"
         annotations:
           nginx.org/websocket-services: home-assistant
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-          external-dns/is-public: "true"
+          external-dns.home.lab/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "home-assistant"
         hosts:

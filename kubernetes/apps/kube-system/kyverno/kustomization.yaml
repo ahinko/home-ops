@@ -6,3 +6,4 @@ resources:
   - github.com/kyverno/kyverno//config/crds?ref=kyverno-chart-v2.5.2
   - helm-release.yaml
   - rbac.yaml
+  - policies

@@ -44,7 +44,7 @@ spec:
             key: cloudflare_api_token
     extraArgs:
       - --cloudflare-proxied
-      - --annotation-filter=external-dns/is-public in (true)
+      - --annotation-filter=external-dns.home.lab/enabled in (true)
     policy: sync
     sources:
       - ingress
