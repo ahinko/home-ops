@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: minio
-      version: 11.7.18
+      version: 11.7.19
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
