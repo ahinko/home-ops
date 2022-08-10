@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: backup-nextcloud
-              image: ghcr.io/ahinko/simple-k8s-backup:v3.0.9
+              image: ghcr.io/ahinko/simple-k8s-backup:v4.0.0
               args:
                 - /run.sh
               env:
