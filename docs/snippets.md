@@ -2,7 +2,6 @@
 Snippets and notes about how to fix problems where a [task](../.taskfiles/) was to complex to set up.
 
 ## Postgres restore backup
-
-Find the backup you want to restore and check the file. **I usually do not restore postgres and replication roles etc so I remove those from the file.**
-
-Restore backup: `psql -h POSTGRES_LB_SVC -U USERNAME -W -d DATABASE < RESTORE_FILENAME`
+Look at these links on how to spin up a new cluster from backups:
+- https://cloudnative-pg.io/documentation/1.16/bootstrap/#bootstrap-from-a-backup-recovery
+- https://cloudnative-pg.io/documentation/1.16/backup_recovery/
