@@ -30,7 +30,8 @@ spec:
     recreatePods: true
     service:
       type: LoadBalancer
-      loadBalancerIP: ${LB_EMQX}
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ${LB_EMQX}
     emqxConfig:
       EMQX_ALLOW_ANONYMOUS: "false"
       EMQX_ADMIN_PASSWORD: "${SECRET_EMQX_ADMIN_PASSWORD}"

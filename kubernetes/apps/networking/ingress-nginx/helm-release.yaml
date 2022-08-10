@@ -36,8 +36,9 @@ spec:
           value: ${TIMEZONE}
       service:
         type: LoadBalancer
-        loadBalancerIP: "${LB_INGRESS}"
         externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: "${LB_INGRESS}"
       publishService:
         enabled: true
       ingressClassResource:
