@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "influxdb"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/Wm00WAPfx5?status=up&msg=OK&ping="
               volumeMounts:
                 - name: influxdb-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: influxdb-persistent-storage
               persistentVolumeClaim:
                 claimName: influxdb-data
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - influxdb2
+                  topologyKey: kubernetes.io/hostname

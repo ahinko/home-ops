@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "radarr"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/I2DMKxd3O3?status=up&msg=OK&ping="
               volumeMounts:
                 - name: radarr-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: radarr-persistent-storage
               persistentVolumeClaim:
                 claimName: radarr-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - radarr
+                  topologyKey: kubernetes.io/hostname

@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "zwavejs"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/umNNNKBcTE?status=up&msg=OK&ping="
               volumeMounts:
                 - name: zwavejs-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: zwavejs-persistent-storage
               persistentVolumeClaim:
                 claimName: zwavejs-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - zwavejs2mqtt
+                  topologyKey: kubernetes.io/hostname

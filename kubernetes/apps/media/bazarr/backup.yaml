@@ -46,7 +46,7 @@ spec:
                   value: "bazarr"
                 - name: EXCLUDE
                   value: "./log"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/P3aonX8L1u?status=up&msg=OK&ping="
               volumeMounts:
                 - name: bazarr-persistent-storage
@@ -56,3 +56,13 @@ spec:
             - name: bazarr-persistent-storage
               persistentVolumeClaim:
                 claimName: bazarr-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - bazarr
+                  topologyKey: kubernetes.io/hostname

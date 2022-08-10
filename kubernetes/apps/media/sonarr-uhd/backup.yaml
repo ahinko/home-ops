@@ -46,7 +46,7 @@ spec:
                   value: "sonarr-uhd"
                 - name: EXCLUDE
                   value: "./logs 'logs*'"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/8oHnaXDuUQ?status=up&msg=OK&ping="
               volumeMounts:
                 - name: sonarr-uhd-persistent-storage
@@ -56,3 +56,13 @@ spec:
             - name: sonarr-uhd-persistent-storage
               persistentVolumeClaim:
                 claimName: sonarr-uhd-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - sonarr-uhd
+                  topologyKey: kubernetes.io/hostname

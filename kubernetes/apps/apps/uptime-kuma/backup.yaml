@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "uptime-kuma"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/VTpaM3o8tH?status=up&msg=OK&ping="
               volumeMounts:
                 - name: uptime-kuma-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: uptime-kuma-persistent-storage
               persistentVolumeClaim:
                 claimName: uptime-kuma-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - uptime-kuma
+                  topologyKey: kubernetes.io/hostname

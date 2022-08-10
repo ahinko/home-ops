@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "sabnzbd"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/yQyJX4plOV?status=up&msg=OK&ping="
               volumeMounts:
                 - name: sabnzbd-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: sabnzbd-persistent-storage
               persistentVolumeClaim:
                 claimName: sabnzbd-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - sabnzbd
+                  topologyKey: kubernetes.io/hostname

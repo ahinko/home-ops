@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "minecraft"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/Aav8lHlQU1?status=up&msg=OK&ping="
               volumeMounts:
                 - name: minecraft-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: minecraft-persistent-storage
               persistentVolumeClaim:
                 claimName: minecraft-data
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - minecraft-minecraft-bedrock
+                  topologyKey: kubernetes.io/hostname

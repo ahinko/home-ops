@@ -46,7 +46,7 @@ spec:
                   value: "home-assistant"
                 - name: EXCLUDE_ARGS
                   value: "./home-assistant_v2.db ./.vscode ./core"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/4rhMSzKu9d?status=up&msg=OK&ping="
               volumeMounts:
                 - name: hass-persistent-storage
@@ -56,3 +56,13 @@ spec:
             - name: hass-persistent-storage
               persistentVolumeClaim:
                 claimName: home-assistant-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - home-assistant
+                  topologyKey: kubernetes.io/hostname

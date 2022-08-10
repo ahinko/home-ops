@@ -46,7 +46,7 @@ spec:
                   value: "nextcloud"
                 - name: EXCLUDE_ARGS
                   value: "./data"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/COkeiqSMlS?status=up&msg=OK&ping="
               volumeMounts:
                 - name: nextcloud-persistent-storage
@@ -56,3 +56,13 @@ spec:
             - name: nextcloud-persistent-storage
               persistentVolumeClaim:
                 claimName: nextcloud-config
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - nextcloud
+                  topologyKey: kubernetes.io/hostname

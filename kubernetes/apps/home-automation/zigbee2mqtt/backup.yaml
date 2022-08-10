@@ -44,7 +44,7 @@ spec:
                   value: "14d"
                 - name: BACKUP_NAME
                   value: "zigbee2mqtt"
-                - name: HEALTCHECK_URL
+                - name: HEALTHCHECK_URL
                   value: "https://uptime.${SECRET_DOMAIN}/api/push/ZgOfplYizm?status=up&msg=OK&ping="
               volumeMounts:
                 - name: zigbee2mqtt-persistent-storage
@@ -54,3 +54,13 @@ spec:
             - name: zigbee2mqtt-persistent-storage
               persistentVolumeClaim:
                 claimName: zigbee2mqtt-data
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - zigbee2mqtt
+                  topologyKey: kubernetes.io/hostname
