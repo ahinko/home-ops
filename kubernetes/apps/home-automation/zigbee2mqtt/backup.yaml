@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: backup-zigbee2mqtt
-              image: ghcr.io/ahinko/simple-k8s-backup:v4.0.0
+              image: ghcr.io/ahinko/simple-k8s-backup:v4.1.0
               args:
                 - /run.sh
               env:
