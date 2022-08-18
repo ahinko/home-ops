@@ -25,7 +25,7 @@ jobs:
           private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
 
       - name: Create issue if new version of Kubernetes is available
-        if: contains(github.event.head_commit.message, 'update dependency kubernetes/kubernetes')
+        if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
         uses: dacbd/create-issue-action@v1.2.0
         with:
           token: "${{ steps.generate-token.outputs.token }}"

@@ -10,8 +10,8 @@
         'kubernetesVersion: (?<currentValue>.*)',
         '--to (?<currentValue>.*)'
       ],
-      depNameTemplate: 'kubernetes/kubernetes',
-      datasourceTemplate: 'github-releases'
+      depNameTemplate: 'ghcr.io/siderolabs/kubelet',
+      datasourceTemplate: 'docker'
     },
     {
       description: 'Process Talos versions',
@@ -91,10 +91,10 @@
       "description": "Process CRD dependencies",
       "fileMatch": ["kubernetes/.+\\.ya?ml$"],
       "matchStrings": [
-        // GitRepository where 'Git release/tag' matches 'Helm' version, used when crds are in a folder
-        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
         // GitRepository where 'Git release/tag' matches 'Helm' version, used for when crd is a file
         "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n *#?- https:\\/\\/raw.githubusercontent.com\\/([\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*\n",
+        // GitRepository where 'Git release/tag' matches 'Helm' version, used when crds are in a folder
+        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
         // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
         "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)\/(?<currentValue>[^/]+)\/[^/]+\n",
         // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
