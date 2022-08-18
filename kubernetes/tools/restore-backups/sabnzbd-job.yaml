@@ -19,19 +19,19 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: backup-secrets
-                  key: SECRET_MINIO_ACCESS_KEY
+                  key: MINIO_ACCESS_KEY
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: backup-secrets
-                  key: SECRET_MINIO_SECRET_KEY
+                  key: MINIO_SECRET_KEY
             - name: MINIO_HOST
               valueFrom:
                 secretKeyRef:
                   name: backup-secrets
-                  key: SECRET_MINIO_DOMAIN
+                  key: MINIO_HOST
             - name: MINIO_BUCKET
-              value: "backups"
+              value: "backup"
             - name: BACKUP_NAME
               value: "sabnzbd"
           volumeMounts:
