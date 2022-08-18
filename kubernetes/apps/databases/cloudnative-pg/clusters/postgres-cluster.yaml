@@ -33,7 +33,7 @@ spec:
       s3Credentials:
         accessKeyId:
           name: backup-secrets
-          key: SECRET_MINIO_ACCESS_KEY
+          key: MINIO_ACCESS_KEY
         secretAccessKey:
           name: backup-secrets
-          key: SECRET_MINIO_SECRET_KEY
+          key: MINIO_SECRET_KEY

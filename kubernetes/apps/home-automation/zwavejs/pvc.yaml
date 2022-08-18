@@ -1,10 +1,16 @@
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: zwavejs-config
   namespace: home-automation
+  labels:
+    backup.home.lab/enabled: "true"
+    app.kubernetes.io/name: zwavejs2mqtt
+    app.kubernetes.io/instance: zwavejs
+  annotations:
+    backup.home.lab/exclude: ""
+    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/umNNNKBcTE?status=up&msg=OK&ping="
 spec:
   accessModes:
     - ReadWriteMany

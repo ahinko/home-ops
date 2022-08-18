@@ -4,6 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: influxdb-data
   namespace: databases
+  labels:
+    backup.home.lab/enabled: "true"
+    app.kubernetes.io/name: influxdb2
+    app.kubernetes.io/instance: influxdb
+  annotations:
+    backup.home.lab/exclude: ""
+    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/Wm00WAPfx5?status=up&msg=OK&ping="
 spec:
   accessModes:
     - ReadWriteMany

@@ -1,10 +1,16 @@
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: sonarr-config
   namespace: media
+  labels:
+    backup.home.lab/enabled: "true"
+    app.kubernetes.io/name: &name sonarr
+    app.kubernetes.io/instance: *name
+  annotations:
+    backup.home.lab/exclude: "./logs logs*"
+    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/QQaEVLv6IU?status=up&msg=OK&ping="
 spec:
   accessModes:
     - ReadWriteMany
