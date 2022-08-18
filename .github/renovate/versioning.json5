@@ -26,7 +26,6 @@
       "versioning": "loose",
       "matchPackageNames": [
         "plexinc/pms-docker",
-        "reactive-tech/kubegres",
         "raspberrypi/rpi-eeprom",
       ]
     },

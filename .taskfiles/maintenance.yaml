@@ -12,9 +12,10 @@ tasks:
     desc: Set cluster in maintenance mode
     silent: true
     cmds:
-      - task: nfs:pause
-      - flux suspend kustomization apps postgres
-      - kubectl apply -f cluster/apps/databases/postgres/postgres-cluster.yaml
+      - echo "Update to task needed, how do we handle postgres since it relies on minio?"
+      #- task: nfs:pause
+      #- flux suspend kustomization apps postgres
+      #- kubectl apply -f cluster/apps/databases/postgres/postgres-cluster.yaml
 
   maintenance:off:
     desc: Turn off maintenance mode

@@ -136,7 +136,7 @@ kubectx metal
 
 # Apply Cilium quick install
 kubectl apply -f $(dirname "$0")/integrations/cilium-quick-install/quick-install.yaml
-kubectl apply -f $REPO_ROOT/kubernetes/core/kubelet-serving-cert-approver/deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/ha-install.yaml
 
 echo "Waiting for nodes to become ready"
 kubectl wait --for=condition=Ready nodes --all --timeout=600s
