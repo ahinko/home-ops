@@ -25,10 +25,6 @@ nodes:
           ip: 192.168.20.20
     inlinePatch:
       machine:
-        certSANs:
-          - helios
-          - 192.168.20.21
-          - 192.168.20.20
         udev:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
@@ -46,12 +42,6 @@ nodes:
         dhcp: true
         vip:
           ip: 192.168.20.20
-    inlinePatch:
-      machine:
-        certSANs:
-          - eos
-          - 192.168.20.22
-          - 192.168.20.20
   - hostname: hades
     ipAddress: 192.168.20.23
     controlPlane: true
@@ -66,12 +56,6 @@ nodes:
         dhcp: true
         vip:
           ip: 192.168.20.20
-    inlinePatch:
-      machine:
-        certSANs:
-          - hades
-          - 192.168.20.23
-          - 192.168.20.20
   - hostname: poseidon
     ipAddress: 192.168.20.24
     controlPlane: false
@@ -141,11 +125,6 @@ controlPlane:
         key: ${k8sAggregatorCertKey}
       apiServer:
         admissionControl: []
-        certSANs:
-          - 192.168.20.20
-          - 192.168.20.21
-          - 192.168.20.22
-          - 192.168.20.23
         extraArgs:
           anonymous-auth: true
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
@@ -215,8 +194,6 @@ worker:
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
-      certSANs:
-        - 192.168.20.20
       kubelet:
         extraArgs:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
