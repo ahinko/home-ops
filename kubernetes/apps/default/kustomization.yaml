@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - minio
+  - sops.backup-secrets.yaml
