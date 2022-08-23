@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: influxdb
-      tag: 2.3.0-alpine
+      tag: 2.4.0-alpine
 
     env:
       - name: TZ
