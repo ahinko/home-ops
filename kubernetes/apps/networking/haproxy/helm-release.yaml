@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: haproxytech/haproxy-alpine # can be changed to use CE or EE images
-      tag: 2.6.2
+      tag: 2.6.4
 
     kind: Deployment
     replicaCount: 2
