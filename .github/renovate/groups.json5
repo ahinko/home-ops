@@ -92,7 +92,7 @@
             "description": "Node feature discovery docker, chart and CRDs",
             "matchDatasources": [
                 "helm",
-                "github-releases",
+                "kustomize",
                 "docker",
             ],
             "matchPackageNames": [
