@@ -35,7 +35,7 @@ spec:
       configmap.reloader.stakater.com/reload: "nfd-worker-conf"
     image:
       repository: k8s.gcr.io/nfd/node-feature-discovery
-      tag: v0.11.1
+      tag: v0.11.2
 
     worker:
       config:
