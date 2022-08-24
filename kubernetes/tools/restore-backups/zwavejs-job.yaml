@@ -33,10 +33,10 @@ spec:
             - name: MINIO_BUCKET
               value: "backup"
             - name: BACKUP_NAME
-              value: "zwavejs"
+              value: "zwavejs2mqtt"
           volumeMounts:
             - name: zwavejs-persistent-storage
-              mountPath: /zwavejs
+              mountPath: /zwavejs2mqtt
       volumes:
         - name: zwavejs-persistent-storage
           persistentVolumeClaim:
