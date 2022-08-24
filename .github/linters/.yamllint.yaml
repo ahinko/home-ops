@@ -1,14 +1,11 @@
 ---
 ignore: |
   .github/
-  *-crds.yaml
   crds.yaml
-  sops.secrets.yaml
-  sops.cluster-secrets.yaml
-  sops.backup-secrets.yaml
+  **/sops.*.yaml
   infrastructure/integrations/cilium-quick-install/quick-install.yaml
   infrastructure/udm-pro/inventory/host_vars/udmpro.yaml
-  infrastructure/kubernetes/*.yaml
+  infrastructure/kubernetes/
 
 extends: default
 

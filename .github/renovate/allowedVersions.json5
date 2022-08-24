@@ -2,9 +2,10 @@
   packageRules: [
     {
       allowedVersions: '<=1.24', // Talos dependency
-      matchDatasources: ['github-releases'],
+      matchDatasources: ['docker'],
       matchPackageNames: [
-        'kubernetes/kubernetes'
+        'ghcr.io/siderolabs/kubelet',
+        'ghcr.io/k8s-at-home/kubectl'
       ]
     }
   ]

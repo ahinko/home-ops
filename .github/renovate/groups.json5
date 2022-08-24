@@ -87,5 +87,22 @@
             additionalBranchPrefix: '',
             separateMinorPatch: true
         },
+
+        {
+            "description": "Node feature discovery docker, chart and CRDs",
+            "matchDatasources": [
+                "helm",
+                "github-releases",
+                "docker",
+            ],
+            "matchPackageNames": [
+                "node-feature-discovery",
+                "kubernetes-sigs/node-feature-discovery",
+                "k8s.gcr.io/nfd/node-feature-discovery",
+            ],
+            "groupName": "node-feature-discovery",
+            "additionalBranchPrefix": "",
+            "separateMinorPatch": true
+        },
     ]
 }
