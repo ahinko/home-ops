@@ -26,7 +26,7 @@ jobs:
           app_id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
           private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
       - name: Sync Labels
-        uses: EndBug/label-sync@v2.2.0
+        uses: EndBug/label-sync@v2.3.0
         with:
           config-file: .github/labels.yaml
           token: "${{ steps.generate-token.outputs.token }}"
