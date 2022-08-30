@@ -77,7 +77,7 @@ spec:
 
       image:
         repository: bitnami/redis-exporter
-        tag: 1.43.1
+        tag: 1.44.0
         pullPolicy: Always
 
       redisTargetHost: "localhost"
