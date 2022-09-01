@@ -34,7 +34,7 @@ spec:
 
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.27.0
+      tag: 1.27.2
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "zigbee2mqtt-settings"
