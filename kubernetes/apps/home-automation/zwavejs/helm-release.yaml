@@ -33,7 +33,7 @@ spec:
       type: Recreate
     image:
       repository: ghcr.io/zwave-js/zwavejs2mqtt
-      tag: 6.16.0
+      tag: 7.0.0
     env:
       TZ: "${TIMEZONE}"
 
