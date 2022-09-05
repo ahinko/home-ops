@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: louislam/uptime-kuma
-      tag: "1.17.1"
+      tag: "1.18.0"
 
     env:
       TZ: "${TIMEZONE}"
