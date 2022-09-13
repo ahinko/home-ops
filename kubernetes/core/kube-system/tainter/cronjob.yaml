@@ -25,7 +25,7 @@ spec:
             # on that control plane is a lot more powerfull than the other two control planes. So I want to be able to
             # use that extra horse power and run more workloads on the control plane
             - name: tainter
-              image: ghcr.io/k8s-at-home/kubectl:v1.25.0
+              image: ghcr.io/onedr0p/kubernetes-kubectl:1.25.0
               command:
                 - "/bin/sh"
                 - "-c"
