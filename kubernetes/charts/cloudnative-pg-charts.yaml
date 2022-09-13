@@ -7,3 +7,4 @@ metadata:
 spec:
   interval: 1h
   url: https://cloudnative-pg.github.io/charts
+  timeout: 3m

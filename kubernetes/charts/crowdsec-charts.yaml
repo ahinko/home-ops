@@ -5,6 +5,6 @@ metadata:
   name: crowdsec-charts
   namespace: flux-system
 spec:
-  interval: 4h
+  interval: 1h
   url: https://crowdsecurity.github.io/helm-charts/
   timeout: 3m
