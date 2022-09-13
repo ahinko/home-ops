@@ -6,5 +6,6 @@ resources:
   - emqx
   - frigate
   - home-assistant
+  - home-assistant-code
   - zigbee2mqtt
   - zwavejs
