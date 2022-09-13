@@ -36,7 +36,7 @@ spec:
               value: "influxdb2"
           volumeMounts:
             - name: influxdb-storage
-              mountPath: /influxdb
+              mountPath: /influxdb2
       volumes:
         - name: influxdb-storage
           persistentVolumeClaim:
