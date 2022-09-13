@@ -7,7 +7,9 @@ clusterPodNets:
 clusterSvcNets:
   - 10.96.0.0/12
 cniConfig:
-  name: none
+  name: custom
+  urls:
+    - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/kubernetes/integrations/cilium-quick-install/quick-install.yaml
 nodes:
   - hostname: helios
     ipAddress: 192.168.20.21
@@ -119,29 +121,33 @@ controlPlane:
         fs.inotify.max_user_watches: "1048576"
   inlinePatch:
     cluster:
-      aescbcEncryptionSecret: ${aescbcEncryptionKey}
-      aggregatorCA:
-        crt: ${k8sAggregatorCert}
-        key: ${k8sAggregatorCertKey}
       apiServer:
-        admissionControl: []
         extraArgs:
           anonymous-auth: true
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-      ca:
-        crt: ${clusterCert}
-        key: ${clusterCertKey}
+        admissionControl:
+          - name: PodSecurity
+            configuration:
+              apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+              defaults:
+                audit: restricted
+                audit-version: latest
+                enforce: baseline
+                enforce-version: latest
+                warn: restricted
+                warn-version: latest
+              exemptions:
+                namespaces:
+                  - kube-system
+                  - networking
+                  - rook-ceph
+                  - home-automation
+                runtimeClasses: []
+                usernames: []
+              kind: PodSecurityConfiguration
       controllerManager:
         extraArgs:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-      discovery:
-        registries:
-          service:
-            disabled: true
-      etcd:
-        ca:
-          crt: ${etcdCert}
-          key: ${etcdCertKey}
       proxy:
         disabled: true
         extraArgs:
@@ -149,14 +155,7 @@ controlPlane:
       scheduler:
         extraArgs:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-      secret: ${clusterSecret}
-      serviceAccount:
-        key: ${k8sServiceAccountKey}
-      token: ${clusterToken}
     machine:
-      ca:
-        crt: ${machineCert}
-        key: ${machineCertKey}
       kubelet:
         extraArgs:
           feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
@@ -165,7 +164,6 @@ controlPlane:
         disabled: false
         servers:
           - time.cloudflare.com
-      token: ${machineToken}
 worker:
   configPatches:
     - op: add
@@ -179,21 +177,7 @@ worker:
         fs.inotify.max_user_instances: "8192"
         fs.inotify.max_user_watches: "1048576"
   inlinePatch:
-    cluster:
-      aescbcEncryptionSecret: ${aescbcEncryptionKey}
-      ca:
-        crt: ${clusterCert}
-        key: ${clusterCertKey}
-      discovery:
-        registries:
-          service:
-            disabled: true
-      secret: ${clusterSecret}
-      token: ${clusterToken}
     machine:
-      ca:
-        crt: ${machineCert}
-        key: ${machineCertKey}
       kubelet:
         extraArgs:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
@@ -205,4 +189,3 @@ worker:
         disabled: false
         servers:
           - time.cloudflare.com
-      token: ${machineToken}
