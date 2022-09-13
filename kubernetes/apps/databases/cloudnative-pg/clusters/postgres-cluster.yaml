@@ -13,14 +13,30 @@ spec:
     storageClass: rook-cephfs
   superuserSecret:
     name: postgres-superuser
+
   bootstrap:
     initdb:
       database: nextcloud
       owner: nextcloud
       secret:
         name: postgres-nextcloud
-  monitoring:
-    enablePodMonitor: true
+
+    # recovery:
+    #  source: postgres-v1
+
+  # externalClusters:
+  #  - name: postgres-v1
+  #    barmanObjectStore:
+  #      destinationPath: s3://postgresql/
+  #      endpointURL: https://s3.hemma.dev
+  #      s3Credentials:
+  #        accessKeyId:
+  #          name: backup-secrets
+  #          key: MINIO_ACCESS_KEY
+  #        secretAccessKey:
+  #          name: backup-secrets
+  #          key: MINIO_SECRET_KEY
+
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
@@ -28,8 +44,8 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgresql/
-      endpointURL: http://minio.default:9000
-      serverName: postgres-v1
+      endpointURL: https://s3.hemma.dev
+      serverName: postgres-v2
       s3Credentials:
         accessKeyId:
           name: backup-secrets

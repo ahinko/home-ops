@@ -5,4 +5,4 @@ resources:
   # renovate: chart=cloudnative-pg
   - https://raw.githubusercontent.com/cloudnative-pg/charts/cloudnative-pg-v0.14.0/charts/cloudnative-pg/templates/crds/crds.yaml
   - helm-release.yaml
-  - clusters
+  #- clusters
