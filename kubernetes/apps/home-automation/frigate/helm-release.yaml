@@ -8,31 +8,21 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: *app
-      version: 8.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 60m
-  install:
-    createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
   dependsOn:
+    - name: emqx
+      namespace: home-automation
     - name: intel-gpu-plugin
       namespace: kube-system
     - name: node-feature-discovery
       namespace: kube-system
-  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/frigate/values.yaml
   values:
-    global:
-      nameOverride: *app
     image:
       repository: docker.io/blakeblackshear/frigate
       tag: 0.10.1-amd64
@@ -96,9 +86,11 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /dev/bus/usb
+        hostPathType: Directory
+        mountPath: /dev/bus/usb
 
     probes:
-      liveness:
+      liveness: &probes
         enabled: true
         custom: true
         spec:
@@ -109,26 +101,9 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 1
           failureThreshold: 3
-      readiness:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
+      readiness: *probes
       startup:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          failureThreshold: 30
-          periodSeconds: 10
+        enabled: false
 
     resources:
       requests:

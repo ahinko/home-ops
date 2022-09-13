@@ -37,6 +37,11 @@ spec:
       repository: k8s.gcr.io/nfd/node-feature-discovery
       tag: v0.11.2
 
+    master:
+      tolerations: {}
+      affinity:
+        nodeAffinity: {}
+
     worker:
       config:
         core:

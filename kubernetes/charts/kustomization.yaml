@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - bitnami-charts.yaml
+  - bjw-s-charts.yaml
   - cilium-charts.yaml
   - cloudnative-pg-charts.yaml
   - crowdsec-charts.yaml
@@ -17,7 +18,6 @@ resources:
   - ingress-nginx.yaml
   - itzg-minecraft-server-charts.yaml
   - jetstack-charts.yaml
-  - k8s-at-home-charts.yaml
   - kubernetes-sigs-descheduler-charts.yaml
   - kubernetes-sigs-metrics-server-charts.yaml
   - kubernetes-sigs-node-feature-discovery-charts.yaml

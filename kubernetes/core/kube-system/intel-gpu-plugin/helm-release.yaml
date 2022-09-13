@@ -8,13 +8,13 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: intel-gpu-plugin
-      version: 4.4.2
+      chart: app-template
+      version: 0.1.1
+      interval: 60m
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 60m
   install:
     createNamespace: true
     remediation: # perform remediation when helm install fails
@@ -24,22 +24,28 @@ spec:
       retries: 3
       remediateLastFailure: true # remediate the last failure, when no retries remain
     cleanupOnFail: true
-  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/intel-gpu-plugin/values.yaml
   values:
-    global:
-      nameOverride: *app
+    controller:
+      type: daemonset
+      strategy: RollingUpdate
+
     image:
-      repository: intel/intel-gpu-plugin
+      repository: docker.io/intel/intel-gpu-plugin
       tag: 0.24.0
+
     env:
       TZ: "${TIMEZONE}"
+
+    args:
+      - -shared-dev-num
+      - "2"
 
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: feature.node.kubernetes.io/pci-0300_8086.present
+                - key: feature.node.kubernetes.io/custom-intel-gpu
                   operator: In
                   values:
                     - "true"
@@ -50,3 +56,39 @@ spec:
         cpu: "100m"
       limits:
         memory: "128Mi"
+
+    service:
+      main:
+        enabled: false
+
+    ingress:
+      main:
+        enabled: false
+
+    persistence:
+      devfs:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/dri
+        hostPathType: Directory
+        readOnly: true
+      sysfs:
+        enabled: true
+        type: hostPath
+        hostPath: /sys/class/drm
+        hostPathType: Directory
+        readOnly: true
+      kubeletsockets:
+        enabled: true
+        type: hostPath
+        hostPathType: Directory
+        hostPath: /var/lib/kubelet/device-plugins
+
+    # TODO(intel-gpu-plugin): Write probes to check for something to tell if it's working
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: false

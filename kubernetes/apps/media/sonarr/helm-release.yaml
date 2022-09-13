@@ -8,32 +8,33 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: *app
-      version: 16.3.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 60m
-  install:
-    createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
-  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/sonarr/values.yaml
   values:
-    global:
-      nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/sonarr
-      tag: v3.0.9.1549
-
+      repository: ghcr.io/onedr0p/sonarr
+      tag: 3.0.9.1549
     env:
       TZ: "${TIMEZONE}"
+      PUSHOVER_DEBUG: "false"
+      PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+      SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 8989
+      SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+      SONARR__LOG_LEVEL: info
+    envFrom:
+      - secretRef:
+          name: *app
+    service:
+      main:
+        ports:
+          http:
+            port: *port
 
     ingress:
       main:
@@ -44,26 +45,42 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "television-classic"
         hosts:
-          - host: "sonarr.${SECRET_DOMAIN}"
+          - host: *host
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "sonarr.${SECRET_DOMAIN}"
+              - *host
+
+    podSecurityContext:
+      supplementalGroups:
+        - 65539
 
     persistence:
       config:
         enabled: true
-        existingClaim: "sonarr-config"
+        existingClaim: sonarr-config
       media:
         enabled: true
         mountPath: "/media"
         existingClaim: media-nfs
+      scripts:
+        enabled: true
+        type: configMap
+        name: sonarr-pushover
+        subPath: pushover-notify.sh
+        mountPath: /scripts/pushover-notify.sh
+        defaultMode: 0775
+        readOnly: true
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: sonarr-pushover
+      secret.reloader.stakater.com/reload: *app
 
     resources:
       requests:
-        memory: 300M
-        cpu: 20m
+        cpu: 10m
+        memory: 250Mi
       limits:
-        memory: 2000M
+        memory: 2000Mi

@@ -8,32 +8,35 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: *app
-      version: 9.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 60m
-  install:
-    createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
-  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/sabnzbd/values.yaml
   values:
-    global:
-      nameOverride: *app
-    controllerType: deployment
     image:
-      repository: ghcr.io/k8s-at-home/sabnzbd
-      tag: v3.6.1
+      repository: ghcr.io/onedr0p/sabnzbd
+      tag: 3.6.1
     env:
       TZ: "${TIMEZONE}"
+      SABNZBD__PORT: &port 8080
+      SABNZBD__HOST_WHITELIST_ENTRIES: >-
+        sabnzbd,
+        sabnzbd.media,
+        sabnzbd.default.svc,
+        sabnzbd.default.svc.cluster,
+        sabnzbd.default.svc.cluster.local,
+        sabnzbd.${SECRET_DOMAIN}
+    envFrom:
+      - secretRef:
+          name: *app
+    service:
+      main:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         enabled: true
@@ -43,31 +46,35 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "download"
         hosts:
-          - host: "sabnzbd.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "sabnzbd.${SECRET_DOMAIN}"
+              - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
     persistence:
       config:
         enabled: true
-        existingClaim: "sabnzbd-config"
-
-      tempdl:
-        enabled: true
-        type: emptyDir
-        mountPath: /downloads
-
+        existingClaim: sabnzbd-config
       media:
         enabled: true
         mountPath: "/media"
         existingClaim: media-nfs
-
+      incomplete:
+        enabled: true
+        type: emptyDir
+        mountPath: "/downloads"
     resources:
       requests:
+        cpu: 10m
         memory: 250Mi
-        cpu: 250m
       limits:
-        memory: 7500Mi
+        memory: 8000Mi

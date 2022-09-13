@@ -2,35 +2,23 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app zwavejs
+  name: zwavejs
   namespace: home-automation
 spec:
   interval: 60m
   chart:
     spec:
-      chart: zwavejs2mqtt
-      version: 5.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 60m
-  install:
-    createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
-  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/zwavejs2mqtt/values.yaml
+  dependsOn:
+    - name: node-feature-discovery
+      namespace: kube-system
   values:
-    global:
-      fullnameOverride: *app
-
-    strategy:
-      type: Recreate
     image:
       repository: ghcr.io/zwave-js/zwavejs2mqtt
       tag: 7.1.0
@@ -42,7 +30,7 @@ spec:
         ports:
           http:
             enabled: true
-            port: 8091
+            port: &port 8091
           websocket:
             enabled: true
             port: 3000
@@ -56,13 +44,13 @@ spec:
           hajimari.io/icon: "zwave"
           hajimari.io/appName: "Z-wave JS"
         hosts:
-          - host: zwavejs.${SECRET_DOMAIN}
+          - host: &host zwavejs.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "zwavejs.${SECRET_DOMAIN}"
+              - *host
 
     # Privileged may be required if USB controller is accessed directly through the host machine
     securityContext:
@@ -94,3 +82,19 @@ spec:
         cpu: 30m
       limits:
         memory: 512M
+
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false

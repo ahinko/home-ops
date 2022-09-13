@@ -8,38 +8,17 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: *app
-      version: 13.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 60m
-  install:
-    createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
   dependsOn:
     - name: emqx
       namespace: home-automation
-  # Values link: https://github.com/k8s-at-home/charts/blob/master/charts/stable/home-assistant/values.yaml
   values:
-    global:
-      nameOverride: *app
-
-    replicaCount: 1
-    strategy:
-      type: RollingUpdate
-      rollingUpdate:
-        maxSurge: 2
-        maxUnavailable: 0
-
-    controllerType: deployment
     image:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2022.9.2
@@ -56,6 +35,8 @@ spec:
           sonos:
             enabled: true
             port: 1400
+          http:
+            port: 8123
 
     ingress:
       main:
@@ -67,13 +48,13 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "home-assistant"
         hosts:
-          - host: "hass.${SECRET_DOMAIN}"
+          - host: &host "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "hass.${SECRET_DOMAIN}"
+              - *host
 
     prometheus:
       serviceMonitor:
@@ -90,38 +71,3 @@ spec:
         memory: 400M
       limits:
         memory: 2500M
-
-    addons:
-      codeserver:
-        enabled: true
-        image:
-          repository: codercom/code-server
-          tag: 4.7.0
-        workingDir: "/config"
-        args:
-          - --auth
-          - "none"
-          - --user-data-dir
-          - "/config/.vscode"
-          - --extensions-dir
-          - "/config/.vscode"
-        ingress:
-          enabled: true
-          ingressClassName: "nginx"
-          annotations:
-            hajimari.io/enable: "true"
-            hajimari.io/icon: "microsoft-visual-studio-code"
-            hajimari.io/appName: "VSCode"
-          hosts:
-            - host: "code.${SECRET_DOMAIN}"
-              paths:
-                - path: /
-                  pathType: Prefix
-
-          tls:
-            - hosts:
-                - "code.${SECRET_DOMAIN}"
-
-        volumeMounts:
-          - name: config
-            mountPath: /config
