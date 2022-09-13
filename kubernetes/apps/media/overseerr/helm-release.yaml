@@ -1,0 +1,61 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app overseerr
+  namespace: media
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: app-template
+      version: 0.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 60m
+  values:
+    image:
+      repository: ghcr.io/sct/overseerr
+      tag: 1.29.1
+
+    env:
+      TZ: "${TIMEZONE}"
+      LOG_LEVEL: "warn"
+      PORT: 80
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          #external-dns.home.lab/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "movie-search"
+        hosts:
+          - host: &host "overseerr.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: overseerr-config
+        mountPath: /app/config
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 250M
+      limits:
+        memory: 500M

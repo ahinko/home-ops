@@ -6,6 +6,7 @@ resources:
   - _pvc
   - bazarr
   - lidarr
+  - overseerr
   - radarr
   - sabnzbd
   - sonarr
