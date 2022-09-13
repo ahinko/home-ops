@@ -51,9 +51,9 @@ ffmpeg:
 # NOTE: Can be overridden at the camera level
 detect:
   # Optional: width of the frame for the input with the detect role (default: shown below)
-  width: 1920
+  width: 1024
   # Optional: height of the frame for the input with the detect role (default: shown below)
-  height: 1080
+  height: 576
   # Optional: desired fps for your camera for the input with the detect role (default: shown below)
   # NOTE: Recommended value of 5. Ideally, try and reduce your FPS on the camera.
   fps: 5
@@ -190,19 +190,23 @@ cameras:
       inputs:
         # Required: the path to the stream
         # NOTE: Environment variables that begin with 'FRIGATE_' may be referenced in {}
-        - path: rtsps://192.168.0.1:7441/lGu1g2SYbl1bOuvU?enableSrtp
+        - path: rtsps://192.168.0.1:7441/e6iNOj6HFIiZeMU3?enableSrtp
           # Required: list of roles for this stream. valid values are: detect,record,clips,rtmp
           # NOTICE: In addition to assigning the record, clips, and rtmp roles,
           # they must also be enabled in the camera config.
           roles:
             - record
 
-        - path: rtsps://192.168.0.1:7441/fm9zsQYZQdve1qZN?enableSrtp
+        - path: rtsps://192.168.0.1:7441/osXyFUEV6IvGXwD3?enableSrtp
           # Required: list of roles for this stream. valid values are: detect,record,clips,rtmp
           # NOTICE: In addition to assigning the record, clips, and rtmp roles,
           # they must also be enabled in the camera config.
           roles:
             - detect
+
+    detect:
+      width: 1280
+      height: 720
 
     # Optional: timeout for highest scoring image before allowing it
     # to be replaced by a newer image. (default: shown below)
@@ -233,8 +237,8 @@ cameras:
           max_area: 1000000
           min_score: 0.4
           threshold: 0.7
-          mask:
-            - 1469,1080,1920,1080,1920,637,1676,634
+          #mask:
+          #- 1469,1080,1920,1080,1920,637,1676,634
 
   backyard_livingroom:
     ffmpeg:
