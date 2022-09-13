@@ -31,5 +31,5 @@ jobs:
           token: "${{ steps.generate-token.outputs.token }}"
           title: "🚀 Upgrade Kubernetes"
           body: |
-            A new version of Kubernetes has been merged in to the main branch. Please run the upgrade command.
+            A new version of Kubernetes has been merged in to the main branch. Please run the upgrade command after you have checked that each app on the cluster supports the new version, (mainly databases and rook).
           assignees: ahinko

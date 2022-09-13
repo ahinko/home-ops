@@ -47,16 +47,6 @@
       datasourceTemplate: 'helm'
     },
     {
-      description: 'Process Kubelet Serving Cert Approver',
-      fileMatch: [
-        'kubernetes/management/sidero-system/serverclasses/.+\\.yaml$'
-      ],
-      matchStrings: [
-        'depName=(?<depName>.*?)\n ([a-z0-9 .\\-"://]*)/(?<currentValue>.*)/deploy'
-      ],
-      datasourceTemplate: 'docker'
-    },
-    {
       description: 'Process UDM-PRO dependencies in Ansible playbook + role',
       fileMatch: [
         'infrastructure/udm-pro/.+\\.yaml$'
@@ -82,6 +72,7 @@
         "kubernetes/.+\\.yaml$",
       ],
       "matchStrings": [
+        "renovate: datasource=(?<datasource>.*)\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n",
         "renovate\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n",
         "renovate\n  - https:\/\/github\\.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>[a-z0-9.]*)",
       ],
