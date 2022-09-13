@@ -34,5 +34,5 @@ spec:
 
                   if echo "$CURRENT" | grep -q 'NoSchedule'; then
                     echo "Lets remove NoSchedule taint!"
-                    /usr/local/bin/kubectl taint node helios node-role.kubernetes.io/master:NoSchedule-
+                    /usr/local/bin/kubectl taint node helios node-role.kubernetes.io/control-plane:NoSchedule-
                   fi

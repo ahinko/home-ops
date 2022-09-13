@@ -9,7 +9,7 @@ spec:
   # renovate: datasource=github-releases
   url: https://github.com/alex1989hu/kubelet-serving-cert-approver.git
   ref:
-    tag: v0.5.1
+    tag: v0.6.1
   ignore: |
     # exclude all
     /*

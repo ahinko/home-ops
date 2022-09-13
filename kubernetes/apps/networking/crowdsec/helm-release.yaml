@@ -83,8 +83,3 @@ spec:
         # -- Persistent volume for config folder. Stores local config (parsers, scenarios etc.)
         config:
           enabled: false
-      # tolerations:
-      #   - effect: NoSchedule
-      #     operator: Exists
-      #   - effect: NoExecute
-      #     operator: Exists

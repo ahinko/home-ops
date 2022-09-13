@@ -121,11 +121,6 @@ spec:
                     values:
                       - controller
               topologyKey: kubernetes.io/hostname
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-        - effect: NoExecute
-          operator: Exists
       podAnnotations:
         configmap.reloader.stakater.com/reload: "cloudflare-ip-ranges,ingress-nginx-controller"
       resources:

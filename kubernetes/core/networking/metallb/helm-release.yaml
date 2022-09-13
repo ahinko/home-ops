@@ -35,11 +35,6 @@ spec:
           memory: 25Mi
           cpu: 25m
     speaker:
-      tolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
       logLevel: warn
       resources:
         limits:
