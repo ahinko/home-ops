@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - _pvc
-  - bazarr
   - lidarr
   - overseerr
   - radarr
