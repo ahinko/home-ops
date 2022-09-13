@@ -12,4 +12,5 @@ resources:
   - media
   - monitoring
   - networking
+  - selfhosted
   - testing
