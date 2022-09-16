@@ -41,7 +41,7 @@ tasks:
     cmds:
       - helm repo add cilium https://helm.cilium.io/
       - helm repo update cilium
-      - helm template --version 1.12.1 cilium/cilium -f ./infrastructure/kubernetes/integrations/cilium-quick-install/values.yaml > ./infrastructure/kubernetes/integrations/cilium-quick-install/quick-install.yaml -n kube-system
+      - helm template --version 1.12.2 cilium/cilium -f ./infrastructure/kubernetes/integrations/cilium-quick-install/values.yaml > ./infrastructure/kubernetes/integrations/cilium-quick-install/quick-install.yaml -n kube-system
     silent: true
 
   provision:
