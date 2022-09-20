@@ -22,7 +22,7 @@ do
     echo "-----------------------------------"
     echo "Upgrading Talos on IP $IP"
 
-    talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.2.2
+    talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.2.3
 
     echo "Sleeping and waiting for node to become ready"
     sleep 10
