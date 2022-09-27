@@ -28,7 +28,7 @@ spec:
   #  - name: postgres-v1
   #    barmanObjectStore:
   #      destinationPath: s3://postgresql/
-  #      endpointURL: https://s3.hemma.dev
+  #      endpointURL: http://minio.default:9000
   #      s3Credentials:
   #        accessKeyId:
   #          name: backup-secrets
@@ -44,7 +44,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgresql/
-      endpointURL: https://s3.hemma.dev
+      endpointURL: http://minio.default:9000
       serverName: postgres-v2
       s3Credentials:
         accessKeyId:
