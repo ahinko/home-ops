@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app reloader
-  namespace: kube-system
+  namespace: &namespace kube-system
 spec:
   interval: 60m
   chart:
@@ -26,7 +26,13 @@ spec:
     cleanupOnFail: true
   # Values link: https://github.com/stakater/Reloader/blob/master/deployments/kubernetes/chart/reloader/values.yaml
   values:
-    global:
-      nameOverride: *app
     env:
       TZ: "${TIMEZONE}"
+
+    fullnameOverride: *app
+    reloader:
+      reloadStrategy: annotations
+
+    podMonitor:
+      enabled: true
+      namespace: *namespace

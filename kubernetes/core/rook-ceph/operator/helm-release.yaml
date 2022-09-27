@@ -27,10 +27,16 @@ spec:
   values:
     crds:
       enabled: false
+
+    pspEnable: false
+
     global:
       nameOverride: *app
     env:
       TZ: "${TIMEZONE}"
+
+    monitoring:
+      enabled: true
 
     csi:
       kubeletDirPath: /var/lib/kubelet

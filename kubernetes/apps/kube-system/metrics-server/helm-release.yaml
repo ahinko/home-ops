@@ -27,3 +27,7 @@ spec:
   # Values link: https://github.com/kubernetes-sigs/metrics-server/blob/master/charts/metrics-server/values.yaml
   values:
     nameOverride: *app
+    metrics:
+      enabled: true
+    serviceMonitor:
+      enabled: true

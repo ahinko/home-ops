@@ -52,6 +52,8 @@ spec:
     txtOwnerId: "default"
     domainFilters:
       - "${SECRET_DOMAIN}"
+    serviceMonitor:
+      enabled: true
     resources:
       requests:
         memory: 100Mi

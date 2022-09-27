@@ -37,12 +37,15 @@ spec:
       leaseDuration: 15s
       renewDeadline: 10s
       retryPeriod: 2s
-      resourceLock: "leases"
-      resourceName: "descheduler"
-      resourceNamescape: "kube-system"
+      resourceLock: leases
+      resourceName: descheduler
+      resourceNamescape: kube-system
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "descheduler"
+
+    serviceMonitor:
+      enabled: true
 
     resources:
       requests:
@@ -62,8 +65,7 @@ spec:
         RemovePodsViolatingNodeAffinity:
           enabled: true
           params:
-            nodeAffinityType:
-              - requiredDuringSchedulingIgnoredDuringExecution
+            nodeAffinityType: ["requiredDuringSchedulingIgnoredDuringExecution"]
 
         RemovePodsViolatingTopologySpreadConstraint:
           enabled: true
@@ -83,8 +85,7 @@ spec:
           params:
             failedPods:
               includingInitContainers: true
-              excludeOwnerKinds:
-                - "Job"
+              excludeOwnerKinds: ["Job"]
               minPodLifetimeSeconds: 3600
 
         RemovePodsHavingTooManyRestarts:

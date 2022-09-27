@@ -56,9 +56,10 @@ spec:
     persistence:
       enabled: true
       existingClaim: minio-nfs
-    prometheus:
-      servicemonitor:
-        enabled: false
+
+    metrics:
+      serviceMonitor:
+        enabled: true
 
     podSecurityContext:
       enabled: true

@@ -5,4 +5,10 @@ resources:
   - namespace.yaml
   - botkube
   #- goldilocks
+  - grafana
+  - kube-prometheus-stack
+  - loki
+  - speedtest-exporter
+  - thanos
+  - vector
   #- vpa
