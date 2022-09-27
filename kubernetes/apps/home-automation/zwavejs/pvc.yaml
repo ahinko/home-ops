@@ -6,7 +6,7 @@ metadata:
   namespace: home-automation
   labels:
     backup.home.lab/enabled: "true"
-    app.kubernetes.io/name: zwavejs2mqtt
+    app.kubernetes.io/name: zwavejs
     app.kubernetes.io/instance: zwavejs
   annotations:
     backup.home.lab/exclude: ""
