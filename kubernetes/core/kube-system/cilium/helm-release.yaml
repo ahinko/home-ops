@@ -88,6 +88,7 @@ spec:
         rollOutPods: true
         ingress:
           enabled: true
+          className: "nginx"
           hosts:
             - "hubble.${SECRET_DOMAIN}"
           tls:
