@@ -29,8 +29,6 @@ tasks:
     desc: Pause all Helm Releases that rely on NFS storage
     silent: true
     cmds:
-      - flux suspend hr -n media bazarr
-      - kubectl scale -n media deploy/bazarr --replicas 0
       - flux suspend hr -n media lidarr
       - kubectl scale -n media deploy/lidarr --replicas 0
       - flux suspend hr -n media radarr
@@ -64,5 +62,3 @@ tasks:
       - kubectl scale -n media deploy/sonarr --replicas 1
       - flux resume hr -n media sonarr-uhd
       - kubectl scale -n media deploy/sonarr-uhd --replicas 1
-      - flux resume hr -n media bazarr
-      - kubectl scale -n media deploy/bazarr --replicas 1
