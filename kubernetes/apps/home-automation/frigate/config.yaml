@@ -9,6 +9,9 @@ logger:
   # Available log levels are: debug, info, warning, error, critical
   default: error
 
+database:
+  path: /data/frigate.db
+
 detectors:
   coral:
     type: edgetpu
@@ -17,7 +20,7 @@ detectors:
 # Optional: birdseye configuration
 birdseye:
   # Optional: Enable birdseye view (default: shown below)
-  enabled: True
+  enabled: true
   # Optional: Width of the output resolution (default: shown below)
   width: 1280
   # Optional: Height of the output resolution (default: shown below)
@@ -40,7 +43,7 @@ ffmpeg:
     - -hwaccel_output_format
     - yuv420p
 
-  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
+  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -timeout 5000000 -use_wallclock_as_timestamps 1
 
   output_args:
     # Optional: output args for detect streams (default: shown below)
@@ -59,7 +62,7 @@ detect:
   fps: 5
   # Optional: enables detection for the camera (default: True)
   # This value can be set via MQTT and will be updated in startup based on retained value
-  enabled: True
+  enabled: true
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
   max_disappeared: 50
 
@@ -119,7 +122,7 @@ motion:
 # NOTE: Can be overridden at the camera level
 record:
   # Optional: Enable recording (default: shown below)
-  enabled: True
+  enabled: true
   # Optional: Number of days to retain recordings regardless of events (default: shown below)
   # NOTE: This should be set to 0 and retention should be defined in events section below
   #       if you only want to retain recordings of events.
@@ -129,10 +132,6 @@ record:
 
   # Optional: Event recording settings
   events:
-    # Optional: Maximum length of time to retain video during long events. (default: shown below)
-    # NOTE: If an object is being tracked for longer than this amount of time, the retained recordings
-    #       will be the last x seconds of the event unless retain_days under record is > 0.
-    max_seconds: 300
     # Optional: Number of seconds before the event to include (default: shown below)
     pre_capture: 3
     # Optional: Number of seconds after the event to include (default: shown below)
@@ -152,13 +151,13 @@ record:
 snapshots:
   # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
   # This value can be set via MQTT and will be updated in startup based on retained value
-  enabled: True
+  enabled: true
   # Optional: print a timestamp on the snapshots (default: shown below)
-  timestamp: False
+  timestamp: false
   # Optional: draw bounding box on the snapshots (default: shown below)
-  bounding_box: True
+  bounding_box: true
   # Optional: crop the snapshot (default: shown below)
-  crop: False
+  crop: false
   # Optional: Camera override for retention settings (default: global values)
   retain:
     # Required: Default retention days (default: shown below)
@@ -168,7 +167,7 @@ snapshots:
 # NOTE: Can be overridden at the camera level
 rtmp:
   # Optional: Enable the RTMP stream (default: True)
-  enabled: False
+  enabled: false
 
 # Optional: Live stream configuration for WebUI
 # NOTE: Can be overridden at the camera level
@@ -220,11 +219,11 @@ cameras:
       # Optional: Enable publishing snapshot via mqtt for camera (default: shown below)
       # NOTE: Only applies to publishing image data to MQTT via 'frigate/<camera_name>/<object_name>/snapshot'.
       # All other messages will still be published.
-      enabled: True
+      enabled: true
       # Optional: print a timestamp on the snapshots (default: shown below)
-      timestamp: False
+      timestamp: false
       # Optional: draw bounding box on the snapshots (default: shown below)
-      bounding_box: True
+      bounding_box: true
       # Optional: crop the snapshot (default: shown below)
       crop: False
 
@@ -253,10 +252,10 @@ cameras:
     best_image_timeout: 10
 
     mqtt:
-      enabled: True
-      timestamp: False
-      bounding_box: True
-      crop: False
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
 
   backyard_terrace:
     ffmpeg:
@@ -271,10 +270,10 @@ cameras:
     best_image_timeout: 10
 
     mqtt:
-      enabled: True
-      timestamp: False
-      bounding_box: True
-      crop: False
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
 
     objects:
       track:
@@ -285,8 +284,6 @@ cameras:
           max_area: 1000000
           min_score: 0.4
           threshold: 0.7
-          mask:
-            - 87,770,204,1022,844,668,837,552,727,505
 
   east_side:
     ffmpeg:
@@ -304,14 +301,14 @@ cameras:
       filters:
         person:
           mask:
-            - 932,1080,59,1080,87,636,909,581
-            - 1920,1080,1920,594,1367,1080
+            - 1024,576,1024,576,1024,291,519,463,512,576
+            - 0,576,527,576,534,226,171,240,0,262
 
     mqtt:
-      enabled: True
-      timestamp: False
-      bounding_box: True
-      crop: False
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
 
   utility_entrance:
     ffmpeg:
@@ -326,10 +323,10 @@ cameras:
     best_image_timeout: 10
 
     mqtt:
-      enabled: True
-      timestamp: False
-      bounding_box: True
-      crop: False
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
 
   frontyard_garage:
     ffmpeg:
@@ -344,7 +341,7 @@ cameras:
     best_image_timeout: 10
 
     mqtt:
-      enabled: True
-      timestamp: False
-      bounding_box: True
-      crop: False
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
