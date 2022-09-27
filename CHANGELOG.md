@@ -2,6 +2,17 @@
 
 I'm not going to semver this repo since it wont work very well for this type of repo. I do however sometime wonder why others with similar repos makes the decitions that they do. Why they for example replaces one thing with another. So I will use this changelog to highlight and motivate some of the changes I make.
 
+## 2022-09-26
+### Added
+- Added monitoring using Prometheus, Grafana, Thanos & Loki. Will add more later on.
+- Deployed [Radicale](https://radicale.org). Still testing this. Will probably replace Nextcloud Caldav with this soon.
+
+### Changed
+- Upgraded Kubernetes to version 1.25.2
+- Upgraded Talos to version 1.2.3
+- Moved Postgres to a Docker container on my NAS due to [Cloudnative-PG](https://cloudnative-pg.io/) currently not supporting Kubernetes version 1.25.x. Will move back as soon as [Cloudnative-PG](https://cloudnative-pg.io/) releases a compatible version.
+- Migrated away from k8s-at-home Helm charts and Docker images since those repos has been archived/deprecated.
+
 ## 2022-08-05
 
 ### Fixed
