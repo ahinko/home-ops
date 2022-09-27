@@ -24,10 +24,6 @@ do
 
     talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.2.3
 
-    echo "Sleeping and waiting for node to become ready"
-    sleep 10
-    kubectl wait --for=condition=Ready nodes --all --timeout=600s
-
     HEALTH=false
     while [ "$HEALTH" == false ]
     do
