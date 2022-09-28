@@ -4,7 +4,7 @@ version: "3.5"
 services:
   plex:
     container_name: plex
-    image: plexinc/pms-docker:1.28.2.6151-914ddd2b3
+    image: plexinc/pms-docker:1.29.0.6244-819d3678c
     restart: always
     ports:
       - 32400:32400/tcp
