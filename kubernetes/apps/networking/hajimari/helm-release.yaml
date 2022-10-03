@@ -30,7 +30,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/toboshii/hajimari
-      tag: v0.2.0
+      tag: v0.3.1
     env:
       TZ: "${TIMEZONE}"
     hajimari:
