@@ -103,118 +103,83 @@ nodes:
         udev:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
 controlPlane:
-  configPatches:
-    - op: add
-      path: /machine/kubelet/extraArgs
-      value:
-        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-        rotate-server-certificates: "true"
-    - op: add
-      path: /cluster/proxy
-      value:
-        disabled: true
-    - op: add
-      path: /machine/sysctls
-      value:
-        fs.inotify.max_user_instances: "8192"
-        fs.inotify.max_user_watches: "1048576"
-  inlinePatch:
-    cluster:
-      apiServer:
-        extraArgs:
-          anonymous-auth: true
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-        admissionControl:
-          - name: PodSecurity
-            configuration:
-              apiVersion: pod-security.admission.config.k8s.io/v1alpha1
-              defaults:
-                audit: restricted
-                audit-version: latest
-                enforce: baseline
-                enforce-version: latest
-                warn: restricted
-                warn-version: latest
-              exemptions:
-                namespaces:
-                  - kube-system
-                  - networking
-                  - rook-ceph
-                  - home-automation
-                  - monitoring
-                runtimeClasses: []
-                usernames: []
-              kind: PodSecurityConfiguration
-      controllerManager:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-      proxy:
-        disabled: true
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-      scheduler:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-    machine:
-      kubelet:
-        extraArgs:
-          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-          rotate-server-certificates: "true"
-      files:
-        - content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
-          op: create
-      install:
-        extraKernelArgs:
-          - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
-      logging:
-        destinations:
-          - endpoint: "udp://vector.${ingressDomain}:6051/"
-            format: json_lines
-      time:
-        disabled: false
-        servers:
-          - time.cloudflare.com
+  patches:
+    - |-
+      cluster:
+        allowSchedulingOnMasters: false
+        apiServer:
+          extraArgs:
+            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+        controllerManager:
+          extraArgs:
+            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+        discovery:
+          registries:
+            service:
+              disabled: true
+        proxy:
+          disabled: true
+          extraArgs:
+            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+        scheduler:
+          extraArgs:
+            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+
+      machine:
+        files:
+          - content: |
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+            path: /var/cri/conf.d/allow-unpriv-ports.toml
+            op: create
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+            rotate-server-certificates: "true"
+        install:
+          extraKernelArgs:
+            - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
+        logging:
+          destinations:
+            - endpoint: "udp://vector.${ingressDomain}:6051/"
+              format: json_lines
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+
 worker:
-  configPatches:
-    - op: add
-      path: /machine/kubelet/extraArgs
-      value:
-        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-        rotate-server-certificates: "true"
-    - op: add
-      path: /machine/sysctls
-      value:
-        fs.inotify.max_user_instances: "8192"
-        fs.inotify.max_user_watches: "1048576"
-  inlinePatch:
-    machine:
-      kubelet:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-          rotate-server-certificates: "true"
-      sysctls:
-        fs.inotify.max_user_instances: "8192"
-        fs.inotify.max_user_watches: "1048576"
-      time:
-        disabled: false
-        servers:
-          - time.cloudflare.com
-      files:
-        - content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
-          op: create
-      install:
-        extraKernelArgs:
-          - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
-      logging:
-        destinations:
-          - endpoint: "udp://vector.${ingressDomain}:6051/"
-            format: json_lines
+  patches:
+    - |-
+      machine:
+        files:
+          - content: |
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+            path: /var/cri/conf.d/allow-unpriv-ports.toml
+            op: create
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+            rotate-server-certificates: "true"
+        install:
+          extraKernelArgs:
+            - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
+        logging:
+          destinations:
+            - endpoint: "udp://vector.${ingressDomain}:6051/"
+              format: json_lines
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
