@@ -19,7 +19,7 @@ install_kernel_tools: no
 udm_kernel_tools_autoboot: yes
 
 # renovate depName=fabianishere/udm-kernel-tools
-udm_kernel_tool_version: v1.1.5
+udm_kernel_tool_version: v1.1.6
 udm_kernel_tool_download_uri: "https://github.com/fabianishere/udm-kernel-tools/releases/download/v{{ udm_kernel_tool_version }}/udm-kernel-tools_{{ udm_kernel_tool_version }}_arm64.deb"
 
 masquerade_nat_rules: []
