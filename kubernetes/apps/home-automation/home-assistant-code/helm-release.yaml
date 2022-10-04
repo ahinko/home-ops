@@ -49,10 +49,6 @@ spec:
       main:
         enabled: true
         ingressClassName: "nginx"
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "microsoft-visual-studio-code"
-          hajimari.io/appName: "VSCode"
         hosts:
           - host: &host "code.${SECRET_DOMAIN}"
             paths:

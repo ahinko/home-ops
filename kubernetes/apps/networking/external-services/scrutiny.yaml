@@ -33,9 +33,6 @@ kind: Ingress
 metadata:
   name: scrutiny
   namespace: networking
-  annotations:
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "harddisk"
   labels:
     app.kubernetes.io/instance: scrutiny
     app.kubernetes.io/name: scrutiny

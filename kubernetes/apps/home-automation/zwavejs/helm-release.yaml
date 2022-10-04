@@ -39,10 +39,6 @@ spec:
       main:
         enabled: true
         ingressClassName: "nginx"
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "zwave"
-          hajimari.io/appName: "Z-wave JS"
         hosts:
           - host: &host zwavejs.${SECRET_DOMAIN}
             paths:

@@ -37,8 +37,6 @@ spec:
         ingressClassName: "nginx"
         annotations:
           external-dns.home.lab/enabled: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "calendar"
           nginx.org/proxy-connect-timeout: 600s
           nginx.org/proxy-read-timeout: 600s
           nginx.org/proxy-send-timeout: 600s

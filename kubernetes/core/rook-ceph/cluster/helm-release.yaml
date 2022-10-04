@@ -50,10 +50,6 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           nginx.ingress.kubernetes.io/server-snippet: |
             proxy_ssl_verify off;
-
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "server"
-          hajimari.io/appName: "Rook"
         host:
           name: rook.${SECRET_DOMAIN}
           path: "/"

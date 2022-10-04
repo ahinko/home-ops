@@ -42,8 +42,6 @@ spec:
         ingressClassName: "nginx"
         annotations:
           external-dns.home.lab/enabled: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "television-classic"
         hosts:
           - host: *host
             paths:

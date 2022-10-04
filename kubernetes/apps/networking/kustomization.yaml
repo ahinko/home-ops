@@ -6,7 +6,6 @@ resources:
   - crowdsec
   - external-dns
   - external-services
-  - hajimari
   - haproxy
   - ingress-nginx
   - wildcard-certificate

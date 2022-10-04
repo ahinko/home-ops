@@ -35,8 +35,6 @@ metadata:
   namespace: networking
   annotations:
     external-dns.home.lab/enabled: "true"
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "plex"
   labels:
     app.kubernetes.io/instance: plex
     app.kubernetes.io/name: plex

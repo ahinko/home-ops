@@ -12,7 +12,6 @@ resources:
   - external-dns-charts.yaml
   - fairwinds-charts.yaml
   - grafana-charts.yaml
-  - hajimari-charts.yaml
   - haproxy-charts.yaml
   - influxdata-charts.yaml
   - infracloudio-charts.yaml

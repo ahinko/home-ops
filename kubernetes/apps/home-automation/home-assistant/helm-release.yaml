@@ -45,8 +45,6 @@ spec:
         annotations:
           nginx.org/websocket-services: home-assistant
           external-dns.home.lab/enabled: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "home-assistant"
         hosts:
           - host: &host "hass.${SECRET_DOMAIN}"
             paths:

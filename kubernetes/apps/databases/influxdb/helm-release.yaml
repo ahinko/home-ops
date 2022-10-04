@@ -59,6 +59,3 @@ spec:
       hostname: influx.${SECRET_DOMAIN}
       path: /
       tls: true
-      annotations:
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "chart-line"

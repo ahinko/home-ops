@@ -46,8 +46,6 @@ spec:
       className: nginx
       annotations:
         external-dns.home.lab/enabled: "true"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "cloud-download-outline"
         nginx.ingress.kubernetes.io/proxy-body-size: "4G"
         nginx.ingress.kubernetes.io/configuration-snippet: |
           location ^~ /.well-known {
