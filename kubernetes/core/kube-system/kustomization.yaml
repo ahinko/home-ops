@@ -5,5 +5,6 @@ resources:
   - namespace.yaml
   - cilium
   - intel-gpu-plugin
+  - kubelet-csr-approver
   - node-feature-discovery
   - tainter
