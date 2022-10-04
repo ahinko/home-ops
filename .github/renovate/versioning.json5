@@ -29,5 +29,15 @@
         "raspberrypi/rpi-eeprom",
       ]
     },
+    {
+      "description": "Use custom versioning for Minio",
+      "matchDatasources": [
+        "docker"
+      ],
+      "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
+      "matchPackageNames": [
+        "quay.io/minio/minio"
+      ]
+    }
   ]
 }
