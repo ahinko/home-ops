@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: docker.io/blakeblackshear/frigate
-      tag: 0.11.0
+      tag: 0.11.1
     env:
       TZ: "${TIMEZONE}"
       LIBVA_DRIVER_NAME: "i965"
