@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   # renovate: registryUrl=https://charts.rook.io/release chart=rook-ceph
-  - https://raw.githubusercontent.com/rook/rook/v1.10.2/deploy/examples/crds.yaml
+  - https://raw.githubusercontent.com/rook/rook/v1.10.3/deploy/examples/crds.yaml
   - operator
   - cluster
   - dashboard
