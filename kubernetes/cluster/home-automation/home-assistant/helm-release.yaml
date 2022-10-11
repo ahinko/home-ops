@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app home-assistant
+  namespace: home-automation
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: app-template
+      version: 0.2.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 60m
+  dependsOn:
+    - name: emqx
+      namespace: home-automation
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: metallb
+      namespace: networking
+  values:
+    image:
+      repository: ghcr.io/home-assistant/home-assistant
+      tag: 2022.10.3
+    env:
+      TZ: "${TIMEZONE}"
+
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: "${LB_HASS}"
+        externalTrafficPolicy: Local
+        ports:
+          sonos:
+            enabled: true
+            port: 1400
+          http:
+            port: 8123
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          nginx.org/websocket-services: home-assistant
+          external-dns.home.lab/enabled: "true"
+        hosts:
+          - host: &host "hass.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    prometheus:
+      serviceMonitor:
+        enabled: false
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "home-assistant-config"
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 400M
+      limits:
+        memory: 2500M

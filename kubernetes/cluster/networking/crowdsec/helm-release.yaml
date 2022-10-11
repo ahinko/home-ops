@@ -1,0 +1,79 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app crowdsec
+  namespace: networking
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: 0.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: crowdsec-charts
+        namespace: flux-system
+      interval: 60m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  # Values link: https://github.com/crowdsecurity/helm-charts/blob/main/charts/crowdsec/values.yaml
+  values:
+    container_runtime: containerd
+
+    image:
+      repository: ghcr.io/crowdsecurity/crowdsec
+      tag: v1.4.1
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "crowdsec-secrets"
+
+    lapi:
+      persistentVolume:
+        data:
+          enabled: true
+          accessModes:
+            - ReadWriteMany
+          storageClassName: rook-cephfs
+          size: 1Gi
+        config:
+          enabled: true
+          accessModes:
+            - ReadWriteMany
+          storageClassName: rook-cephfs
+          size: 100Mi
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: false
+      resources:
+        limits:
+          memory: 100Mi
+        requests:
+          cpu: 30m
+          memory: 100Mi
+    agent:
+      env:
+        - name: COLLECTIONS
+          value: "crowdsecurity/nginx"
+        - name: PARSERS
+          value: "crowdsecurity/cri-logs"
+      acquisition:
+        - namespace: networking
+          podName: ingress-nginx-controller-*
+          program: nginx
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: false
+      resources:
+        limits:
+          memory: 100Mi
+        requests:
+          cpu: 30m
+          memory: 100Mi
+      persistentVolume:
+        # -- Persistent volume for config folder. Stores local config (parsers, scenarios etc.)
+        config:
+          enabled: false

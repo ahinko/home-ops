@@ -1,0 +1,53 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app external-dns
+  namespace: networking
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: 1.11.0
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns-charts
+        namespace: flux-system
+      interval: 60m
+  # Values link: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
+  values:
+    global:
+      nameOverride: *app
+    image:
+      repository: k8s.gcr.io/external-dns/external-dns
+      tag: v0.12.2
+    interval: 60m
+    logLevel: warning
+    provider: cloudflare
+    env:
+      - name: TZ
+        value: ${TIMEZONE}
+      - name: CF_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-cloudflare-api-key
+            key: cloudflare_api_token
+    extraArgs:
+      - --cloudflare-proxied
+      - --annotation-filter=external-dns.home.lab/enabled in (true)
+    policy: sync
+    sources:
+      - ingress
+    txtPrefix: "k8s."
+    txtOwnerId: "default"
+    domainFilters:
+      - "${SECRET_DOMAIN}"
+    serviceMonitor:
+      enabled: true
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 25m
+      limits:
+        memory: 250Mi

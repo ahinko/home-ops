@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - bitnami-charts.yaml
   - bjw-s-charts.yaml
+  - botkube-charts.yaml
   - cilium-charts.yaml
   - cloudnative-pg-charts.yaml
   - crowdsec-charts.yaml
@@ -14,7 +15,6 @@ resources:
   - grafana-charts.yaml
   - haproxy-charts.yaml
   - influxdata-charts.yaml
-  - infracloudio-charts.yaml
   - ingress-nginx.yaml
   - itzg-minecraft-server-charts.yaml
   - jetstack-charts.yaml

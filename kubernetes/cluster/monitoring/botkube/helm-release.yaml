@@ -1,0 +1,215 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app botkube
+  namespace: monitoring
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: v0.14.0
+      sourceRef:
+        kind: HelmRepository
+        name: botkube-charts
+        namespace: flux-system
+      interval: 60m
+  # Values link: https://github.com/kubeshop/botkube/blob/main/helm/botkube/values.yaml
+  values:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+    existingCommunicationsSecretName: "botkube-communications"
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "botkube-communications"
+
+    config:
+      settings:
+        clustername: home-cluster
+        kubectl:
+          enabled: true
+          restrictAccess: true
+          commands:
+            verbs:
+              [
+                "api-resources",
+                "api-versions",
+                "cluster-info",
+                "describe",
+                "diff",
+                "explain",
+                "get",
+                "logs",
+                "top",
+                "auth",
+              ]
+            resources:
+              [
+                "deployments",
+                "pods",
+                "namespaces",
+                "daemonsets",
+                "statefulsets",
+                "storageclasses",
+                "nodes",
+              ]
+      recommendations: false
+      resources:
+        - name: v1/pods
+          namespaces:
+            include:
+              - default
+              - databases
+              - flux-system
+              - home-automation
+              - kube-system
+              - networking
+              - media
+              - monitoring
+              - system-upgrade
+          events:
+            - create
+            - error
+            - delete
+        - name: v1/pods
+          namespaces:
+            include:
+              - apps
+              - rook-ceph
+              - cert-manager
+          events:
+            - error
+        - name: v1/services
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: apps/v1/deployments
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - update
+            - delete
+            - error
+        - name: apps/v1/statefulsets
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - update
+            - delete
+            - error
+        - name: networking.k8s.io/v1/ingresses
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: v1/nodes
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: v1/namespaces
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: v1/persistentvolumes
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: v1/persistentvolumeclaims
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: v1/configmaps
+          namespaces:
+            include:
+              - default
+              - flux-system
+              - home-automation
+              - kube-system
+              - media
+              - metallb-system
+              - monitoring
+              - network
+              - system-upgrade
+              - tigera-operator
+          events:
+            - create
+            - error
+            - delete
+        - name: v1/configmaps
+          namespaces:
+            include:
+              - rook-ceph
+          events:
+            - error
+        - name: apps/v1/daemonsets
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: batch/v1/jobs
+          namespaces:
+            include:
+              - all
+          events:
+            - update
+            - error
+        - name: rbac.authorization.k8s.io/v1/rolebindings
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: rbac.authorization.k8s.io/v1/clusterrolebindings
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+        - name: rbac.authorization.k8s.io/v1/clusterroles
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
