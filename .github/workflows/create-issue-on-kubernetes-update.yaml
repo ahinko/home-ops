@@ -26,7 +26,7 @@ jobs:
 
       - name: Create issue if new version of Kubernetes is available
         if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
-        uses: dacbd/create-issue-action@v1.2.0
+        uses: dacbd/create-issue-action@v1.2.1
         with:
           token: "${{ steps.generate-token.outputs.token }}"
           title: "🚀 Upgrade Kubernetes"
