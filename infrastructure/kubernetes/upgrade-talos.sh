@@ -22,7 +22,7 @@ do
     echo "-----------------------------------"
     echo "Upgrading Talos on IP $IP"
 
-    talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.2.4
+    talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.2.5
 
     HEALTH=false
     while [ "$HEALTH" == false ]
