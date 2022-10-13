@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 1.17.2
+      version: 1.17.3
       sourceRef:
         kind: HelmRepository
         name: haproxy-charts
