@@ -17,4 +17,4 @@ spec:
       interval: 60m
   values:
     providerRegex: |
-      ^k(master|worker)\d\d?$
+      ^(eos|hades|helios|iris|poseidon|zeus)$
