@@ -28,7 +28,7 @@ These are what I consider the main features of my homelab. You can also see this
 - [x] Automated certificate management
 - [x] [Automatically update DNS records for exposed services](docs/cluster/expose-services.md)
 - [x] Distributed storage
-- [ ] Monitoring and alerting
+- [x] Monitoring and alerting
 - [ ] Automated offsite backups
 
 ## 🤖 Automate all the things
