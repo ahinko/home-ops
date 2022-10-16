@@ -12,7 +12,7 @@ concurrency:
 
 env:
   CLOUDFLARE_IP_RANGES_FILE: >-
-    kubernetes/apps/networking/ingress-nginx/cloudflare-ip-ranges.txt
+    kubernetes/cluster/networking/ingress-nginx/cloudflare-ip-ranges.txt
 
 jobs:
   cloudflare-ip-ranges-update:
