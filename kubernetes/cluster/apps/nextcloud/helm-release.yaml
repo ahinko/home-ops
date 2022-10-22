@@ -245,7 +245,7 @@ spec:
 
       image:
         repository: xperimental/nextcloud-exporter
-        tag: 0.5.1
+        tag: 0.6.0
         pullPolicy: IfNotPresent
 
       service:
