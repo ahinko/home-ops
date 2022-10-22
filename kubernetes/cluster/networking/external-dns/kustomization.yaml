@@ -3,5 +3,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   # renovate: datasource=docker image=k8s.gcr.io/external-dns/external-dns
-  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/v0.12.2/docs/contributing/crd-source/crd-manifest.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/v0.13.1/docs/contributing/crd-source/crd-manifest.yaml
   - helm-release.yaml
