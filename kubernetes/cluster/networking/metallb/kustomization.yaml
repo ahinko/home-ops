@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   # renovate: registryUrl=https://metallb.github.io/metallb chart=metallb
-  - github.com/metallb/metallb//config/crd?ref=metallb-chart-0.13.6
+  - github.com/metallb/metallb//config/crd?ref=metallb-chart-0.13.7
   - helm-release.yaml
   - layer2-pool.yaml
   - layer2-advertisement.yaml
