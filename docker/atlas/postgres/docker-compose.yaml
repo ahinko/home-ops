@@ -4,7 +4,7 @@ version: '3.8'
 services:
   postgres:
     container_name: postgres
-    image: postgres:14.5-alpine
+    image: postgres:15.0-alpine
     restart: always
     ports:
       - '5432:5432'
