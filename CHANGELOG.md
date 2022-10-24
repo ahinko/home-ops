@@ -2,6 +2,24 @@
 
 I'm not going to semver this repo since it wont work very well for this type of repo. I do however sometime wonder why others with similar repos makes the decitions that they do. Why they for example replaces one thing with another. So I will use this changelog to highlight and motivate some of the changes I make.
 
+## 2022-10-24
+### Added
+- Deployed [k8s-gateway](https://github.com/ori-edge/k8s_gateway)
+
+### Deleted
+- Removed Botkube. Motivation: I get all the info I need from the other monitoring tools that is running in the cluster.
+
+## 2022-10-11
+### Changed
+- Re-organized large parts of the file and kustomization structure in the repo and started depending more on the dependOn setting in Helm releases. Main motivation is that it makes it easier to maintain everything.
+
+## 2022-10-04
+### Changed
+- Replace kubelet-serving-cert-approver with kubelet-csr-approver since it seems to be more maintained
+
+### Deleted
+- Remove hajimari since I never use it.
+
 ## 2022-09-26
 ### Added
 - Added monitoring using Prometheus, Grafana, Thanos & Loki. Will add more later on.
