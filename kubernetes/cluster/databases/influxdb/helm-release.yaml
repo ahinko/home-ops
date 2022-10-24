@@ -24,6 +24,9 @@ spec:
       repository: influxdb
       tag: 2.4.0-alpine
 
+    pdb:
+      create: false
+
     env:
       - name: TZ
         value: "${TIMEZONE}"
