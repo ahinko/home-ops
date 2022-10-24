@@ -7,9 +7,7 @@ clusterPodNets:
 clusterSvcNets:
   - 10.96.0.0/12
 cniConfig:
-  name: custom
-  urls:
-    - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/kubernetes/integrations/cilium-quick-install/quick-install.yaml
+  name: none
 nodes:
   - hostname: helios
     ipAddress: 192.168.20.21

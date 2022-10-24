@@ -8,21 +8,16 @@ tasks:
       - kubectl describe nodes | grep -A 9 -e "^\\s*Allocated resources"
     silent: true
 
-  maintenance:on:
+  on:
     desc: Set cluster in maintenance mode
     silent: true
     cmds:
-      - echo "Update to task needed, how do we handle postgres since it relies on minio?"
-      #- task: nfs:pause
-      #- flux suspend kustomization apps postgres
-      #- kubectl apply -f cluster/apps/databases/postgres/postgres-cluster.yaml
+      - task: nfs:pause
 
-  maintenance:off:
+  off:
     desc: Turn off maintenance mode
     silent: true
     cmds:
-      - kubectl apply -f cluster/apps/databases/postgres/postgres-cluster.yaml
-      - flux resume kustomization apps postgres
       - task: nfs:resume
 
   nfs:pause:

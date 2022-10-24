@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 60m0s
   path: ./kubernetes/cluster
-  prune: false
+  prune: true
   dependsOn:
     - name: config
   sourceRef:
