@@ -9,5 +9,6 @@ resources:
   - external-services
   - haproxy
   - ingress-nginx
+  - k8s-gateway
   - metallb
   - wildcard-certificate
