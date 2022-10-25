@@ -6,3 +6,4 @@ resources:
   - influxdb
   #- cloudnative-pg
   - redis
+  - postgres-backup

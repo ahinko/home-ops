@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+  namespace: databases
+spec:
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: postgres-backup
+              image: ghcr.io/ahinko/simple-pg-backup:v0.1.2
+              imagePullPolicy: IfNotPresent
+              args:
+                - /run.sh
+              env:
+                - name: TZ
+                  value: "${TIMEZONE}"
+              envFrom:
+                - secretRef:
+                    name: postgres-backup-secrets
+                - secretRef:
+                    name: backup-secrets
+          restartPolicy: OnFailure
