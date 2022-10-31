@@ -5,7 +5,7 @@ namespace: default
 configMapGenerator:
   - name: minio-dashboard
     files:
-      - nginx-dashboard.json=https://raw.githubusercontent.com/minio/minio/master/docs/metrics/prometheus/grafana/minio-dashboard.json
+      - minio-dashboard.json=https://raw.githubusercontent.com/minio/minio/master/docs/metrics/prometheus/grafana/minio-dashboard.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
