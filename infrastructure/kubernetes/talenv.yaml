@@ -1,3 +1,4 @@
+---
 ingressDomain: ENC[AES256_GCM,data:t5Z7FOuX2WLu,iv:NRXTIynsFPJSz6UfkvwG/Jxo5ErTsgUu89S8vedKDNc=,tag:qfa/X2HrJfs5dgDgrJbUQw==,type:str]
 sops:
   kms: []
