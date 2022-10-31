@@ -1,0 +1,11 @@
+---
+- name: Add user to sudoers
+  ansible.builtin.copy:
+    content: "{{ item }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    dest: "/etc/sudoers.d/{{ item }}_nopasswd"
+    mode: "0440"
+  loop: "{{ sudoers }}"
+  when:
+    - sudoers is defined
+    - sudoers is iterable
+    - sudoers | length > 0

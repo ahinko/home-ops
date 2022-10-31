@@ -1,6 +1,0 @@
----
-- name: atlas setup
-  hosts:
-    - atlas
-  roles:
-    - role: znapzend

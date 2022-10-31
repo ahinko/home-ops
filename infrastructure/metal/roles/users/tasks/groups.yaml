@@ -1,0 +1,13 @@
+# tasks file for user
+---
+- name: Groups | add / delete
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    system: "{{ item.system | default(false) }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ user_groups }}"
+  when:
+    - item.gid is not defined
+    - user_groups is defined
+    - user_groups is iterable
+    - user_groups | length > 0

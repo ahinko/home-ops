@@ -1,0 +1,28 @@
+---
+- name: Create users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell }}"
+    comment: "{{ item.comment }}"
+    password: "{{ item.password | default('*') }}"
+    update_password: "{{ item.update_password | default('always') }}"
+    home: "{{ item.home | default(('/' if item.name == 'root' else '/home/') + item.name) }}"
+    groups: "{{ item.groups | default('') }}"
+    append: true
+  loop: "{{ users }}"
+  when:
+    - users is defined
+    - users is iterable
+    - users | length > 0
+
+- name: Silence the login prompt
+  ansible.builtin.file:
+    dest: "/home/{{ item.name }}/.hushlogin"
+    state: touch
+    owner: "{{ item.name }}"
+    mode: "0775"
+  loop: "{{ users }}"
+  when:
+    - users is defined
+    - users is iterable
+    - users | length > 0

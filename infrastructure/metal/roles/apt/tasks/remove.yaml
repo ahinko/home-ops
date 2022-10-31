@@ -1,0 +1,49 @@
+---
+- name: Remove packages
+  when:
+    - apt_remove_packages is defined
+    - apt_remove_packages is iterable
+    - apt_remove_packages | length > 0
+  block:
+    - name: Check if snap is installed
+      ansible.builtin.debug:
+        msg: "snapd is installed"
+      register: snapd_check
+      when:
+        - "'snapd' in apt_remove_packages"
+        - "'snapd' in ansible_facts.packages"
+
+    - name: Remove snap packages
+      ansible.builtin.command: snap remove {{ item }}
+      loop:
+        - lxd
+        - core18
+        - core20
+        - snapd
+      when:
+        - "'snapd' in apt_remove_packages"
+        - "'snapd' in ansible_facts.packages"
+        - snapd_check.failed is defined
+
+    - name: Remove packages
+      ansible.builtin.apt:
+        name: "{{ apt_remove_packages }}"
+        state: absent
+        autoremove: true
+
+    - name: Remove files
+      ansible.builtin.file:
+        state: absent
+        path: "{{ item }}"
+      loop:
+        - "/home/{{ ansible_user }}/.snap"
+        - "/snap"
+        - "/var/snap"
+        - "/var/lib/snapd"
+        - "/var/cache/snapd"
+        - "/usr/lib/snapd"
+        - "/etc/cloud"
+        - "/var/lib/cloud"
+      when:
+        - "'snapd' in apt_remove_packages"
+        - "'cloud-init' in apt_remove_packages"

@@ -1,0 +1,6 @@
+---
+users:
+  - name: peter
+    shell: /bin/bash
+    comment: The owner of the box
+    password: "{{ user_password_peter }}"

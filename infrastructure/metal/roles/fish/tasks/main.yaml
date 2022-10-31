@@ -1,0 +1,6 @@
+---
+- name: Install Fish
+  ansible.builtin.include_tasks: install.yaml
+
+- name: Configure Fish
+  ansible.builtin.include_tasks: configure.yaml

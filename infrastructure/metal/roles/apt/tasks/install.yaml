@@ -1,0 +1,29 @@
+---
+- name: Add PPAs
+  ansible.builtin.apt_repository:
+    name: "{{ item }}"
+  loop: "{{ apt_ppa_repos }}"
+  when:
+    - apt_ppa_repos is defined
+    - apt_ppa_repos is iterable
+    - apt_ppa_repos | length > 0
+
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ apt_install_packages }}"
+    install_recommends: false
+    update_cache: true
+    cache_valid_time: 3600
+    autoclean: true
+    autoremove: true
+  register: apt_install_common
+  retries: 5
+  until: apt_install_common is success
+  when:
+    - apt_install_packages is defined
+    - apt_install_packages is iterable
+    - apt_install_packages | length > 0
+
+- name: Gather installed packages
+  ansible.builtin.package_facts:
+    manager: auto

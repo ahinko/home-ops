@@ -1,0 +1,27 @@
+---
+- name: Metal basic setup
+  hosts:
+    - all
+  remote_user: peter
+  become: true
+  become_method: sudo
+  roles:
+    - role: apt
+    - role: hostname
+    - role: timezone
+    - role: sudoers
+    - role: fish
+    - role: sshkeys
+    - role: users
+
+- name: NAS specific setup
+  hosts:
+    - atlas
+  remote_user: peter
+  become: true
+  become_method: sudo
+  roles:
+    - role: docker
+    - role: homelab
+    - role: backup
+    - role: znapzend

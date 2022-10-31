@@ -1,0 +1,31 @@
+---
+- name: Add Fish repository from PPA and install its signing key on Ubuntu target
+  ansible.builtin.apt_repository:
+    repo: ppa:fish-shell/release-3
+    update_cache: true
+
+- name: Install Fish
+  ansible.builtin.apt:
+    name: ["fish"]
+    state: present
+
+- name: Download starhip installer
+  ansible.builtin.get_url:
+    url: https://starship.rs/install.sh
+    dest: /tmp/starship-installer.sh
+    mode: "u+rwx"
+
+- name: Execute the starship-installer.sh
+  ansible.builtin.shell: /tmp/starship-installer.sh
+  become: true
+  become_user: "{{ item.name }}"
+  loop: "{{ users }}"
+  when:
+    - users is defined
+    - users is iterable
+    - users | length > 0
+
+- name: Remove the starship-installer.sh
+  ansible.builtin.file:
+    path: /tmp/starship-installer.sh
+    state: absent

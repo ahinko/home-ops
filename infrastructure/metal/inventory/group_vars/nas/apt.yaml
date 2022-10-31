@@ -1,0 +1,33 @@
+---
+apt_install_packages:
+  - apt-transport-https
+  - arptables
+  - ca-certificates
+  - command-not-found
+  - curl
+  - ebtables
+  - gdisk
+  - git
+  - hdparm
+  - htop
+  - iftop
+  - iotop
+  - iputils-ping
+  - ipvsadm
+  - lvm2
+  - net-tools
+  - nfs-common
+  - nfs-kernel-server
+  - nano
+  - ntpdate
+  - nvme-cli
+  - open-iscsi
+  - psmisc
+  - smartmontools
+  - socat
+  - software-properties-common
+  - sysstat
+  - unattended-upgrades
+  - unzip
+  - wget
+  - zfsutils-linux

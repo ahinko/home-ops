@@ -1,0 +1,15 @@
+---
+- name: TODO install taskfile.dev
+  ansible.builtin.command: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+
+# - name: TODO Run task that installs all dependencies depending on platform
+
+# run the shell script scripts/automatic-docker-updates.sh
+- name: Execute the automatic docker updates script to start all docker containers
+  ansible.builtin.command: "{{ homelab_repo_path }}/scripts/automatic-docker-updates.sh"
+
+- name: Add automatic-docker-updates.sh to cront
+  ansible.builtin.cron:
+    name: "Update docker containers"
+    minute: "60"
+    job: "{{ homelab_repo_path }}/scripts/automatic-docker-updates.sh > /dev/null"

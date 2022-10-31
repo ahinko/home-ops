@@ -1,0 +1,6 @@
+---
+- name: Handle groups
+  ansible.builtin.import_tasks: groups.yaml
+
+- name: Handle users
+  ansible.builtin.import_tasks: users.yaml

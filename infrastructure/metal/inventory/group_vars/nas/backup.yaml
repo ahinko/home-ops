@@ -1,0 +1,3 @@
+---
+backup_path_arq: "/tank/backup/arq"
+backup_path_time_machine: "/tank/backup/tm"

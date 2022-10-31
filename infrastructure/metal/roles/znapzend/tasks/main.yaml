@@ -2,13 +2,13 @@
 - name: Add znapzend repository from PPA and install its signing key on Ubuntu target
   ansible.builtin.apt_repository:
     repo: ppa:malcscott/znapzend
-    update_cache: yes
+    update_cache: true
 
 - name: Install Znapzend
-  apt:
+  ansible.builtin.apt:
     name: ["znapzend"]
     state: present
 
 - name: Daemonize Znapzend
-  command:
+  ansible.builtin.command:
     cmd: "/usr/bin/znapzend --daemonize"

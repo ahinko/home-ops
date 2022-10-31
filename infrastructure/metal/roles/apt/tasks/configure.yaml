@@ -1,0 +1,11 @@
+---
+- name: Disable APT recommends
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/02norecommends
+    mode: 0644
+    create: true
+    block: |
+      APT::Install-Recommends "false";
+      APT::Install-Suggests "false";
+      APT::Get::Install-Recommends "false";
+      APT::Get::Install-Suggests "false";
