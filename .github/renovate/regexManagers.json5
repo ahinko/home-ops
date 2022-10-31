@@ -1,6 +1,16 @@
 {
   regexManagers: [
     {
+      description: 'Cloudnative Postgres container',
+      fileMatch: [
+        'kubernetes/cluster/databases/cloudnative-pg/clusters/postgres-cluster.yaml'
+      ],
+      matchStrings: [
+        'imageName: (?<depName>.*?):(?<currentValue>.*)'
+      ],
+      datasourceTemplate: 'docker'
+    },
+    {
       description: 'Process Kubernetes versions',
       fileMatch: [
         'infrastructure/kubernetes/upgrade-k8s.sh',
