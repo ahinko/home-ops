@@ -139,7 +139,7 @@ spec:
       serviceType: LoadBalancer
       ## Set the port used if the serviceType is NodePort
       # nodePort:
-      #loadBalancerIP: ${LB_MINECRAFT}
+      # loadBalancerIP: ${LB_MINECRAFT}
       # loadBalancerSourceRanges: []
       ## Set the externalTrafficPolicy in the Service to either Cluster or Local
       # externalTrafficPolicy: Cluster

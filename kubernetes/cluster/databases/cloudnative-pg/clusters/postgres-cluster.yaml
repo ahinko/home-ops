@@ -21,8 +21,8 @@ spec:
       secret:
         name: postgres-nextcloud
 
-    # recovery:
-    #  source: postgres-v1
+  # recovery:
+  #  source: postgres-v1
 
   # externalClusters:
   #  - name: postgres-v1

@@ -225,7 +225,7 @@ cameras:
       # Optional: draw bounding box on the snapshots (default: shown below)
       bounding_box: true
       # Optional: crop the snapshot (default: shown below)
-      crop: False
+      crop: false
 
     objects:
       track:
@@ -236,8 +236,8 @@ cameras:
           max_area: 1000000
           min_score: 0.4
           threshold: 0.7
-          #mask:
-          #- 1469,1080,1920,1080,1920,637,1676,634
+          # mask:
+          # - 1469,1080,1920,1080,1920,637,1676,634
 
   backyard_livingroom:
     ffmpeg:

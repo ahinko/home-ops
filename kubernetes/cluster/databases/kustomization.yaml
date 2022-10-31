@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - influxdb
-  #- cloudnative-pg
+  # - cloudnative-pg
   - redis
   - postgres-backup

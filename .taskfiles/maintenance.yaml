@@ -8,13 +8,13 @@ tasks:
       - kubectl describe nodes | grep -A 9 -e "^\\s*Allocated resources"
     silent: true
 
-  on:
+  turn-on:
     desc: Set cluster in maintenance mode
     silent: true
     cmds:
       - task: nfs:pause
 
-  off:
+  turn-off:
     desc: Turn off maintenance mode
     silent: true
     cmds:

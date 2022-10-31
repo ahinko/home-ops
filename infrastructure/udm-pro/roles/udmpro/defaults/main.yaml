@@ -1,11 +1,11 @@
 ---
-nodeexporter_enabled: no
-frr_enabled: no
-rsyncd_enabled: no
-masquerade_enabled: no
-haproxy_enabled: no
+nodeexporter_enabled: false
+frr_enabled: false
+rsyncd_enabled: false
+masquerade_enabled: false
+haproxy_enabled: false
 
-force_external_dns: no
+force_external_dns: false
 udmp_external_dns_server_ipv4: ""
 udmp_external_dns_server_ipv6: ""
 udmp_external_dns_devices:
@@ -15,8 +15,8 @@ udmp_external_dns_devices:
 udm_onboot_version: 1.0.5
 udm_onboot_download_uri: "https://github.com/boostchicken/udm-utilities/releases/download/{{ udm_onboot_version }}-fix/udm-boot_{{ udm_onboot_version }}_all.deb"
 
-install_kernel_tools: no
-udm_kernel_tools_autoboot: yes
+install_kernel_tools: false
+udm_kernel_tools_autoboot: true
 
 # renovate depName=fabianishere/udm-kernel-tools
 udm_kernel_tool_version: v1.1.6
