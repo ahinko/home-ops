@@ -12,7 +12,7 @@
       ansible.builtin.command: /usr/local/bin/rw
       tags: always
   roles:
-    - role: pikvm.os
+    - role: pikvm_os
       tags: os
   post_tasks:
     - name: Mount read-only

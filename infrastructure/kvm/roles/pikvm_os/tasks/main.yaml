@@ -1,5 +1,6 @@
 ---
-- block:
+- name: Install
+  block:
     - name: Upgrade system
       community.general.pacman:
         update_cache: true
@@ -28,7 +29,9 @@
     - name: Mount read-only
       ansible.builtin.command: /usr/local/bin/ro
 
-- block:
+- name: Configure
+  notify: Restart kvmd
+  block:
     - name: Create kvmd override configuration
       ansible.builtin.template:
         src: override.yaml.j2
@@ -42,4 +45,3 @@
   rescue:
     - name: Mount read-only
       ansible.builtin.command: /usr/local/bin/ro
-  notify: Restart kvmd
