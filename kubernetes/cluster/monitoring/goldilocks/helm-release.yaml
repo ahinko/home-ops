@@ -20,9 +20,10 @@ spec:
     controller:
       resources:
         requests:
-          memory: 32Mi
+          cpu: 15m
+          memory: 64M
         limits:
-          memory: 96Mi
+          memory: 64M
 
     dashboard:
       replicaCount: 1
@@ -40,7 +41,6 @@ spec:
             paths:
               - path: /
                 type: Prefix
-
         tls:
           - hosts:
               - "goldilocks.${SECRET_DOMAIN}"
