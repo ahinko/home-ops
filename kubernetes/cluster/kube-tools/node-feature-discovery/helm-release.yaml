@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 0.11.2
+      version: 0.11.3
       sourceRef:
         kind: HelmRepository
         name: kubernetes-sigs-node-feature-discovery-charts
@@ -26,7 +26,7 @@ spec:
       configmap.reloader.stakater.com/reload: "nfd-worker-conf"
     image:
       repository: k8s.gcr.io/nfd/node-feature-discovery
-      tag: v0.11.2
+      tag: v0.11.3
 
     master:
       tolerations: {}
