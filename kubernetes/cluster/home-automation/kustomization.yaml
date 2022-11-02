@@ -7,5 +7,7 @@ resources:
   - frigate
   - home-assistant
   - home-assistant-code
+  - home-assistant-v2
+  - home-assistant-v2-code
   - zigbee2mqtt
   - zwavejs
