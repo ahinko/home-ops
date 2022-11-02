@@ -2,7 +2,7 @@
 ignore: |
   .github/
   crds.yaml
-  **/sops.*.yaml
+  **/*sops*.yaml
   infrastructure/integrations/cilium-quick-install/quick-install.yaml
   infrastructure/udm-pro/inventory/host_vars/udmpro.yaml
   infrastructure/kubernetes/

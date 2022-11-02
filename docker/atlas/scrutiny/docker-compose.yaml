@@ -24,4 +24,4 @@ services:
       - "/dev/sdh"
       - "/dev/sdi"
       - "/dev/sdj"
-      - "/dev/sdk"
+      - "/dev/nvme0n1"

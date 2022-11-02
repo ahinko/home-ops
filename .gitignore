@@ -16,3 +16,4 @@ talosconfig*
 # Other
 .env
 *.backup
+**/.secrets

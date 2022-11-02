@@ -140,10 +140,10 @@ controlPlane:
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
-            - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
+            - "talos.logging.kernel=udp://${VECTOR_AGGREGATOR_ADDR}:6050/"
         logging:
           destinations:
-            - endpoint: "udp://vector.${ingressDomain}:6051/"
+            - endpoint: "udp://${VECTOR_AGGREGATOR_ADDR}:6051/"
               format: json_lines
         sysctls:
           fs.inotify.max_user_watches: "1048576"
@@ -170,10 +170,10 @@ worker:
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
-            - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
+            - "talos.logging.kernel=udp://${VECTOR_AGGREGATOR_ADDR}:6050/"
         logging:
           destinations:
-            - endpoint: "udp://vector.${ingressDomain}:6051/"
+            - endpoint: "udp://${VECTOR_AGGREGATOR_ADDR}:6051/"
               format: json_lines
         sysctls:
           fs.inotify.max_user_watches: "1048576"
