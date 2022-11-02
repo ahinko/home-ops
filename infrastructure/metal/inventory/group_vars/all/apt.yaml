@@ -6,6 +6,7 @@ apt_install_packages:
   - command-not-found
   - curl
   - ebtables
+  - fdisk
   - gdisk
   - git
   - hdparm
@@ -15,8 +16,10 @@ apt_install_packages:
   - iputils-ping
   - ipvsadm
   - lvm2
+  - mbuffer
   - net-tools
   - nfs-common
+  - nfs-kernel-server
   - nano
   - ntpdate
   - nvme-cli
@@ -31,7 +34,7 @@ apt_install_packages:
   - wget
   - zfsutils-linux
 
-apt_packages_remove:
+apt_remove_packages:
   - apparmor
   - apport
   - bcache-tools

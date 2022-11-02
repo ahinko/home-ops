@@ -7,10 +7,10 @@
   with_items: "{{ ssh_authorized_keys }}"
   when: ssh_authorized_keys is defined
 
-- name: Copy private keys for root
+- name: Copy private keys
   ansible.builtin.copy:
-    content: "{{ item.key }}"
-    dest: "/{{ item.owner }}/.ssh/id_rsa"
+    src: "{{ item.key_file }}"
+    dest: "{{ item.home }}/.ssh/id_rsa"
     owner: "{{ item.owner }}"
     group: "{{ item.owner }}"
     mode: "0600"

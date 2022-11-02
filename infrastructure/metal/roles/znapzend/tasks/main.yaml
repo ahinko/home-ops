@@ -3,6 +3,7 @@
   ansible.builtin.apt_repository:
     repo: ppa:malcscott/znapzend
     update_cache: true
+    codename: jammy
 
 - name: Install Znapzend
   ansible.builtin.apt:

@@ -2,7 +2,5 @@
 collections:
   - name: community.general
     version: 5.8.0
-  - name: community.docker
-    version: 3.2.0
   - name: community.sops
     version: 1.4.1

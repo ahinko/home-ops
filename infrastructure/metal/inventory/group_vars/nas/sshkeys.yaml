@@ -1,4 +1,5 @@
 ---
 ssh_private_keys:
   - owner: root
-    key: "{{ ssh_private_key_root }}"
+    key_file: ".secrets/keyfiles/atlas_root/id_rsa"
+    home: "/root"

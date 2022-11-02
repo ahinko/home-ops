@@ -1,0 +1,6 @@
+---
+fish_users:
+  - name: peter
+    home: /home/peter
+  - name: root
+    home: /root

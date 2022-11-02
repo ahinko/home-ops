@@ -13,17 +13,11 @@
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship-installer.sh
-    mode: "u+rwx"
+    mode: "+x"
 
 - name: Execute the starship-installer.sh
-  ansible.builtin.shell: /tmp/starship-installer.sh
+  ansible.builtin.shell: /tmp/starship-installer.sh -f
   become: true
-  become_user: "{{ item.name }}"
-  loop: "{{ users }}"
-  when:
-    - users is defined
-    - users is iterable
-    - users | length > 0
 
 - name: Remove the starship-installer.sh
   ansible.builtin.file:

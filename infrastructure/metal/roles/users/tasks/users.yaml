@@ -4,7 +4,7 @@
     name: "{{ item.name }}"
     shell: "{{ item.shell }}"
     comment: "{{ item.comment }}"
-    password: "{{ item.password | default('*') }}"
+    password: "{{ item.password | password_hash('sha512') }}"
     update_password: "{{ item.update_password | default('always') }}"
     home: "{{ item.home | default(('/' if item.name == 'root' else '/home/') + item.name) }}"
     groups: "{{ item.groups | default('') }}"

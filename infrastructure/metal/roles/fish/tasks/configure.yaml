@@ -1,43 +1,72 @@
 ---
-- name: Copy starship config file
-  ansible.builtin.template:
-    src: starship.toml.j2
-    dest: "/home/{{ item.name }}/.config/starship.toml"
-    mode: 0644
-    owner: "{{ item.name }}"
-    group: "{{ item.name }}"
-  loop: "{{ users }}"
-  when:
-    - users is defined
-    - users is iterable
-    - users | length > 0
-
-- name: Install Fisher
-  become: true
-  become_user: "{{ item.name }}"
-  ansible.builtin.command: type fisher &>/dev/null || curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-  loop: "{{ users }}"
-  when:
-    - users is defined
-    - users is iterable
-    - users | length > 0
-
-- name: Install Fisher plugins
-  become: true
-  become_user: "{{ item.name }}"
-  ansible.builtin.command: /bin/fish -c 'fisher install decors/fish-colored-man edc/bass franciscolourenco/done jethrokuan/z jorgebucaran/autopair.fish nickeb96/puffer-fish patrickf3139/fzf.fish'
-  loop: "{{ users }}"
-  when:
-    - users is defined
-    - users is iterable
-    - users | length > 0
-
 - name: Change the shell to fish
   ansible.builtin.user:
     name: "{{ item.name }}"
     shell: /bin/fish
-  loop: "{{ users }}"
+  loop: "{{ fish_users }}"
   when:
-    - users is defined
-    - users is iterable
-    - users | length > 0
+    - fish_users is defined
+    - fish_users is iterable
+    - fish_users | length > 0
+
+- name: Make sure .config exists
+  become: true
+  become_user: "{{ item.name }}"
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/fish/"
+    state: directory
+    mode: 0744
+  loop: "{{ fish_users }}"
+  when:
+    - fish_users is defined
+    - fish_users is iterable
+    - fish_users | length > 0
+
+- name: Copy starship config file
+  become: true
+  become_user: "{{ item.name }}"
+  ansible.builtin.template:
+    src: starship.toml.j2
+    dest: "{{ item.home }}/.config/starship.toml"
+    mode: 0644
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  loop: "{{ fish_users }}"
+  when:
+    - fish_users is defined
+    - fish_users is iterable
+    - fish_users | length > 0
+
+- name: Enable starship
+  ansible.builtin.lineinfile:
+    path: "{{ item.home }}/.config/fish/config.fish"
+    regexp: "^starship init"
+    line: starship init fish | source
+  loop: "{{ fish_users }}"
+  when:
+    - fish_users is defined
+    - fish_users is iterable
+    - fish_users | length > 0
+
+- name: Install Fisher
+  become: true
+  become_user: "{{ item.name }}"
+  ansible.builtin.get_url:
+    url: https://git.io/fisher
+    dest: "{{ item.home }}/.config/fish/functions/fisher.fish"
+    mode: "0664"
+  loop: "{{ fish_users }}"
+  when:
+    - fish_users is defined
+    - fish_users is iterable
+    - fish_users | length > 0
+
+- name: Install Fisher plugins
+  become: true
+  become_user: "{{ item.name }}"
+  ansible.builtin.shell: /bin/fish -c 'fisher install decors/fish-colored-man edc/bass franciscolourenco/done jethrokuan/z jorgebucaran/autopair.fish nickeb96/puffer-fish patrickf3139/fzf.fish'
+  loop: "{{ fish_users }}"
+  when:
+    - fish_users is defined
+    - fish_users is iterable
+    - fish_users | length > 0

@@ -9,10 +9,10 @@
     - role: apt
     - role: hostname
     - role: timezone
+    - role: users
+    - role: sshkeys
     - role: sudoers
     - role: fish
-    - role: sshkeys
-    - role: users
 
 - name: NAS specific setup
   hosts:
