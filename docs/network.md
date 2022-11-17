@@ -31,9 +31,10 @@ SSH to the router and run `sh -c 'sh -c "$(curl -sL https://nextdns.io/install)"
 ```shell
 nextdns config set \
     -config 192.168.30.0/24=<config1> \
-    -config 192.168.50.0/24=<config1> \
-    -config 192.168.60.0/24=<config3> \
+    -config 192.168.50.0/24=<config4> \
+    -config 192.168.60.0/24=<config1> \
     -config 192.168.70.0/24=<config1> \
+    -config 192.168.71.0/24=<config1> \
     -config <config2> \
     -forwarder <domain>=192.168.20.208
 nextdns restart

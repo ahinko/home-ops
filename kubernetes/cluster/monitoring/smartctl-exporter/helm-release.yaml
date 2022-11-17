@@ -23,5 +23,5 @@ spec:
     serviceMonitor:
       enabled: true
     prometheusRules:
-      enabled: false
+      enabled: true
     tolerations: {}
