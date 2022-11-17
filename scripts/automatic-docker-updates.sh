@@ -16,6 +16,9 @@ fi
 # images as well as build and deamonize.
 for d in "$DOCKER_PATH"/*/ ; do
     cd "$d" || exit
-    /usr/bin/docker-compose -f docker-compose.yaml pull
-    /usr/bin/docker-compose -f docker-compose.yaml up -d --build
+
+    if [ -e ./docker-compose.yaml ]; then
+      /usr/bin/docker-compose -f docker-compose.yaml pull
+      /usr/bin/docker-compose -f docker-compose.yaml up -d --build
+    fi
 done

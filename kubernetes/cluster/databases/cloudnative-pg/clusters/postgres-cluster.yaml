@@ -9,10 +9,12 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:15.1
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
+    size: 50Gi
     storageClass: rook-cephfs
   superuserSecret:
     name: postgres-superuser
+  monitoring:
+    enablePodMonitor: true
 
   bootstrap:
     initdb:
@@ -45,7 +47,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgresql/
       endpointURL: http://minio.default:9000
-      serverName: postgres-v2
+      serverName: postgres-v1
       s3Credentials:
         accessKeyId:
           name: backup-secrets
