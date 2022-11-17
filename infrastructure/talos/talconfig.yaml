@@ -151,7 +151,9 @@ controlPlane:
         time:
           disabled: false
           servers:
-            - time.cloudflare.com
+            - gbg2.ntp.se
+            - sth1.ntp.se
+            - europe.pool.ntp.org
 
 worker:
   patches:
@@ -181,4 +183,6 @@ worker:
         time:
           disabled: false
           servers:
-            - time.cloudflare.com
+            - gbg2.ntp.se
+            - sth1.ntp.se
+            - europe.pool.ntp.org

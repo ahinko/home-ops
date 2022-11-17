@@ -1,8 +1,6 @@
 ---
 area/ansible:
-  - "infrastructure/kvm/**/*"
-  - "infrastructure/nas/**/*"
-  - "infrastructure/udm-pro/**/*"
+  - "infrastructure/ansible/**/*"
 area/ci:
   - ".github/**/*"
 area/kubernetes:
@@ -12,4 +10,4 @@ area/docs:
 area/docker:
   - "docker/**/*"
 area/terraform:
-  - "cloud/cloudflare**/*"
+  - "infrastructure/terraform/**/*"

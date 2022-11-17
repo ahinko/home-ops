@@ -7,8 +7,8 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "infrastructure/kubernetes/upgrade-talos.sh"
-      - "infrastructure/kubernetes/talconfig.yaml"
+      - "infrastructure/talos/upgrade-talos.sh"
+      - "infrastructure/talos/talconfig.yaml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

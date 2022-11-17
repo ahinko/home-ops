@@ -41,29 +41,29 @@ tasks:
     cmds:
       - helm repo add cilium https://helm.cilium.io/
       - helm repo update cilium
-      - helm template --version 1.12.3 cilium/cilium -f ./infrastructure/kubernetes/integrations/cilium-quick-install/values.yaml > ./infrastructure/kubernetes/integrations/cilium-quick-install/quick-install.yaml -n kube-system
+      - helm template --version 1.12.3 cilium/cilium -f ./infrastructure/talos/integrations/cilium-quick-install/values.yaml > ./infrastructure/talos/integrations/cilium-quick-install/quick-install.yaml -n kube-system
     silent: true
 
   provision:
     desc: Provision cluster
     silent: true
     cmds:
-      - ./infrastructure/kubernetes/provision.sh
+      - ./infrastructure/talos/provision.sh
 
   upgrade-talos:
     desc: Upgrade Talos on cluster
     silent: true
     cmds:
-      - ./infrastructure/kubernetes/upgrade-talos.sh
+      - ./infrastructure/talos/upgrade-talos.sh
 
   upgrade-k8s:
     desc: Upgrade Kubernetes on cluster
     silent: true
     cmds:
-      - ./infrastructure/kubernetes/upgrade-k8s.sh
+      - ./infrastructure/talos/upgrade-k8s.sh
 
   restore-backup-all:
     desc: Restore backups for all services, usefull when re-provisioning
     silent: true
     cmds:
-      - ./infrastructure/kubernetes/restore-backups.sh
+      - ./infrastructure/talos/restore-backups.sh

@@ -6,7 +6,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "cloud/**.tf"
+      - "infrastructure/terraform/**.tf"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

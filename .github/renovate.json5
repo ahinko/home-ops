@@ -30,7 +30,7 @@
   "rebaseWhen": "conflicted",
   "commitBodyTable": true,
   "ignorePaths": [
-    "infrastructure/kubernetes/integrations/"
+    "infrastructure/talos/integrations/"
   ],
   "ignoreDeps": [
     "ghcr.io/fluxcd/helm-controller",
@@ -44,7 +44,7 @@
     "fileMatch": [
       "(^|/)docker-compose.*\\.yaml$",
       ".taskfiles/.+\\.yaml$",
-      "infrastructure/kubernetes/.+\\.sh$"
+      "infrastructure/talos/.+\\.sh$"
     ]
   },
   "flux": {

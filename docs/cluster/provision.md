@@ -50,7 +50,7 @@ After that I attach the USB stick to the NUC, boot it from the USB drive and Tal
 
 ## 3. Modify Talos configs
 
-I use the excelent tool [Talhelper](https://github.com/budimanjojo/talhelper) to handle Talos config files. We start by modifying [talconfig.yaml](../../infrastructure/kubernetes/clusterconfig/talosconfig) to match our needs.
+I use the excelent tool [Talhelper](https://github.com/budimanjojo/talhelper) to handle Talos config files. We start by modifying [talconfig.yaml](../../infrastructure/talos/clusterconfig/talosconfig) to match our needs.
 It's quite straight forward and we can use the [Talos documentation](https://www.talos.dev/latest/reference/configuration/) as a reference.
 
 Make sure your [cluster-settings](../../kubernetes/config/cluster-settings.yaml) file matches your Talos configuration (mainly IP address for the cluster endpoint).
@@ -82,7 +82,7 @@ Last but not least the provision script will provision Flux to the cluster.
 We use Terraform for provisioning and keeping our Cloudflare settings up to date. Terraform will set up the domain we use as well as creating a few Kubernetes secrets for Cloudflare API tokens that is used by a few services running on the cluster.
 See [expose-services.md](expose-services.md) for more information.
 
-Therefor you need to modify the [secrets file](../../cloud/cloudflare/sops.secrets.yaml) to set it up according to your needs.
+Therefor you need to modify the [secrets file](../../infrastructure/terraform/cloudflare/sops.secrets.yaml) to set it up according to your needs.
 
 ## 6. Restore backups
 

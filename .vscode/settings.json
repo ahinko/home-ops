@@ -5,7 +5,7 @@
     "**/infrastructure/**/*.yaml": "ansible",
     "**/infrastructure/**/*.sops.yaml": "yaml",
     "**/infrastructure/**/inventory/**/*.yaml": "yaml",
-    "**/cloud/cloudflare/**/*.tf": "terraform"
+    "**/infrastructure/**/*.tf": "terraform"
   },
   "material-icon-theme.folders.associations": {
     ".taskfiles": "utils",
@@ -13,7 +13,6 @@
     "dbms": "database",
     "dev": "less",
     "flux-system": "kubernetes",
-    "kopia": "server",
     "kube-system": "kubernetes",
     "media": "video",
     "monitoring": "event",
@@ -22,7 +21,9 @@
     "security": "keys",
     "setup": "import",
     "hack": "scripts",
-    "config": "environment"
+    "config": "environment",
+    "terraforms": "terraform",
+    "vars": "other"
   },
   "prettier.configPath": ".github/linters/.prettierrc.yaml",
   "prettier.ignorePath": ".github/linters/.prettierignore",

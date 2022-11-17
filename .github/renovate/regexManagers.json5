@@ -13,8 +13,8 @@
     {
       description: 'Process Kubernetes versions',
       fileMatch: [
-        'infrastructure/kubernetes/upgrade-k8s.sh',
-        'infrastructure/kubernetes/talconfig.yaml'
+        'infrastructure/talos/upgrade-k8s.sh',
+        'infrastructure/talos/talconfig.yaml'
       ],
       matchStrings: [
         'kubernetesVersion: (?<currentValue>.*)',
@@ -26,8 +26,8 @@
     {
       description: 'Process Talos versions',
       fileMatch: [
-          'infrastructure/kubernetes/upgrade-talos.sh',
-          'infrastructure/kubernetes/talconfig.yaml',
+          'infrastructure/talos/upgrade-talos.sh',
+          'infrastructure/talos/talconfig.yaml',
       ],
       matchStrings: [
         'talosVersion: (?<currentValue>.*)',
@@ -57,9 +57,9 @@
       datasourceTemplate: 'helm'
     },
     {
-      description: 'Process UDM-PRO dependencies in Ansible playbook + role',
+      description: 'Process UDM-PRO dependencies in Ansible role',
       fileMatch: [
-        'infrastructure/udm-pro/.+\\.yaml$'
+        'infrastructure/ansible/roles/udmpro/.+\\.yaml$'
       ],
       matchStrings: [
         'depName=(?<depName>.*?)\n[a-z_]*: (?<currentValue>.*)'
@@ -69,7 +69,7 @@
     {
       description: 'Process UDM-PRO dependencies in UDM-PRO scripts',
       fileMatch: [
-        'infrastructure/udm-pro/.+\\.sh$',
+        'infrastructure/ansible/roles/udmpro/.+\\.sh$',
       ],
       matchStrings: [
         '\n  (?<depName>.*?):(?<currentValue>.*) # renovate'

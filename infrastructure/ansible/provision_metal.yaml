@@ -1,7 +1,8 @@
 ---
 - name: Metal basic setup
   hosts:
-    - all
+    - atlas
+    - kronos
   remote_user: peter
   become: true
   become_method: sudo

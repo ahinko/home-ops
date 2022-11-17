@@ -12,10 +12,10 @@ exclude_paths:
   - ../../.github/
   - ../../.taskfiles/
   - ../../.vscode/
-  - ../../cloud/
+  - ../../infrastructure/terraform/
   - ../../docker/
   - ../../docs/
-  - ../../infrastructure/kubernetes/
+  - ../../infrastructure/talos/
   - ../../kubernetes/
   - ../../scripts/
   - ../../Taskfile.yml

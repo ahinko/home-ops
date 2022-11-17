@@ -6,7 +6,6 @@
 /docker/
 /docs/
 /scripts/
-/cloud/
 /tools/
 /.env
 /.gitattributes

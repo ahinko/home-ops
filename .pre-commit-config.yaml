@@ -47,7 +47,7 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_tfsec
-        files: ^cloud/cloudflare/
+        files: ^infrastructure/terraform/cloudflare/
       - id: terraform_validate
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks

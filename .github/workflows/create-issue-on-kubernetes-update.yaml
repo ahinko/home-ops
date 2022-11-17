@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - "infrastructure/kubernetes/talconfig.yaml"
-      - "infrastructure/kubernetes/upgrade-k8s.sh"
+      - "infrastructure/talos/talconfig.yaml"
+      - "infrastructure/talos/upgrade-k8s.sh"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
