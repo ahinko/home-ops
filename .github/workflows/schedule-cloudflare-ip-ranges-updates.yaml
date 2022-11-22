@@ -31,7 +31,7 @@ jobs:
         run: |
           bash ./.github/scripts/cloudflare-ip-ranges.sh > ${{ env.CLOUDFLARE_IP_RANGES_FILE }}
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v4.2.0
+        uses: peter-evans/create-pull-request@v4.2.1
         with:
           token: "${{ steps.generate-token.outputs.token }}"
           branch: ci/update-cloudflare-ip-ranges
