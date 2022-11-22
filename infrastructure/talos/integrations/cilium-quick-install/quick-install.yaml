@@ -389,7 +389,7 @@ rules:
       - get
       - list
       - watch
-      # To perform CiliumNode garbage collector
+        # To perform CiliumNode garbage collector
       - delete
   - apiGroups:
       - cilium.io
@@ -506,7 +506,7 @@ spec:
     spec:
       containers:
         - name: cilium-agent
-          image: "quay.io/cilium/cilium:v1.12.2@sha256:986f8b04cfdb35cf714701e58e35da0ee63da2b8a048ab596ccb49de58d5ba36"
+          image: "quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf"
           imagePullPolicy: IfNotPresent
           command:
             - cilium-agent
@@ -620,7 +620,7 @@ spec:
         # Required to mount cgroup2 filesystem on the underlying Kubernetes node.
         # We use nsenter command with host's cgroup and mount namespaces enabled.
         - name: mount-cgroup
-          image: "quay.io/cilium/cilium:v1.12.2@sha256:986f8b04cfdb35cf714701e58e35da0ee63da2b8a048ab596ccb49de58d5ba36"
+          image: "quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf"
           imagePullPolicy: IfNotPresent
           env:
             - name: CGROUP_ROOT
@@ -648,7 +648,7 @@ spec:
           securityContext:
             privileged: true
         - name: apply-sysctl-overwrites
-          image: "quay.io/cilium/cilium:v1.12.2@sha256:986f8b04cfdb35cf714701e58e35da0ee63da2b8a048ab596ccb49de58d5ba36"
+          image: "quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf"
           imagePullPolicy: IfNotPresent
           env:
             - name: BIN_PATH
@@ -674,7 +674,7 @@ spec:
           securityContext:
             privileged: true
         - name: clean-cilium-state
-          image: "quay.io/cilium/cilium:v1.12.2@sha256:986f8b04cfdb35cf714701e58e35da0ee63da2b8a048ab596ccb49de58d5ba36"
+          image: "quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf"
           imagePullPolicy: IfNotPresent
           command:
             - /init-container.sh
@@ -734,7 +734,7 @@ spec:
           hostPath:
             path: /var/run/cilium
             type: DirectoryOrCreate
-        # To keep state between restarts / upgrades for bpf maps
+          # To keep state between restarts / upgrades for bpf maps
         - name: bpf-maps
           hostPath:
             path: /sys/fs/bpf
@@ -754,28 +754,28 @@ spec:
           hostPath:
             path: /opt/cni/bin
             type: DirectoryOrCreate
-        # To install cilium cni configuration in the host
+          # To install cilium cni configuration in the host
         - name: etc-cni-netd
           hostPath:
             path: /etc/cni/net.d
             type: DirectoryOrCreate
-        # To be able to load kernel modules
+          # To be able to load kernel modules
         - name: lib-modules
           hostPath:
             path: /lib/modules
-        # To access iptables concurrently with other processes (e.g. kube-proxy)
+          # To access iptables concurrently with other processes (e.g. kube-proxy)
         - name: xtables-lock
           hostPath:
             path: /run/xtables.lock
             type: FileOrCreate
-        # To read the clustermesh configuration
+          # To read the clustermesh configuration
         - name: clustermesh-secrets
           secret:
             secretName: cilium-clustermesh
             # note: the leading zero means this number is in octal representation: do not remove it
             defaultMode: 0400
             optional: true
-        # To read the configuration from the config map
+          # To read the configuration from the config map
         - name: cilium-config-path
           configMap:
             name: cilium-config
@@ -811,7 +811,7 @@ spec:
     spec:
       containers:
         - name: cilium-operator
-          image: quay.io/cilium/operator-generic:v1.12.2@sha256:00508f78dae5412161fa40ee30069c2802aef20f7bdd20e91423103ba8c0df6e
+          image: "quay.io/cilium/operator-generic:v1.12.4@sha256:071089ec5bca1f556afb8e541d9972a0dfb09d1e25504ae642ced021ecbedbd1"
           imagePullPolicy: IfNotPresent
           command:
             - cilium-operator-generic
