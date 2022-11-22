@@ -28,6 +28,8 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
+      annotations:
+        "coredns.io/hostname": "vector.${SECRET_DOMAIN}"
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: vector-aggregator
