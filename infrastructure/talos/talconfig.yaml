@@ -2,13 +2,14 @@
 clusterName: metal
 talosVersion: v1.2.6
 kubernetesVersion: v1.25.4
-endpoint: https://192.168.20.20:6443
+endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 clusterPodNets:
   - 10.244.0.0/16
 clusterSvcNets:
   - 10.96.0.0/12
 cniConfig:
   name: none
+
 nodes:
   - hostname: helios
     ipAddress: 192.168.20.21
@@ -23,7 +24,7 @@ nodes:
         mtu: 0
         dhcp: true
         vip:
-          ip: 192.168.20.20
+          ip: ${CLUSTER_ENDPOINT_IP}
     inlinePatch:
       machine:
         udev:
@@ -42,7 +43,7 @@ nodes:
         mtu: 0
         dhcp: true
         vip:
-          ip: 192.168.20.20
+          ip: ${CLUSTER_ENDPOINT_IP}
   - hostname: hades
     ipAddress: 192.168.20.23
     controlPlane: true
@@ -56,7 +57,7 @@ nodes:
         mtu: 0
         dhcp: true
         vip:
-          ip: 192.168.20.20
+          ip: ${CLUSTER_ENDPOINT_IP}
   - hostname: poseidon
     ipAddress: 192.168.20.24
     controlPlane: false
