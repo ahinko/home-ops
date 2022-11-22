@@ -18,3 +18,5 @@ spec:
   values:
     providerRegex: |
       ^(eos|hades|helios|iris|poseidon|zeus)$
+
+    bypassDnsResolution: true
