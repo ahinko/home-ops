@@ -22,7 +22,7 @@ spec:
 
     image:
       repository: docker.io/intel/intel-gpu-plugin
-      tag: 0.25.0
+      tag: 0.25.1
 
     env:
       TZ: "${TIMEZONE}"
