@@ -58,4 +58,4 @@ podman run -d --network haproxy --restart always \
   --hostname haproxy \
   --dns $DNS \
   -v "/mnt/data/haproxy/:/usr/local/etc/haproxy/" \
-  docker.io/haproxytech/haproxy-alpine:2.6.6 # renovate
+  docker.io/haproxytech/haproxy-alpine:2.6.7 # renovate
