@@ -1,5 +1,5 @@
 {
-  "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
+  "ansible.validation.lint.arguments": "-c .github/linters/.ansible-lint",
   "files.associations": {
     "*.json5": "json5",
     "**/infrastructure/ansible/**/*.yaml": "ansible",

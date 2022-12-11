@@ -26,7 +26,7 @@ do
 
     # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
     if [[ $IP == "192.168.20.21" ]]; then
-      kubectl create job --from=cronjob/tainter -n kube-system tainter-temp if node is helios
+      kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
     fi
 
     HEALTH=false

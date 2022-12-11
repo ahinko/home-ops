@@ -16,8 +16,8 @@ tasks:
       - brew upgrade
 
       # Install Ansible dependencies
-      - "ansible-galaxy install -r infrastructure/requirements.yaml --force"
-      - "ansible-galaxy collection install -r infrastructure/requirements.yaml --force"
+      - "ansible-galaxy install -r infrastructure/ansible/requirements.yaml --force"
+      - "ansible-galaxy collection install -r infrastructure/ansible/requirements.yaml --force"
 
       # Install Talosctl
       - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.2.7/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-arm64 && sudo chmod +x /usr/local/bin/talosctl
