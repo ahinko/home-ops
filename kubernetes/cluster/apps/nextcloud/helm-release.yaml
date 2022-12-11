@@ -187,10 +187,6 @@ spec:
 
     cronjob:
       enabled: true
-      schedule: "*/10 * * * *"
-      curlInsecure: false
-      failedJobsHistoryLimit: 2
-      successfulJobsHistoryLimit: 1
 
     service:
       type: ClusterIP
