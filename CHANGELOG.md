@@ -3,6 +3,12 @@
 I'm not going to semver this repo since it wont work very well for this type of repo. I do however sometime wonder why others with similar repos makes the decitions that they do. Why they for example replaces one thing with another.
 So I will use this changelog to highlight and motivate some of the changes I make.
 
+## 2022-12-11
+
+### Changed
+
+- Deployed EMQx-operator. Motivation: the old EMQx cluster that was deployed using Helm was a pain to update to new versions since it had to be teared down and then brought back up again with downtime.
+
 ## 2022-10-24
 
 ### Added

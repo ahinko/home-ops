@@ -2,73 +2,33 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app emqx
+  name: &app emqx-operator
   namespace: home-automation
 spec:
   interval: 60m
   chart:
     spec:
       chart: *app
-      version: 5.0.11
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: emqx-charts
         namespace: flux-system
       interval: 60m
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
     - name: metallb
       namespace: networking
-  # Values link: https://github.com/emqx/emqx/blob/master/deploy/charts/emqx/values.yaml
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  # Values link: https://github.com/emqx/emqx-operator/blob/main/deploy/charts/emqx-operator/values.yaml
   values:
-    replicaCount: 3
-    recreatePods: true
-    service:
-      type: LoadBalancer
-      annotations:
-        metallb.universe.tf/loadBalancerIPs: ${LB_EMQX}
-    emqxConfig:
-      EMQX_ALLOW_ANONYMOUS: "false"
-      EMQX_ADMIN_PASSWORD: "${SECRET_EMQX_ADMIN_PASSWORD}"
-      EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
-      EMQX_AUTH__USER__1__USERNAME: "${SECRET_MQTT_USERNAME}"
-      EMQX_AUTH__USER__1__PASSWORD: "${SECRET_MQTT_PASSWORD}"
-    ingress:
-      dashboard:
-        enabled: true
-        ingressClassName: nginx
-        path: /
-        pathType: Prefix
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-        hosts:
-          - &host "emqx.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - *host
-    persistence:
-      enabled: true
-      storageClassName: "rook-cephfs"
-      accessMode: ReadWriteMany
-      size: 100Mi
+    skipCRDs: false
 
-    affinity:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - emqx
-              topologyKey: kubernetes.io/hostname
+    replicaCount: 1
 
     resources:
+      limits:
+        memory: 256Mi
       requests:
         cpu: 100m
-        memory: 150Mi
-      limits:
-        memory: 512Mi
+        memory: 30Mi
