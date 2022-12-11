@@ -21,9 +21,9 @@ spec:
       resources:
         requests:
           cpu: 15m
-          memory: 64M
+          memory: 145M
         limits:
-          memory: 64M
+          memory: 174M
 
     dashboard:
       replicaCount: 1
