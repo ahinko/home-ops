@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 17.3.11
+      version: 17.3.14
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
