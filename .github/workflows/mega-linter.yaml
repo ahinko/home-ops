@@ -24,7 +24,7 @@ jobs:
           private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
 
       - name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3.2.0
         with:
           fetch-depth: 0
 
