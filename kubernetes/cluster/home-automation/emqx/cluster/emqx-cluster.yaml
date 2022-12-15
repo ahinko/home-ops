@@ -5,7 +5,7 @@ metadata:
   name: emqx
   namespace: home-automation
 spec:
-  image: emqx/emqx:5.0.11
+  image: emqx/emqx:5.0.12
 
   bootstrapConfig: |
     authorization {
