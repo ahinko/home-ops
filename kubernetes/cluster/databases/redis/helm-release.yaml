@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 17.3.14
+      version: 17.3.17
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
@@ -30,7 +30,7 @@ spec:
 
     image:
       repository: bitnami/redis
-      tag: 7.0.5
+      tag: 7.0.7
 
     architecture: replication
 
@@ -63,7 +63,7 @@ spec:
 
       image:
         repository: bitnami/redis-sentinel
-        tag: 7.0.5
+        tag: 7.0.7
 
     metrics:
       enabled: false
