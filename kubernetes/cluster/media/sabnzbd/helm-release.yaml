@@ -21,7 +21,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/sabnzbd
-      tag: 3.7.0
+      tag: 3.7.1
     env:
       TZ: "${TIMEZONE}"
       SABNZBD__PORT: &port 8080
