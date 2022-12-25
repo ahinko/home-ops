@@ -1,7 +1,7 @@
 {
   packageRules: [
     {
-      allowedVersions: '<=1.25', // Talos dependency
+      allowedVersions: '<=1.26', // Talos dependency
       matchDatasources: ['docker'],
       matchPackageNames: [
         'ghcr.io/siderolabs/kubelet',
