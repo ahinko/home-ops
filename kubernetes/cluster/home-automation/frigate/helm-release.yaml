@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
       interval: 60m
   dependsOn:
-    - name: emqx
+    - name: emqx-operator
       namespace: home-automation
     - name: intel-gpu-plugin
       namespace: kube-tools
