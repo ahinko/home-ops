@@ -38,42 +38,6 @@ spec:
       ingressClassResource:
         default: true
 
-      # Crowdsec start
-      extraVolumes:
-        - name: crowdsec-bouncer-plugin
-          emptyDir: {}
-      extraInitContainers:
-        - name: init-clone-crowdsec-bouncer
-          image: crowdsecurity/lua-bouncer-plugin:v0.1.11
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: API_URL
-              value: "http://crowdsec-service.networking.svc.cluster.local:8080"
-            - name: BOUNCER_CONFIG
-              value: "/crowdsec/crowdsec-bouncer.conf"
-
-          envFrom:
-            - secretRef:
-                name: crowdsec-secrets
-
-          command:
-            [
-              "sh",
-              "-c",
-              "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp -r /crowdsec/* /lua_plugins/crowdsec/",
-            ]
-          volumeMounts:
-            - name: crowdsec-bouncer-plugin
-              mountPath: /lua_plugins
-      extraVolumeMounts:
-        - name: crowdsec-bouncer-plugin
-          mountPath: /etc/nginx/lua/plugins/crowdsec
-          subPath: crowdsec
-      config:
-        plugins: "crowdsec"
-        lua-shared-dicts: "crowdsec_cache: 50m"
-        # Crowdsec end
-
         client-header-timeout: 120
         client-body-buffer-size: "100M"
         client-body-timeout: 120

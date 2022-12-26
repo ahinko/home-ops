@@ -3,6 +3,12 @@
 I'm not going to semver this repo since it wont work very well for this type of repo. I do however sometime wonder why others with similar repos makes the decitions that they do. Why they for example replaces one thing with another.
 So I will use this changelog to highlight and motivate some of the changes I make.
 
+## 2022-12-26
+
+### Removed
+
+- Removed Crowdsec because it causes a lot of issues where the Nginx Ingress controller becomes unresponse due to the fact that it can't connect to Crowdsec.
+
 ## 2022-12-11
 
 ### Changed

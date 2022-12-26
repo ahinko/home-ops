@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - cloudflare-ddns
-  - crowdsec
   - external-dns
   - external-services
   - haproxy
