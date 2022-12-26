@@ -7,4 +7,3 @@ resources:
   - helm-release.yaml
   - dashboard
   - prometheus-rule.yaml
-  - service-monitor.yaml

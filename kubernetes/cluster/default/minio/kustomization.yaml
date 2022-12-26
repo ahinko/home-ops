@@ -6,5 +6,4 @@ resources:
   - nfs-pvc.yaml
   - sops.secrets.yaml
   - helm-release.yaml
-  - service-monitor.yaml
   - dashboard
