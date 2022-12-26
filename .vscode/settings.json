@@ -5,7 +5,8 @@
     "**/infrastructure/ansible/**/*.yaml": "ansible",
     "**/infrastructure/**/*.sops.yaml": "yaml",
     "**/infrastructure/**/inventory/**/*.yaml": "yaml",
-    "**/infrastructure/**/*.tf": "terraform"
+    "**/infrastructure/**/*.tf": "terraform",
+    "**/kubernetes/**/*.sops.toml": "plaintext"
   },
   "material-icon-theme.folders.associations": {
     ".taskfiles": "utils",
@@ -32,13 +33,22 @@
   },
   "prettier.configPath": ".github/linters/.prettierrc.yaml",
   "prettier.ignorePath": ".github/linters/.prettierignore",
+  "yaml.schemaStore.enable": true,
   "yaml.schemas": {
+    "ansible": "ansible/**/*.yml",
     "kubernetes": "kubernetes/*.yaml"
   },
   "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,
   "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs":"active",
   "editor.hover.delay": 1500,
-  "explorer.autoReveal": false
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.guides.highlightActiveBracketPair": true,
+  "editor.stickyScroll.enabled": false,
+  "editor.rulers": [
+    100
+  ],
+  "explorer.autoReveal": false,
+  "files.trimTrailingWhitespace": true,
 }
