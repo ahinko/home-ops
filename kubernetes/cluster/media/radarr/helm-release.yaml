@@ -21,7 +21,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/radarr
-      tag: 4.2.4.6635
+      tag: 4.3.2.6857
     env:
       TZ: "${TIMEZONE}"
       PUSHOVER_DEBUG: "false"
