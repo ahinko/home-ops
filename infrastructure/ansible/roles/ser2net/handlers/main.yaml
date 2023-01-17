@@ -1,0 +1,11 @@
+---
+
+- name: restart ser2net
+  service:
+    name: ser2net
+    state: restarted
+
+- name: wait for startup
+  listen: restart ser2net
+  pause:
+    seconds: 3

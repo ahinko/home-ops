@@ -1,0 +1,134 @@
+---
+
+- name: Disable swap and filesystem check and make read only
+  ansible.builtin.replace:
+    dest: /boot/cmdline.txt
+    regexp: '(rootwait(?!.*\b{{ cmdline_add }}\b).*)$'
+    replace: '\1 {{ cmdline_add }}'
+
+- name: Update mount boot to be read only
+  ansible.posix.mount:
+    path: /boot
+    src: PARTUUID={{ partuuid_boot }}
+    fstype: vfat
+    opts: defaults,ro
+    state: present
+    passno: 2
+
+- name: Update mount root to be read only
+  ansible.posix.mount:
+    backup: true
+    path: /
+    src: PARTUUID={{ partuuid_root }}
+    fstype: ext4
+    opts: defaults,noatime,ro
+    state: present
+    passno: 1
+
+- name: Add mount for tmp
+  ansible.posix.mount:
+    backup: true
+    path: /tmp
+    src: tmpfs
+    fstype: tmpfs
+    opts: nosuid,nodev
+    state: present
+    passno: 0
+
+- name: Add mount for var/log
+  ansible.posix.mount:
+    backup: true
+    path: /var/log
+    src: tmpfs
+    fstype: tmpfs
+    opts: nosuid,nodev
+    state: present
+    passno: 0
+
+- name: Add mount for var/tmp
+  ansible.posix.mount:
+    backup: true
+    path: /var/tmp
+    src: tmpfs
+    fstype: tmpfs
+    opts: nosuid,nodev
+    state: present
+    passno: 0
+
+- name: Remove some files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/dhcp
+    - /var/lib/dhcpcd5
+    - /var/spool
+    - /etc/resolv.conf
+    - /var/lib/systemd/random-seed
+
+- name: Touch needed files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: touch
+    mode: u=rw,g=r,o=r
+  with_items:
+    - /tmp/dhcpcd.resolv.conf
+    - /tmp/random-seed
+
+- name: Create tmp folders
+  ansible.builtin.file:
+    path: "/tmp/{{ item }}"
+    state: directory
+    mode: u=rw,g=r,o=r
+  with_items:
+    - /var/lib/dhcp
+    - /var/lib/dhcpcd5
+    - /var/spool
+
+- name: Create a symbolic links
+  ansible.builtin.file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    state: link
+    force: true
+  with_items:
+    - { dest: "/var/lib/dhcp", src: "/tmp/var/lib/dhcp" }
+    - { dest: "/var/lib/dhcpcd5", src: "/tmp/var/lib/dhcpcd5" }
+    - { dest: "/var/spool", src: "/tmp/var/spool" }
+    - { dest: "/etc/resolv.conf", src: "/tmp/dhcpcd.resolv.conf" }
+    - { dest: "/var/lib/systemd/random-seed", src: "/tmp/random-seed"}
+
+- name: Update systemd-random-seed
+  community.general.ini_file:
+    path: /lib/systemd/system/systemd-random-seed.service
+    section: Service
+    option: ExecStartPre
+    values:
+      - '/bin/echo "" >/tmp/random-seed'
+    mode: '0600'
+    state: present
+
+- name: Update bash.bashrc
+  ansible.builtin.blockinfile:
+    path: /etc/bash.bashrc
+    create: true
+    mode: 0644
+    block: |
+      set_bash_prompt() {
+        fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")
+        PS1='\[\033[01;32m\]\u@\h${fs_mode:+($fs_mode)}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+      }
+      alias ro='sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'
+      alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'
+      PROMPT_COMMAND=set_bash_prompt
+
+- name: Update bash.bash_logout
+  ansible.builtin.blockinfile:
+    path: /etc/bash.bash_logout
+    create: true
+    mode: 0644
+    block: |
+      sudo mount -o remount,ro /
+      sudo mount -o remount,ro /boot

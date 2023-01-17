@@ -1,0 +1,12 @@
+---
+
+- name: IOT provision Zwave Coordinator
+  hosts:
+    - zwave-coordinator
+  remote_user: zwave
+  become: true
+  become_method: sudo
+  roles:
+    - role: apt
+    - role: ser2net
+    - role: readonly

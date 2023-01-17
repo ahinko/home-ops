@@ -13,3 +13,4 @@ resources:
   - home-assistant-v2-code
   - zigbee2mqtt
   - zwavejs
+  - zwave-js-ui

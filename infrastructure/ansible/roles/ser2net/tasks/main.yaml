@@ -1,0 +1,29 @@
+---
+
+- name: Install ser2net
+  ansible.builtin.apt:
+    name: ser2net
+    state: present
+
+- name: Config ser2net
+  ansible.builtin.template:
+    src: templates/ser2net.yaml.j2
+    dest: /etc/ser2net.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create log dir
+  ansible.builtin.file:
+    path: /var/log/ser2net
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Start ser2net
+  ansible.builtin.service:
+    name: ser2net
+    state: started
+    enabled: true
+  notify: restart ser2net

@@ -1,0 +1,18 @@
+%YAML 1.1
+---
+
+default:
+  name: kickolduser
+  value: true
+
+default:
+  name: speed
+  value: 115200n81
+
+{% for port in ser2net_ports %}
+connection: &con{{ port.tcpport }}
+  accepter: tcp,{{ port.tcpport }}
+  timeout: {{ port.timeout| default(300) }}
+  enable: on
+  connector: serialdev,{{ port.device }}
+{% endfor %}

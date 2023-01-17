@@ -19,3 +19,10 @@ kvm:
     pikvm:
       ansible_host: 192.168.20.12
       ansible_user: root
+
+iot:
+  hosts:
+    zwave-coordinator:
+      ansible_host: 192.168.71.160
+      ansible_user: zwave
+      mac: 00:e0:4c:36:01:13

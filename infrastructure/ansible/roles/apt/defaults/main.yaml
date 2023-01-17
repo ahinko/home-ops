@@ -1,0 +1,8 @@
+---
+
+apt_disable_recommends: "enabled"
+apt_unattended_upgrades: "enabled"
+
+apt_ppa_repos: []
+apt_install_packages: []
+apt_remove_packages: []

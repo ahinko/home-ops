@@ -1,0 +1,7 @@
+---
+ser2net_ports:
+  - device: /dev/ttyUSB0
+    baud: 115200
+    tcpport: 3333
+    state: raw
+    timeout: 120

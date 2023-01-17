@@ -2,8 +2,8 @@
 - name: Configure APT
   ansible.builtin.import_tasks: configure.yaml
 
-# - name: Run APT upgrade
-# ansible.builtin.import_tasks: upgrade.yaml
+- name: Run APT upgrade
+  ansible.builtin.import_tasks: upgrade.yaml
 
 - name: APT install
   ansible.builtin.import_tasks: install.yaml
@@ -13,3 +13,5 @@
 
 - name: APT unattended upgrades
   ansible.builtin.import_tasks: unattended-upgrades.yaml
+  when:
+    - apt_unattended_upgrades == "enabled"
