@@ -15,57 +15,32 @@ spec:
         name: kubernetes-sigs-node-feature-discovery-charts
         namespace: flux-system
       interval: 60m
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   # Values link: https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
   values:
-    nameOverride: *app
-
-    nodeFeatureRule:
-      createCRD: false
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "nfd-worker-conf"
-    image:
-      repository: k8s.gcr.io/nfd/node-feature-discovery
-      tag: v0.12.0
-
-    master:
-      tolerations: {}
-      affinity:
-        nodeAffinity: {}
-
     worker:
       config:
         core:
-          labelSources:
-            - "custom"
-            - "pci"
-            - "usb"
+          sources: ["custom", "pci", "usb"]
         sources:
           usb:
-            deviceClassWhitelist:
-              - "02"
-              - "03"
-              - "0e"
-              - "ef"
-              - "fe"
-              - "ff"
-            deviceLabelFields:
-              - "class"
-              - "vendor"
-              - "device"
-          custom:
-            - name: "zwave"
-              matchOn:
-                - usbId:
-                    class: ["02"]
-                    vendor: ["0658"]
-                    device: ["0200"]
-            - name: "intel-gpu"
-              matchOn:
-                - pciId:
-                    class: ["0300"]
-                    vendor: ["8086"]
-            - name: "coral-tpu"
-              matchOn:
-                - usbId:
-                    vendor: ["1a6e", "18d1"]
+            deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
+            deviceLabelFields: ["class", "vendor", "device"]
+
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64M
+        limits:
+          memory: 64M

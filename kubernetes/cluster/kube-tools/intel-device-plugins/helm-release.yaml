@@ -1,0 +1,29 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: intel-device-plugins-operator
+  namespace: kube-tools
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: intel-device-plugins-operator
+      version: 0.25.1
+      interval: 60m
+      sourceRef:
+        kind: HelmRepository
+        name: intel-charts
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
