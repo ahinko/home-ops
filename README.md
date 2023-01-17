@@ -44,7 +44,7 @@ Why do things manually when you can automate it? I try to automate as many aspec
 * [Talos](https://talos.dev) is my OS of choice on all Kubernetes nodes.
 * [Renovate](https://www.mend.io/free-developer-tools/renovate/) keeps track of dependencies and creates a pull request when there is something to update.
 * I then merge those pull requests in to the main branch
-* [Flux](https://fluxcd.io) will then update both the management cluster and the main cluster.
+* [Flux](https://fluxcd.io) will then update the main cluster.
 * Tell Talos to automatically update and reboot Kubernetes nodes if needed by running [one script](infrastructure/talos/upgrade-talos.sh).
 * Tell Talos to automatically update Kubernetes by running [one script](infrastructure/talos/upgrade-k8s.sh).
 * Services will automatically be updated (and restarted if needed).
