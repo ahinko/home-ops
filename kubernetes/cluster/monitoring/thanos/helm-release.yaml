@@ -37,7 +37,7 @@ spec:
         ingressClassName: "nginx"
         tls: true
       replicaLabels:
-        - replica
+        - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
       resources:
         requests:
           cpu: 15m

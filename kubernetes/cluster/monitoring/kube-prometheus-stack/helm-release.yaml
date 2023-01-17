@@ -141,7 +141,7 @@ spec:
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         replicas: 1
-        replicaExternalLabelName: "replica"
+        replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
         resources:
           requests:
             cpu: 587m
@@ -189,7 +189,6 @@ spec:
                 html: true
                 priority: |-
                   {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
-                url_title: View in Alert Manager
                 title: |-
                   [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
                 message: |-

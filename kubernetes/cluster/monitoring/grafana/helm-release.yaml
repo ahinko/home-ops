@@ -58,8 +58,16 @@ spec:
             name: Loki
             type: loki
             url: http://loki-gateway.monitoring:80
+          - name: Alertmanager
+            type: alertmanager
+            access: proxy
+            url: http://kube-prometheus-stack-alertmanager.monitoring:9093
+            jsonData:
+              implementation: prometheus
         deleteDatasources:
           - name: Loki
+            orgId: 1
+          - name: Alertmanager
             orgId: 1
 
     deploymentStrategy:
