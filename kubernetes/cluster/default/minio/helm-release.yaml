@@ -38,10 +38,10 @@ spec:
         enabled: true
         ports:
           http:
-            port: &port-console 9001
+            port: &console-port 9001
           api:
             enabled: true
-            port: &port-api 9000
+            port: &api-port 9000
 
         monitor:
           enabled: true
@@ -58,30 +58,36 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
+        hosts:
+          - host: &console-host minio.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  port: *console-port
+        tls:
+          - hosts:
+              - *console-host
+      s3:
+        enabled: true
+        ingressClassName: nginx
         annotations:
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
-          nginx.ingress.kubernetes.io/proxy-body-size: 5000m
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
           nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             chunked_transfer_encoding off;
         hosts:
-          - host: &host-console "minio.${SECRET_DOMAIN}"
+          - host: &api-host s3.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
-                  port: *port-console
-          - host: &host-api "s3.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  port: *port-api
+                  port: *api-port
         tls:
           - hosts:
-              - *host-console
-              - *host-api
+              - *api-host
 
     podSecurityContext:
       fsGroup: 1000
