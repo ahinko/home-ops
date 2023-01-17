@@ -24,6 +24,9 @@ spec:
     env:
       TZ: "${TIMEZONE}"
 
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "cert-manager-cloudflare-api-key"
+
     webhook:
       enabled: true
     extraArgs:
