@@ -60,7 +60,7 @@ spec:
         synchronize: true
         apiVersion: batch/v1
         kind: CronJob
-        name: "{{ appName }}-{{ claimName }}-backup"
+        name: "{{ claimName }}-backup"
         namespace: "{{ request.object.metadata.namespace }}"
         data:
           metadata:
