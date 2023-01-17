@@ -4,10 +4,11 @@
     {
       "description": "Auto merge GitHub Actions",
       "matchManagers": ["github-actions"],
+      "matchDatasources": ["github-tags"],
       "automerge": true,
+      "ignoreTests": true,
       "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["minor", "patch"]
     },
   ]
 }

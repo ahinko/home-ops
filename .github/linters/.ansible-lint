@@ -7,15 +7,3 @@ skip_list:
 warn_list:
   - command-instead-of-shell
   - template-instead-of-copy
-
-exclude_paths:
-  - ../../.github/
-  - ../../.taskfiles/
-  - ../../.vscode/
-  - ../../infrastructure/terraform/
-  - ../../docker/
-  - ../../docs/
-  - ../../infrastructure/talos/
-  - ../../kubernetes/
-  - ../../scripts/
-  - ../../Taskfile.yml

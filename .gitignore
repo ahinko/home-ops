@@ -17,3 +17,4 @@ talosconfig*
 .env
 *.backup
 **/.secrets
+.history
