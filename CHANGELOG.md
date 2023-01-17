@@ -3,6 +3,20 @@
 I'm not going to semver this repo since it wont work very well for this type of repo. I do however sometime wonder why others with similar repos makes the decitions that they do. Why they for example replaces one thing with another.
 So I will use this changelog to highlight and motivate some of the changes I make.
 
+## 2023-01-04
+
+### Changed
+
+- Upgraded Kubernetes to version 1.26
+- Replaced Intel GPU Plugin with Intel Device Plugin
+- Rewrote Terraform + Cloudflare provisioning
+
+### Added
+
+- Deployed Esphome
+- Deployed self hosted Github action runner
+- Added Terraform + Minio provisioning
+
 ## 2022-12-26
 
 ### Removed
