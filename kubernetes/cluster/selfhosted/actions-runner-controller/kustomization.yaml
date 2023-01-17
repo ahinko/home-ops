@@ -3,6 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - namespace.yaml
-  - actions-runner-controller
-  - radicale
+  - sops.secrets.yaml
+  - pvc.yaml
+  - helm-release.yaml
