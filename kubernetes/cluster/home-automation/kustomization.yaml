@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - emqx
+  - esphome
   - frigate
   - home-assistant
   - home-assistant-code
