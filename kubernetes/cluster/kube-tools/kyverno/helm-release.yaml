@@ -18,7 +18,6 @@ spec:
   # Values link: https://github.com/kyverno/kyverno/blob/main/charts/kyverno/values.yaml
   values:
     installCRDs: false
-    replicaCount: 3
     extraArgs:
       - --autogenInternals=false
       - --clientRateLimitQPS=30
