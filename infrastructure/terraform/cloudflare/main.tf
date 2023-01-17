@@ -1,6 +1,5 @@
 terraform {
-
-  backend "remote" {
+  cloud {
     organization = "my-homelab"
     workspaces {
       name = "homelab-cloudflare"
@@ -27,21 +26,20 @@ terraform {
   }
 }
 
+# Read secrets
 data "sops_file" "cloudflare_secrets" {
-  source_file = "sops.secrets.yaml"
+  source_file = "cloudflare_secrets.sops.yaml"
 }
 
-provider "cloudflare" {
-  api_token = data.sops_file.cloudflare_secrets.data["cloudflare_api_token"]
+# Obtain current home IP address
+data "http" "ipv4" {
+  url = "http://ipv4.icanhazip.com"
 }
 
-provider "kubernetes" {
-  config_path    = "~/.kube/configs/metal"
-  config_context = "metal"
-}
+data "cloudflare_api_token_permission_groups" "all" {}
 
-data "cloudflare_zones" "domain" {
+data "cloudflare_zones" "homelab" {
   filter {
-    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
+    name = data.sops_file.cloudflare_secrets.data["cloudflare_domain_homelab"]
   }
 }
