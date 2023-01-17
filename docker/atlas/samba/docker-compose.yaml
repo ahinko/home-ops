@@ -14,7 +14,12 @@ services:
       - /tank/shares:/shares
       - /tank/volumes/samba/user-conf:/etc/timemachine/conf
       - /tank/volumes/samba/conf/smb.conf:/etc/samba/smb.conf:ro
-      - /tank/volumes/samba/var/lib/samba:/var/lib/samba
-      - /tank/volumes/samba/var/cache/samba:/var/cache/samba
-      - /tank/volumes/samba/run/samba:/run/samba
+      - timemachine-var-lib-samba:/var/lib/samba
+      - timemachine-var-cache-samba:/var/cache/samba
+      - timemachine-run-samba:/run/samba
     network_mode: "host"
+
+volumes:
+  timemachine-var-lib-samba:
+  timemachine-var-cache-samba:
+  timemachine-run-samba:
