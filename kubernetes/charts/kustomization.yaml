@@ -16,7 +16,7 @@ resources:
   - grafana-charts.yaml
   - haproxy-charts.yaml
   - influxdata-charts.yaml
-  - ingress-nginx.yaml
+  - ingress-nginx-charts.yaml
   - itzg-minecraft-server-charts.yaml
   - jetstack-charts.yaml
   - k8s-gateway-charts.yaml
