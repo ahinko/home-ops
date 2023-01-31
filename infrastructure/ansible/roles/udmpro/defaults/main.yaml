@@ -12,7 +12,7 @@ udmp_external_dns_devices:
   - br0
 
 # renovate depName=boostchicken/udm-utilities
-udm_onboot_version: 1.0.5
+udm_onboot_version: 1.0.6
 udm_onboot_download_uri: "https://github.com/boostchicken/udm-utilities/releases/download/{{ udm_onboot_version }}-fix/udm-boot_{{ udm_onboot_version }}_all.deb"
 
 install_kernel_tools: false
