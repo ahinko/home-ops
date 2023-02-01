@@ -21,7 +21,7 @@ spec:
       enabled: true
       image:
         repository: k8s.gcr.io/autoscaling/vpa-recommender
-        tag: 0.12.0
+        tag: 0.13.0
 
       requests:
         cpu: 15m
