@@ -6,7 +6,6 @@ resources:
   - namespace.yaml
   - _pvc
   - lidarr
-  - overseerr
   - radarr
   - sabnzbd
   - sonarr
