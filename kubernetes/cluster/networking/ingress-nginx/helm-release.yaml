@@ -41,7 +41,8 @@ spec:
         client-header-timeout: 120
         client-body-buffer-size: "100M"
         client-body-timeout: 120
-        custom-http-errors: 401,403,404,500,501,502,503
+        enable-brotli: "true"
+        enable-real-ip: "true"
         forwarded-for-header: "CF-Connecting-IP"
         hsts-max-age: "31449600"
         keep-alive-requests: 10000
@@ -52,7 +53,8 @@ spec:
           "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol",
           "path": "$uri", "request_query": "$args", "request_length": $request_length, "duration": $request_time,"method": "$request_method", "http_referrer": "$http_referer",
           "http_user_agent": "$http_user_agent" }'
-        proxy-body-size: "100M"
+        proxy-body-size: 0
+        proxy-buffer-size: "16k"
         ssl-protocols: "TLSv1.3 TLSv1.2"
         use-forwarded-headers: "true"
       metrics:
@@ -93,13 +95,8 @@ spec:
           memory: 2000M
 
     defaultBackend:
-      enabled: true
-      image:
-        repository: ghcr.io/181192/custom-error-pages
-        tag: 1.2.1
-      extraEnvs:
-        - name: ERROR_FILES_PATH
-          value: ./themes/shuffle
+      enabled: false
+
   valuesFrom:
     # Cloudflare IP Addresses
     # https://www.cloudflare.com/ips/
