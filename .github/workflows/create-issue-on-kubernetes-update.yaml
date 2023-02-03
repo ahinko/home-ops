@@ -24,12 +24,20 @@ jobs:
           app_id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
           private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
 
+      - name: Parse semver string
+        id: semver_parser
+        if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
+        uses: booxmedialtd/ws-action-parse-semver@v1.4.7
+        with:
+          input_string: github.event.head_commit.message
+          version_extractor_regex: "v(.*)$"
+
       - name: Create issue if new version of Kubernetes is available
         if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
         uses: dacbd/create-issue-action@v1.2.1
         with:
           token: "${{ steps.generate-token.outputs.token }}"
-          title: "🚀 Upgrade Kubernetes"
+          title: "🚀 Upgrade Kubernetes to v${{ steps.semver_parser.outputs.fullversion }}"
           body: |
             A new version of Kubernetes has been merged in to the main branch. Please run the upgrade command after you have checked that each app on the cluster supports the new version, (mainly databases and rook).
           assignees: ahinko
