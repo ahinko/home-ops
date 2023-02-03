@@ -12,36 +12,35 @@ spec:
   mutateExistingOnPolicyUpdate: true
   generateExistingOnPolicyUpdate: true
   rules:
-    - name: remove-cpu-limits
+    - name: remove-cpu-limit
       match:
         any:
           - resources:
-              kinds: ["Pod"]
-      exclude:
-        any:
-          - resources:
-              kinds: ["Pod"]
-              selector:
-                matchLabels:
-                  job-name: "*"
-          - resources:
-              kinds: ["Pod"]
-              selector:
-                matchLabels:
-                  statefulset.kubernetes.io/pod-name: "*"
-          - resources:
-              annotations:
-                kyverno.io/ignore: "true"
+              kinds:
+                - Pod
       mutate:
-        patchStrategicMerge:
-          spec:
-            initContainers:
-              - (name): "*"
-                resources:
-                  limits:
-                    cpu: null
-            containers:
-              - (name): "*"
-                resources:
-                  limits:
-                    cpu: null
+        patchesJson6902: |-
+          - path: "/spec/initContainers/0/resources/limits/cpu"
+            op: remove
+          - path: "/spec/initContainers/1/resources/limits/cpu"
+            op: remove
+          - path: "/spec/initContainers/2/resources/limits/cpu"
+            op: remove
+          - path: "/spec/initContainers/3/resources/limits/cpu"
+            op: remove
+          - path: "/spec/initContainers/4/resources/limits/cpu"
+            op: remove
+          - path: "/spec/initContainers/5/resources/limits/cpu"
+            op: remove
+          - path: "/spec/containers/0/resources/limits/cpu"
+            op: remove
+          - path: "/spec/containers/1/resources/limits/cpu"
+            op: remove
+          - path: "/spec/containers/2/resources/limits/cpu"
+            op: remove
+          - path: "/spec/containers/3/resources/limits/cpu"
+            op: remove
+          - path: "/spec/containers/4/resources/limits/cpu"
+            op: remove
+          - path: "/spec/containers/5/resources/limits/cpu"
+            op: remove

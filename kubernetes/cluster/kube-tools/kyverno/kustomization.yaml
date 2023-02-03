@@ -2,9 +2,19 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: kube-tools
 resources:
-  # renovate: registryUrl=https://kyverno.github.io/kyverno/ chart=kyverno
-  - github.com/kyverno/kyverno//config/crds?ref=kyverno-chart-2.7.0
   - helm-release.yaml
   - rbac.yaml
   - policies
+
+configMapGenerator:
+  - name: kyverno-dashboard
+    files:
+      - kyverno-dashboard.json=https://raw.githubusercontent.com/kyverno/grafana-dashboard/master/grafana/dashboard.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    grafana_dashboard: "true"
