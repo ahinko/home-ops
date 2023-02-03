@@ -4,4 +4,4 @@ ser2net_ports:
     baud: 115200
     tcpport: 3333
     state: raw
-    timeout: 120
+    timeout: 0

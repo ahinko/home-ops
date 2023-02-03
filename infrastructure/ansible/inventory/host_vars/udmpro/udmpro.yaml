@@ -2,28 +2,22 @@
 masquerade_enabled: true
 masquerade_nat_rules:
   - {
-    name: "Helios to Xiaomi Roborock S7",
-    src: "192.168.20.21/24",
-    dest: "192.168.40.64/24",
-  }
+      name: "Helios to Xiaomi Roborock S7",
+      src: "192.168.20.21/24",
+      dest: "192.168.40.64/24",
+    }
   - {
-    name: "Iris to Xiaomi Roborock S7",
-    src: "192.168.20.26/24",
-    dest: "192.168.40.64/24",
-  }
+      name: "Iris to Xiaomi Roborock S7",
+      src: "192.168.20.26/24",
+      dest: "192.168.40.64/24",
+    }
   - {
-    name: "Zeus to Xiaomi Roborock S7",
-    src: "192.168.20.25/24",
-    dest: "192.168.40.64/24",
-  }
+      name: "Zeus to Xiaomi Roborock S7",
+      src: "192.168.20.25/24",
+      dest: "192.168.40.64/24",
+    }
   - {
-    name: "Poseidon to Xiaomi Roborock S7",
-    src: "192.168.20.24/24",
-    dest: "192.168.40.64/24",
-  }
-
-haproxy_enabled: true
-haproxy_balancing_servers:
-  - { name: "helios", ip: "192.168.20.21" }
-  - { name: "eos", ip: "192.168.20.22" }
-  - { name: "hades", ip: "192.168.20.23" }
+      name: "Poseidon to Xiaomi Roborock S7",
+      src: "192.168.20.24/24",
+      dest: "192.168.40.64/24",
+    }
