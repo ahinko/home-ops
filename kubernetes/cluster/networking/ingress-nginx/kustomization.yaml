@@ -11,4 +11,3 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - helm-release.yaml
-  - dashboard

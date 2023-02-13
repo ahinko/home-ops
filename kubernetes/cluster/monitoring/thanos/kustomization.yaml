@@ -5,4 +5,3 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - helm-release.yaml
-  - dashboard

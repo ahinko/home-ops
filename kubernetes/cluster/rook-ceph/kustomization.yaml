@@ -8,4 +8,3 @@ resources:
   - https://raw.githubusercontent.com/rook/rook/v1.10.11/deploy/examples/crds.yaml
   - operator
   - cluster
-  - dashboard
