@@ -71,7 +71,7 @@ spec:
             type: local
             local:
               directory: /rules
-          rule_path: /tmp/scratch
+          rule_path: /rules
           ring:
             kvstore:
               store: memberlist
@@ -127,18 +127,20 @@ spec:
 
     read:
       replicas: 3
+      extraVolumeMounts:
+        - name: rules
+          mountPath: /rules
+      extraVolumes:
+        - name: rules
+          emptyDir: {}
 
     backend:
       replicas: 3
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
-        - name: scratch
-          mountPath: /tmp/scratch
       extraVolumes:
         - name: rules
-          emptyDir: {}
-        - name: scratch
           emptyDir: {}
       persistence:
         size: 10Gi
