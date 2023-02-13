@@ -33,8 +33,6 @@ kind: Ingress
 metadata:
   name: plex
   namespace: networking
-  annotations:
-    external-dns.home.lab/enabled: "true"
   labels:
     app.kubernetes.io/instance: plex
     app.kubernetes.io/name: plex

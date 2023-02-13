@@ -39,7 +39,7 @@ spec:
             key: cloudflare_api_token
     extraArgs:
       - --cloudflare-proxied
-      - --annotation-filter=external-dns.home.lab/enabled in (true)
+      - --annotation-filter=external-dns.alpha.kubernetes.io/target
     policy: sync
     sources:
       - ingress

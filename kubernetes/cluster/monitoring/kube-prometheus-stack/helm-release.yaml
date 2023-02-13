@@ -127,6 +127,8 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         pathType: Prefix
         hosts:
           - &host_prometheus prometheus.${SECRET_DOMAIN}
@@ -256,6 +258,8 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         pathType: Prefix
         hosts:
           - &host_alertmanager alertmanager.${SECRET_DOMAIN}

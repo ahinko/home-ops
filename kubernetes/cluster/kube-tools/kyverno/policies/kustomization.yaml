@@ -6,4 +6,3 @@ resources:
   - create-backup-secrets.yaml
   - create-pvc-backup-cronjob.yaml
   - remove-cpu-limits.yaml
-  - update-ingress-annotations.yaml
