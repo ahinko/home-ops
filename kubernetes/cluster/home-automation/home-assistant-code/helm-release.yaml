@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: ghcr.io/coder/code-server
-      tag: 4.9.1
+      tag: 4.10.0
     env:
       TZ: "${TIMEZONE}"
     args:
