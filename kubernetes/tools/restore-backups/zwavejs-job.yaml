@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-zwavejs
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.16
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.17
           args:
             - /run.sh
           env:
