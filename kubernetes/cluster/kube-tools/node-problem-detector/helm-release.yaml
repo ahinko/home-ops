@@ -20,7 +20,7 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: k8s.gcr.io/node-problem-detector/node-problem-detector
+      repository: registry.k8s.io/node-problem-detector/node-problem-detector
       tag: v0.8.12
 
     # arm64 is not supported
