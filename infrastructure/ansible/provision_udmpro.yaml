@@ -1,8 +1,0 @@
----
-- name: udmp setup
-  hosts:
-    - udmpro
-  gather_facts: false
-  remote_user: root
-  roles:
-    - role: udmpro

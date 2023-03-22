@@ -1,5 +1,0 @@
-#!/bin/sh
-{% for rule in masquerade_nat_rules %}
-# {{ rule.name }}
-iptables -t nat -A POSTROUTING -s {{ rule.src }} -d {{ rule.dest }} -j MASQUERADE
-{% endfor %}
