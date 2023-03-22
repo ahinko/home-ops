@@ -16,6 +16,11 @@ spec:
   monitoring:
     enablePodMonitor: true
 
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+
   bootstrap:
     initdb:
       database: nextcloud
