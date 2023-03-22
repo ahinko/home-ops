@@ -30,7 +30,7 @@ spec:
 
     image:
       repository: bitnami/redis
-      tag: 7.0.9
+      tag: 7.0.10
 
     architecture: replication
 
@@ -63,7 +63,7 @@ spec:
 
       image:
         repository: bitnami/redis-sentinel
-        tag: 7.0.9
+        tag: 7.0.10
 
     metrics:
       enabled: false
