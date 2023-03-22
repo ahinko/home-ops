@@ -23,10 +23,14 @@ spec:
       retries: 3
       remediateLastFailure: true # remediate the last failure, when no retries remain
     cleanupOnFail: true
-  # Values link: https://github.com/rook/rook/blob/release-1.9/deploy/charts/rook-ceph/values.yaml
+  # Values link: https://github.com/rook/rook/blob/release-1.11/deploy/charts/rook-ceph/values.yaml
   values:
     crds:
       enabled: false
+
+    image:
+      repository: rook/ceph
+      tag: v1.11.2
 
     pspEnable: false
 
