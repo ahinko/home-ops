@@ -25,3 +25,5 @@ spec:
     prometheusRules:
       enabled: true
     tolerations: {}
+    nodeSelector:
+      kubernetes.io/arch: amd64

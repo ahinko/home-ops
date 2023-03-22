@@ -67,12 +67,10 @@ spec:
       enabled: true
       podAnnotations:
         secret.reloader.stakater.com/reload: thanos
-      extraFlags:
-        - "--compact.concurrency"
-        - "4"
+      extraFlags: ["--compact.concurrency", "4", "--delete-delay", "30m"]
       retentionResolutionRaw: 14d
       retentionResolution5m: 14d
-      retentionResolution1h: 30d
+      retentionResolution1h: 14d
       resources:
         requests:
           cpu: 15m
