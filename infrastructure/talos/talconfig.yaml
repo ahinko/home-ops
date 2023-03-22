@@ -12,6 +12,7 @@ cniConfig:
 
 nodes:
   - hostname: helios
+    disableSearchDomain: true
     ipAddress: 192.168.20.21
     controlPlane: true
     installDisk: /dev/nvme0n1
@@ -31,6 +32,7 @@ nodes:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
   - hostname: eos
+    disableSearchDomain: true
     ipAddress: 192.168.20.22
     controlPlane: true
     installDisk: /dev/sda
@@ -45,6 +47,7 @@ nodes:
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
   - hostname: hades
+    disableSearchDomain: true
     ipAddress: 192.168.20.23
     controlPlane: true
     installDisk: /dev/sda
@@ -59,6 +62,7 @@ nodes:
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
   - hostname: poseidon
+    disableSearchDomain: true
     ipAddress: 192.168.20.24
     controlPlane: false
     installDisk: /dev/nvme0n1
@@ -74,6 +78,7 @@ nodes:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
   - hostname: zeus
+    disableSearchDomain: true
     ipAddress: 192.168.20.25
     controlPlane: false
     installDisk: /dev/nvme0n1
@@ -89,6 +94,7 @@ nodes:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
   - hostname: iris
+    disableSearchDomain: true
     ipAddress: 192.168.20.26
     controlPlane: false
     installDisk: /dev/nvme0n1
@@ -109,23 +115,12 @@ controlPlane:
     - |-
       cluster:
         allowSchedulingOnMasters: false
-        apiServer:
-          extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-        controllerManager:
-          extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
         discovery:
           registries:
             service:
               disabled: true
         proxy:
           disabled: true
-          extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
-        scheduler:
-          extraArgs:
-            feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
 
       machine:
         files:
@@ -138,7 +133,7 @@ controlPlane:
             op: create
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+            feature-gates: GracefulNodeShutdown=true
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
@@ -171,7 +166,7 @@ worker:
             op: create
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+            feature-gates: GracefulNodeShutdown=true
             rotate-server-certificates: "true"
         install:
           extraKernelArgs:
