@@ -14,7 +14,7 @@ spec:
       repository: ${SECRET_GITHUB_REPO}
       containers:
         - name: docker
-          image: docker:23.0.0-beta.1-dind
+          image: docker:24.0.0-beta.1-dind
       labels: ["self-hosted"]
       nodeSelector:
         node-role.kubernetes.io/worker: "true"
