@@ -92,12 +92,12 @@ spec:
                     # Stagger jobs to run randomly within X seconds to avoid bringing down all apps at once
                     initContainers:
                       - name: sleep
-                        image: ghcr.io/ahinko/simple-k8s-backup:v4.2.20
+                        image: ghcr.io/ahinko/simple-k8s-backup:v4.2.21
                         command: ["/sleep.sh"]
                         args: ["1", "900"]
                     containers:
                       - name: backup
-                        image: ghcr.io/ahinko/simple-k8s-backup:v4.2.20
+                        image: ghcr.io/ahinko/simple-k8s-backup:v4.2.21
                         args:
                           - /run.sh
                         envFrom:
