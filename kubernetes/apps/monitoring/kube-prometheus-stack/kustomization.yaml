@@ -16,3 +16,20 @@ spec:
   wait: true
   dependsOn:
     - name: apps-rook-ceph-cluster
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-prometheus-stack-addons
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/monitoring/kube-prometheus-stack/addons"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+  dependsOn:
+    - name: apps-prometheus-stack
