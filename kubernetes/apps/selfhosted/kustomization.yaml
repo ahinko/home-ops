@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./sops.backup-secrets.yaml
+  - ./miniflux/kustomization.yaml
   - ./minio/kustomization.yaml
   - ./nextcloud/kustomization.yaml
   - ./radicale/kustomization.yaml
