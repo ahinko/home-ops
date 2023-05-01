@@ -32,6 +32,12 @@ tasks:
     cmds:
       - flux get kustomizations -A
 
+  wk:
+    desc: List reconciling or failed kustomizations
+    silent: true
+    cmds:
+      - watch 'flux get kustomizations -A | grep -v Applied'
+
   hr-restart:
     desc: Restart all failed Helm Releases
     cmds:

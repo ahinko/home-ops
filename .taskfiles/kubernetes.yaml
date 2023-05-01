@@ -36,12 +36,11 @@ tasks:
         sudo dd if=talos-amd64.iso of=${path} bs=4m && sync
       - "rm talos-amd64.iso"
 
-  update-cilium-quick-install:
-    desc: Update Cilium quick-install
+  update-talos-integrations:
+    desc: Update manifests to be installed along side Talos
     cmds:
-      - helm repo add cilium https://helm.cilium.io/
-      - helm repo update cilium
-      - helm template --version 1.13.2 cilium/cilium -f ./infrastructure/talos/integrations/cilium-quick-install/values.yaml > ./infrastructure/talos/integrations/cilium-quick-install/quick-install.yaml -n kube-system
+      - kustomize build --enable-helm --load-restrictor LoadRestrictionsNone infrastructure/talos/integrations/kubelet-csr-approver/ --output infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+      - kustomize build --enable-helm --load-restrictor LoadRestrictionsNone infrastructure/talos/integrations/cni/ --output infrastructure/talos/integrations/cni/cilium.yaml
     silent: true
 
   provision:

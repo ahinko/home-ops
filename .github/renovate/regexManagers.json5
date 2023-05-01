@@ -21,7 +21,7 @@
       matchStrings: [
         'kubernetesVersion: (?<currentValue>.*)',
         '--to (?<currentValue>.*)',
-        '--kube-version (?<currentValue>.*) '
+        '--kube-version (?<currentValue>.*) --release'
       ],
       depNameTemplate: 'ghcr.io/siderolabs/kubelet',
       datasourceTemplate: 'docker'
@@ -58,26 +58,6 @@
         'add (?<depName>.*?) (?<registryUrl>.*)\n .*\n .* --version (?<currentValue>.*) cilium'
       ],
       datasourceTemplate: 'helm'
-    },
-    {
-      description: 'Process UDM-PRO dependencies in Ansible role',
-      fileMatch: [
-        'infrastructure/ansible/roles/udmpro/.+\\.yaml$'
-      ],
-      matchStrings: [
-        'depName=(?<depName>.*?)\n[a-z_]*: (?<currentValue>.*)'
-      ],
-      datasourceTemplate: 'github-releases'
-    },
-    {
-      description: 'Process UDM-PRO dependencies in UDM-PRO scripts',
-      fileMatch: [
-        'infrastructure/ansible/roles/udmpro/.+\\.sh$',
-      ],
-      matchStrings: [
-        '\n  (?<depName>.*?):(?<currentValue>.*) # renovate'
-      ],
-      datasourceTemplate: 'docker'
     },
     {
       "description": "Process git repository resources like CRDs etc",
