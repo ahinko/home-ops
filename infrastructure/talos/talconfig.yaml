@@ -3,12 +3,6 @@ clusterName: metal
 talosVersion: v1.4.1
 kubernetesVersion: v1.27.1
 endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
-clusterPodNets:
-  - 10.244.0.0/16
-clusterSvcNets:
-  - 10.96.0.0/12
-cniConfig:
-  name: none
 
 nodes:
   - hostname: helios
@@ -115,72 +109,75 @@ controlPlane:
     - |-
       cluster:
         allowSchedulingOnMasters: false
-        discovery:
-          registries:
-            service:
-              disabled: true
         proxy:
           disabled: true
+        extraManifests:
+            # Install the kubelet cert-approver manifests
+            - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+        network:
+          cni:
+            name: custom
+            urls:
+              - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
 
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    - |-
       machine:
         files:
-          - content: |
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
               [plugins]
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
             path: /etc/cri/conf.d/20-customization.part
             op: create
+
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
-        install:
-          extraKernelArgs:
-            - "talos.logging.kernel=udp://${VECTOR_AGGREGATOR_ADDR}:6050/"
-        logging:
-          destinations:
-            - endpoint: "udp://${VECTOR_AGGREGATOR_ADDR}:6051/"
-              format: json_lines
+
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
+
         time:
           disabled: false
           servers:
             - gbg2.ntp.se
             - sth1.ntp.se
-            - europe.pool.ntp.org
 
 worker:
   patches:
     - |-
       machine:
         files:
-          - content: |
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
               [plugins]
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
             path: /etc/cri/conf.d/20-customization.part
             op: create
+
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
-        install:
-          extraKernelArgs:
-            - "talos.logging.kernel=udp://${VECTOR_AGGREGATOR_ADDR}:6050/"
-        logging:
-          destinations:
-            - endpoint: "udp://${VECTOR_AGGREGATOR_ADDR}:6051/"
-              format: json_lines
+
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
+
         time:
           disabled: false
           servers:
             - gbg2.ntp.se
             - sth1.ntp.se
-            - europe.pool.ntp.org
