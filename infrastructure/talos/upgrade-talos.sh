@@ -22,7 +22,7 @@ do
     echo "-----------------------------------"
     echo "Upgrading Talos on IP $IP"
 
-    talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.4.0
+    talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.4.1
 
     # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
     if [[ $IP == "192.168.20.21" ]]; then
