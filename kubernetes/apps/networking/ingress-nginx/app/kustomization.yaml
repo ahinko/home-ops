@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: networking
+resources:
+  - ./helm-release.yaml
+  - ./certificate.yaml
+configMapGenerator:
+  - name: cloudflare-ip-ranges
+    files:
+      - ./cloudflare-ip-ranges.txt
+generatorOptions:
+  disableNameSuffixHash: true

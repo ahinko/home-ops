@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloud-config
+  namespace: selfhosted
+  labels:
+    backup.home.lab/enabled: "true"
+    app.kubernetes.io/name: &name nextcloud
+    app.kubernetes.io/instance: *name
+  annotations:
+    backup.home.lab/exclude: "./data"
+    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/COkeiqSMlS?status=up&msg=OK&ping="
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: rook-cephfs

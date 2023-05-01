@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./namespace.yaml
+  - ./descheduler/kustomization.yaml
+  - ./intel-device-plugins/kustomization.yaml
+  - ./kyverno/kustomization.yaml
+  - ./node-feature-discovery/kustomization.yaml
+  - ./node-problem-detector/kustomization.yaml
+  - ./reloader/kustomization.yaml

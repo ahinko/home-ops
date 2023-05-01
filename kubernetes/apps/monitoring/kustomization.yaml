@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./namespace.yaml
+  - ./grafana/kustomization.yaml
+  - ./kube-prometheus-stack/kustomization.yaml
+  - ./loki/kustomization.yaml
+  - ./smartctl-exporter/kustomization.yaml
+  - ./speedtest-exporter/kustomization.yaml
+  - ./thanos/kustomization.yaml
+  - ./uptime-kuma/kustomization.yaml
+  - ./vector/kustomization.yaml

@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./namespace.yaml
+  - ./cloudflare-ddns/kustomization.yaml
+  - ./external-dns/kustomization.yaml
+  - ./external-services/kustomization.yaml
+  - ./haproxy/kustomization.yaml
+  - ./ingress-nginx/kustomization.yaml
+  - ./k8s-gateway/kustomization.yaml
+  - ./metallb/kustomization.yaml

@@ -1,8 +1,0 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: apps
-  labels:
-    backup.home.lab/enabled: "true"
-    goldilocks.fairwinds.com/enabled: "true"

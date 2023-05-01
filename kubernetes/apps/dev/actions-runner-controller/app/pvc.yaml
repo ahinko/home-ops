@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: actions-runner-controller-cache
+  namespace: dev
+  labels:
+    backup.home.lab/enabled: "false"
+    app.kubernetes.io/name: &name actions-runner-controller
+    app.kubernetes.io/instance: *name
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: rook-cephfs

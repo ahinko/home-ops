@@ -1,0 +1,151 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: thanos
+  namespace: monitoring
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: thanos
+      version: 12.4.3
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+      interval: 60m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    objstoreConfig:
+      type: s3
+      config:
+        insecure: true
+
+    query:
+      enabled: true
+      podAnnotations:
+        secret.reloader.stakater.com/reload: thanos
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: monitoring
+      ingress:
+        enabled: true
+        hostname: "thanos.${SECRET_DOMAIN}"
+        ingressClassName: "nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+        tls: true
+      replicaLabels:
+        - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64M
+        limits:
+          memory: 512M
+
+    queryFrontend:
+      enabled: false
+      podAnnotations:
+        secret.reloader.stakater.com/reload: thanos
+
+    bucketweb:
+      enabled: true
+      podAnnotations:
+        secret.reloader.stakater.com/reload: thanos
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64M
+        limits:
+          memory: 64M
+
+    compactor:
+      enabled: true
+      podAnnotations:
+        secret.reloader.stakater.com/reload: thanos
+      extraFlags: ["--compact.concurrency", "4", "--delete-delay", "30m"]
+      retentionResolutionRaw: 14d
+      retentionResolution5m: 14d
+      retentionResolution1h: 14d
+      resources:
+        requests:
+          cpu: 15m
+          memory: 204M
+        limits:
+          memory: 512M
+      persistence:
+        enabled: true
+        storageClass: "rook-cephfs"
+        size: 15Gi
+
+    storegateway:
+      enabled: true
+      podAnnotations:
+        secret.reloader.stakater.com/reload: thanos
+      resources:
+        requests:
+          cpu: 23m
+          memory: 204M
+        limits:
+          memory: 226M
+      persistence:
+        enabled: true
+        storageClass: "rook-cephfs"
+        size: 512Mi
+
+    ruler:
+      enabled: true
+      podAnnotations:
+        secret.reloader.stakater.com/reload: thanos
+      alertmanagers:
+        - http://kube-prometheus-stack-alertmanager.monitoring:9093
+      clusterName: ${CLUSTER_NAME}
+      config: |-
+        groups:
+          - name: "PrometheusWatcher"
+            rules:
+              - alert: "PrometheusDown"
+                expr: absent(up{job="kube-prometheus-stack-prometheus"})
+      dnsDiscovery:
+        enabled: true
+      persistence:
+        enabled: true
+        storageClass: "rook-cephfs"
+        size: 512Mi
+      resources:
+        requests:
+          cpu: 23m
+          memory: 94M
+        limits:
+          memory: 113M
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+  valuesFrom:
+    - kind: Secret
+      name: thanos
+      valuesKey: S3_BUCKET_NAME
+      targetPath: objstoreConfig.config.bucket
+    - kind: Secret
+      name: thanos
+      valuesKey: S3_BUCKET_HOST
+      targetPath: objstoreConfig.config.endpoint
+    - kind: Secret
+      name: thanos
+      valuesKey: S3_BUCKET_REGION
+      targetPath: objstoreConfig.config.region
+    - kind: Secret
+      name: thanos
+      valuesKey: S3_ACCESS_KEY
+      targetPath: objstoreConfig.config.access_key
+    - kind: Secret
+      name: thanos
+      valuesKey: S3_SECRET_KEY
+      targetPath: objstoreConfig.config.secret_key

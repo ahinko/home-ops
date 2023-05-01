@@ -33,13 +33,13 @@ spec:
             - name: MINIO_BUCKET
               value: "backup"
             - name: BACKUP_NAME
-              value: "sonarr"
+              value: "sonarr-v4"
           volumeMounts:
-            - name: sonarr-storage
-              mountPath: /sonarr
+            - name: sonarr-v4-storage
+              mountPath: /sonarr-v4
       volumes:
-        - name: sonarr-storage
+        - name: sonarr-v4-storage
           persistentVolumeClaim:
-            claimName: sonarr-config
+            claimName: sonarr-v4-config
       restartPolicy: Never
   backoffLimit: 4

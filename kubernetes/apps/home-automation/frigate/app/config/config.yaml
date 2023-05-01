@@ -1,0 +1,239 @@
+---
+mqtt:
+  host: emqx
+  user: ${SECRET_MQTT_USERNAME}
+  password: ${SECRET_MQTT_PASSWORD}
+
+logger:
+  default: error
+
+database:
+  path: /data/frigate.db
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+ffmpeg:
+  global_args: ["-hide_banner", "-loglevel", "warning"]
+  hwaccel_args:
+    [
+      "-hwaccel",
+      "vaapi",
+      "-hwaccel_device",
+      "/dev/dri/renderD128",
+      "-hwaccel_output_format",
+      "yuv420p",
+    ]
+  output_args:
+    record: preset-record-ubiquiti
+
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  crop: false
+  retain:
+    default: 14
+
+record:
+  enabled: true
+  retain:
+    days: 0
+    mode: motion
+  events:
+    pre_capture: 3
+    post_capture: 3
+    objects:
+      - person
+    retain:
+      default: 14
+      mode: active_objects
+
+objects:
+  track:
+    - person
+  filters:
+    person:
+      min_area: 4000
+      max_area: 1000000
+      min_score: 0.4
+      threshold: 0.7
+
+detect:
+  width: 1024
+  height: 576
+  fps: 5
+  enabled: true
+  max_disappeared: 50
+
+  stationary:
+    interval: 50
+    threshold: 50
+    max_frames:
+      objects:
+        person: 500
+
+go2rtc:
+  streams:
+    frontyard_terrace_hq: rtspx://192.168.0.1:7441/e6iNOj6HFIiZeMU3
+    frontyard_terrace_lq: rtspx://192.168.0.1:7441/osXyFUEV6IvGXwD3
+    backyard_livingroom_hq: rtspx://192.168.0.1:7441/k8xv9uFTcVuVz4Pi
+    backyard_livingroom_lq: rtspx://192.168.0.1:7441/O4PuPXWlf5ZQmpr7
+    backyard_terrace_hq: rtspx://192.168.0.1:7441/UCfkcmaIYCQanbjj
+    backyard_terrace_lq: rtspx://192.168.0.1:7441/MeQnTvehpe9mNOy0
+    east_side_hq: rtspx://192.168.0.1:7441/bD35LvIY0mVXDGAV
+    east_side_lq: rtspx://192.168.0.1:7441/7Cmt7IGfBgRFnY6y
+    utility_entrance_hq: rtspx://192.168.0.1:7441/4HGg2c1YLJSwtsNW
+    utility_entrance_lq: rtspx://192.168.0.1:7441/qEj5EZEGjdLZP9O6
+    frontyard_garage_hq: rtspx://192.168.0.1:7441/cVT8xcvPAE1o0Rt4
+    frontyard_garage_lq: rtspx://192.168.0.1:7441/TJSnSTiDZ6AjqPvt
+
+cameras:
+  frontyard_terrace:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/frontyard_terrace_hq
+          roles:
+            - record
+
+        - path: rtsp://localhost:8554/frontyard_terrace_lq
+          roles:
+            - detect
+
+    detect:
+      width: 1280
+      height: 720
+
+    best_image_timeout: 10
+
+    motion:
+      threshold: 15
+      mask:
+        - 957,720,1196,720,1280,517,1051,479
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
+
+    objects:
+      track:
+        - person
+      filters:
+        person:
+          min_area: 3000
+          max_area: 1000000
+          min_score: 0.4
+          threshold: 0.7
+
+  backyard_livingroom:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/backyard_livingroom_hq
+          roles:
+            - record
+        - path: rtsp://localhost:8554/backyard_livingroom_lq
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
+
+  backyard_terrace:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/backyard_terrace_hq
+          roles:
+            - record
+        - path: rtsp://localhost:8554/backyard_terrace_lq
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
+
+    motion:
+      mask:
+        - 218,492,277,463,236,381,175,408
+        - 325,424,391,391,354,320,293,356
+
+    objects:
+      filters:
+        person:
+          mask:
+            - 219,487,271,456,221,375,169,402
+            - 337,420,386,396,347,320,297,351
+
+  east_side:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/east_side_hq
+          roles:
+            - record
+        - path: rtsp://localhost:8554/east_side_lq
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    objects:
+      filters:
+        person:
+          mask:
+            - 1024,576,1024,576,1024,291,519,463,512,576
+            - 0,576,527,576,534,226,171,240,0,262
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
+
+  utility_entrance:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/utility_entrance_hq
+          roles:
+            - record
+        - path: rtsp://localhost:8554/utility_entrance_lq
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
+
+  frontyard_garage:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/frontyard_garage_hq
+          roles:
+            - record
+        - path: rtsp://localhost:8554/frontyard_garage_lq
+          roles:
+            - detect
+
+    best_image_timeout: 10
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false

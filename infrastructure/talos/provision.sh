@@ -151,12 +151,9 @@ cat $REPO_ROOT/homelab.agekey | kubectl create secret generic sops-age --namespa
 
 # Bootstrap Flux
 echo "Bootstrapping Flux"
-flux bootstrap github \
-    --owner=$GITHUB_USER \
-    --repository=home-ops \
-    --branch=main \
-    --path=./kubernetes/flux/ \
-    --personal
+kubectl apply --server-side --kustomize ./bootstrap/flux
+kubectl apply --server-side --kustomize $REPO_ROOT/kubernetes/flux/vars/
+kubectl apply --server-side --kustomize $REPO_ROOT/kubernetes/flux/config/
 
 # Wait for flux to deploy
 echo "Waiting for Flux to become ready"
@@ -164,3 +161,6 @@ kubectl -n flux-system wait --for=condition=ready pod -l app=helm-controller
 kubectl -n flux-system wait --for=condition=ready pod -l app=kustomize-controller
 kubectl -n flux-system wait --for=condition=ready pod -l app=source-controller
 kubectl -n flux-system wait --for=condition=ready pod -l app=notification-controller
+
+echo "Deploy resources to cluster"
+kubectl apply --server-side --kustomize $REPO_ROOT/flux/config

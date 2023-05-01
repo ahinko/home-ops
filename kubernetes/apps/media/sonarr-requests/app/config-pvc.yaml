@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-requests-config
+  namespace: media
+  labels:
+    app.kubernetes.io/name: &name sonarr-requests
+    app.kubernetes.io/instance: *name
+    backup.home.lab/enabled: "true"
+  annotations:
+    backup.home.lab/exclude: "./logs logs*"
+    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/QQaEVLv6IU?status=up&msg=OK&ping="
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Gi
+  storageClassName: rook-cephfs

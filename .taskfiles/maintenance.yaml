@@ -8,13 +8,13 @@ tasks:
       - kubectl describe nodes | grep -A 9 -e "^\\s*Allocated resources"
     silent: true
 
-  turn-on:
+  on:
     desc: Set cluster in maintenance mode
     silent: true
     cmds:
       - task: nfs:pause
 
-  turn-off:
+  off:
     desc: Turn off maintenance mode
     silent: true
     cmds:
@@ -31,7 +31,7 @@ tasks:
       - flux suspend hr -n media sonarr
       - kubectl scale -n media deploy/sonarr --replicas 0
       - flux suspend hr -n media sonarr-uhd
-      - kubectl scale -n media deploy/sonarr-uhd --replicas 0
+      - kubectl scale -n media deploy/sonarr-v4 --replicas 0
       - flux suspend hr -n media sabnzbd
       - kubectl scale -n media deploy/sabnzbd --replicas 0
       - flux suspend hr -n apps nextcloud
@@ -56,4 +56,4 @@ tasks:
       - flux resume hr -n media sonarr
       - kubectl scale -n media deploy/sonarr --replicas 1
       - flux resume hr -n media sonarr-uhd
-      - kubectl scale -n media deploy/sonarr-uhd --replicas 1
+      - kubectl scale -n media deploy/sonarr-v4 --replicas 1

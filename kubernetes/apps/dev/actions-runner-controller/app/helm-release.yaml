@@ -1,0 +1,78 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: actions-runner-controller
+  namespace: dev
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: actions-runner-controller
+      version: 0.23.2
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller-charts
+        namespace: flux-system
+      interval: 60m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    authSecret:
+      create: false
+      name: &secret actions-runner-controller-secret
+    image:
+      repository: ghcr.io/actions-runner-controller/actions-runner-controller
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50M
+      limits:
+        cpu: 15m
+        memory: 72M
+
+    githubWebhookServer:
+      enabled: true
+      syncPeriod: 10m
+      secret:
+        create: false
+        name: *secret
+      ingress:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+        hosts:
+          - host: &host "arc-webhook.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32M
+        limits:
+          cpu: 15m
+          memory: 34M
+
+    metrics:
+      serviceMonitor: true
+      port: 8080
+      proxy:
+        enabled: false

@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: restore-uptime-kuma
-  namespace: apps
+  namespace: monitoring
 spec:
   template:
     spec:

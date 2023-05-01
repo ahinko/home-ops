@@ -8,7 +8,7 @@ on:
 
 env:
   DEFAULT_CLOUDFLARE_NETWORKS_FILE: |-
-    kubernetes/cluster/networking/ingress-nginx/cloudflare-ip-ranges.txt
+    kubernetes/apps/networking/ingress-nginx/cloudflare-ip-ranges.txt
 jobs:
   cloudflare-networks:
     name: Cloudflare Networks

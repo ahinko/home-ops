@@ -16,7 +16,7 @@ resource "kubernetes_secret" "minio_secret_loki" {
   data = {
     "S3_ACCESS_KEY"  = module.minio_bucket_loki.user_name
     "S3_SECRET_KEY"  = module.minio_bucket_loki.secret_key
-    "S3_BUCKET_HOST" = "minio.default:9000"
+    "S3_BUCKET_HOST" = "minio.selfhosted:9000"
     "S3_BUCKET_NAME" = "loki"
   }
 }

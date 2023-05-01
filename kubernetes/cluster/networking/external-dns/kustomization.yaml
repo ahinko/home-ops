@@ -1,8 +1,0 @@
----
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  # renovate: datasource=docker image=registry.k8s.io/external-dns/external-dns
-  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/v0.13.4/docs/contributing/crd-source/crd-manifest.yaml
-  - helm-release.yaml
