@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: backup-minecraft
-              image: ghcr.io/ahinko/simple-k8s-backup:v4.2.22
+              image: ghcr.io/ahinko/simple-k8s-backup:v4.2.23
               args:
                 - /run.sh
               env:
