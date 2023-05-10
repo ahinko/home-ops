@@ -6,3 +6,4 @@ namespace: monitoring
 resources:
   - ./dashboard
   - ./helm-release.yaml
+  - ./prometheus-rules.yaml

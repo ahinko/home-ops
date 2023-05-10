@@ -277,3 +277,8 @@ spec:
               sourceLabels:
                 - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
+
+        additionalScrapeConfigs:
+          - job_name: smartctl-exporter
+            static_configs:
+              - targets: ["192.168.20.2:9633"]
