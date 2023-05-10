@@ -6,5 +6,5 @@ resources:
   - ./namespace.yaml
   - ./cloudnative-pg/kustomization.yaml
   - ./influxdb/kustomization.yaml
-  #- ./postgres-backup/kustomization.yaml
+  - ./postgres-backup/kustomization.yaml
   - ./redis/kustomization.yaml

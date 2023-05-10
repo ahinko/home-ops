@@ -17,6 +17,18 @@ provider "registry.terraform.io/aminueza/minio" {
     "h1:uUfvQSps6gLfuiOV2Zj240Bp4z1gdp72T9l/ThdTVKc=",
     "h1:vJG0wpdZGuhasWpvwSrds6lsPHMdl/W5JZbWhN1mBy8=",
     "h1:zs5Gxs+vVUxjv53WRu+7qSb3oFY6Wm0Cxny6lQhM2Vg=",
+    "zh:1d39eb3095e9ea18cad8946dc5bad83eb75f854f43207573296ac3ff93f3f9be",
+    "zh:3c134a8df4e3521f76fe27548770accb2c324d1f04ebde1fc68dfbfc776c6fb3",
+    "zh:5966dddb4cfdf86d2b0e734fec8bdb1e000d080a8b0407115798167aa7ee8323",
+    "zh:746a691c77f7fa654ddf1c4fa6fb27b986b42e6d696c5eae01a9c40ec6325d2a",
+    "zh:961dde082d198f9978f36221a34cd32535313b64d9c7cba85682bc8ff2a7c312",
+    "zh:a4bc8e82e83c0e08261c809ae4d817e8010b72b367cdb0ea5f72ebbd2e6fd6ef",
+    "zh:bc6f1988a9cfce6d531c6206cd07bf2a573cca84b53326fd9eca0c74f92bac31",
+    "zh:c3f5474430ab23a8075f5917257f092cd3cae12c203b7faf817a04ef600721ec",
+    "zh:ea3b12ba3941c415b3df69d060a468966a29ee5473c1e75dd2fbe78782aac13c",
+    "zh:eb5d7c21f7e78e966e6a41c22af9a3dd0470d87de9d1bc6679b438d7996d50d7",
+    "zh:f1da277160771018a98127875a40b157a5fb9a5814dc7f741b1c8301eb9017c2",
+    "zh:fbe83ebd0f4b0704853ba34b8488ad873eb99fe2292db21621a7eeac6fb371e9",
   ]
 }
 

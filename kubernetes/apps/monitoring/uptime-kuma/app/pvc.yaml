@@ -4,13 +4,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: uptime-kuma-config
   namespace: monitoring
-  labels:
-    backup.home.lab/enabled: "true"
-    app.kubernetes.io/name: &name uptime-kuma
-    app.kubernetes.io/instance: *name
-  annotations:
-    backup.home.lab/exclude: ""
-    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/VTpaM3o8tH?status=up&msg=OK&ping="
 spec:
   accessModes:
     - ReadWriteMany

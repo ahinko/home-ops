@@ -8,7 +8,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 10m
-  path: "./kubernetes/apps/databases/psotgres-backup/app"
+  path: "./kubernetes/apps/databases/postgres-backup/app"
   prune: true
   sourceRef:
     kind: GitRepository

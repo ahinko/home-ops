@@ -2,8 +2,8 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: backup-minecraft
-  namespace: games
+  name: backup-bazarr-config
+  namespace: media
 spec:
   timeZone: "${TIMEZONE}"
   schedule: "0 9 * * *"
@@ -20,7 +20,7 @@ spec:
               command: ["/sleep.sh"]
               args: ["1", "300"]
           containers:
-            - name: backup-minecraft
+            - name: backup-bazarr
               image: ghcr.io/ahinko/simple-k8s-backup:v4.2.23
               args:
                 - /run.sh
@@ -31,19 +31,21 @@ spec:
                 - name: TZ
                   value: "${TIMEZONE}"
                 - name: BACKUP_NAME
-                  value: minecraft
+                  value: &appname bazarr
                 - name: DELETE_OLDER_THAN
                   value: "14d"
+                - name: EXCLUDE
+                  value: "./log"
                 - name: HEALTHCHECK_URL
-                  value: "http://uptime-kuma.monitoring:3001/api/push/Aav8lHlQU1?status=up&msg=OK&ping="
+                  value: "http://uptime-kuma.monitoring:3001/api/push/SDMoLRG33c?status=up&msg=OK&ping="
               volumeMounts:
                 - name: backup-persistent-storage
-                  mountPath: /minecraft
+                  mountPath: /bazarr
           restartPolicy: Never
           volumes:
             - name: backup-persistent-storage
               persistentVolumeClaim:
-                claimName: minecraft-data
+                claimName: bazarr-config
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -52,5 +54,5 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - minecraft-minecraft-bedrock
+                          - *appname
                   topologyKey: kubernetes.io/hostname

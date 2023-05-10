@@ -5,6 +5,7 @@ metadata:
   name: postgres-backup
   namespace: databases
 spec:
+  timeZone: "${TIMEZONE}"
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
@@ -26,5 +27,5 @@ spec:
                 - secretRef:
                     name: postgres-backup-secrets
                 - secretRef:
-                    name: backup-secrets
+                    name: backups-secrets
           restartPolicy: OnFailure

@@ -4,13 +4,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: lidarr-config
   namespace: media
-  labels:
-    backup.home.lab/enabled: "true"
-    app.kubernetes.io/name: &name lidarr
-    app.kubernetes.io/instance: *name
-  annotations:
-    backup.home.lab/exclude: "./logs logs* ./backups ./MediaCover"
-    backup.home.lab/healthcheck_url: "https://uptime.${SECRET_DOMAIN}/api/push/v5FudMtfCi?status=up&msg=OK&ping="
 spec:
   accessModes:
     - ReadWriteMany
