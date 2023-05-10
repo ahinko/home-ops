@@ -27,19 +27,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    initContainers:
-      01-init-config:
-        image: public.ecr.aws/docker/library/busybox:latest
-        imagePullPolicy: IfNotPresent
-        command:
-          [
-            "/bin/sh",
-            "-c",
-            "cp /tmp/config/recyclarr.yml /config/recyclarr.yml",
-          ]
-        volumeMounts:
-          - { name: config-file, mountPath: /tmp/config }
-          - { name: config, mountPath: /config }
     controller:
       annotations:
         reloader.stakater.com/auto: "true"
@@ -75,7 +62,9 @@ spec:
         enabled: true
         type: configMap
         name: recyclarr-configmap
-        mountPath: "-"
+        subPath: recyclarr.yml
+        mountPath: /config/recyclarr.yml
+        readOnly: true
 
     resources:
       requests:
