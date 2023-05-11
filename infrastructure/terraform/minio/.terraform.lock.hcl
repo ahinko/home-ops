@@ -2,33 +2,21 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/aminueza/minio" {
-  version     = "1.15.1"
-  constraints = "1.15.1"
+  version     = "1.15.2"
+  constraints = "1.15.2"
   hashes = [
-    "h1:5xOL5bZxeFim3FPzlRBYN0AhUHnqh4eeHjg76ZDZguc=",
-    "h1:6W5TSwTSWhaaqKPBFtCJuh4c01w2VV40Y1R2af1db0s=",
-    "h1:EY7EpaQCwSGG2VOwIszD2G3WtS6hAdukVI2SzW+7yRw=",
-    "h1:I702PaMCZFCO/G6UUNwlY4GDOSFGXpZinksWfMTE0IM=",
-    "h1:IuwM2VxsKyujhziZojZ01p13WaZ6BNJIdhaWiU/rYVQ=",
-    "h1:OqMOIK55BuwEHr6ruisbQzma2ldZYHBElhANF7zMQAg=",
-    "h1:Pm+xrcOubB1m0PeXapscMV7GrE/weVXxbFt0ryuXnHA=",
-    "h1:m2I7dR5TFYZcwzMzX51o5zNf16ybjVaR6rZ6YoE3BhQ=",
-    "h1:rnKYDFOTvVkOsZX4XCTbhXoC/+laFTzOlVBp9a9Y1Sc=",
-    "h1:uUfvQSps6gLfuiOV2Zj240Bp4z1gdp72T9l/ThdTVKc=",
-    "h1:vJG0wpdZGuhasWpvwSrds6lsPHMdl/W5JZbWhN1mBy8=",
-    "h1:zs5Gxs+vVUxjv53WRu+7qSb3oFY6Wm0Cxny6lQhM2Vg=",
-    "zh:1d39eb3095e9ea18cad8946dc5bad83eb75f854f43207573296ac3ff93f3f9be",
-    "zh:3c134a8df4e3521f76fe27548770accb2c324d1f04ebde1fc68dfbfc776c6fb3",
-    "zh:5966dddb4cfdf86d2b0e734fec8bdb1e000d080a8b0407115798167aa7ee8323",
-    "zh:746a691c77f7fa654ddf1c4fa6fb27b986b42e6d696c5eae01a9c40ec6325d2a",
-    "zh:961dde082d198f9978f36221a34cd32535313b64d9c7cba85682bc8ff2a7c312",
-    "zh:a4bc8e82e83c0e08261c809ae4d817e8010b72b367cdb0ea5f72ebbd2e6fd6ef",
-    "zh:bc6f1988a9cfce6d531c6206cd07bf2a573cca84b53326fd9eca0c74f92bac31",
-    "zh:c3f5474430ab23a8075f5917257f092cd3cae12c203b7faf817a04ef600721ec",
-    "zh:ea3b12ba3941c415b3df69d060a468966a29ee5473c1e75dd2fbe78782aac13c",
-    "zh:eb5d7c21f7e78e966e6a41c22af9a3dd0470d87de9d1bc6679b438d7996d50d7",
-    "zh:f1da277160771018a98127875a40b157a5fb9a5814dc7f741b1c8301eb9017c2",
-    "zh:fbe83ebd0f4b0704853ba34b8488ad873eb99fe2292db21621a7eeac6fb371e9",
+    "h1:1alViRfCvjn9Ptti9PK7UT5mdR60Q5GVhCiN6hK8Bac=",
+    "h1:36isfbDsGjoSUB5dNY8Fnjbx0TfTb3A4LNwd0DOk4o4=",
+    "h1:9zuxquV6qEV2BlGell9QlrvCOG+PALgRGt1DEW0o2q8=",
+    "h1:J2r8p31IJRiO5svh5Yz5O9FZcj76M7MZlxagW8ZLqRk=",
+    "h1:K7l6sBWlUocYp5IiWOJphPjYS7tTC+sjZBC6pSJ0Wgw=",
+    "h1:QNqoJY7COCEYfZcbFnz/Tvausl2cYOdgkGserQHfTig=",
+    "h1:VBSBCAe2nmZvBgVqivMaYqja+4qio+fcxZZONtbmuVs=",
+    "h1:rmRrgjrP7FJ8HAWtO8aX24HWIHPdPoizM2IJiVAJbZ8=",
+    "h1:tALRxtQFMtMDtdOH+28svYhrS0rw44alNwgKUSxkXBk=",
+    "h1:tEMrlA87DGzBqGNcXeRCNT2iCMx+l3oIqsqgVFAJF0A=",
+    "h1:wkURZzuKeuwckR71FLZXQFsfbyFyYC7zcVEy6t2G9UI=",
+    "h1:zdfszkFMibKQyplqrV8CgZHGQYMpLk5Bspc6+bB/74w=",
   ]
 }
 
