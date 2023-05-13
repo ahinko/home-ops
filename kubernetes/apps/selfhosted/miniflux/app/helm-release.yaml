@@ -19,7 +19,7 @@ spec:
   values:
     initContainers:
       01-init-db:
-        image: ghcr.io/ahinko/postgres-initdb:15.2
+        image: ghcr.io/ahinko/postgres-initdb:15.3
         imagePullPolicy: IfNotPresent
         envFrom:
           - secretRef:
