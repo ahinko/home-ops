@@ -64,7 +64,7 @@ async function helmTemplate (releaseName, registryName, chartName, chartVersion,
   await fs.writeFile(valuesFile.stdout.trim(), values.toString())
 
   const manifestsFile = await $`mktemp`
-  const manifests = await $`${helm} template --kube-version v1.27.1 --release-name ${releaseName} --include-crds=false ${registryName}/${chartName} --version ${chartVersion} --values ${valuesFile.stdout.trim()}`
+  const manifests = await $`${helm} template --kube-version v1.27.2 --release-name ${releaseName} --include-crds=false ${registryName}/${chartName} --version ${chartVersion} --values ${valuesFile.stdout.trim()}`
 
   // Remove docs that are CustomResourceDefinition and keys which contain generated fields
   let documents = YAML.parseAllDocuments(manifests.stdout.trim())
