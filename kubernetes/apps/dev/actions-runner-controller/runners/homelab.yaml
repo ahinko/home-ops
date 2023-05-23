@@ -1,49 +1,42 @@
 ---
-apiVersion: actions.summerwind.dev/v1alpha1
-kind: RunnerDeployment
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: homelab
-  namespace: selfhosted
+  name: arc-homelab
+  namespace: dev
 spec:
-  template:
+  interval: 60m
+  chart:
     spec:
-      image: ghcr.io/actions/actions-runner-controller/actions-runner-dind:v2.299.1-ubuntu-22.04
-      imagePullPolicy: Always
-      dockerdWithinRunnerContainer: false
-      ephemeral: true
-      repository: ${SECRET_GITHUB_REPO}
-      containers:
-        - name: docker
-          image: docker:24.0.0-beta.1-dind
-      labels: ["self-hosted"]
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
-      volumeMounts:
-        - name: cache-volume
-          mountPath: /cache
-      volumes:
-        - name: cache-volume
-          persistentVolumeClaim:
-            claimName: actions-runner-controller-cache
----
-apiVersion: actions.summerwind.dev/v1alpha1
-kind: HorizontalRunnerAutoscaler
-metadata:
-  name: homelab
-  namespace: selfhosted
-spec:
-  scaleTargetRef:
-    name: home-ops
-  scaleUpTriggers:
-    - githubEvent:
-        checkRun:
-          types: ["created"]
-          status: "queued"
-      amount: 1
-      duration: "1m"
-  minReplicas: 1
-  maxReplicas: 3
-  metrics:
-    - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
-      repositoryNames:
-        - ${SECRET_GITHUB_REPO}
+      chart: actions-runner-controller-charts/gha-runner-scale-set
+      version: 0.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller-charts
+        namespace: flux-system
+      interval: 60m
+
+  values:
+    runnerScaleSetName: arc-runner-set-homelab
+
+    githubConfigUrl: https://github.com/${SECRET_GITHUB_REPO}
+
+    minRunners: 1
+    maxRunners: 3
+
+    containerMode:
+      type: "dind"
+
+  valuesFrom:
+    - kind: Secret
+      name: actions-runner-controller-secret
+      valuesKey: github_app_id
+      targetPath: githubConfigSecret.github_app_id
+    - kind: Secret
+      name: actions-runner-controller-secret
+      valuesKey: github_app_installation_id
+      targetPath: githubConfigSecret.github_app_installation_id
+    - kind: Secret
+      name: actions-runner-controller-secret
+      valuesKey: github_app_private_key
+      targetPath: githubConfigSecret.github_app_private_key
