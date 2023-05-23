@@ -13,7 +13,7 @@ nodes:
     nameservers:
       - 192.168.20.1
     networkInterfaces:
-      - interface: eno1
+      - interface: eth0
         addresses:
           - 192.168.20.21/24
         mtu: 0
@@ -61,7 +61,7 @@ nodes:
     controlPlane: false
     installDisk: /dev/nvme0n1
     networkInterfaces:
-      - interface: eno1
+      - interface: eth0
         addresses:
           - 192.168.20.24/24
         mtu: 0
@@ -77,7 +77,7 @@ nodes:
     controlPlane: false
     installDisk: /dev/nvme0n1
     networkInterfaces:
-      - interface: eno1
+      - interface: eth0
         addresses:
           - 192.168.20.25/24
         mtu: 0
@@ -93,7 +93,7 @@ nodes:
     controlPlane: false
     installDisk: /dev/nvme0n1
     networkInterfaces:
-      - interface: eno1
+      - interface: eth0
         addresses:
           - 192.168.20.26/24
         mtu: 0
@@ -134,13 +134,14 @@ controlPlane:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
-            path: /etc/cri/conf.d/20-customization.part
-            op: create
 
         kubelet:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
+          nodeIP:
+            validSubnets:
+                - 192.168.20.0/24
 
         sysctls:
           fs.inotify.max_user_watches: "1048576"
@@ -164,13 +165,14 @@ worker:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
-            path: /etc/cri/conf.d/20-customization.part
-            op: create
 
         kubelet:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
+          nodeIP:
+            validSubnets:
+                - 192.168.20.0/24
 
         sysctls:
           fs.inotify.max_user_watches: "1048576"

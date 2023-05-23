@@ -10,7 +10,7 @@ helmCharts:
     releaseName: cilium
     includeCRDs: true
     namespace: kube-system
-    valuesFile: ../../../../kubernetes/apps/kube-system/cilium/values.yaml
+    valuesFile: ../../../../kubernetes/apps/kube-system/cilium/app/values.yaml
 
 transformers:
   - transformers.yaml

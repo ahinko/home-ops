@@ -31,7 +31,7 @@ spec:
                 - name: TZ
                   value: "${TIMEZONE}"
                 - name: BACKUP_NAME
-                  value: &appname influxdb
+                  value: influxdb
                 - name: DELETE_OLDER_THAN
                   value: "14d"
                 - name: HEALTHCHECK_URL
@@ -52,5 +52,5 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - *appname
+                          - influxdb2
                   topologyKey: kubernetes.io/hostname

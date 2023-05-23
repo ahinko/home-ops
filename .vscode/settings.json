@@ -29,7 +29,7 @@
     "monitoring": "event",
     "networking": "connection",
     "rook-ceph": "dump",
-    "home-automation": "home",
+    "home-automation": "home"
   },
   "prettier.configPath": ".github/linters/.prettierrc.yaml",
   "prettier.ignorePath": ".github/linters/.prettierignore",
@@ -46,9 +46,8 @@
   "editor.guides.bracketPairsHorizontal": true,
   "editor.guides.highlightActiveBracketPair": true,
   "editor.stickyScroll.enabled": false,
-  "editor.rulers": [
-    100
-  ],
+  "editor.rulers": [100],
   "explorer.autoReveal": false,
   "files.trimTrailingWhitespace": true,
+  "ansible.python.interpreterPath": "/opt/homebrew/bin/python3"
 }

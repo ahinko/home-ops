@@ -10,7 +10,7 @@ helmCharts:
     releaseName: kubelet-csr-approver
     includeCRDs: true
     namespace: kube-system
-    valuesFile: ../../../../kubernetes/apps/kube-system/kubelet-csr-approver/values.yaml
+    valuesFile: ../../../../kubernetes/apps/kube-system/kubelet-csr-approver/app/values.yaml
 
 transformers:
   - transformers.yaml

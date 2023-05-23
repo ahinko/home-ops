@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: backup-sonarr-request-config
+  name: backup-sonarr-requests-config
   namespace: media
 spec:
   timeZone: "${TIMEZONE}"
@@ -31,7 +31,7 @@ spec:
                 - name: TZ
                   value: "${TIMEZONE}"
                 - name: BACKUP_NAME
-                  value: &appname sonarr-request
+                  value: &appname sonarr-requests
                 - name: DELETE_OLDER_THAN
                   value: "14d"
                 - name: EXCLUDE
@@ -40,12 +40,12 @@ spec:
                   value: "http://uptime-kuma.monitoring:3001/api/push/QQaEVLv6IU?status=up&msg=OK&ping="
               volumeMounts:
                 - name: backup-persistent-storage
-                  mountPath: /sonarr-request
+                  mountPath: /sonarr-requests
           restartPolicy: Never
           volumes:
             - name: backup-persistent-storage
               persistentVolumeClaim:
-                claimName: sonarr-request-config
+                claimName: sonarr-requests-config
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
