@@ -8,6 +8,12 @@ tasks:
       - kubectl describe nodes | grep -A 9 -e "^\\s*Allocated resources"
     silent: true
 
+  krr:
+    desc: Run KRR
+    cmds:
+      - echo "Run kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090 9090 first"
+      - krr simple -p http://127.0.0.1:9090
+
   on:
     desc: Set cluster in maintenance mode
     silent: true

@@ -3,7 +3,7 @@ version: 3
 
 env:
   BREW: |-
-    ansible fluxcd/tap/flux kubectl kubectx kubie terraform pre-commit shellcheck yamllint sops age libpq coreutils tfsec yq
+    ansible fluxcd/tap/flux kubectl kubectx kubie terraform pre-commit shellcheck yamllint sops age libpq coreutils tfsec yq robusta-dev/homebrew-krr/krr
 
 tasks:
   install:
