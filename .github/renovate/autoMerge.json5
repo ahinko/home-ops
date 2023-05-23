@@ -10,5 +10,14 @@
       "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch"]
     },
+    {
+      "description": "Auto merge pre-commit hooks",
+      "matchManagers": ["pre-commit"],
+      "matchDatasources": ["github-tags"],
+      "automerge": true,
+      "ignoreTests": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"]
+    },
   ]
 }

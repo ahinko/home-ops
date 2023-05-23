@@ -38,6 +38,9 @@
     "ghcr.io/fluxcd/notification-controller",
     "ghcr.io/fluxcd/source-controller"
   ],
+  "pre-commit": {
+    "enabled": true
+  },
   "docker-compose": {
     "fileMatch": [
       "(^|/)docker-compose.*\\.yaml$",
