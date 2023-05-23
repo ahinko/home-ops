@@ -11,3 +11,4 @@ resources:
   - ./ingress-nginx/kustomization.yaml
   - ./k8s-gateway/kustomization.yaml
   - ./metallb/kustomization.yaml
+  - ./multus/kustomization.yaml

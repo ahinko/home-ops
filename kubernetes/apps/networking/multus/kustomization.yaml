@@ -1,0 +1,30 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-multus
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/networking/multus/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+#---
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: apps-multus-config
+#  namespace: flux-system
+#spec:
+#  interval: 10m
+#  path: "./kubernetes/apps/networking/multus/config"
+#  prune: true
+#  sourceRef:
+#    kind: GitRepository
+#    name: homelab-k8s
+#  wait: true
+#  dependsOn:
+#    - name: apps-multus
