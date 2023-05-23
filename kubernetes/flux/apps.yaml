@@ -1,5 +1,5 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps
@@ -23,11 +23,10 @@ spec:
         name: cluster-settings
   patches:
     - patch: |-
-        apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
         metadata:
           name: not-used
-          namespace: not-used
         spec:
           decryption:
             provider: sops
@@ -41,6 +40,5 @@ spec:
                 name: cluster-settings
       target:
         group: kustomize.toolkit.fluxcd.io
-        version: v1beta2
         kind: Kustomization
-        labelSelector: substitution.flux.home.arpa/disabled notin (true)
+        labelSelector: substitution.flux.home.arpa/enabled in (true)
