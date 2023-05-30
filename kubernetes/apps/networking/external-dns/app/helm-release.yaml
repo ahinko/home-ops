@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: registry.k8s.io/external-dns/external-dns
-      tag: v0.13.4
+      tag: v0.13.5
 
     podAnnotations:
       secret.reloader.stakater.com/reload: "external-dns-cloudflare-api-key"
