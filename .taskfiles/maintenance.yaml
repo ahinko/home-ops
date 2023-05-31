@@ -31,35 +31,51 @@ tasks:
     silent: true
     cmds:
       - flux suspend hr -n media lidarr
-      - kubectl scale -n media deploy/lidarr --replicas 0
       - flux suspend hr -n media radarr
-      - kubectl scale -n media deploy/radarr --replicas 0
-      - flux suspend hr -n media sonarr
-      - kubectl scale -n media deploy/sonarr --replicas 0
-      - flux suspend hr -n media sonarr-uhd
-      - kubectl scale -n media deploy/sonarr-v4 --replicas 0
+      - flux suspend hr -n media sonarr-v4
+      - flux suspend hr -n media sonarr-requests
       - flux suspend hr -n media sabnzbd
+      - flux suspend hr -n selfhosted immich-web
+      - flux suspend hr -n selfhosted immich-machine-learning
+      - flux suspend hr -n selfhosted immich-microservices
+      - flux suspend hr -n selfhosted immich-server
+      - flux suspend hr -n selfhosted nextcloud
+      - flux suspend hr -n selfhosted minio
+      - kubectl scale -n media deploy/lidarr --replicas 0
+      - kubectl scale -n media deploy/radarr --replicas 0
+      - kubectl scale -n media deploy/sonarr-v4 --replicas 0
+      - kubectl scale -n media deploy/sonarr-requests --replicas 0
       - kubectl scale -n media deploy/sabnzbd --replicas 0
-      - flux suspend hr -n apps nextcloud
-      - kubectl scale -n apps deploy/nextcloud --replicas 0
-      - flux suspend hr -n default minio
-      - kubectl scale -n default deploy/minio --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-web --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-server --replicas 0
+      - kubectl scale -n selfhosted deploy/nextcloud --replicas 0
+      - kubectl scale -n selfhosted deploy/minio --replicas 0
 
   nfs:resume:
     desc: Resume all Helm Releases that rely on NFS storage
     silent: true
     cmds:
-      - flux resume hr -n default minio
-      - kubectl scale -n default deploy/minio --replicas 1
-      - flux resume hr -n apps nextcloud
-      - kubectl scale -n apps deploy/nextcloud --replicas 1
-      - flux resume hr -n media sabnzbd
+      - kubectl scale -n selfhosted deploy/minio --replicas 1
+      - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
+      - kubectl scale -n selfhosted deploy/immich-server --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-web --replicas 2
       - kubectl scale -n media deploy/sabnzbd --replicas 1
-      - flux resume hr -n media lidarr
       - kubectl scale -n media deploy/lidarr --replicas 1
-      - flux resume hr -n media radarr
       - kubectl scale -n media deploy/radarr --replicas 1
-      - flux resume hr -n media sonarr
-      - kubectl scale -n media deploy/sonarr --replicas 1
-      - flux resume hr -n media sonarr-uhd
       - kubectl scale -n media deploy/sonarr-v4 --replicas 1
+      - kubectl scale -n media deploy/sonarr-requests --replicas 1
+      - flux resume hr -n selfhosted minio
+      - flux resume hr -n selfhosted nextcloud
+      - flux resume hr -n selfhosted immich-server
+      - flux resume hr -n selfhosted immich-machine-learning
+      - flux resume hr -n selfhosted immich-microservices
+      - flux resume hr -n selfhosted immich-web
+      - flux resume hr -n media sabnzbd
+      - flux resume hr -n media lidarr
+      - flux resume hr -n media radarr
+      - flux resume hr -n media sonarr-requests
+      - flux resume hr -n media sonarr-v4
