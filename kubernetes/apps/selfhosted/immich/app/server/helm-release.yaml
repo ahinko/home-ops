@@ -1,0 +1,73 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app immich-server
+  namespace: selfhosted
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: immich-typesense
+  values:
+    initContainers:
+      01-init-db:
+        image: ghcr.io/ahinko/postgres-init:15.3@sha256:412751151d46aa04f83f8965306bf8d8a89acaf5f4401d1ffdd4102869eb238b
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: immich-secret
+    controller:
+      replicas: 2
+      strategy: RollingUpdate
+      annotations:
+        configmap.reloader.stakater.com/reload: &configmap immich-configmap
+        secret.reloader.stakater.com/reload: &secret immich-secret
+    image:
+      repository: ghcr.io/immich-app/immich-server
+      tag: v1.59.1
+    args: ["start-server.sh"]
+    envFrom:
+      - configMapRef:
+          name: *configmap
+      - secretRef:
+          name: *secret
+    service:
+      main:
+        ports:
+          http:
+            port: 3001
+    persistence:
+      library:
+        enabled: true
+        existingClaim: immich-nfs
+        mountPath: /usr/src/app/upload
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: *app
+    resources:
+      requests:
+        cpu: 100m
+        memory: 250Mi
