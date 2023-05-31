@@ -5,6 +5,7 @@ metadata:
   name: kyverno-charts
   namespace: flux-system
 spec:
+  type: oci
   interval: 1h
-  url: https://kyverno.github.io/kyverno/
+  url: oci://ghcr.io/kyverno/charts
   timeout: 3m

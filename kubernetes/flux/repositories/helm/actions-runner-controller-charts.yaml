@@ -7,5 +7,5 @@ metadata:
 spec:
   type: oci
   interval: 30m
-  url: oci://ghcr.io/actions
+  url: oci://ghcr.io/actions/actions-runner-controller-charts
   timeout: 3m
