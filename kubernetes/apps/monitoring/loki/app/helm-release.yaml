@@ -6,6 +6,7 @@ metadata:
   namespace: monitoring
 spec:
   interval: 60m
+  timeout: 15m
   chart:
     spec:
       chart: loki

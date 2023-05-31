@@ -147,7 +147,7 @@ loadBalancer:
   mode: dsr
 
 # -- Enable Local Redirect Policy.
-localRedirectPolicy: true
+localRedirectPolicy: false
 
 operator:
   # -- Enable the cilium-operator component (required).

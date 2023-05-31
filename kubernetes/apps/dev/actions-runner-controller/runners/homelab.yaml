@@ -8,7 +8,7 @@ spec:
   interval: 60m
   chart:
     spec:
-      chart: actions-runner-controller-charts/gha-runner-scale-set
+      chart: gha-runner-scale-set
       version: 0.4.0
       sourceRef:
         kind: HelmRepository
@@ -26,6 +26,12 @@ spec:
 
     containerMode:
       type: "dind"
+
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/ahinko/github-actions-runner:2.304.0@sha256:3ebb17f84c49637f8a1564230cb1e6ff48cac21a2b397df7f406625d78ad64f9
 
   valuesFrom:
     - kind: Secret

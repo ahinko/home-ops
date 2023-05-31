@@ -29,5 +29,6 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
+    - name: apps-emqx-operator
     - name: apps-rook-ceph-cluster
     - name: apps-metallb-config
