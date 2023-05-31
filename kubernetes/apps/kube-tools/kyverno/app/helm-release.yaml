@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app kyverno
+  name: kyverno
   namespace: kube-tools
 spec:
   interval: 60m
@@ -14,26 +14,60 @@ spec:
         kind: HelmRepository
         name: kyverno-charts
         namespace: flux-system
-      interval: 60m
-  # Values link: https://github.com/kyverno/kyverno/blob/main/charts/kyverno/values.yaml
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     crds:
       install: true
-    serviceMonitor:
+    grafana:
       enabled: true
+      annotations:
+        grafana_folder: System
     backgroundController:
       serviceMonitor:
         enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
     cleanupController:
       serviceMonitor:
         enabled: true
     reportsController:
       serviceMonitor:
         enabled: true
-
-    resources:
-      requests:
-        cpu: 203m
-        memory: 256M
-      limits:
-        memory: 512M
+    admissionController:
+      replicas: 3
+      serviceMonitor:
+        enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+              verbs:
+                - create
+                - update
+                - delete
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: kyverno
+              app.kubernetes.io/component: kyverno
