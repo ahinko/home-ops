@@ -27,9 +27,6 @@
   "gitAuthor": "homeops-bot <104016614+homeops-bot[bot]@users.noreply.github.com>",
   "dependencyDashboardTitle": "🤖 Renovate Dashboard",
   "suppressNotifications": ["prIgnoreNotification"],
-  "ignorePaths": [
-    "infrastructure/talos/integrations/"
-  ],
   "ignoreDeps": [
     "ghcr.io/fluxcd/helm-controller",
     "ghcr.io/fluxcd/image-automation-controller",

@@ -4,7 +4,7 @@
     {
       description: 'Cloudnative Postgres container',
       fileMatch: [
-        'kubernetes/cluster/databases/cloudnative-pg/clusters/postgres-cluster.yaml'
+        'kubernetes/apps/databases/cloudnative-pg/clusters/postgres-cluster.yaml'
       ],
       matchStrings: [
         'imageName: (?<depName>.*?):(?<currentValue>.*)'
@@ -50,41 +50,15 @@
       datasourceTemplate: 'github-releases'
     },
     {
-      description: 'Process Cilium Quick Install for new versions',
+      description: 'CNI integration',
       fileMatch: [
-        '.taskfiles/kubernetes.yaml$'
+          'infrastructure/talos/integrations/cni/kustomization.yaml',
+          'infrastructure/talos/integrations/kubelet-csr-approver/kustomization.yaml',
       ],
       matchStrings: [
-        'add (?<depName>.*?) (?<registryUrl>.*)\n .*\n .* --version (?<currentValue>.*) cilium'
+        'version: (?<currentValue>.*)\n    releaseName: (?<depName>.*)\n',
       ],
-      datasourceTemplate: 'helm'
-    },
-    {
-      "description": "Process git repository resources like CRDs etc",
-      "fileMatch": [
-        "kubernetes/.+\\.yaml$",
-      ],
-      "matchStrings": [
-        "renovate: datasource=(?<datasource>.*)\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n",
-        "renovate\n *url: https:\/\/github\\.com\/(?<depName>.*?)\\.git\n *ref:\n *tag: (?<currentValue>.*)\n",
-        "renovate\n  - https:\/\/github\\.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>[a-z0-9.]*)",
-      ],
-      "datasourceTemplate": "github-releases"
-    },
-    {
-      "description": "Process CRD dependencies",
-      "fileMatch": ["kubernetes/.+\\.ya?ml$"],
-      "matchStrings": [
-        // GitRepository where 'Git release/tag' matches 'Helm' version, used for when crd is a file
-        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n *#?- https:\\/\\/raw.githubusercontent.com\\/([\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*\n",
-        // GitRepository where 'Git release/tag' matches 'Helm' version, used when crds are in a folder
-        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
-        // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
-        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)\/(?<currentValue>[^/]+)\/[^/]+\n",
-        // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
-        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n *#?- https:\\/\\/raw.githubusercontent.com\\/([\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
+      datasourceTemplate: 'flux',
     },
   ],
 }
