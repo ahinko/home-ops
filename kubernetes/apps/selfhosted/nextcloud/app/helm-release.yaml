@@ -128,9 +128,8 @@ spec:
             'memcache.distributed' => '\OC\Memcache\Redis',
             'memcache.locking' => '\OC\Memcache\Redis',
             'redis' => array(
-              'host' => 'haproxy.networking',
-              'port' => 6379,
-              'password' => '${SECRET_REDIS_PASSWORD}'
+              'host' => 'nextcloud-redis',
+              'port' => 6379
             )
           );
 

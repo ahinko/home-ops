@@ -16,108 +16,39 @@ spec:
         namespace: flux-system
       interval: 60m
   timeout: 15m
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     env:
       TZ: "${TIMEZONE}"
-
-    global:
-      storageClass: "rook-cephfs"
-      redis:
-        password: "${SECRET_REDIS_PASSWORD}"
-
-    image:
-      repository: bitnami/redis
-      tag: 7.0.11
-
-    architecture: replication
-
     auth:
-      enabled: true
-      sentinel: true
-      password: "${SECRET_REDIS_PASSWORD}"
-
+      enabled: false
+      sentinel: false
     master:
       persistence:
-        enabled: true
-        path: /data
-        storageClass: "rook-cephfs"
-        accessModes:
-          - ReadWriteMany
-        size: 8Gi
-
+        enabled: false
     replica:
-      replicaCount: 3
       persistence:
-        enabled: true
-        path: /data
-        storageClass: "rook-cephfs"
-        accessModes:
-          - ReadWriteMany
-        size: 8Gi
-
+        enabled: false
     sentinel:
       enabled: true
-
-      image:
-        repository: bitnami/redis-sentinel
-        tag: 7.0.11
-
-    metrics:
-      enabled: false
-
-      image:
-        repository: bitnami/redis-exporter
-        tag: 1.50.0
-        pullPolicy: Always
-
-      redisTargetHost: "localhost"
-
-      prometheusRule:
-        ## @param metrics.prometheusRule.enabled Create a custom prometheusRule Resource for scraping metrics using PrometheusOperator
-        ##
+      masterSet: redis-master
+      getMasterTimeout: 10
+      startupProbe:
+        failureThreshold: 2
+      persistence:
         enabled: false
-        ## @param metrics.prometheusRule.namespace The namespace in which the prometheusRule will be created
-        ##
-        namespace: ""
-        ## @param metrics.prometheusRule.additionalLabels Additional labels for the prometheusRule
-        ##
-        additionalLabels: {}
-        ## @param metrics.prometheusRule.rules Custom Prometheus rules
-        ## e.g:
-        ## rules:
-        ##   - alert: RedisDown
-        ##     expr: redis_up{service="{{ template "common.names.fullname" . }}-metrics"} == 0
-        ##     for: 2m
-        ##     labels:
-        ##       severity: error
-        ##     annotations:
-        ##       summary: Redis&trade; instance {{ "{{ $labels.instance }}" }} down
-        ##       description: Redis&trade; instance {{ "{{ $labels.instance }}" }} is down
-        ##    - alert: RedisMemoryHigh
-        ##      expr: >
-        ##        redis_memory_used_bytes{service="{{ template "common.names.fullname" . }}-metrics"} * 100
-        ##        /
-        ##        redis_memory_max_bytes{service="{{ template "common.names.fullname" . }}-metrics"}
-        ##        > 90
-        ##      for: 2m
-        ##      labels:
-        ##        severity: error
-        ##      annotations:
-        ##        summary: Redis&trade; instance {{ "{{ $labels.instance }}" }} is using too much memory
-        ##        description: |
-        ##          Redis&trade; instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
-        ##    - alert: RedisKeyEviction
-        ##      expr: |
-        ##        increase(redis_evicted_keys_total{service="{{ template "common.names.fullname" . }}-metrics"}[5m]) > 0
-        ##      for: 1s
-        ##      labels:
-        ##        severity: error
-        ##      annotations:
-        ##        summary: Redis&trade; instance {{ "{{ $labels.instance }}" }} has evicted keys
-        ##        description: |
-        ##          Redis&trade; instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
-        ##
-        rules: []
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        interval: 1m

@@ -7,7 +7,6 @@ resources:
   - ./cloudflare-ddns/kustomization.yaml
   - ./external-dns/kustomization.yaml
   - ./external-services/kustomization.yaml
-  - ./haproxy/kustomization.yaml
   - ./ingress-nginx/kustomization.yaml
   - ./k8s-gateway/kustomization.yaml
   - ./metallb/kustomization.yaml

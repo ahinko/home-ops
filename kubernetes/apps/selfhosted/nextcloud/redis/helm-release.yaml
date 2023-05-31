@@ -1,0 +1,41 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nextcloud-redis
+  namespace: selfhosted
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+
+  values:
+    image:
+      repository: public.ecr.aws/docker/library/redis
+      tag: 7.0.11
+
+    env:
+      REDIS_REPLICATION_MODE: master
+
+    service:
+      main:
+        ports:
+          http:
+            enabled: false
+          redis:
+            enabled: true
+            port: 6379
+
+    resources:
+      requests:
+        cpu: 5m
+        memory: 10M
+      limits:
+        memory: 10M
