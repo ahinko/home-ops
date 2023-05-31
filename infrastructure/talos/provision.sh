@@ -83,9 +83,6 @@ talosctl bootstrap -n $SETUP_IP
 echo "Waiting for the first control plane to get up and running"
 while ! curl -k "https://${SETUP_IP}:6443/version?timeout=30s" >/dev/null 2>&1; do sleep 3; done
 
-# Apply Cilium quick install
-kubectl apply -f $(dirname "$0")/integrations/cilium-quick-install/quick-install.yaml
-
 # Wait for VIP to get ready
 echo "Waiting for VIP to get up and running"
 while ! curl -k "https://${VIP}:6443/version?timeout=30s" >/dev/null 2>&1; do sleep 3; done
