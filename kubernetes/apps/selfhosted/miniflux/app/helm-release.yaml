@@ -17,14 +17,6 @@ spec:
       interval: 60m
 
   values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/ahinko/postgres-init:15.3@sha256:412751151d46aa04f83f8965306bf8d8a89acaf5f4401d1ffdd4102869eb238b
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: miniflux-secrets
-
     controller:
       replicas: 2
       strategy: RollingUpdate
@@ -37,6 +29,11 @@ spec:
 
     env:
       BASE_URL: https://rss.${SECRET_DOMAIN}
+      DATABASE_URL:
+        valueFrom:
+          secretKeyRef:
+            name: database-miniflux-user
+            key: POSTGRES_URL
       CREATE_ADMIN: "1"
       DEBUG: "1"
       LOG_DATE_TIME: "1"

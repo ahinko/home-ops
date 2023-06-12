@@ -17,14 +17,6 @@ spec:
       interval: 60m
 
   values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/ahinko/postgres-init:15.3@sha256:412751151d46aa04f83f8965306bf8d8a89acaf5f4401d1ffdd4102869eb238b
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: linkding-secrets
-
     controller:
       replicas: 1
       strategy: RollingUpdate
@@ -40,6 +32,17 @@ spec:
       LD_DB_DATABASE: "linkding"
       LD_DB_HOST: "postgres-rw.databases.svc.cluster.local"
       LD_DB_PORT: "5432"
+
+      LD_DB_USER:
+        valueFrom:
+          secretKeyRef:
+            name: database-linkding-user
+            key: ROLE
+      LD_DB_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: database-linkding-user
+            key: PASSWORD
 
     envFrom:
       - secretRef:

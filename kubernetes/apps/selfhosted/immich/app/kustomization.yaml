@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: selfhosted
 resources:
   - ./sops.secrets.yaml
+  - ./database.yaml
   - ./nfs-pvc.yaml
   - ./configmap.yaml
   - ./typesense

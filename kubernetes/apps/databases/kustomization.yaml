@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./cloudnative-pg/kustomization.yaml
+  - ./ext-postgres-operator/kustomization.yaml
   - ./influxdb/kustomization.yaml
   - ./postgres-backup/kustomization.yaml
   - ./redis/kustomization.yaml

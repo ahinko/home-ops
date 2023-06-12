@@ -28,13 +28,6 @@ spec:
   dependsOn:
     - name: immich-typesense
   values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/ahinko/postgres-init:15.3@sha256:412751151d46aa04f83f8965306bf8d8a89acaf5f4401d1ffdd4102869eb238b
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: immich-secret
     controller:
       replicas: 2
       strategy: RollingUpdate
@@ -45,6 +38,29 @@ spec:
       repository: ghcr.io/immich-app/immich-server
       tag: v1.60.0
     args: ["start-server.sh"]
+
+    env:
+      DB_HOSTNAME:
+        valueFrom:
+          secretKeyRef:
+            name: database-immich-user
+            key: HOST
+      DB_USERNAME:
+        valueFrom:
+          secretKeyRef:
+            name: database-immich-user
+            key: LOGIN
+      DB_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: database-immich-user
+            key: PASSWORD
+      DB_DATABASE_NAME:
+        valueFrom:
+          secretKeyRef:
+            name: database-immich-user
+            key: DATABASE_NAME
+
     envFrom:
       - configMapRef:
           name: *configmap
