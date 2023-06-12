@@ -10,3 +10,4 @@ resources:
   - ./minio/kustomization.yaml
   - ./nextcloud/kustomization.yaml
   - ./radicale/kustomization.yaml
+  - ./windmill/kustomization.yaml
