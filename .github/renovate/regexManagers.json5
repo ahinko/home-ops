@@ -14,11 +14,13 @@
     {
       description: 'Process Kubernetes versions',
       fileMatch: [
+        'infrastructure/ansible/roles/k8s/defaults/k8s.yaml',
         'infrastructure/talos/upgrade-k8s.sh',
         'infrastructure/talos/talconfig.yaml',
         '.github/scripts/helmReleaseDiff.mjs'
       ],
       matchStrings: [
+        'kubernetes_version: (?<currentValue>.*)',
         'kubernetesVersion: (?<currentValue>.*)',
         '--to (?<currentValue>.*)',
         '--kube-version (?<currentValue>.*) --release'

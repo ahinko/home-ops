@@ -18,8 +18,17 @@ spec:
     fullnameOverride: *app
     config:
       devices:
-        - /dev/sda
         - /dev/nvme0n1
+        - /dev/sda
+        - /dev/sdb
+        - /dev/sdc
+        - /dev/sdd
+        - /dev/sde
+        - /dev/sdf
+        - /dev/sdg
+        - /dev/sdh
+        - /dev/sdi
+        - /dev/sdj
     serviceMonitor:
       enabled: true
     prometheusRules:
