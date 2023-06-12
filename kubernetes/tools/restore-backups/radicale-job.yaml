@@ -18,17 +18,17 @@ spec:
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: backup-secrets
+                  name: backups-secrets
                   key: MINIO_ACCESS_KEY
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: backup-secrets
+                  name: backups-secrets
                   key: MINIO_SECRET_KEY
             - name: MINIO_HOST
               valueFrom:
                 secretKeyRef:
-                  name: backup-secrets
+                  name: backups-secrets
                   key: MINIO_HOST
             - name: MINIO_BUCKET
               value: "backup"
