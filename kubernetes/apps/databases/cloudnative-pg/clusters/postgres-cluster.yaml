@@ -42,10 +42,10 @@ spec:
         endpointURL: http://minio.selfhosted:9000
         s3Credentials:
           accessKeyId:
-            name: backup-secrets
+            name: backups-secrets
             key: MINIO_ACCESS_KEY
           secretAccessKey:
-            name: backup-secrets
+            name: backups-secrets
             key: MINIO_SECRET_KEY
 
   backup:
