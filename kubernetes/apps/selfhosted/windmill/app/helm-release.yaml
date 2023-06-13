@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: windmill
-      version: 1.6.14
+      version: 1.6.15
       interval: 60m
       sourceRef:
         kind: HelmRepository
