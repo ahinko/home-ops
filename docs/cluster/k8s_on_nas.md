@@ -6,23 +6,83 @@ We have an Ansible role that installs and configures the NAS for Kubernetes but 
 
 ## Steps
 - Run `talosctl -n 192.168.20.24 copy /etc/kubernetes .`  to copy what we need from one of the existing worker nodes.
-- Copy the following files to `/etc/kubernetes` on the NAS: `bootstrap-kubeconfig`, `kubelet.yaml`, `pki/ca.crt`.
-- Add a new line to kubelet.yaml: `serverTLSBootstrap: true`
-- Edit `/etc/systemd/system/kubelet.service.d/10-kubeadm.conf`:
+- Copy the following file to `/etc/kubernetes` on the NAS: `pki/ca.crt`.
+- Make sure you have a working `~/.kube/config`
+- Get `secrets.bootstrapToken` from `infrastructure/talos/talsecret.yaml` and use in second command below
+- Run a few commands:
+  - `sudo kubectl config --kubeconfig=/etc/kubernetes/bootstrap-kubeconfig set-cluster metal --server='https://192.168.20.20:6443' --certificate-authority=/etc/kubernetes/pki/ca.crt --embed-certs=true`
+  - `sudo kubectl config --kubeconfig=/etc/kubernetes/bootstrap-kubeconfig set-credentials tls-bootstrap-token-user --token=<token>`
+  - `sudo kubectl config --kubeconfig=/etc/kubernetes/bootstrap-kubeconfig set-context tls-bootstrap-token-user@metal --user=tls-bootstrap-token-user --cluster=metal`
+  - `sudo kubectl config --kubeconfig=/etc/kubernetes/bootstrap-kubeconfig use-context tls-bootstrap-token-user@metal`
+- Edit the following values in `/etc/containerd/config.yaml`
 
 ```
-# Note: This dropin only works with kubeadm and kubelet v1.11+
+enable_unprivileged_icmp = true
+enable_unprivileged_ports = true
+disable_apparmor = true
+```
+
+- Edit `/etc/systemd/system/kubelet.service`:
+
+```
 [Service]
-Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubeconfig --kubeconfig=/etc/kubernetes/kubeconfig-kubelet --cgroup-driver=systemd"
-Environment="KUBELET_CONFIG_ARGS=--config=/etc/kubernetes/kubelet.yaml"
-# This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
-#EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
-# This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use
-# the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.
-EnvironmentFile=-/etc/default/kubelet
-ExecStart=
-ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+Restart=always
+ExecStart=/usr/bin/kubelet --kubeconfig=/etc/kubernetes/kubeconfig --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubeconfig --config=/etc/kubernetes/kubelet.yaml --cgroup-driver=systemd
+[Install]
+WantedBy=multi-user.target
+```
+
+- Create `/etc/kubernetes/kubelet.yaml` with the following content:
+
+```
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+authentication:
+  anonymous:
+    enabled: false
+  webhook:
+    cacheTTL: 0s
+    enabled: true
+  x509:
+    clientCAFile: /etc/kubernetes/pki/ca.crt
+authorization:
+  mode: Webhook
+  webhook:
+    cacheAuthorizedTTL: 0s
+    cacheUnauthorizedTTL: 0s
+cgroupDriver: systemd
+clusterDNS:
+- 10.96.0.10
+clusterDomain: cluster.local
+containerRuntimeEndpoint: ""
+cpuManagerReconcilePeriod: 0s
+evictionPressureTransitionPeriod: 0s
+fileCheckFrequency: 0s
+healthzBindAddress: 127.0.0.1
+healthzPort: 10248
+httpCheckFrequency: 0s
+imageMinimumGCAge: 0s
+kind: KubeletConfiguration
+logging:
+  flushFrequency: 0
+  options:
+    json:
+      infoBufferSize: "0"
+  verbosity: 0
+memorySwap: {}
+nodeStatusReportFrequency: 0s
+nodeStatusUpdateFrequency: 0s
+resolvConf: /run/systemd/resolve/resolv.conf
+rotateCertificates: true
+runtimeRequestTimeout: 0s
+serverTLSBootstrap: true
+shutdownGracePeriod: 0s
+shutdownGracePeriodCriticalPods: 0s
+staticPodPath: /etc/kubernetes/manifests
+streamingConnectionIdleTimeout: 0s
+syncFrequency: 0s
+volumeStatsAggPeriod: 0s
 ```
 
 - `systemctl daemon-reload`
-- Not sure if this is needed: `systemctl restart kubelet.service`
+- `systemctl restart kubelet.service containerd.service`
