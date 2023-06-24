@@ -25,6 +25,11 @@ nodes:
         udev:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+        install:
+          extensions:
+            - image: ghcr.io/siderolabs/i915-ucode:20230310
+            - image: ghcr.io/siderolabs/intel-ucode:20230512
+
   - hostname: eos
     disableSearchDomain: true
     ipAddress: 192.168.20.22
@@ -173,6 +178,11 @@ worker:
           nodeIP:
             validSubnets:
                 - 192.168.20.0/24
+
+        install:
+          extensions:
+            - image: ghcr.io/siderolabs/i915-ucode:20230310
+            - image: ghcr.io/siderolabs/intel-ucode:20230512
 
         sysctls:
           fs.inotify.max_user_watches: "1048576"
