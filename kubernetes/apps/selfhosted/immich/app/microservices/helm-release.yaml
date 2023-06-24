@@ -29,7 +29,7 @@ spec:
     - name: immich-typesense
   values:
     controller:
-      replicas: 2
+      replicas: 3
       strategy: RollingUpdate
       annotations:
         configmap.reloader.stakater.com/reload: &configmap immich-configmap

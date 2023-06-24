@@ -29,7 +29,7 @@ spec:
     - name: immich-server
   values:
     controller:
-      replicas: 1
+      replicas: 2
       strategy: RollingUpdate
       annotations:
         configmap.reloader.stakater.com/reload: &configmap immich-configmap
