@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 3.5.13
+      version: 3.5.14
       sourceRef:
         kind: HelmRepository
         name: nextcloud-charts
