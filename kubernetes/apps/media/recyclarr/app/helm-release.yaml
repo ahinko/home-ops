@@ -32,7 +32,7 @@ spec:
 
     image:
       repository: ghcr.io/recyclarr/recyclarr
-      tag: 5.0.0
+      tag: 5.0.2
 
     env:
       TZ: Europe/Stockholm
