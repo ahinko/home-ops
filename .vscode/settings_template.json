@@ -36,7 +36,10 @@
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
     "ansible": "ansible/**/*.yml",
-    "kubernetes": "kubernetes/*.yaml"
+    "kubernetes": "kubernetes/*.yaml",
+    "https://json.schemastore.org/kustomization": "**/kustomization.yaml",
+    "https://kubernetes-schemas.secret.domain/kustomize.toolkit.fluxcd.io/kustomization_v1.json": "**/install.yaml",
+    "https://kubernetes-schemas.secret.domain/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json": "**/helm-release.yaml"
   },
   "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,

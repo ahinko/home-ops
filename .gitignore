@@ -18,3 +18,4 @@ talosconfig*
 *.backup
 **/.secrets
 .history
+.vscode/settings.json
