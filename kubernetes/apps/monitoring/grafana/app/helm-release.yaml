@@ -16,6 +16,17 @@ spec:
       version: 6.57.3
   interval: 60m
   timeout: 20m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     replicas: 1
     rbac:

@@ -15,10 +15,19 @@ spec:
         name: jetstack-charts
         namespace: flux-system
       interval: 60m
+  maxHistory: 2
   install:
+    createNamespace: true
+    remediation:
+      retries: 3
     crds: CreateReplace
   upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
     crds: CreateReplace
+  uninstall:
+    keepHistory: false
 
   # Values link: https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
   values:

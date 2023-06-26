@@ -15,6 +15,17 @@ spec:
         name: postfinance-charts
         namespace: flux-system
       interval: 60m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   valuesFrom:
     - kind: ConfigMap
       name: kubelet-csr-approver-values

@@ -1,13 +1,12 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./cloudflare-ddns/kustomization.yaml
-  - ./external-dns/kustomization.yaml
-  - ./external-services/kustomization.yaml
-  - ./ingress-nginx/kustomization.yaml
-  - ./k8s-gateway/kustomization.yaml
-  - ./metallb/kustomization.yaml
-  - ./multus/kustomization.yaml
+  - ./cloudflare-ddns/install.yaml
+  - ./external-dns/install.yaml
+  - ./external-services/install.yaml
+  - ./ingress-nginx/install.yaml
+  - ./k8s-gateway/install.yaml
+  - ./metallb/install.yaml
+  - ./multus/install.yaml

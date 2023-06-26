@@ -1,14 +1,13 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./nfs-pvc.yaml
-  - ./bazarr/kustomization.yaml
-  - ./lidarr/kustomization.yaml
-  - ./radarr/kustomization.yaml
-  - ./recyclarr/kustomization.yaml
-  - ./sabnzbd/kustomization.yaml
-  - ./sonarr/kustomization.yaml
-  - ./sonarr-requests/kustomization.yaml
+  - ./bazarr/install.yaml
+  - ./lidarr/install.yaml
+  - ./radarr/install.yaml
+  - ./recyclarr/install.yaml
+  - ./sabnzbd/install.yaml
+  - ./sonarr/install.yaml
+  - ./sonarr-requests/install.yaml

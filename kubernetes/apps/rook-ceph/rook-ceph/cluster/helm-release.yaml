@@ -18,6 +18,17 @@ spec:
   dependsOn:
     - name: rook-ceph-operator
       namespace: rook-ceph
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: false
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   # Values link: https://github.com/rook/rook/blob/release-1.11/deploy/charts/rook-ceph-cluster/values.yaml
   values:
     toolbox:

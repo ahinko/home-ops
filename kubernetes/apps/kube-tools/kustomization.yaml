@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./descheduler/kustomization.yaml
-  - ./intel-device-plugins/kustomization.yaml
-  - ./kyverno/kustomization.yaml
-  - ./node-feature-discovery/kustomization.yaml
-  - ./node-problem-detector/kustomization.yaml
-  - ./reloader/kustomization.yaml
+  - ./descheduler/install.yaml
+  - ./intel-device-plugins/install.yaml
+  - ./kyverno/install.yaml
+  - ./node-feature-discovery/install.yaml
+  - ./node-problem-detector/install.yaml
+  - ./reloader/install.yaml

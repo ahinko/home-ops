@@ -15,12 +15,19 @@ spec:
         name: actions-runner-controller-charts
         namespace: flux-system
       interval: 60m
-
+  maxHistory: 2
   install:
+    createNamespace: true
+    remediation:
+      retries: 3
     crds: CreateReplace
   upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
     crds: CreateReplace
-
+  uninstall:
+    keepHistory: false
   values:
     fullnameOverride: gha-runner-scale-set-controller
     resources:

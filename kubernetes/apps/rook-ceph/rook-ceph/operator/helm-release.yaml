@@ -15,14 +15,20 @@ spec:
         name: rook-ceph-charts
         namespace: flux-system
       interval: 60m
+
+  maxHistory: 2
   install:
-    remediation: # perform remediation when helm install fails
+    createNamespace: true
+    remediation:
       retries: 3
   upgrade:
-    remediation: # perform remediation when helm upgrade fails
+    cleanupOnFail: true
+    remediation:
       retries: 3
       remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
+
   # Values link: https://github.com/rook/rook/blob/release-1.11/deploy/charts/rook-ceph/values.yaml
   values:
     crds:

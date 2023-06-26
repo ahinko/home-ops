@@ -1,13 +1,12 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./immich/kustomization.yaml
-  - ./linkding/kustomization.yaml
-  - ./miniflux/kustomization.yaml
-  - ./minio/kustomization.yaml
-  - ./nextcloud/kustomization.yaml
-  - ./radicale/kustomization.yaml
-  - ./windmill/kustomization.yaml
+  - ./immich/install.yaml
+  - ./linkding/install.yaml
+  - ./miniflux/install.yaml
+  - ./minio/install.yaml
+  - ./nextcloud/install.yaml
+  - ./radicale/install.yaml
+  - ./windmill/install.yaml

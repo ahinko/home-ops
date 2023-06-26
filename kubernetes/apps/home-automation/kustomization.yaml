@@ -1,15 +1,14 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./emqx/kustomization.yaml
-  - ./esphome/kustomization.yaml
-  - ./frigate/kustomization.yaml
-  - ./home-assistant/kustomization.yaml
-  - ./home-assistant-code/kustomization.yaml
-  - ./wyoming-piper/kustomization.yaml
-  - ./zigbee2mqtt/kustomization.yaml
-  - ./zwave-js-ui/kustomization.yaml
-  - ./zwavejs/kustomization.yaml
+  - ./emqx/install.yaml
+  - ./esphome/install.yaml
+  - ./frigate/install.yaml
+  - ./home-assistant/install.yaml
+  - ./home-assistant-code/install.yaml
+  - ./wyoming-piper/install.yaml
+  - ./zigbee2mqtt/install.yaml
+  - ./zwave-js-ui/install.yaml
+  - ./zwavejs/install.yaml
