@@ -32,7 +32,7 @@ spec:
       strategy: RollingUpdate
     image:
       repository: ghcr.io/ahinko/kubernetes-schemas
-      tag: latest@sha256:8887761809a44c8ffa2f0b98c9fb45fd7c25adf98e72d74e44fee5d9ffccd6f1
+      tag: latest@sha256:058949964af9501faf15b8b4c43e48a24169afe1e8d081953082a9e20f36f9fa
     service:
       main:
         ports:
