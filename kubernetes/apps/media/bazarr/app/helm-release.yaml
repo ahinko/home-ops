@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/bazarr
-      tag: 1.2.2
+      tag: 1.2.3
 
     env:
       TZ: "${TIMEZONE}"
