@@ -29,7 +29,7 @@ spec:
   values:
     image:
       repository: quay.io/minio/minio
-      tag: RELEASE.2023-06-29T05-12-28Z
+      tag: RELEASE.2023-07-11T21-29-34Z
 
     env:
       TZ: "${TIMEZONE}"
