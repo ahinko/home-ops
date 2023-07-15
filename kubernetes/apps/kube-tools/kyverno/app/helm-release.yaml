@@ -31,7 +31,7 @@ spec:
     grafana:
       enabled: true
       annotations:
-        grafana_folder: System
+        grafana_folder: Kyverno
     backgroundController:
       serviceMonitor:
         enabled: true
@@ -42,12 +42,22 @@ spec:
                 - ""
               resources:
                 - pods
+              verbs:
+                - create
+                - update
+                - patch
+                - delete
+                - get
+                - list
+
     cleanupController:
       serviceMonitor:
         enabled: true
+
     reportsController:
       serviceMonitor:
         enabled: true
+
     admissionController:
       replicas: 3
       serviceMonitor:
@@ -63,6 +73,7 @@ spec:
                 - create
                 - update
                 - delete
+
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
