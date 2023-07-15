@@ -71,3 +71,15 @@ spec:
         cpu: 15m
       limits:
         memory: 600M
+
+    # We do not want to run on Atlas since that node uses another DNS server that will cause
+    # issues since it wont know about internal ingressess
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - "atlas"
