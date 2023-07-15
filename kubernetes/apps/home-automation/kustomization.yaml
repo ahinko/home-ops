@@ -11,4 +11,3 @@ resources:
   - ./wyoming-piper/install.yaml
   - ./zigbee2mqtt/install.yaml
   - ./zwave-js-ui/install.yaml
-  - ./zwavejs/install.yaml

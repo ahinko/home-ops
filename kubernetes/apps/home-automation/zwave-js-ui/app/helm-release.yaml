@@ -49,7 +49,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         hosts:
-          - host: &host zwavejs7.${SECRET_DOMAIN}
+          - host: &host zwavejs.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -85,13 +85,3 @@ spec:
       readiness: *probes
       startup:
         enabled: false
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - "poseidon"
