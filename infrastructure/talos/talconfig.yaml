@@ -65,6 +65,8 @@ nodes:
     ipAddress: 192.168.20.24
     controlPlane: false
     installDisk: /dev/nvme0n1
+    nameservers:
+      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
@@ -81,6 +83,8 @@ nodes:
     ipAddress: 192.168.20.25
     controlPlane: false
     installDisk: /dev/nvme0n1
+    nameservers:
+      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
@@ -97,6 +101,8 @@ nodes:
     ipAddress: 192.168.20.26
     controlPlane: false
     installDisk: /dev/nvme0n1
+    nameservers:
+      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
