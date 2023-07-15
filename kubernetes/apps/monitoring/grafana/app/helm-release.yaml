@@ -168,6 +168,7 @@ spec:
     grafana.ini:
       analytics:
         check_for_updates: false
+        reporting_enabled: false
       # auth:
       #   signout_redirect_url: "https://auth.${SECRET_DOMAIN}/logout"
       #   oauth_auto_login: false
@@ -195,6 +196,8 @@ spec:
         url: https://grafana.net
       log:
         mode: console
+      news:
+        news_feed_enabled: false
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
