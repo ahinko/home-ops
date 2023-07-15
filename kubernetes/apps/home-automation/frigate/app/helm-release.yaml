@@ -35,7 +35,7 @@ spec:
       LIBVA_DRIVER_NAME: "i965"
 
     podAnnotations:
-      configmap.reloader.stakater.com/reload: *app
+      reloader.stakater.com/auto: "true"
 
     configmap:
       config:
@@ -68,8 +68,8 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: frigate-config
-      config:
+        existingClaim: frigate-data
+      config-file:
         enabled: true
         type: configMap
         name: *app

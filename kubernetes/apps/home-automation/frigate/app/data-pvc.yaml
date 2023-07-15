@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: frigate-config
+  name: frigate-data
   namespace: home-automation
 spec:
   accessModes:
