@@ -4,15 +4,15 @@ resource "cloudflare_filter" "countries" {
   count = var.enable_default_firewall_rules ? 1 : 0
 
   zone_id     = cloudflare_zone.zone.id
-  description = "Expression to block all countries except SE"
-  expression  = "(ip.geoip.country ne \"SE\")"
+  description = "Expression to block most countries except SE"
+  expression  = "(ip.geoip.country ne \"SE\") and (ip.geoip.country ne \"DK\")"
 }
 
 resource "cloudflare_firewall_rule" "countries" {
   count = var.enable_default_firewall_rules ? 1 : 0
 
   zone_id     = cloudflare_zone.zone.id
-  description = "Firewall rule to block all countries except SE"
+  description = "Firewall rule to block most countries except SE"
   filter_id   = cloudflare_filter.countries[count.index].id
   action      = "block"
 }
