@@ -91,6 +91,8 @@ spec:
           nodeSelectorTerms:
             - matchExpressions:
                 - key: kubernetes.io/hostname
-                  operator: NotIn
+                  operator: In
                   values:
-                    - "helios"
+                    - "iris"
+                    - "poseidon"
+                    - "zeus"

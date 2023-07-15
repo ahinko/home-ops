@@ -78,3 +78,15 @@ spec:
         memory: 64M
       limits:
         memory: 1024M
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - "iris"
+                    - "poseidon"
+                    - "zeus"
