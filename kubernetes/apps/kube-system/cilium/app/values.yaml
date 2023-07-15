@@ -136,6 +136,12 @@ kubeProxyReplacement: strict
 # By default it is disabled.
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
+l2announcements:
+  enabled: true
+  leaseDuration: 120s
+  leaseRenewDeadline: 60s
+  leaseRetryPeriod: 1s
+
 # -- Configure service load balancing
 loadBalancer:
   # -- algorithm is the name of the load balancing algorithm for backend

@@ -35,4 +35,5 @@ spec:
     service:
       type: LoadBalancer
       port: 53
-      loadBalancerIP: ${LB_K8S_GATEWAY}
+      annotations:
+        io.cilium/lb-ipam-ips: "${LB_K8S_GATEWAY}"

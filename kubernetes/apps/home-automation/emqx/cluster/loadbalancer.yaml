@@ -8,7 +8,7 @@ metadata:
     apps.emqx.io/db-role: core
     apps.emqx.io/instance: emqx
   annotations:
-    metallb.universe.tf/loadBalancerIPs: "${LB_EMQX}"
+    io.cilium/lb-ipam-ips: "${LB_EMQX}"
 spec:
   type: LoadBalancer
   ports:

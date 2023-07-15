@@ -8,7 +8,7 @@ metadata:
     postgresql: postgres
     role: primary
   annotations:
-    metallb.universe.tf/loadBalancerIPs: ${LB_POSTGRES}
+    io.cilium/lb-ipam-ips: ${LB_POSTGRES}
 spec:
   ports:
     - protocol: TCP

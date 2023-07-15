@@ -19,8 +19,8 @@ spec:
         namespace: flux-system
       interval: 60m
   dependsOn:
-    - name: metallb
-      namespace: networking
+    - name: cilium
+      namespace: kube-system
   maxHistory: 2
   install:
     createNamespace: true
@@ -47,10 +47,10 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${LB_VECTOR_AGGREGATOR}"
         annotations:
           coredns.io/hostname: "vector.${SECRET_DOMAIN}"
-        externalTrafficPolicy: Local
+          io.cilium/lb-ipam-ips: "${LB_VECTOR_AGGREGATOR}"
+        externalTrafficPolicy: Cluster
         ports:
           http:
             port: 8686

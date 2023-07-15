@@ -18,8 +18,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: metallb
-      namespace: networking
+    - name: cilium
+      namespace: kube-system
   maxHistory: 2
   install:
     createNamespace: true
@@ -191,4 +191,4 @@ spec:
     deploymentAnnotations: {}
 
     serviceAnnotations:
-      metallb.universe.tf/loadBalancerIPs: "${LB_MINECRAFT}"
+      io.cilium/lb-ipam-ips: "${LB_MINECRAFT}"

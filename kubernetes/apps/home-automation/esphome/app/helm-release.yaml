@@ -34,8 +34,8 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          metallb.universe.tf/loadBalancerIPs: "${LB_ESPHOME}"
-        externalTrafficPolicy: Local
+          io.cilium/lb-ipam-ips: "${LB_ESPHOME}"
+        externalTrafficPolicy: Cluster
         ports:
           http:
             port: 6052

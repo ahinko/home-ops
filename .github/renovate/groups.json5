@@ -44,20 +44,6 @@
       "separateMinorPatch": true
     },
     {
-      "description": "MetalLB chart & images",
-      "matchDatasources": [
-        "helm",
-        "github-releases"
-      ],
-      "matchPackageNames": [
-        "metallb",
-        "metallb/metallb"
-      ],
-      "groupName": "metallb/metallb",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
-    },
-    {
       "description": "Rook/Ceph chart & images",
       "matchDatasources": [
         "helm",

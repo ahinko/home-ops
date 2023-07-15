@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - ./helm-release.yaml
+  - ./cilium-l2.yaml
 
 configMapGenerator:
   - name: cilium-values
