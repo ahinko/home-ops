@@ -45,6 +45,7 @@ nodes:
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
+
   - hostname: hades
     disableSearchDomain: true
     ipAddress: 192.168.20.23
@@ -60,6 +61,7 @@ nodes:
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
+
   - hostname: poseidon
     disableSearchDomain: true
     ipAddress: 192.168.20.24
@@ -73,6 +75,12 @@ nodes:
           - 192.168.20.24/24
         mtu: 0
         dhcp: true
+        vlans:
+          - vlanId: 71
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
     inlinePatch:
       machine:
         udev:
@@ -91,6 +99,12 @@ nodes:
           - 192.168.20.25/24
         mtu: 0
         dhcp: true
+        vlans:
+          - vlanId: 71
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
     inlinePatch:
       machine:
         udev:
@@ -109,6 +123,12 @@ nodes:
           - 192.168.20.26/24
         mtu: 0
         dhcp: true
+        vlans:
+          - vlanId: 71
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
     inlinePatch:
       machine:
         udev:

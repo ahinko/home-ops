@@ -30,6 +30,14 @@ spec:
       repository: ghcr.io/esphome/esphome
       tag: 2023.6.5
 
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name":"multus-iot",
+          "namespace": "networking",
+          "ips": ["192.168.71.200/24"]
+        }]
+
     service:
       main:
         type: LoadBalancer

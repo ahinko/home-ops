@@ -32,6 +32,14 @@ spec:
     env:
       TZ: "${TIMEZONE}"
 
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name":"multus-iot",
+          "namespace": "networking",
+          "ips": ["192.168.71.201/24"]
+        }]
+
     service:
       main:
         type: LoadBalancer
