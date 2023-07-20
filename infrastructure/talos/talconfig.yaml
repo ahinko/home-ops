@@ -1,7 +1,7 @@
 ---
 clusterName: metal
 talosVersion: v1.4.6
-kubernetesVersion: v1.27.3
+kubernetesVersion: v1.27.4
 endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 
 nodes:
