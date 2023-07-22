@@ -21,32 +21,32 @@ spec:
       max_connections: "300"
       shared_buffers: 512MB
 
-  # bootstrap:
-  #  initdb:
-  #    database: nextcloud
-  #    owner: nextcloud
-  #    secret:
-  #      name: postgres-nextcloud
-
   bootstrap:
-    recovery:
-      source: postgres-v2
+    initdb:
+      database: nextcloud
+      owner: nextcloud
+      secret:
+        name: postgres-nextcloud
 
-  externalClusters:
-    - name: postgres-v2
-      barmanObjectStore:
-        wal:
-          compression: bzip2
-          maxParallel: 8
-        destinationPath: s3://postgres/
-        endpointURL: http://minio.selfhosted:9000
-        s3Credentials:
-          accessKeyId:
-            name: backups-secrets
-            key: MINIO_ACCESS_KEY
-          secretAccessKey:
-            name: backups-secrets
-            key: MINIO_SECRET_KEY
+  #bootstrap:
+  #  recovery:
+  #    source: postgres-v3
+
+  #externalClusters:
+  #  - name: postgres-v3
+  #    barmanObjectStore:
+  #      wal:
+  #        compression: bzip2
+  #        maxParallel: 8
+  #      destinationPath: s3://postgres/
+  #      endpointURL: http://minio.selfhosted:9000
+  #      s3Credentials:
+  #        accessKeyId:
+  #          name: backups-secrets
+  #          key: MINIO_ACCESS_KEY
+  #        secretAccessKey:
+  #          name: backups-secrets
+  #          key: MINIO_SECRET_KEY
 
   backup:
     retentionPolicy: 30d
@@ -56,7 +56,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgres/
       endpointURL: http://minio.selfhosted:9000
-      serverName: postgres-v3
+      serverName: postgres-v4
       s3Credentials:
         accessKeyId:
           name: cnpg-backup-secrets
