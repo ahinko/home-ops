@@ -40,10 +40,6 @@ spec:
 
     service:
       main:
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: "${LB_ESPHOME}"
-        externalTrafficPolicy: Cluster
         ports:
           http:
             port: 6052
