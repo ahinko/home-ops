@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./add-ons/install.yaml
+  - ./weave-gitops/install.yaml

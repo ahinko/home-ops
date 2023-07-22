@@ -30,4 +30,5 @@ resources:
   - ./rook-ceph-charts.yaml
   - ./stakater-charts.yaml
   - ./vector-charts.yaml
+  - ./weave-gitops-charts.yaml
   - ./windmill-charts.yaml
