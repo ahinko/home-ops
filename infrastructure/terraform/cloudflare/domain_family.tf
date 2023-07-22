@@ -1,8 +1,7 @@
 module "cf_domain_family" {
-  source                        = "./modules/cf_domain"
-  domain                        = data.sops_file.cloudflare_secrets.data["cloudflare_domain_family"]
-  account_id                    = data.sops_file.cloudflare_secrets.data["cloudflare_account_id"]
-  enable_default_firewall_rules = false
+  source     = "./modules/cf_domain"
+  domain     = data.sops_file.cloudflare_secrets.data["cloudflare_domain_family"]
+  account_id = data.sops_file.cloudflare_secrets.data["cloudflare_account_id"]
   dns_entries = [
     # E-mail settings
     {

@@ -53,36 +53,35 @@ module "cf_domain_homelab" {
       ttl   = 1
     },
   ]
-}
 
-#
-# Allow GitHub Webhooks
-#
-resource "cloudflare_filter" "cf_domain_homelab_github_webhooks" {
-  zone_id     = module.cf_domain_homelab.zone_id
-  description = "Allow GitHub Webhooks"
-  expression = format(
-    "(ip.geoip.asnum eq 36459 and http.host eq \"flux-webhook.%s\") or (http.host eq \"arc-webhook.%s\" and ip.geoip.asnum eq 36459)",
-    data.sops_file.cloudflare_secrets.data["cloudflare_domain_homelab"],
-    data.sops_file.cloudflare_secrets.data["cloudflare_domain_homelab"]
-  )
-}
-
-resource "cloudflare_firewall_rule" "cf_domain_homelab_github_webhooks" {
-  zone_id     = module.cf_domain_homelab.zone_id
-  description = "Firewall rule to allow GitHub & Webhooks"
-  filter_id   = cloudflare_filter.cf_domain_homelab_github_webhooks.id
-  action      = "allow"
-}
-
-resource "cloudflare_page_rule" "cf_domain_homelab_plex_bypass_cache" {
-  zone_id  = module.cf_domain_homelab.zone_id
-  target   = format("plex.%s/*", module.cf_domain_homelab.zone)
-  status   = "active"
-  priority = 1
-
-  actions {
-    cache_level         = "bypass"
-    disable_performance = true
-  }
+  waf_custom_rules = [
+    {
+      enabled     = true
+      description = "Allow Github webhooks"
+      expression = format(
+        "(ip.geoip.asnum eq 36459 and http.host eq \"flux-webhook.%s\") or (http.host eq \"arc-webhook.%s\" and ip.geoip.asnum eq 36459)",
+        data.sops_file.cloudflare_secrets.data["cloudflare_domain_homelab"],
+        data.sops_file.cloudflare_secrets.data["cloudflare_domain_homelab"]
+      )
+      action = "skip"
+      action_parameters = {
+        ruleset = "current"
+      }
+      logging = {
+        enabled = false
+      }
+    },
+    {
+      enabled     = true
+      description = "Firewall rule to block bots and threats determined by CF"
+      expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
+      action      = "block"
+    },
+    {
+      enabled     = true
+      description = "Firewall rule to block all countries except SE/DK/NO/FI"
+      expression  = "(ip.geoip.country ne \"SE\") and (ip.geoip.country ne \"DK\") and (ip.geoip.country ne \"NO\") and (ip.geoip.country ne \"FI\")"
+      action      = "block"
+    },
+  ]
 }
