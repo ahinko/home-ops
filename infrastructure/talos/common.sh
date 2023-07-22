@@ -2,6 +2,11 @@
 
 export REPO_ROOT=$(git rev-parse --show-toplevel)
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 die() { echo "ERROR: $*" 1>&2 ; exit 1; }
 
 need() {
@@ -22,4 +27,81 @@ get_setup_ip() {
 get_vip() {
   PARSED_VIP=$(yq '.nodes | map(select(.controlPlane == true)) | pick([0]) | map(.networkInterfaces[0].vip.ip)' < $(dirname "$0")/talconfig.yaml)
   VIP=${PARSED_VIP#??}
+}
+
+check_rook_health() {
+  HEALTH=false
+  while [ "$HEALTH" == false ]
+  do
+    echo "Checking if Rook/Ceph cluster is healthy."
+
+    # Get name of rook ceph tools pod
+    ROOK_CEPH_TOOLS_POD=$(kubectl get pod -l app=rook-ceph-tools -n rook-ceph -o jsonpath="{.items[0].metadata.name}")
+
+    # make sure rook ceph is healthy
+    HEALTH_CHECK=$(kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -- ceph status | grep "health:")
+
+    if [[ $HEALTH_CHECK == *"HEALTH_OK"* ]]; then
+      HEALTH=true
+    else
+      echo -e "${RED}Rook/Ceph not healthy, waiting 60s before checking again.${NC}"
+      sleep 60
+
+      # Archive any crash messages since those will be holding up everything since the health will be false until those
+      # messages has been archived
+      kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -- ceph crash archive-all
+    fi
+  done
+
+  echo -e "${GREEN}Rook/Ceph is healthy, let's move on${NC}"
+}
+
+declare -A controlplanes
+declare -A workers
+get_nodes() {
+  config=$(yq e -o=j -I=0 '.nodes[]' $(dirname "$0")/talconfig.yaml)
+
+  while IFS=\= read node; do
+      IS_CONTROL_PLANE=$(echo "$node" | yq e '.controlPlane')
+
+      if [[ $IS_CONTROL_PLANE == "true" ]]; then
+        controlplanes[$(echo "$node" | yq e '.hostname')]="$(echo "$node" | yq e '.ipAddress')"
+      else
+        workers[$(echo "$node" | yq e '.hostname')]="$(echo "$node" | yq e '.ipAddress')"
+      fi
+  done <<< "$config"
+}
+
+upgrade_k8s_on_node() {
+  NODENAME=$1
+  IP=$2
+
+  echo "----------------------------------------------------------------"
+  echo -e "${BLUE}Upgrading Kubernetes on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
+
+  talosctl apply-config -m reboot --wait -n ${IP} -f clusterconfig/metal-${NODENAME}.yaml
+
+  # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
+  if [[ $NODENAME == "helios" ]]; then
+    kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
+  fi
+
+  check_rook_health
+}
+
+upgrade_talos_on_node() {
+  NODENAME=$1
+  IP=$2
+
+  echo "----------------------------------------------------------------"
+  echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
+
+  talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.4.6
+
+  # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
+  if [[ $NODENAME == "helios" ]]; then
+    kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
+  fi
+
+  check_rook_health
 }

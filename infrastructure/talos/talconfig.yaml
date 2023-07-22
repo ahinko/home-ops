@@ -4,6 +4,9 @@ talosVersion: v1.4.6
 kubernetesVersion: v1.27.4
 endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 
+cniConfig:
+  name: none
+
 nodes:
   - hostname: helios
     disableSearchDomain: true
@@ -20,15 +23,13 @@ nodes:
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    inlinePatch:
-      machine:
-        udev:
-          rules:
-            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
-        install:
-          extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20230310
-            - image: ghcr.io/siderolabs/intel-ucode:20230512
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230512
 
   - hostname: eos
     disableSearchDomain: true
@@ -81,11 +82,7 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-    inlinePatch:
-      machine:
-        udev:
-          rules:
-            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
   - hostname: zeus
     disableSearchDomain: true
     ipAddress: 192.168.20.25
@@ -105,11 +102,7 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-    inlinePatch:
-      machine:
-        udev:
-          rules:
-            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
   - hostname: iris
     disableSearchDomain: true
     ipAddress: 192.168.20.26
@@ -129,11 +122,6 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-    inlinePatch:
-      machine:
-        udev:
-          rules:
-            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
 
 controlPlane:
   patches:
@@ -143,13 +131,8 @@ controlPlane:
         proxy:
           disabled: true
         extraManifests:
-            # Install the kubelet cert-approver manifests
-            - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
-        network:
-          cni:
-            name: custom
-            urls:
-              - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
 
     - |-
       - op: remove
