@@ -77,9 +77,11 @@ upgrade_k8s_on_node() {
   IP=$2
 
   echo "----------------------------------------------------------------"
-  echo -e "${BLUE}Upgrading Kubernetes on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
+  echo -e "${BLUE}Upgrading Kubernetes on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. Will also sleep for 60 seconds between nodes."
 
-  talosctl apply-config -m reboot --wait -n ${IP} -f clusterconfig/metal-${NODENAME}.yaml
+  talosctl apply-config -n ${IP} -f clusterconfig/metal-${NODENAME}.yaml
+
+  sleep 60
 
   # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
   if [[ $NODENAME == "helios" ]]; then
