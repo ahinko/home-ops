@@ -60,9 +60,3 @@ tasks:
     silent: true
     cmds:
       - ./infrastructure/talos/upgrade-k8s.sh
-
-  restore-backup-all:
-    desc: Restore backups for all services, usefull when re-provisioning
-    silent: true
-    cmds:
-      - ./infrastructure/talos/restore-backups.sh

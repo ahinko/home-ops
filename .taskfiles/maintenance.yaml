@@ -81,3 +81,47 @@ tasks:
       - flux resume hr -n media radarr
       - flux resume hr -n media sonarr-requests
       - flux resume hr -n media sonarr-v4
+
+  db:pause:
+    desc: Pause all Helm releases depending on Postgres
+    silent: true
+    cmds:
+      - flux suspend hr -n selfhosted immich-web
+      - flux suspend hr -n selfhosted immich-machine-learning
+      - flux suspend hr -n selfhosted immich-microservices
+      - flux suspend hr -n selfhosted immich-server
+      - flux suspend hr -n selfhosted nextcloud
+      - flux suspend hr -n selfhosted linkding
+      - flux suspend hr -n selfhosted miniflux
+      - flux suspend hr -n home-automation home-assistant
+
+      - kubectl scale -n selfhosted deploy/immich-web --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 0
+      - kubectl scale -n selfhosted deploy/immich-server --replicas 0
+      - kubectl scale -n selfhosted deploy/nextcloud --replicas 0
+      - kubectl scale -n selfhosted deploy/linkding --replicas 0
+      - kubectl scale -n selfhosted deploy/miniflux --replicas 0
+      - kubectl scale -n home-automation deploy/home-assistant --replicas 0
+
+  db:resume:
+    desc: Resume all Helm releases depending on Postgres
+    silent: true
+    cmds:
+      - kubectl scale -n selfhosted deploy/immich-web --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 3
+      - kubectl scale -n selfhosted deploy/immich-server --replicas 2
+      - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
+      - kubectl scale -n selfhosted deploy/linkding --replicas 1
+      - kubectl scale -n selfhosted deploy/miniflux --replicas 2
+      - kubectl scale -n home-automation deploy/home-assistant --replicas 1
+
+      - flux resume hr -n selfhosted immich-web
+      - flux resume hr -n selfhosted immich-machine-learning
+      - flux resume hr -n selfhosted immich-microservices
+      - flux resume hr -n selfhosted immich-server
+      - flux resume hr -n selfhosted nextcloud
+      - flux resume hr -n selfhosted linkding
+      - flux resume hr -n selfhosted miniflux
+      - flux resume hr -n home-automation home-assistant

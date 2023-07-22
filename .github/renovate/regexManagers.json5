@@ -14,16 +14,12 @@
     {
       description: 'Process Kubernetes versions',
       fileMatch: [
-        'infrastructure/ansible/roles/k8s/defaults/k8s.yaml',
-        'infrastructure/talos/upgrade-k8s.sh',
-        'infrastructure/talos/talconfig.yaml',
-        '.github/scripts/helmReleaseDiff.mjs'
+        'infrastructure/ansible/roles/k8s/defaults/main.yaml',
+        'infrastructure/talos/talconfig.yaml'
       ],
       matchStrings: [
         'kubernetes_version: (?<currentValue>.*)',
         'kubernetesVersion: (?<currentValue>.*)',
-        '--to (?<currentValue>.*)',
-        '--kube-version (?<currentValue>.*) --release'
       ],
       depNameTemplate: 'ghcr.io/siderolabs/kubelet',
       datasourceTemplate: 'docker'
@@ -31,7 +27,7 @@
     {
       description: 'Process Talos versions',
       fileMatch: [
-          'infrastructure/talos/upgrade-talos.sh',
+          'infrastructure/talos/common.sh',
           'infrastructure/talos/talconfig.yaml',
       ],
       matchStrings: [
