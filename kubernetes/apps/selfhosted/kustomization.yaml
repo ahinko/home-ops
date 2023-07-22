@@ -9,4 +9,3 @@ resources:
   - ./minio/install.yaml
   - ./nextcloud/install.yaml
   - ./radicale/install.yaml
-  - ./windmill/install.yaml
