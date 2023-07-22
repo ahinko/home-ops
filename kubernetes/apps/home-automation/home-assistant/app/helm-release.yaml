@@ -31,6 +31,11 @@ spec:
       tag: 2023.7.3
     env:
       TZ: "${TIMEZONE}"
+      SECRET_RECORDER_DB_URL:
+        valueFrom:
+          secretKeyRef:
+            name: database-homeassistant-user
+            key: POSTGRES_URL
 
     podAnnotations:
       k8s.v1.cni.cncf.io/networks: |
