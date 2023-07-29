@@ -98,7 +98,7 @@ upgrade_talos_on_node() {
   echo "----------------------------------------------------------------"
   echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
 
-  talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.4.6
+  talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.4.7
 
   # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
   if [[ $NODENAME == "helios" ]]; then
