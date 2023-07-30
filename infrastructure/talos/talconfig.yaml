@@ -130,6 +130,10 @@ controlPlane:
         allowSchedulingOnMasters: false
         proxy:
           disabled: true
+        discovery:
+          registries:
+            service:
+              disabled: true
         extraManifests:
           - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
@@ -153,6 +157,8 @@ controlPlane:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
           nodeIP:
             validSubnets:
                 - 192.168.20.0/24
@@ -184,6 +190,8 @@ worker:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
           nodeIP:
             validSubnets:
                 - 192.168.20.0/24
