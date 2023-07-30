@@ -30,6 +30,14 @@ spec:
       repository: ghcr.io/zwave-js/zwave-js-ui
       tag: 8.21.2
 
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name":"multus-iot",
+          "namespace": "networking",
+          "ips": ["192.168.71.205/24"]
+        }]
+
     service:
       main:
         ports:
@@ -83,3 +91,15 @@ spec:
       readiness: *probes
       startup:
         enabled: false
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - "iris"
+                    - "poseidon"
+                    - "zeus"
