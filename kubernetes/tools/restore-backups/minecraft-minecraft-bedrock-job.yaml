@@ -31,7 +31,7 @@ spec:
                   name: backups-secrets
                   key: MINIO_HOST
             - name: MINIO_BUCKET
-              value: "backup"
+              value: "backups"
             - name: BACKUP_NAME
               value: "minecraft"
           volumeMounts:
