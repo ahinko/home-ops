@@ -47,16 +47,5 @@
       ],
       datasourceTemplate: 'github-releases'
     },
-    {
-      description: 'CNI integration',
-      fileMatch: [
-          'infrastructure/talos/integrations/cni/kustomization.yaml',
-          'infrastructure/talos/integrations/kubelet-csr-approver/kustomization.yaml',
-      ],
-      matchStrings: [
-        'version: (?<currentValue>.*)\n    releaseName: (?<depName>.*)\n',
-      ],
-      datasourceTemplate: 'flux',
-    },
   ],
 }

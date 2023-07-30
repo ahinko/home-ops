@@ -48,6 +48,8 @@ tasks:
     cmds:
       - kustomize build --enable-helm --load-restrictor LoadRestrictionsNone infrastructure/talos/integrations/kubelet-csr-approver/ --output infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
       - kustomize build --enable-helm --load-restrictor LoadRestrictionsNone infrastructure/talos/integrations/cni/ --output infrastructure/talos/integrations/cni/cilium.yaml
+      - rm -rf infrastructure/talos/integrations/kubelet-csr-approver/charts
+      - rm -rf infrastructure/talos/integrations/cni/charts
     silent: true
 
   provision:
