@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATASETS=( minio/backups nextcloud shares volumes backup immich )
+DATASETS=( minio/backups nextcloud shares volumes backup immich/library )
 TARGET_PATH=/Volumes/Backup
 
 # Loop through datasets
