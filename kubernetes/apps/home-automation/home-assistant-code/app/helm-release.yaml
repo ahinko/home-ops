@@ -29,8 +29,6 @@ spec:
     image:
       repository: ghcr.io/coder/code-server
       tag: 4.16.0
-    env:
-      TZ: "${TIMEZONE}"
     args:
       - --auth
       - "none"

@@ -34,7 +34,6 @@ spec:
       repository: ghcr.io/onedr0p/lidarr
       tag: 1.2.6.3313
     env:
-      TZ: "${TIMEZONE}"
       LIDARR__INSTANCE_NAME: Lidarr
       LIDARR__PORT: &port 8686
       LIDARR__LOG_LEVEL: info

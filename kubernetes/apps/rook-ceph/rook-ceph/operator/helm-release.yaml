@@ -40,9 +40,6 @@ spec:
 
     pspEnable: false
 
-    env:
-      TZ: "${TIMEZONE}"
-
     monitoring:
       enabled: true
 

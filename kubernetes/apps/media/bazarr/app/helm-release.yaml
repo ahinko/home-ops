@@ -34,9 +34,6 @@ spec:
       repository: ghcr.io/onedr0p/bazarr
       tag: 1.2.4
 
-    env:
-      TZ: "${TIMEZONE}"
-
     service:
       main:
         ports:

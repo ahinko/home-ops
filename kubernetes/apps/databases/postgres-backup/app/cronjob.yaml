@@ -5,7 +5,6 @@ metadata:
   name: postgres-backup
   namespace: databases
 spec:
-  timeZone: "${TIMEZONE}"
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
@@ -20,9 +19,6 @@ spec:
               imagePullPolicy: IfNotPresent
               args:
                 - /run.sh
-              env:
-                - name: TZ
-                  value: "${TIMEZONE}"
               envFrom:
                 - secretRef:
                     name: postgres-backup-secrets

@@ -28,8 +28,6 @@ spec:
     keepHistory: false
   # Values link: https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/values.yaml
   values:
-    env:
-      TZ: "${TIMEZONE}"
     kind: Deployment
 
     podAnnotations:

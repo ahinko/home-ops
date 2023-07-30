@@ -29,8 +29,6 @@ spec:
     image:
       repository: rhasspy/wyoming-piper
       tag: latest
-    env:
-      TZ: "${TIMEZONE}"
 
     args:
       - --voice

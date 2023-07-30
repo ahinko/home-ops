@@ -34,7 +34,6 @@ spec:
       repository: ghcr.io/onedr0p/radarr
       tag: 4.6.4.7568
     env:
-      TZ: "${TIMEZONE}"
       PUSHOVER_DEBUG: "false"
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
       RADARR__INSTANCE_NAME: Radarr

@@ -40,7 +40,6 @@ spec:
             port: 8080
 
     env:
-      TZ: "${TIMEZONE}"
       ZIGBEE2MQTT_DATA: /data
 
     ingress:

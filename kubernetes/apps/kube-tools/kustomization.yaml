@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
   - ./descheduler/install.yaml
   - ./intel-device-plugins/install.yaml
+  - ./k8tz/install.yaml
   - ./kyverno/install.yaml
   - ./node-feature-discovery/install.yaml
   - ./node-problem-detector/install.yaml

@@ -6,3 +6,4 @@ metadata:
   labels:
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/enforce-version: latest
+    k8tz.io/controller-namespace: "true"

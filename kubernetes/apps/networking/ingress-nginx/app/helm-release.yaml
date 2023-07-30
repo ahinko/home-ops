@@ -36,9 +36,6 @@ spec:
 
     controller:
       replicaCount: 2
-      extraEnvs:
-        - name: TZ
-          value: ${TIMEZONE}
       service:
         type: LoadBalancer
         externalTrafficPolicy: Cluster

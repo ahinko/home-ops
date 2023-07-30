@@ -33,9 +33,6 @@ spec:
   values:
     installCRDs: true
 
-    env:
-      TZ: "${TIMEZONE}"
-
     podAnnotations:
       secret.reloader.stakater.com/reload: "cert-manager-cloudflare-api-key"
 

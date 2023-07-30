@@ -38,10 +38,6 @@ spec:
     pdb:
       create: false
 
-    env:
-      - name: TZ
-        value: "${TIMEZONE}"
-
     resources:
       limits:
         memory: 512Mi

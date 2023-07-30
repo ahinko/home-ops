@@ -5,7 +5,6 @@ metadata:
   name: backup-radarr-config
   namespace: media
 spec:
-  timeZone: "${TIMEZONE}"
   schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
@@ -28,8 +27,6 @@ spec:
                 - secretRef:
                     name: backups-secrets
               env:
-                - name: TZ
-                  value: "${TIMEZONE}"
                 - name: BACKUP_NAME
                   value: &appname radarr
                 - name: DELETE_OLDER_THAN

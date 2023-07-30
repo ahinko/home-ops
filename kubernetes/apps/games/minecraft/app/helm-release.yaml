@@ -33,9 +33,6 @@ spec:
     keepHistory: false
   # Values link: https://github.com/itzg/minecraft-server-charts/blob/master/charts/minecraft-bedrock/values.yaml
   values:
-    env:
-      TZ: "${TIMEZONE}"
-
     # ref: https://hub.docker.com/r/itzg/minecraft-server/
     image:
       repository: itzg/minecraft-bedrock-server

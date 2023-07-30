@@ -34,9 +34,6 @@ spec:
       repository: louislam/uptime-kuma
       tag: "1.22.1"
 
-    env:
-      TZ: "${TIMEZONE}"
-
     service:
       main:
         ports:

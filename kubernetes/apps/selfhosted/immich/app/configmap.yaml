@@ -14,4 +14,3 @@ data:
   IMMICH_WEB_URL: http://immich-web.selfhosted.svc.cluster.local:3000
   IMMICH_SERVER_URL: http://immich-server.selfhosted.svc.cluster.local:3001
   IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.selfhosted.svc.cluster.local:3003
-  TZ: Europe/Stockholm

@@ -30,7 +30,6 @@ spec:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2023.7.3
     env:
-      TZ: "${TIMEZONE}"
       SECRET_RECORDER_DB_URL:
         valueFrom:
           secretKeyRef:

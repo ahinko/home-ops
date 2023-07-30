@@ -34,9 +34,6 @@ spec:
       repository: ghcr.io/recyclarr/recyclarr
       tag: 5.1.1
 
-    env:
-      TZ: Europe/Stockholm
-
     envFrom:
       - secretRef:
           name: sonarr-v4
