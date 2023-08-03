@@ -49,6 +49,20 @@ resource "kubernetes_secret" "minio_secret_backups_home-automation" {
   }
 }
 
+resource "kubernetes_secret" "minio_secret_backups_downloads" {
+  metadata {
+    name      = "backups-secrets"
+    namespace = "downloads"
+  }
+
+  data = {
+    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
+    "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
+    "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
+  }
+}
+
 resource "kubernetes_secret" "minio_secret_backups_media" {
   metadata {
     name      = "backups-secrets"
