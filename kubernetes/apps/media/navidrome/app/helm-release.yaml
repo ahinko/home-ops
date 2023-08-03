@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: navidrome
+  namespace: media
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 60m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  interval: 60m
+  values:
+    image:
+      repository: ghcr.io/navidrome/navidrome
+      tag: 0.49.3
+
+    env:
+      ND_DATAFOLDER: /data
+      ND_ENABLEDOWNLOADS: "true"
+      ND_ENABLEEXTERNALSERVICES: "false"
+      ND_ENABLESHARING: "false"
+      ND_ENABLESTARRATING: "false"
+      ND_LOGLEVEL: info
+      ND_MUSICFOLDER: /media/music/cd
+      ND_PORT: &port 4533
+      ND_SCANSCHEDULE: 30m
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+        hosts:
+          - host: &host navidrome.${SECRET_DOMAIN}
+            paths:
+              - path: /
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: navidrome-config
+      media:
+        enabled: true
+        mountPath: "/media"
+        existingClaim: media-nfs
+
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 65539
+
+    resources:
+      requests:
+        cpu: 5m
+        memory: 799M
+      limits:
+        memory: 799M
