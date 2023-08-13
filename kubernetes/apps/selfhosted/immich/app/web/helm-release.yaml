@@ -93,6 +93,7 @@ spec:
         tls:
           - hosts:
               - *host
+
     persistence:
       library:
         enabled: true

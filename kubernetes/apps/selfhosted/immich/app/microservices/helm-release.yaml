@@ -69,11 +69,28 @@ spec:
     service:
       main:
         enabled: false
+
     persistence:
       library:
         enabled: true
         existingClaim: immich-nfs
         mountPath: /usr/src/app/upload
+      geocoding-dump:
+        enabled: true
+        type: emptyDir
+        mountPath: /usr/src/app/.reverse-geocoding-dump
+      geoname-dump:
+        enabled: true
+        type: emptyDir
+        mountPath: /usr/src/app/node_modules/local-reverse-geocoder/geonames_dump
+      transformers-cache:
+        enabled: true
+        type: emptyDir
+        mountPath: /usr/src/app/.transformers_cache
+
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
+
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
@@ -81,7 +98,12 @@ spec:
         labelSelector:
           matchLabels:
             app.kubernetes.io/name: *app
+
     resources:
       requests:
+        gpu.intel.com/i915: 1
         cpu: 100m
-        memory: 250Mi
+        memory: 1000Mi
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 6000Mi

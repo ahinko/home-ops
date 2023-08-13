@@ -70,6 +70,7 @@ spec:
         ports:
           http:
             port: 3003
+
     persistence:
       library:
         enabled: true
@@ -78,6 +79,14 @@ spec:
       cache:
         enabled: true
         type: emptyDir
+      geocoding-dump:
+        enabled: true
+        type: emptyDir
+        mountPath: /usr/src/app/.reverse-geocoding-dump
+      transformers-cache:
+        enabled: true
+        type: emptyDir
+        mountPath: /usr/src/app/.transformers_cache
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
