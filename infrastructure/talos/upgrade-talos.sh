@@ -4,6 +4,7 @@
 echo -e "${BLUE}This will upgrade Talos on each node in the cluster.${NC}"
 
 check_rook_health
+check_postgres_health
 
 get_nodes
 

@@ -39,7 +39,7 @@ check_rook_health() {
     ROOK_CEPH_TOOLS_POD=$(kubectl get pod -l app=rook-ceph-tools -n rook-ceph -o jsonpath="{.items[0].metadata.name}")
 
     # make sure rook ceph is healthy
-    HEALTH_CHECK=$(kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -- ceph status | grep "health:")
+    HEALTH_CHECK=$(kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -c rook-ceph-tools -- ceph status | grep "health:")
 
     if [[ $HEALTH_CHECK == *"HEALTH_OK"* ]]; then
       HEALTH=true
@@ -49,11 +49,30 @@ check_rook_health() {
 
       # Archive any crash messages since those will be holding up everything since the health will be false until those
       # messages has been archived
-      kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -- ceph crash archive-all
+      kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -c rook-ceph-tools -- ceph crash archive-all
     fi
   done
 
   echo -e "${GREEN}Rook/Ceph is healthy, let's move on${NC}"
+}
+
+check_postgres_health() {
+
+  HEALTH=false
+
+  while [ "$HEALTH" == false ]
+  do
+    echo "Checking if Postgres cluster is healthy."
+
+    if kubectl get clusters.postgresql.cnpg.io -n databases postgres | grep -q 'Cluster in healthy state'; then
+      HEALTH=true
+    else
+      echo -e "${RED}Postgres cluster not healthy, waiting 60s before checking again.${NC}"
+      sleep 60
+    fi
+  done
+
+  echo -e "${GREEN}Postgres cluster is healthy, let's move on${NC}"
 }
 
 declare -A controlplanes
@@ -89,6 +108,7 @@ upgrade_k8s_on_node() {
   fi
 
   check_rook_health
+  check_postgres_health
 }
 
 upgrade_talos_on_node() {
@@ -105,5 +125,9 @@ upgrade_talos_on_node() {
     kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
   fi
 
+  # Give the node some time to recover and start up pods
+  sleep 60
+
   check_rook_health
+  check_postgres_health
 }
