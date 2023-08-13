@@ -32,7 +32,7 @@ spec:
 
     args:
       - --voice
-      - sv-se-nst-medium
+      - sv_SE-nst-medium
 
     podSecurityContext:
       runAsUser: 568

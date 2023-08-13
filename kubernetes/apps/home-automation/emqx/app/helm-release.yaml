@@ -30,8 +30,6 @@ spec:
   values:
     skipCRDs: false
 
-    replicaCount: 1
-
     resources:
       limits:
         memory: 256Mi

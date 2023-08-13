@@ -17,5 +17,5 @@ spec:
   dependsOn:
     - name: apps-rook-ceph-cluster
     - name: apps-emqx-cluster
-    #- name: apps-intel-device-plugins-gpu
-    #- name: apps-node-feature-discovery
+    - name: apps-intel-device-plugins-gpu
+    - name: apps-node-feature-discovery
