@@ -1,0 +1,116 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 60m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  interval: 60m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/onedr0p/jellyfin
+      tag: 10.8.10@sha256:1ef614db6a4c589777eb48bc9004d573b9c09f0d6d573a509041c6060f3a956b
+
+    enableServiceLinks: false
+
+    env:
+      DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+      JELLYFIN_FFmpeg__probesize: 50000000
+      JELLYFIN_FFmpeg__analyzeduration: 500000000
+      JELLYFIN_PublishedServerUrl: &loadBalancerIP ${LB_JELLYFIN}
+
+    service:
+      main:
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+        annotations:
+          io.cilium/lb-ipam-ips: *loadBalancerIP
+        ports:
+          http:
+            port: &port 8096
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        hosts:
+          - host: &host jellyfin.${SECRET_DOMAIN}
+            paths:
+              - path: /
+        tls:
+          - hosts:
+              - *host
+
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /health
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
+
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin-config
+      media:
+        enabled: true
+        mountPath: "/data"
+        existingClaim: media-nfs
+      transcode:
+        enabled: true
+        type: emptyDir
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 44
+        - 109
+        - 65539
+
+    resources:
+      requests:
+        cpu: 100m
+        gpu.intel.com/i915: 1
+        memory: 1000M
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 9248M
