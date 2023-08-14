@@ -41,7 +41,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/ahinko/github-actions-runner:2.307.1@sha256:68e7541c8bfdb2a604c43ce01cdf5d22247c5aa055e5624fdc6eefbd1baf2381
+            image: ghcr.io/ahinko/github-actions-runner:2.308.0@sha256:325c1799cb0b98314bd0e644d50966bf21f61d017b6ff4348f8e96df851fe6fa
 
   valuesFrom:
     - kind: Secret
