@@ -63,7 +63,7 @@ tasks:
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
       - kubectl scale -n selfhosted deploy/immich-server --replicas 2
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 2
-      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 3
       - kubectl scale -n selfhosted deploy/immich-web --replicas 2
       - kubectl scale -n downloads deploy/sabnzbd --replicas 1
       - kubectl scale -n downloads deploy/lidarr --replicas 1
@@ -110,7 +110,7 @@ tasks:
     cmds:
       - kubectl scale -n selfhosted deploy/immich-web --replicas 2
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 2
-      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 3
       - kubectl scale -n selfhosted deploy/immich-server --replicas 2
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
       - kubectl scale -n selfhosted deploy/linkding --replicas 1
