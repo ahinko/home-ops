@@ -102,8 +102,8 @@ upgrade_k8s_on_node() {
 
   sleep 60
 
-  # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
-  if [[ $NODENAME == "helios" ]]; then
+  # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
+  if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
     kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
   fi
 
@@ -120,8 +120,8 @@ upgrade_talos_on_node() {
 
   talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.4.8
 
-  # HACK: helios will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
-  if [[ $NODENAME == "helios" ]]; then
+  # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
+  if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
     kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
   fi
 

@@ -15,9 +15,6 @@ spec:
       backoffLimit: 1
       ttlSecondsAfterFinished: 300
       template:
-        metadata:
-          annotations:
-            botkube.io/disable: "true"
         spec:
           restartPolicy: Never
           containers:

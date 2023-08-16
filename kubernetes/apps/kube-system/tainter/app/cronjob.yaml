@@ -15,24 +15,28 @@ spec:
       backoffLimit: 1
       ttlSecondsAfterFinished: 300
       template:
-        metadata:
-          annotations:
-            botkube.io/disable: "true"
         spec:
           restartPolicy: Never
           containers:
-            # Tainter is a simple job that removes the NoSchedule taint on one of my control planes since the hardware
-            # on that control plane is a lot more powerfull than the other two control planes. So I want to be able to
-            # use that extra horse power and run more workloads on the control plane
+            # Tainter is a simple job that removes the NoSchedule taint on two of my control planes since the hardware
+            # on those control plane is a lot more powerfull than the thrid  control planes. So I want to be able to
+            # use that extra horse power and run more workloads on the control planes
             - name: tainter
               image: ghcr.io/ahinko/kubernetes-kubectl:1.27.4
               command:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  CURRENT=$(kubectl describe node helios | grep Taints)
+                  CURRENT_ZEUS=$(kubectl describe node zeus | grep Taints)
 
-                  if echo "$CURRENT" | grep -q 'NoSchedule'; then
-                    echo "Lets remove NoSchedule taint!"
-                    /usr/local/bin/kubectl taint node helios node-role.kubernetes.io/control-plane:NoSchedule-
+                  if echo "$CURRENT_ZEUS" | grep -q 'NoSchedule'; then
+                    echo "Lets remove NoSchedule taint for Zeus!"
+                    /usr/local/bin/kubectl taint node zeus node-role.kubernetes.io/control-plane:NoSchedule-
+                  fi
+
+                  CURRENT_POSEIDON=$(kubectl describe node poseidon | grep Taints)
+
+                  if echo "$CURRENT_POSEIDON" | grep -q 'NoSchedule'; then
+                    echo "Lets remove NoSchedule taint for Poseidon!"
+                    /usr/local/bin/kubectl taint node poseidon node-role.kubernetes.io/control-plane:NoSchedule-
                   fi

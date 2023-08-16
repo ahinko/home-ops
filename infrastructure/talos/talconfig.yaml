@@ -8,45 +8,6 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: helios
-    disableSearchDomain: true
-    ipAddress: 192.168.20.21
-    controlPlane: true
-    installDisk: /dev/nvme0n1
-    nameservers:
-      - 192.168.20.1
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 192.168.20.21/24
-        mtu: 0
-        dhcp: true
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/i915-ucode:20230310
-              - image: ghcr.io/siderolabs/intel-ucode:20230512
-
-  - hostname: eos
-    disableSearchDomain: true
-    ipAddress: 192.168.20.22
-    controlPlane: true
-    installDisk: /dev/sda
-    nameservers:
-      - 192.168.20.1
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 192.168.20.22/24
-        mtu: 0
-        dhcp: true
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-
   - hostname: hades
     disableSearchDomain: true
     ipAddress: 192.168.20.23
@@ -66,7 +27,7 @@ nodes:
   - hostname: poseidon
     disableSearchDomain: true
     ipAddress: 192.168.20.24
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/nvme0n1
     nameservers:
       - 192.168.20.1
@@ -82,11 +43,20 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230512
 
   - hostname: zeus
     disableSearchDomain: true
     ipAddress: 192.168.20.25
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/nvme0n1
     nameservers:
       - 192.168.20.1
@@ -94,6 +64,35 @@ nodes:
       - interface: eth0
         addresses:
           - 192.168.20.25/24
+        mtu: 0
+        dhcp: true
+        vlans:
+          - vlanId: 71
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/i915-ucode:20230310
+              - image: ghcr.io/siderolabs/intel-ucode:20230512
+
+  - hostname: helios
+    disableSearchDomain: true
+    ipAddress: 192.168.20.21
+    controlPlane: false
+    installDisk: /dev/nvme0n1
+    nameservers:
+      - 192.168.20.1
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.20.21/24
         mtu: 0
         dhcp: true
         vlans:
