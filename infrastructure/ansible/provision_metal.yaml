@@ -5,7 +5,7 @@
     - kronos
   remote_user: peter
   become: true
-  become_method: sudo
+  become_method: ansible.builtin.sudo
   roles:
     - role: apt
     - role: hostname
@@ -20,7 +20,7 @@
     - atlas
   remote_user: peter
   become: true
-  become_method: sudo
+  become_method: ansible.builtin.sudo
   roles:
     - role: docker
     - role: homelab
