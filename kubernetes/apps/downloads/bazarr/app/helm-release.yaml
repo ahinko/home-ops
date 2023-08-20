@@ -82,13 +82,12 @@ spec:
 
     sidecars:
       subcleaner:
-        image: registry.k8s.io/git-sync/git-sync:v3.6.9
+        image: registry.k8s.io/git-sync/git-sync:v4.0.0
         imagePullPolicy: IfNotPresent
         args:
           - --repo=https://github.com/KBlixt/subcleaner.git
-          - --branch=master
-          - --depth=1
-          - --wait=21600 # 6 hours
+          - --ref=master
+          - --period=24h
           - --root=/add-ons/subcleaner
         volumeMounts:
           - { name: add-ons, mountPath: /add-ons }
