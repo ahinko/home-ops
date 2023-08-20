@@ -1,5 +1,5 @@
 ---
-apiVersion: apps.emqx.io/v2alpha1
+apiVersion: apps.emqx.io/v2beta1
 kind: EMQX
 metadata:
   name: emqx
@@ -7,62 +7,33 @@ metadata:
 spec:
   image: emqx/emqx:5.1.5
 
-  bootstrapConfig: |
-    authorization {
-      sources = [
-        {
-          type = built_in_database
-          enable = true
-        }
-      ]
+  config:
+    data: |
+      authorization {
+        sources = [
+          {
+            type = built_in_database
+            enable = true
+          }
+        ]
 
-      no_match: "deny"
-    }
-    dashboard {
-      listeners.http {
-          bind: 18083
+        no_match: "deny"
       }
-      default_username: "admin"
-      default_password: "${SECRET_EMQX_ADMIN_PASSWORD}"
-    }
+      dashboard {
+        listeners.http {
+            bind: 18083
+        }
+        default_username: "admin"
+        default_password: "${SECRET_EMQX_ADMIN_PASSWORD}"
+      }
 
   coreTemplate:
-    metadata:
-      name: emqx-core
-      labels:
-        apps.emqx.io/instance: emqx
-        apps.emqx.io/db-role: core
     spec:
       replicas: 3
-      volumeClaimTemplates:
-        storageClassName: rook-cephfs
-        resources:
-          requests:
-            storage: 1Gi
-        accessModes:
-          - ReadWriteMany
 
-      podSecurityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: Always
-        supplementalGroups:
-          - 100
-
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values:
-                        - emqx
-                topologyKey: kubernetes.io/hostname
-
-  replicantTemplate:
+  listenersServiceTemplate:
+    metadata:
+      annotations:
+        io.cilium/lb-ipam-ips: "${LB_EMQX}"
     spec:
-      replicas: 0
+      type: LoadBalancer
