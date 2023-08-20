@@ -23,6 +23,12 @@ nodes:
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
+    patches:
+      - |-
+        machine:
+          install:
+            extraKernelArgs:
+              - talos.board=rpi_generic
 
   - hostname: poseidon
     disableSearchDomain: true
