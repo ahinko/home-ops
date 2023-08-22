@@ -5,9 +5,7 @@ resources:
   - ./namespace.yaml
   - ./grafana/install.yaml
   - ./kube-prometheus-stack/install.yaml
-  - ./loki/install.yaml
   - ./smartctl-exporter/install.yaml
   - ./speedtest-exporter/install.yaml
   - ./thanos/install.yaml
   - ./uptime-kuma/install.yaml
-  - ./vector/install.yaml
