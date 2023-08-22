@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2023.8.1
+      tag: 2023.8.2
 
     podAnnotations:
       k8s.v1.cni.cncf.io/networks: |
