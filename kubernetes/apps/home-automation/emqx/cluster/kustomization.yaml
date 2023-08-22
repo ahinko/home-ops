@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./emqx-cluster.yaml
   - ./ingress.yaml
+  - ./loadbalancer.yaml
