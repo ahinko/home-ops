@@ -1,5 +1,4 @@
 ---
-
 - name: Disable swap and filesystem check and make read only
   ansible.builtin.replace:
     dest: /boot/cmdline.txt
@@ -94,11 +93,11 @@
     state: link
     force: true
   with_items:
-    - { dest: "/var/lib/dhcp", src: "/tmp/var/lib/dhcp" }
-    - { dest: "/var/lib/dhcpcd5", src: "/tmp/var/lib/dhcpcd5" }
-    - { dest: "/var/spool", src: "/tmp/var/spool" }
-    - { dest: "/etc/resolv.conf", src: "/tmp/dhcpcd.resolv.conf" }
-    - { dest: "/var/lib/systemd/random-seed", src: "/tmp/random-seed"}
+    - {dest: "/var/lib/dhcp", src: "/tmp/var/lib/dhcp"}
+    - {dest: "/var/lib/dhcpcd5", src: "/tmp/var/lib/dhcpcd5"}
+    - {dest: "/var/spool", src: "/tmp/var/spool"}
+    - {dest: "/etc/resolv.conf", src: "/tmp/dhcpcd.resolv.conf"}
+    - {dest: "/var/lib/systemd/random-seed", src: "/tmp/random-seed"}
 
 - name: Update systemd-random-seed
   community.general.ini_file:
@@ -107,14 +106,14 @@
     option: ExecStartPre
     values:
       - '/bin/echo "" >/tmp/random-seed'
-    mode: '0600'
+    mode: "0600"
     state: present
 
 - name: Update bash.bashrc
   ansible.builtin.blockinfile:
     path: /etc/bash.bashrc
     create: true
-    mode: 0644
+    mode: "0644"
     block: |
       set_bash_prompt() {
         fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")
@@ -128,7 +127,7 @@
   ansible.builtin.blockinfile:
     path: /etc/bash.bash_logout
     create: true
-    mode: 0644
+    mode: "0644"
     block: |
       sudo mount -o remount,ro /
       sudo mount -o remount,ro /boot

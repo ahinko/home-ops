@@ -3,7 +3,7 @@
   ansible.builtin.file:
     path: "{{ backup_path_arq }}"
     state: directory
-    mode: 0770
+    mode: "0770"
     owner: root
     group: backup
   when:
@@ -13,7 +13,7 @@
   ansible.builtin.file:
     path: "{{ backup_path_arq }}/{{ item.name }}"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ item.name }}"
     group: backup
   loop: "{{ users }}"
@@ -27,7 +27,7 @@
   ansible.builtin.file:
     path: "{{ backup_path_time_machine }}"
     state: directory
-    mode: 0770
+    mode: "0770"
     owner: root
     group: backup
   when:
@@ -37,7 +37,7 @@
   ansible.builtin.file:
     path: "{{ backup_path_time_machine }}/{{ item.name }}"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ item.name }}"
     group: backup
   loop: "{{ users }}"

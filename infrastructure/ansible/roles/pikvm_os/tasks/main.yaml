@@ -36,12 +36,12 @@
       ansible.builtin.template:
         src: override.yaml.j2
         dest: "/etc/kvmd/override.yaml"
-        mode: 0644
+        mode: "0644"
     - name: Load custom EDID file
       ansible.builtin.template:
         src: tc358743-edid.hex.j2
         dest: "/etc/kvmd/tc358743-edid.hex"
-        mode: 0644
+        mode: "0644"
   rescue:
     - name: Mount read-only
       ansible.builtin.command: /usr/local/bin/ro

@@ -1,5 +1,4 @@
 ---
-
 - name: Install ser2net
   ansible.builtin.apt:
     name: ser2net
@@ -11,7 +10,7 @@
     dest: /etc/ser2net.yaml
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
 
 - name: Create log dir
   ansible.builtin.file:
@@ -19,7 +18,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: Start ser2net
   ansible.builtin.service:

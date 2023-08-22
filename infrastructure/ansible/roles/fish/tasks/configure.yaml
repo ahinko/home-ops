@@ -15,7 +15,7 @@
   ansible.builtin.file:
     path: "{{ item.home }}/.config/fish/"
     state: directory
-    mode: 0744
+    mode: "0744"
   loop: "{{ fish_users }}"
   when:
     - fish_users is defined
@@ -28,7 +28,7 @@
   ansible.builtin.template:
     src: starship.toml.j2
     dest: "{{ item.home }}/.config/starship.toml"
-    mode: 0644
+    mode: "0644"
     owner: "{{ item.name }}"
     group: "{{ item.name }}"
   loop: "{{ fish_users }}"
