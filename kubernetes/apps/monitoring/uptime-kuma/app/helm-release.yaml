@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: louislam/uptime-kuma
-      tag: "1.23.0"
+      tag: "1.23.1"
 
     service:
       main:
