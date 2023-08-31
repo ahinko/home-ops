@@ -15,7 +15,7 @@ spec:
         spec:
           containers:
             - name: postgres-backup
-              image: ghcr.io/ahinko/simple-pg-backup:v1.2.2
+              image: ghcr.io/ahinko/simple-pg-backup:v1.2.3
               imagePullPolicy: IfNotPresent
               args:
                 - /run.sh
