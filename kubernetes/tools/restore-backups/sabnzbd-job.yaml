@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-sabnzbd
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.43
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.44
           args:
             - /run.sh
           env:
