@@ -1,0 +1,4 @@
+# Ansible generated file. Do NOT edit.
+
+# UPS: {{ device | regex_replace('^Bus (\d+) Device (\d+): ID [0-9a-f]+:[0-9a-f]+ (.*)$', '\\1:\\2 \\3') }}
+MONITOR ups{{ idx }}@localhost 1 {{ nut_user }} {{ nut_password }} master
