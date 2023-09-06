@@ -76,18 +76,18 @@ spec:
 
     compactor:
       enabled: true
-      podAnnotations:
-        secret.reloader.stakater.com/reload: thanos
-      extraFlags: ["--compact.concurrency", "4", "--delete-delay", "30m"]
+      extraFlags:
+        - "--compact.concurrency"
+        - "4"
       retentionResolutionRaw: 14d
       retentionResolution5m: 14d
-      retentionResolution1h: 14d
+      retentionResolution1h: 30d
       resources:
         requests:
           cpu: 15m
           memory: 204M
-        limits:
-          memory: 512M
+        # limits:
+        #   memory: 270M
       persistence:
         enabled: true
         storageClass: "rook-cephfs"

@@ -127,11 +127,11 @@ spec:
 
     resources:
       requests:
-        cpu: 500m
-        memory: 1500M
+        cpu: 1000m
+        memory: 1000M
         gpu.intel.com/i915: "1"
       limits:
-        memory: 3000M
+        memory: 2000M
         gpu.intel.com/i915: "1"
 
     nodeSelector:

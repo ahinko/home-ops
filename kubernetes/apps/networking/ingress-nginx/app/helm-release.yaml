@@ -97,10 +97,10 @@ spec:
         configmap.reloader.stakater.com/reload: "cloudflare-ip-ranges,ingress-nginx-controller"
       resources:
         requests:
-          memory: 400M
-          cpu: 30m
+          memory: 250M
+          cpu: 100m
         limits:
-          memory: 2000M
+          memory: 1000M
 
     defaultBackend:
       enabled: false
