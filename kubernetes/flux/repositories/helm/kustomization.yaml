@@ -8,7 +8,6 @@ resources:
   - ./bjw-s-charts.yaml
   - ./cilium-charts.yaml
   - ./cloudnative-pg-charts.yaml
-  - ./crowdsec-charts.yaml
   - ./deliveryhero-charts.yaml
   - ./emqx-charts.yaml
   - ./ext-postgres-operator-charts.yaml
