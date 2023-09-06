@@ -83,7 +83,7 @@ spec:
                 - key: kubernetes.io/hostname
                   operator: In
                   values:
-                    - "iris"
-                    - "poseidon"
-                    - "zeus"
                     - "helios"
+                    - "iris"
+                    - "zeus"
+                    - "poseidon"
