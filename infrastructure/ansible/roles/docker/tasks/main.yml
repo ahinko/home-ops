@@ -11,7 +11,7 @@
 
 - name: Add docker repo
   ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu hirsute stable
+    repo: deb https://download.docker.com/linux/ubuntu lunar stable
     state: present
     update_cache: true
 

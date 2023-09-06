@@ -1,5 +1,4 @@
 ---
-
 - name: Install required system packages
   ansible.builtin.apt:
     name:
@@ -13,12 +12,12 @@
 
 - name: Add Google GPG apt Key
   ansible.builtin.apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    url: https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
     state: present
 
 - name: Add K8s Repository
   ansible.builtin.apt_repository:
-    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    repo: deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /
     state: present
   ignore_errors: "{{ ansible_check_mode }}"
 

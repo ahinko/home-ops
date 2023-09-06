@@ -22,14 +22,10 @@ enable_unprivileged_ports = true
 disable_apparmor = true
 ```
 
-- Edit `/etc/systemd/system/kubelet.service`:
-
+- Edit `/var/lib/kubelet/kubeadm-flags.env`
 ```
-[Service]
-Restart=always
-ExecStart=/usr/bin/kubelet --kubeconfig=/etc/kubernetes/kubeconfig --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubeconfig --config=/etc/kubernetes/kubelet.yaml --cgroup-driver=systemd
-[Install]
-WantedBy=multi-user.target
+KUBELET_CONFIG_ARGS=--config=/etc/kubernetes/kubelet.yaml --cgroup-driver=systemd
+KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubeconfig --kubeconfig=/etc/kubernetes/kubeconfig
 ```
 
 - Create `/etc/kubernetes/kubelet.yaml` with the following content:
