@@ -5,7 +5,7 @@ metadata:
   name: emqx
   namespace: home-automation
 spec:
-  image: emqx/emqx:5.1.6
+  image: emqx/emqx:5.2.0
 
   config:
     data: |
