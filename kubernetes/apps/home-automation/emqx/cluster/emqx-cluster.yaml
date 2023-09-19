@@ -8,6 +8,7 @@ spec:
   image: emqx/emqx:5.2.0
 
   config:
+    mode: "Merge"
     data: |
       authorization {
         sources = [
