@@ -98,12 +98,13 @@ upgrade_k8s_on_node() {
   echo "----------------------------------------------------------------"
   echo -e "${BLUE}Upgrading Kubernetes on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. Will also sleep for 60 seconds between nodes."
 
-  talosctl apply-config -n ${IP} -f clusterconfig/metal-${NODENAME}.yaml
+  talosctl apply-config -n ${IP} -f $(dirname "$0")/clusterconfig/metal-${NODENAME}.yaml
 
   sleep 60
 
   # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
   if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
+    kubectl delete job -n kube-system tainter-temp
     kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
   fi
 
