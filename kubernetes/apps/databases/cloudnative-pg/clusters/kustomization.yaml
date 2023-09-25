@@ -2,8 +2,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./sops.secrets.yaml
-  - ./postgres-cluster.yaml
-  - ./scheduled-backup.yaml
-  - ./loadbalancer.yaml
+  - ./v16
   - ./prometheus-rule.yaml

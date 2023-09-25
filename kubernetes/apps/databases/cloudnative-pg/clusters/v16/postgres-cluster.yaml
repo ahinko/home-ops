@@ -1,0 +1,61 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres16
+  namespace: databases
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.0
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 50Gi
+    storageClass: rook-cephfs
+  superuserSecret:
+    name: postgres16-superuser
+  monitoring:
+    enablePodMonitor: true
+
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+
+  #bootstrap:
+  #  initdb:
+  #    import:
+  #      type: monolith
+  #      databases:
+  #        - "*"
+  #      roles:
+  #        - "*"
+  #      source:
+  #        externalCluster: postgres
+
+  #  externalClusters:
+  #    - name: postgres
+  #      connectionParameters:
+  #        # Use the correct IP or host name for the source database
+  #        host: postgres-ro.databases
+  #        user: postgres
+  #        dbname: postgres
+  #      password:
+  #        name: postgres-superuser
+  #        key: password
+
+  backup:
+    retentionPolicy: 14d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://postgres/
+      endpointURL: http://minio.selfhosted:9000
+      serverName: postgres16-001
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-backup-secrets
+          key: S3_ACCESS_KEY
+        secretAccessKey:
+          name: cnpg-backup-secrets
+          key: S3_SECRET_KEY

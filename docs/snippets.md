@@ -12,9 +12,26 @@ Look at these links on how to spin up a new cluster from backups:
 Manual backups:
 
 ```shell
-pg_dump -h 192.168.20.204 -U postgres -W -d nextcloud > ./nextcloud_backup.sql
-psql -h 192.168.20.204 -U postgres -W -d nextcloud < ./nextcloud_backup.sql
+pg_dump -h 192.168.20.204 -U nextcloud -W -d nextcloud > ./nextcloud_backup.sql
+psql -h 192.168.20.204 -U nextcloud -W -d nextcloud < ./nextcloud_backup.sql
 ```
+
+## Upgrade Postgres to new major version
+
+There is no easy way of doing this, Cloudnative-PG does not support upgrading major versions.
+
+Checklist:
+- [ ] Create new manifests for a new cluster in `kubernetes/apps/databases/cloudnative-pg/clusters`. Don't forget to add version to names.
+  - [ ] DO NOT add a new loadbalancer just yet.
+  - [ ] See https://cloudnative-pg.io/documentation/1.20/database_import/ for more information.
+- [ ] Scale down services that uses postgres: `task maintenance:db:pause`
+- [ ] Create a new database backup: `kubectl create job --from=cronjob/postgres-backup -n databases major-upgrade-pg-backup`
+- [ ] Deploy the new cluster.
+- [ ] Update `ext-postgres-operator` config to start using the new cluster
+- [ ] Add a new cronjob for `simple-pg-backup` with matching version.
+- [ ] Migrate each service to the new cluster and don't forget to move backups from old version to new version.
+- [ ] Delete the old postgres cluster by removing the manifests in `kubernetes/apps/databases/cloudnative-pg/clusters`.
+- [ ] Deploy new loadbalancer
 
 ## Reset node
 

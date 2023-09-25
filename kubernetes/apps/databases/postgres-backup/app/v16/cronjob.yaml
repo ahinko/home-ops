@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: postgres-backup
+  name: postgres16-backup
   namespace: databases
 spec:
   schedule: "0 4 * * *"
@@ -15,13 +15,13 @@ spec:
         spec:
           containers:
             - name: postgres-backup
-              image: ghcr.io/ahinko/simple-pg-backup:v1.2.7
+              image: ghcr.io/ahinko/simple-pg-backup:v2.0.2
               imagePullPolicy: IfNotPresent
               args:
                 - /run.sh
               envFrom:
                 - secretRef:
-                    name: postgres-backup-secrets
+                    name: postgres16-backup-secrets
                 - secretRef:
                     name: backups-secrets
           restartPolicy: OnFailure
