@@ -92,11 +92,6 @@ spec:
           - hosts:
               - *host
 
-    persistence:
-      library:
-        enabled: true
-        existingClaim: immich-nfs
-        mountPath: /usr/src/app/upload
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
