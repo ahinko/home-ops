@@ -169,7 +169,7 @@ spec:
       type: postgresql
 
       ## Database host
-      host: 192.168.20.2
+      host: postgres16-rw.databases
 
       ## Database name
       database: nextcloud
@@ -192,10 +192,10 @@ spec:
       enabled: true
       resources:
         limits:
-          memory: 512M
+          memory: 1024M
         requests:
           cpu: 10m
-          memory: 50M
+          memory: 500M
 
     service:
       type: ClusterIP
@@ -209,7 +209,7 @@ spec:
 
       nextcloudData:
         enabled: true
-        existingClaim: "nextcloud-nfs"
+        existingClaim: "nextcloud-data"
 
     resources:
       limits:
@@ -234,8 +234,8 @@ spec:
       successThreshold: 1
     startupProbe:
       enabled: true
-      initialDelaySeconds: 20
-      periodSeconds: 60
+      initialDelaySeconds: 60
+      periodSeconds: 30
       timeoutSeconds: 5
       failureThreshold: 10
       successThreshold: 1

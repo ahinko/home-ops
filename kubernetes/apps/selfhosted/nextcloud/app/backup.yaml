@@ -28,16 +28,14 @@ spec:
                     name: backups-secrets
               env:
                 - name: BACKUP_NAME
-                  value: &appname nextcloud
+                  value: nextcloud-config
                 - name: DELETE_OLDER_THAN
                   value: "14d"
-                - name: EXCLUDE
-                  value: "./data"
                 - name: HEALTHCHECK_URL
                   value: "http://uptime-kuma.monitoring:3001/api/push/COkeiqSMlS?status=up&msg=OK&ping="
               volumeMounts:
                 - name: backup-persistent-storage
-                  mountPath: /nextcloud
+                  mountPath: /nextcloud-config
           restartPolicy: Never
           volumes:
             - name: backup-persistent-storage
@@ -51,5 +49,59 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - *appname
+                          - nextcloud
+                  topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-nextcloud-data
+  namespace: selfhosted
+spec:
+  schedule: "0 9 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          # Stagger jobs to run randomly within X seconds to avoid backing up all apps at once
+          initContainers:
+            - name: sleep
+              image: ghcr.io/ahinko/simple-k8s-backup:v4.2.49
+              command: ["/sleep.sh"]
+              args: ["1", "300"]
+          containers:
+            - name: backup-nextcloud
+              image: ghcr.io/ahinko/simple-k8s-backup:v4.2.49
+              args:
+                - /run.sh
+              envFrom:
+                - secretRef:
+                    name: backups-secrets
+              env:
+                - name: BACKUP_NAME
+                  value: nextcloud-data
+                - name: DELETE_OLDER_THAN
+                  value: "14d"
+                - name: HEALTHCHECK_URL
+                  value: "http://uptime-kuma.monitoring:3001/api/push/COkeiqSMlS?status=up&msg=OK&ping="
+              volumeMounts:
+                - name: backup-persistent-storage
+                  mountPath: /nextcloud-data
+          restartPolicy: Never
+          volumes:
+            - name: backup-persistent-storage
+              persistentVolumeClaim:
+                claimName: nextcloud-data
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - nextcloud
                   topologyKey: kubernetes.io/hostname
