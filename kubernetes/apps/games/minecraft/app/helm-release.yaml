@@ -188,4 +188,4 @@ spec:
     deploymentAnnotations: {}
 
     serviceAnnotations:
-      io.cilium/lb-ipam-ips: "${LB_MINECRAFT}"
+      metallb.universe.tf/loadBalancerIPs: "${LB_MINECRAFT}"

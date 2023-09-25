@@ -48,7 +48,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          io.cilium/lb-ipam-ips: *loadBalancerIP
+          metallb.universe.tf/loadBalancerIPs: *loadBalancerIP
         ports:
           http:
             port: &port 8096

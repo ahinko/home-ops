@@ -48,7 +48,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "${LB_HASS}"
+          metallb.universe.tf/loadBalancerIPs: "${LB_HASS}"
         externalTrafficPolicy: Cluster
         ports:
           sonos:

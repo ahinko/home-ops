@@ -40,7 +40,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          io.cilium/lb-ipam-ips: "${LB_INGRESS}"
+          metallb.universe.tf/loadBalancerIPs: "${LB_INGRESS}"
       publishService:
         enabled: true
       ingressClassResource:

@@ -61,7 +61,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "${LB_SLSKD}"
+          metallb.universe.tf/loadBalancerIPs: "${LB_SLSKD}"
         ports:
           soulseek:
             enabled: true
