@@ -1,0 +1,78 @@
+---
+apiVersion: matrix.element.io/v1alpha1
+kind: ElementDeployment
+metadata:
+  name: element
+  namespace: selfhosted
+spec:
+  global:
+    k8s:
+      ingresses:
+        ingressClassName: "nginx"
+      storage:
+        storageClassName: "rook-cephfs"
+    secretName: element-secrets
+    config:
+      genericSharedSecretSecretKey: genericSharedSecret
+      domainName: "element.${SECRET_DOMAIN}"
+  components:
+    elementWeb:
+      secretName: external-elementweb-secrets
+      k8s:
+        ingress:
+          # annotations:
+          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          tls:
+            certmanager:
+              issuer: letsencrypt
+            mode: certmanager
+          fqdn: "element-web.${SECRET_DOMAIN}"
+    synapse:
+      config:
+        additional: |
+          enable_registration: False
+          enable_registration_without_verification: False
+        postgresql:
+          host: postgres16-rw.databases.svc.cluster.local
+          user: element-5MXTsN
+          database: element
+          passwordSecretKey: pgpassword
+          sslMode: disable
+      k8s:
+        ingress:
+          # annotations:
+          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          tls:
+            certmanager:
+              issuer: letsencrypt
+            mode: certmanager
+          fqdn: "element-hs.${SECRET_DOMAIN}"
+    wellKnownDelegation:
+      secretName: external-wellknowndelegation-secrets
+      k8s:
+        ingress:
+          # annotations:
+          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          tls:
+            certmanager:
+              issuer: letsencrypt
+            mode: certmanager
+    slidingSync:
+      secretName: element-secrets
+      config:
+        postgresql:
+          host: postgres16-rw.databases.svc.cluster.local
+          user: element-5MXTsN
+          database: element
+          passwordSecretKey: pgpassword
+          sslMode: disable
+        syncSecretSecretKey: syncSecret
+      k8s:
+        ingress:
+          # annotations:
+          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          tls:
+            certmanager:
+              issuer: letsencrypt
+            mode: certmanager
+          fqdn: "element-sync.${SECRET_DOMAIN}"
