@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,20 +30,43 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/onedr0p/radarr
-      tag: 5.0.3.8127
-    env:
-      PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 7878
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
-      RADARR__LOG_LEVEL: info
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    envFrom:
-      - secretRef:
-          name: *app
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65539
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/radarr
+              tag: 5.0.3.8127
+            env:
+              PUSHOVER_DEBUG: "false"
+              PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 7878
+              RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+              RADARR__LOG_LEVEL: info
+
+            envFrom:
+              - secretRef:
+                  name: *app
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250M
+              limits:
+                memory: 500M
 
     service:
       main:
@@ -61,41 +84,25 @@ spec:
           - host: *host
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
 
     persistence:
       config:
         enabled: true
         existingClaim: radarr-config
       media:
-        enabled: true
-        mountPath: "/media"
         existingClaim: downloads-nfs
+        globalMounts:
+          - path: /media
       scripts:
-        enabled: true
         type: configMap
         name: radarr-pushover
-        subPath: pushover-notify.sh
-        mountPath: /scripts/pushover-notify.sh
-        defaultMode: 0775
-        readOnly: true
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: radarr-pushover
-      secret.reloader.stakater.com/reload: *app
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250M
-      limits:
-        memory: 500M
+        globalMounts:
+          - path: /scripts/pushover-notify.sh
+            subPath: pushover-notify.sh
+            readOnly: true

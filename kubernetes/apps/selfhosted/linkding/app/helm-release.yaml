@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,42 +27,83 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 1
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: sissbruecker/linkding
-      tag: 1.22.1
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65541
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
 
-    env:
-      LD_DB_ENGINE: "postgres"
-      LD_DB_DATABASE: "linkding"
-      LD_DB_HOST: "postgres16-rw.databases.svc.cluster.local"
-      LD_DB_PORT: "5432"
+        containers:
+          main:
+            image:
+              repository: sissbruecker/linkding
+              tag: 1.22.1
 
-      LD_DB_USER:
-        valueFrom:
-          secretKeyRef:
-            name: database-linkding-user
-            key: ROLE
-      LD_DB_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: database-linkding-user
-            key: PASSWORD
+            env:
+              LD_DB_ENGINE: "postgres"
+              LD_DB_DATABASE: "linkding"
+              LD_DB_HOST: "postgres16-rw.databases.svc.cluster.local"
+              LD_DB_PORT: "5432"
+              LD_DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-linkding-user
+                    key: ROLE
+              LD_DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-linkding-user
+                    key: PASSWORD
 
-    envFrom:
-      - secretRef:
-          name: linkding-secrets
+            envFrom:
+              - secretRef:
+                  name: linkding-secrets
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 9090
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
 
     service:
       main:
         ports:
           http:
-            port: &port 9090
+            port: *port
 
     ingress:
       main:
@@ -74,38 +115,9 @@ spec:
           - host: &host "bookmarks.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 100Mi
-      limits:
-        memory: 500Mi

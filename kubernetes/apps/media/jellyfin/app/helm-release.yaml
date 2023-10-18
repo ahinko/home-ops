@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       interval: 60m
       sourceRef:
         kind: HelmRepository
@@ -27,21 +27,45 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/onedr0p/jellyfin
-      tag: 10.8.11@sha256:041977cb09d964ed4e00dec2bd0af3208f0121b8385a69617d30657596ffa292
+        pod:
+          enableServiceLinks: false
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 44
+              - 109
+              - 65539
 
-    enableServiceLinks: false
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/jellyfin
+              tag: 10.8.11@sha256:041977cb09d964ed4e00dec2bd0af3208f0121b8385a69617d30657596ffa292
 
-    env:
-      DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
-      JELLYFIN_FFmpeg__probesize: 50000000
-      JELLYFIN_FFmpeg__analyzeduration: 500000000
-      JELLYFIN_PublishedServerUrl: &loadBalancerIP ${LB_JELLYFIN}
+            env:
+              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+              JELLYFIN_FFmpeg__probesize: 50000000
+              JELLYFIN_FFmpeg__analyzeduration: 500000000
+              JELLYFIN_PublishedServerUrl: &loadBalancerIP ${LB_JELLYFIN}
+
+            resources:
+              requests:
+                cpu: 100m
+                gpu.intel.com/i915: 1
+                memory: 1000M
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 9248M
 
     service:
       main:
@@ -51,7 +75,7 @@ spec:
           metallb.universe.tf/loadBalancerIPs: *loadBalancerIP
         ports:
           http:
-            port: &port 8096
+            port: 8096
 
     ingress:
       main:
@@ -61,56 +85,22 @@ spec:
           - host: &host jellyfin.${SECRET_DOMAIN}
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-
-    nodeSelector:
-      intel.feature.node.kubernetes.io/gpu: "true"
 
     persistence:
       config:
         enabled: true
         existingClaim: jellyfin-config
       media:
-        enabled: true
-        mountPath: "/data"
         existingClaim: media-nfs
+        globalMounts:
+          - path: /media
       transcode:
-        enabled: true
         type: emptyDir
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 44
-        - 109
-        - 65539
-
-    resources:
-      requests:
-        cpu: 100m
-        gpu.intel.com/i915: 1
-        memory: 1000M
-      limits:
-        gpu.intel.com/i915: 1
-        memory: 9248M
+        globalMounts:
+          - path: /transcode

@@ -5,11 +5,11 @@ metadata:
   name: recyclarr
   namespace: downloads
 spec:
-  interval: 15m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,45 +26,52 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/recyclarr/recyclarr
-      tag: 6.0.1
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65539
 
-    envFrom:
-      - secretRef:
-          name: sonarr-v4
-      - secretRef:
-          name: radarr
+        containers:
+          main:
+            image:
+              repository: ghcr.io/recyclarr/recyclarr
+              tag: 6.0.1
+
+            envFrom:
+              - secretRef:
+                  name: sonarr-v4
+              - secretRef:
+                  name: radarr
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 50Mi
+              limits:
+                memory: 200Mi
 
     service:
       main:
         enabled: false
 
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-
     persistence:
       config:
         enabled: true
         existingClaim: recyclarr-config
+
       config-file:
-        enabled: true
         type: configMap
         name: recyclarr-configmap
-        subPath: recyclarr.yml
-        mountPath: /config/recyclarr.yml
-        readOnly: true
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 50Mi
-      limits:
-        memory: 200Mi
+        globalMounts:
+          - path: /config/recyclarr.yml
+            subPath: recyclarr.yml
+            readOnly: true

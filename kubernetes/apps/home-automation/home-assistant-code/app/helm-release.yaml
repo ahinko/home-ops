@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app home-assistant-code
+  name: home-assistant-code
   namespace: home-automation
 spec:
   interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,31 +26,46 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/coder/code-server
-      tag: 4.17.1
-    args:
-      - --auth
-      - "none"
-      - --user-data-dir
-      - "/config/.vscode"
-      - --extensions-dir
-      - "/config/.vscode"
-      - --port
-      - "8080"
-      - "/config"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
+    controllers:
+      main:
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 100
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.17.1
+            args:
+              - --auth
+              - "none"
+              - --user-data-dir
+              - "/config/.vscode"
+              - --extensions-dir
+              - "/config/.vscode"
+              - --port
+              - "8080"
+              - "/config"
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100M
+              limits:
+                memory: 500M
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
@@ -61,14 +76,20 @@ spec:
           - host: &host "code.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
+
     persistence:
       config:
         enabled: true
         existingClaim: home-assistant-config
+        globalMounts:
+          - path: /config
+
     affinity:
       podAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -81,9 +102,3 @@ spec:
                   operator: In
                   values: ["home-assistant"]
             topologyKey: kubernetes.io/hostname
-    resources:
-      requests:
-        cpu: 10m
-        memory: 100M
-      limits:
-        memory: 500M

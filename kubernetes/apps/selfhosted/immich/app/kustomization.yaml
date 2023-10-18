@@ -12,6 +12,7 @@ resources:
   - ./microservices
   - ./machine-learning
   - ./web
+  - ./proxy
 labels:
   - pairs:
       app.kubernetes.io/name: immich

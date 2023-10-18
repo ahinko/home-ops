@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,23 +26,35 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/home-assistant/home-assistant
-      tag: 2023.10.3
-    env:
-      SECRET_RECORDER_DB_URL:
-        valueFrom:
-          secretKeyRef:
-            name: database-homeassistant-user
-            key: POSTGRES_URL
+    controllers:
+      main:
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["192.168.71.201/24"]
+              }]
 
-    podAnnotations:
-      k8s.v1.cni.cncf.io/networks: |
-        [{
-          "name":"multus-iot",
-          "namespace": "networking",
-          "ips": ["192.168.71.201/24"]
-        }]
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2023.10.3
+            env:
+              SECRET_RECORDER_DB_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-homeassistant-user
+                    key: POSTGRES_URL
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 500M
+              limits:
+                memory: 1000M
 
     service:
       main:
@@ -68,26 +80,19 @@ spec:
           - host: &host "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    prometheus:
-      serviceMonitor:
-        enabled: false
 
     persistence:
       config:
         enabled: true
         existingClaim: "home-assistant-config"
-
-    resources:
-      requests:
-        cpu: 100m
-        memory: 500M
-      limits:
-        memory: 1000M
+        globalMounts:
+          - path: /config
 
     affinity:
       nodeAffinity:

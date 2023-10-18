@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,19 +26,51 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/blakeblackshear/frigate
-      tag: 0.12.1
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    env:
-      LIBVA_DRIVER_NAME: "i965"
+        pod:
+          nodeSelector:
+            google.feature.node.kubernetes.io/coral: "true"
+            intel.feature.node.kubernetes.io/gpu: "true"
 
-    podAnnotations:
-      reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/blakeblackshear/frigate
+              tag: 0.12.1
 
-    configmap:
-      config:
-        enabled: false
+            env:
+              LIBVA_DRIVER_NAME: "i965"
+
+            resources:
+              requests:
+                cpu: 1000m
+                memory: 1000M
+                gpu.intel.com/i915: "1"
+              limits:
+                memory: 2000M
+                gpu.intel.com/i915: "1"
+
+            securityContext:
+              privileged: true
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: 5000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
 
     ingress:
       main:
@@ -50,7 +82,9 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -59,84 +93,43 @@ spec:
       main:
         ports:
           http:
-            port: &port 5000
-
-    securityContext:
-      privileged: true
+            port: 5000
 
     persistence:
-      data:
-        enabled: true
-        existingClaim: frigate-data
       config-file:
         enabled: true
         type: configMap
-        name: *app
-        subPath: config.yaml
-        mountPath: /config/config.yml
+        name: frigate-configmap
         readOnly: true
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yaml
       media:
         enabled: true
         existingClaim: frigate-media
-        mountPath: /media
+        globalMounts:
+          - path: /media
+
+      config:
+        enabled: true
+        existingClaim: frigate-config
+        globalMounts:
+          - path: /data
+
       cache:
         enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 4Gi
-        mountPath: /dev/shm
+        globalMounts:
+          - path: /dev/shm
       usb:
         enabled: true
         type: hostPath
         hostPath: /dev/bus/usb
         hostPathType: Directory
-        mountPath: /dev/bus/usb
-
-    probes:
-      liveness: &probe
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      startup:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          failureThreshold: 30
-          periodSeconds: 10
-
-    resources:
-      requests:
-        cpu: 1000m
-        memory: 1000M
-        gpu.intel.com/i915: "1"
-      limits:
-        memory: 2000M
-        gpu.intel.com/i915: "1"
-
-    nodeSelector:
-      google.feature.node.kubernetes.io/coral: "true"
-      intel.feature.node.kubernetes.io/gpu: "true"
+        globalMounts:
+          - path: /dev/bus/usb
 
     affinity:
       nodeAffinity:

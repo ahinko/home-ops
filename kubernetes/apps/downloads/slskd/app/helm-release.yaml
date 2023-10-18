@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -29,46 +29,65 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/slskd/slskd
-      tag: 0.18.3
-    env:
-      TZ: Europe/Stockholm
-      SLSKD_HTTP_PORT: &port 80
-      SLSKD_NO_HTTPS: true
-      SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50300
-      SLSKD_APP_DIR: /config
-      SLSKD_REMOTE_CONFIGURATION: true
-      SLSKD_SHARED_DIR: /media/downloads/slskd/shared
-      SLSKD_NO_AUTH: true
-      SLSKD_METRICS: true
-      SLSKD_METRICS_NO_AUTH: true
-      SLSKD_DOWNLOADS_DIR: /media/downloads/slskd/complete
-      SLSKD_INCOMPLETE_DIR: /media/downloads/slskd/incomplete
-      SLSKD_SHARE_FILTER: Thumbs.db$;\.DS_Store$
-    envFrom:
-      - secretRef:
-          name: slskd-secret
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65539
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/slskd/slskd
+              tag: 0.18.3
+            env:
+              TZ: Europe/Stockholm
+              SLSKD_HTTP_PORT: &port 80
+              SLSKD_NO_HTTPS: true
+              SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50300
+              SLSKD_APP_DIR: /config
+              SLSKD_REMOTE_CONFIGURATION: true
+              SLSKD_SHARED_DIR: /media/downloads/slskd/shared
+              SLSKD_NO_AUTH: true
+              SLSKD_METRICS: true
+              SLSKD_METRICS_NO_AUTH: true
+              SLSKD_DOWNLOADS_DIR: /media/downloads/slskd/complete
+              SLSKD_INCOMPLETE_DIR: /media/downloads/slskd/incomplete
+              SLSKD_SHARE_FILTER: Thumbs.db$;\.DS_Store$
+            envFrom:
+              - secretRef:
+                  name: slskd-secret
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 1500Mi
+
     service:
       main:
-        ports:
-          http:
-            port: *port
-      soulseek:
-        enabled: true
         type: LoadBalancer
         annotations:
           metallb.universe.tf/loadBalancerIPs: "${LB_SLSKD}"
+        externalTrafficPolicy: Cluster
         ports:
+          http:
+            port: *port
           soulseek:
             enabled: true
             port: *soulseekPort
             protocol: TCP
             targetPort: *soulseekPort
-        externalTrafficPolicy: Cluster
+
     ingress:
       main:
         enabled: true
@@ -77,27 +96,18 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
+
     persistence:
       config:
         enabled: true
         existingClaim: slskd-config
       media:
-        enabled: true
-        mountPath: "/media"
         existingClaim: downloads-nfs
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 1500Mi
+        globalMounts:
+          - path: /media

@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app wyoming-piper
+  name: wyoming-piper
   namespace: home-automation
 spec:
   interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,19 +26,31 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: rhasspy/wyoming-piper
-      tag: latest
+    controllers:
+      main:
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
 
-    args:
-      - --voice
-      - sv_SE-nst-medium
+        containers:
+          main:
+            image:
+              repository: rhasspy/wyoming-piper
+              tag: latest
 
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
+            args:
+              - --voice
+              - sv_SE-nst-medium
+
+            resources:
+              limits:
+                memory: 1Gi
+              requests:
+                cpu: 100m
+                memory: 500Mi
 
     service:
       main:
@@ -51,10 +63,5 @@ spec:
       data:
         enabled: true
         existingClaim: "wyoming-piper"
-
-    resources:
-      limits:
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 500Mi
+        globalMounts:
+          - path: /data

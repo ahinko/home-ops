@@ -5,12 +5,12 @@ metadata:
   name: nextcloud-redis
   namespace: selfhosted
 spec:
-  interval: 30m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
-      interval: 30m
+      version: 2.0.3
+      interval: 60m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,12 +27,23 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: public.ecr.aws/docker/library/redis
-      tag: 7.2.1
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: public.ecr.aws/docker/library/redis
+              tag: 7.2.1
 
-    env:
-      REDIS_REPLICATION_MODE: master
+            env:
+              REDIS_REPLICATION_MODE: master
+
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10M
+              limits:
+                memory: 10M
 
     service:
       main:
@@ -42,10 +53,3 @@ spec:
           redis:
             enabled: true
             port: 6379
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10M
-      limits:
-        memory: 10M

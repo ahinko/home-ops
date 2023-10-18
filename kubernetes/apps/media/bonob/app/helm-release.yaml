@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       interval: 60m
       sourceRef:
         kind: HelmRepository
@@ -27,19 +27,30 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/simojenki/bonob
-      tag: v0.6.11
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/simojenki/bonob
+              tag: v0.6.11
 
-    env:
-      BNB_PORT: 4534
-      BNB_SONOS_AUTO_REGISTER: true
-      BNB_SONOS_DEVICE_DISCOVERY: true
-      BNB_SONOS_SEED_HOST: 192.168.30.224
-      BNB_SONOS_SERVICE_ID: 246
-      BNB_SONOS_SERVICE_NAME: Library - Main
-      BNB_SUBSONIC_URL: https://navidrome.${SECRET_DOMAIN}
-      BNB_URL: https://bonob.${SECRET_DOMAIN}
+            env:
+              BNB_PORT: 4534
+              BNB_SONOS_AUTO_REGISTER: true
+              BNB_SONOS_DEVICE_DISCOVERY: true
+              BNB_SONOS_SEED_HOST: 192.168.30.224
+              BNB_SONOS_SERVICE_ID: 246
+              BNB_SONOS_SERVICE_NAME: Library - Main
+              BNB_SUBSONIC_URL: https://navidrome.${SECRET_DOMAIN}
+              BNB_URL: https://bonob.${SECRET_DOMAIN}
+
+            resources:
+              requests:
+                cpu: 5m
+                memory: 128M
+              limits:
+                memory: 128M
 
     service:
       main:
@@ -55,13 +66,9 @@ spec:
           - host: &host bonob.${SECRET_DOMAIN}
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 128M
-      limits:
-        memory: 128M

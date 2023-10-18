@@ -5,12 +5,12 @@ metadata:
   name: speedtest-exporter
   namespace: monitoring
 spec:
-  interval: 15m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
-      interval: 15m
+      version: 2.0.3
+      interval: 60m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,16 +27,20 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/miguelndecarvalho/speedtest-exporter
-      tag: v3.5.4
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/miguelndecarvalho/speedtest-exporter
+              tag: v3.5.4
 
-    resources:
-      requests:
-        cpu: 15m
-        memory: 64M
-      limits:
-        memory: 64M
+            resources:
+              requests:
+                cpu: 15m
+                memory: 64M
+              limits:
+                memory: 64M
 
     service:
       main:

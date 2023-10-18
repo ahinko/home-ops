@@ -2,18 +2,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app immich-web
+  name: immich-web
   namespace: selfhosted
 spec:
-  interval: 30m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
+      interval: 60m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+
   maxHistory: 2
   install:
     createNamespace: true
@@ -25,81 +27,50 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+
   dependsOn:
     - name: immich-server
+
   values:
-    controller:
-      annotations:
-        configmap.reloader.stakater.com/reload: &configmap immich-configmap
-        secret.reloader.stakater.com/reload: &secret immich-secret
-    image:
-      repository: ghcr.io/immich-app/immich-web
-      tag: v1.82.0
+    controllers:
+      main:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    env:
-      DB_HOSTNAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: HOST
-      DB_USERNAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: LOGIN
-      DB_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: PASSWORD
-      DB_DATABASE_NAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: DATABASE_NAME
+        pod:
+          enableServiceLinks: false
 
-    envFrom:
-      - configMapRef:
-          name: *configmap
-      - secretRef:
-          name: *secret
+        containers:
+          main:
+            image:
+              repository: ghcr.io/immich-app/immich-web
+              tag: v1.82.0
+
+            env:
+              # Ports
+              PORT: &port 3000
+              # URLs
+              IMMICH_SERVER_URL:
+                valueFrom:
+                  configMapKeyRef:
+                    name: immich-configmap
+                    key: IMMICH_SERVER_URL
+              PUBLIC_IMMICH_SERVER_URL:
+                valueFrom:
+                  configMapKeyRef:
+                    name: immich-configmap
+                    key: PUBLIC_IMMICH_SERVER_URL
+              IMMICH_API_URL_EXTERNAL: /api
+            resources:
+              requests:
+                cpu: 5m
+                memory: 64M
+              limits:
+                memory: 256Mi
+
     service:
       main:
         ports:
           http:
-            port: 3000
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            rewrite /api/(.*) /$1 break;
-          nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/proxy-body-size: "0"
-        hosts:
-          - host: &host photos.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
-              - path: /api
-                pathType: Prefix
-                service:
-                  name: immich-server
-                  port: 3001
-        tls:
-          - hosts:
-              - *host
-
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-    resources:
-      requests:
-        cpu: 100m
-        memory: 250Mi
+            port: *port

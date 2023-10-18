@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,9 +30,32 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/onedr0p/bazarr
-      tag: 1.3.1
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65539
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/bazarr
+              tag: 1.3.1
+
+            resources:
+              requests:
+                memory: 250M
+                cpu: 10m
+              limits:
+                memory: 250M
 
     service:
       main:
@@ -48,46 +71,18 @@ spec:
           - host: "bazarr.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - "bazarr.${SECRET_DOMAIN}"
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups: [10000]
 
     persistence:
       config:
         enabled: true
         existingClaim: "bazarr-config"
       media:
-        enabled: true
-        mountPath: "/media"
         existingClaim: downloads-nfs
-      add-ons:
-        enabled: true
-        type: emptyDir
-        mountPath: /add-ons
-
-    resources:
-      requests:
-        memory: 250M
-        cpu: 10m
-      limits:
-        memory: 250M
-
-    sidecars:
-      subcleaner:
-        image: registry.k8s.io/git-sync/git-sync:v4.0.0
-        imagePullPolicy: IfNotPresent
-        args:
-          - --repo=https://github.com/KBlixt/subcleaner.git
-          - --ref=master
-          - --period=24h
-          - --root=/add-ons/subcleaner
-        volumeMounts:
-          - { name: add-ons, mountPath: /add-ons }
+        globalMounts:
+          - path: /media

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,26 +30,51 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/onedr0p/sabnzbd
-      tag: 4.1.0
-    env:
-      SABNZBD__PORT: &port 8080
-      SABNZBD__HOST_WHITELIST_ENTRIES: >-
-        sabnzbd,
-        sabnzbd.downloads,
-        sabnzbd.downloads.svc,
-        sabnzbd.downloads.svc.cluster,
-        sabnzbd.downloads.svc.cluster.local,
-        sabnzbd.${SECRET_DOMAIN}
-    envFrom:
-      - secretRef:
-          name: *app
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65539
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/sabnzbd
+              tag: 4.1.0
+            env:
+              SABNZBD__PORT: &port 8080
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd,
+                sabnzbd.downloads,
+                sabnzbd.downloads.svc,
+                sabnzbd.downloads.svc.cluster,
+                sabnzbd.downloads.svc.cluster.local,
+                sabnzbd.${SECRET_DOMAIN}
+            envFrom:
+              - secretRef:
+                  name: *app
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250M
+              limits:
+                memory: 3000M
+
     service:
       main:
         ports:
           http:
             port: *port
+
     ingress:
       main:
         enabled: true
@@ -60,32 +85,23 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
+
     persistence:
       config:
         enabled: true
         existingClaim: sabnzbd-config
       media:
-        enabled: true
-        mountPath: "/media"
         existingClaim: downloads-nfs
+        globalMounts:
+          - path: /media
       incomplete:
         enabled: true
         type: emptyDir
-        mountPath: "/downloads"
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250M
-      limits:
-        memory: 3000M
+        globalMounts:
+          - path: "/downloads"

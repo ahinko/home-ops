@@ -5,15 +5,17 @@ metadata:
   name: immich-typesense
   namespace: selfhosted
 spec:
-  interval: 30m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
+      interval: 60m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+
   maxHistory: 2
   install:
     createNamespace: true
@@ -25,70 +27,73 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+
   values:
-    controller:
-      type: statefulset
-      annotations:
-        configmap.reloader.stakater.com/reload: &configmap immich-configmap
-        secret.reloader.stakater.com/reload: &secret immich-secret
-    image:
-      repository: docker.io/typesense/typesense
-      tag: 0.25.1
+    controllers:
+      main:
+        type: statefulset
+        strategy: RollingUpdate
 
-    env:
-      DB_HOSTNAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: HOST
-      DB_USERNAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: LOGIN
-      DB_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: PASSWORD
-      DB_DATABASE_NAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-immich-user
-            key: DATABASE_NAME
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    envFrom:
-      - configMapRef:
-          name: *configmap
-      - secretRef:
-          name: *secret
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteMany
+              size: 20Gi
+              storageClass: rook-ceph
+              globalMounts:
+                - path: /config
+
+        pod:
+          enableServiceLinks: false
+
+        containers:
+          main:
+            image:
+              repository: docker.io/typesense/typesense
+              tag: 0.25.1
+            env:
+              TYPESENSE_DATA_DIR: /config
+              TYPESENSE_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: TYPESENSE_API_KEY
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8108
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8108
+                  failureThreshold: 30
+                  periodSeconds: 5
+                  successThreshold: 1
+                  timeoutSeconds: 1
+            resources:
+              requests:
+                cpu: 5m
+                memory: 315M
+              limits:
+                memory: 1443M
+
     service:
       main:
         ports:
           http:
-            port: &port 8108
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 20Gi
-        storageClass: rook-cephfs
-    resources:
-      requests:
-        cpu: 100m
-        memory: 250Mi
+            port: 8108

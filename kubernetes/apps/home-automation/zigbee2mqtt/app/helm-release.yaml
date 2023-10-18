@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,21 +26,52 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.33.1
+    controllers:
+      main:
+        pod:
+          annotations:
+            configmap.reloader.stakater.com/reload: "zigbee2mqtt-settings"
 
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "zigbee2mqtt-settings"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/koenkk/zigbee2mqtt
+              tag: 1.33.1
+
+            env:
+              ZIGBEE2MQTT_DATA: /data
+              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+              ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.70.56:6638
+              ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: zigbee2mqtt
+              ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+              ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://emqx-listeners"
+              ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+              ZIGBEE2MQTT_CONFIG_MQTT_USER: "${SECRET_MQTT_USERNAME}"
+              ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD: "${SECRET_MQTT_PASSWORD}"
+              ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: 8080
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: warn
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+              ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 25
+              ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: 6755
+              ZIGBEE2MQTT_CONFIG_ADVANCED_EXT_PAN_ID: "[221, 221, 221, 221, 221, 221, 221, 221]"
+
+            resources:
+              requests:
+                memory: 128M
+                cpu: 20m
+              limits:
+                memory: 256M
 
     service:
       main:
         ports:
           http:
             port: 8080
-
-    env:
-      ZIGBEE2MQTT_DATA: /data
 
     ingress:
       main:
@@ -52,7 +83,9 @@ spec:
           - host: &host zigbee.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -60,51 +93,6 @@ spec:
     persistence:
       data:
         enabled: true
-        mountPath: /data
         existingClaim: "zigbee2mqtt-data"
-
-    resources:
-      requests:
-        memory: 128M
-        cpu: 20m
-      limits:
-        memory: 256M
-
-    config:
-      homeassistant: true
-      device_options:
-        retain: true
-      permit_join: false
-      serial:
-        port: "tcp://192.168.70.56:6638"
-      mqtt:
-        server: mqtt://emqx-listeners
-        user: "${SECRET_MQTT_USERNAME}"
-        password: "${SECRET_MQTT_PASSWORD}"
-      frontend:
-        port: 8080
-      experimental:
-        new_api: true
-      advanced:
-        pan_id: 0x1a63
-        channel: 25
-        network_key:
-          - 23
-          - 134
-          - 250
-          - 1
-          - 2
-          - 54
-          - 6
-          - 8
-          - 76
-          - 43
-          - 23
-          - 59
-          - 6
-          - 7
-          - 4
-          - 90
-        log_level: warn
-        log_output:
-          - console
+        globalMounts:
+          - path: /data

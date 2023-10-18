@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,17 +26,29 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/esphome/esphome
-      tag: 2023.10.0
+    controllers:
+      main:
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["192.168.71.200/24"]
+              }]
 
-    podAnnotations:
-      k8s.v1.cni.cncf.io/networks: |
-        [{
-          "name":"multus-iot",
-          "namespace": "networking",
-          "ips": ["192.168.71.200/24"]
-        }]
+        containers:
+          main:
+            image:
+              repository: ghcr.io/esphome/esphome
+              tag: 2023.10.0
+
+            resources:
+              requests:
+                cpu: 20m
+                memory: 64M
+              limits:
+                memory: 1024M
 
     service:
       main:
@@ -54,7 +66,9 @@ spec:
           - host: &host "esphome.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -64,16 +78,9 @@ spec:
         enabled: true
         existingClaim: esphome-config
       esphome-cache:
-        enabled: true
         type: emptyDir
-        mountPath: /config/.esphome
-
-    resources:
-      requests:
-        cpu: 20m
-        memory: 64M
-      limits:
-        memory: 1024M
+        globalMounts:
+          - path: /config/.esphome
 
     affinity:
       nodeAffinity:

@@ -5,11 +5,11 @@ metadata:
   name: radicale
   namespace: selfhosted
 spec:
-  interval: 15m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,13 +27,33 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/ahinko/radicale
-      tag: 3.1.8
+    controllers:
+      main:
+        strategy: RollingUpdate
 
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "radicale-config"
-      secret.reloader.stakater.com/reload: "radicale-auth"
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/ahinko/radicale
+              tag: 3.1.8
+
+            resources:
+              requests:
+                cpu: 600m
+                memory: 100M
+              limits:
+                memory: 512M
 
     service:
       main:
@@ -54,41 +74,32 @@ spec:
           - host: &host "radicale.${SECRET_DOMAIN}"
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: radicale-config
-        subPath: config.cfg
-        mountPath: /config/config
-        readOnly: true
+        globalMounts:
+          - path: /config/config
+            subPath: config.cfg
+            readOnly: true
 
       data:
-        enabled: true
+        type: persistentVolumeClaim
         existingClaim: radicale-data
-        mountPath: /data
+        globalMounts:
+          - path: /data
 
       auth:
-        enabled: true
         type: secret
         name: radicale-auth
-        subPath: users
-        mountPath: /config/users
-        readOnly: true
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-
-    resources:
-      requests:
-        cpu: 600m
-        memory: 100M
-      limits:
-        memory: 512M
+        globalMounts:
+          - path: /config/users
+            subPath: users
+            readOnly: true

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,24 +26,52 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/zwave-js/zwave-js-ui
-      tag: 9.2.1
+    controllers:
+      main:
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["192.168.71.205/24"]
+              }]
 
-    podAnnotations:
-      k8s.v1.cni.cncf.io/networks: |
-        [{
-          "name":"multus-iot",
-          "namespace": "networking",
-          "ips": ["192.168.71.205/24"]
-        }]
+        containers:
+          main:
+            image:
+              repository: ghcr.io/zwave-js/zwave-js-ui
+              tag: 9.2.1
+
+            resources:
+              requests:
+                memory: 100M
+                cpu: 30m
+              limits:
+                memory: 256M
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &httpPort 8091
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
 
     service:
       main:
         ports:
           http:
             enabled: true
-            port: &port 8091
+            port: *httpPort
           websocket:
             enabled: true
             port: 3000
@@ -58,7 +86,9 @@ spec:
           - host: &host zwavejs.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -66,31 +96,9 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /usr/src/app/store
         existingClaim: "zwave-js-ui-config"
-
-    resources:
-      requests:
-        memory: 100M
-        cpu: 30m
-      limits:
-        memory: 256M
-
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+        globalMounts:
+          - path: /usr/src/app/store
 
     affinity:
       nodeAffinity:

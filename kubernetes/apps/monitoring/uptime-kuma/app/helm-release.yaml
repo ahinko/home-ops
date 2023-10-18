@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,9 +30,20 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: louislam/uptime-kuma
-      tag: "1.23.3"
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: louislam/uptime-kuma
+              tag: "1.23.3"
+
+            resources:
+              requests:
+                memory: 400M
+                cpu: 15m
+              limits:
+                memory: 600M
 
     service:
       main:
@@ -51,7 +62,9 @@ spec:
           - host: &host uptime.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -60,14 +73,8 @@ spec:
       config:
         enabled: true
         existingClaim: "uptime-kuma-config"
-        mountPath: /app/data
-
-    resources:
-      requests:
-        memory: 400M
-        cpu: 15m
-      limits:
-        memory: 600M
+        globalMounts:
+          - path: /app/data
 
     # We do not want to run on Atlas since that node uses another DNS server that will cause
     # issues since it wont know about internal ingressess

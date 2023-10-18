@@ -1,0 +1,112 @@
+{
+  "ffmpeg": {
+    "preset": "faster",
+    "targetResolution": "1080",
+    "crf": 23,
+    "threads": 0,
+    "targetVideoCodec": "h264",
+    "targetAudioCodec": "aac",
+    "maxBitrate": "0",
+    "bframes": -1,
+    "refs": 0,
+    "gopSize": 0,
+    "npl": 0,
+    "temporalAQ": false,
+    "cqMode": "auto",
+    "twoPass": false,
+    "transcode": "required",
+    "tonemap": "hable",
+    "accel": "disabled"
+  },
+  "job": {
+    "backgroundTask": {
+      "concurrency": 5
+    },
+    "clipEncoding": {
+      "concurrency": 2
+    },
+    "metadataExtraction": {
+      "concurrency": 5
+    },
+    "objectTagging": {
+      "concurrency": 2
+    },
+    "recognizeFaces": {
+      "concurrency": 2
+    },
+    "search": {
+      "concurrency": 5
+    },
+    "sidecar": {
+      "concurrency": 5
+    },
+    "library": {
+      "concurrency": 1
+    },
+    "storageTemplateMigration": {
+      "concurrency": 5
+    },
+    "migration": {
+      "concurrency": 5
+    },
+    "thumbnailGeneration": {
+      "concurrency": 5
+    },
+    "videoConversion": {
+      "concurrency": 1
+    }
+  },
+  "machineLearning": {
+    "enabled": true,
+    "url": "http://immich-machine-learning.selfhosted.svc.cluster.local:3003",
+    "classification": {
+      "enabled": true,
+      "modelName": "microsoft/resnet-50",
+      "minScore": 0.9
+    },
+    "clip": {
+      "enabled": true,
+      "modelName": "ViT-B-32::openai"
+    },
+    "facialRecognition": {
+      "enabled": true,
+      "modelName": "buffalo_l",
+      "minScore": 0.7,
+      "maxDistance": 0.6,
+      "minFaces": 1
+    }
+  },
+  "map": {
+    "enabled": true,
+    "tileUrl": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+  },
+  "reverseGeocoding": {
+    "enabled": true,
+    "citiesFileOverride": "cities500"
+  },
+  "oauth": {
+    "enabled": false,
+    "issuerUrl": "",
+    "clientId": "",
+    "clientSecret": "",
+    "mobileOverrideEnabled": false,
+    "mobileRedirectUri": "",
+    "scope": "openid email profile",
+    "storageLabelClaim": "preferred_username",
+    "buttonText": "Login with OAuth",
+    "autoRegister": true,
+    "autoLaunch": false
+  },
+  "passwordLogin": {
+    "enabled": true
+  },
+  "storageTemplate": {
+    "template": "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}"
+  },
+  "thumbnail": {
+    "webpSize": 250,
+    "jpegSize": 1440,
+    "quality": 80,
+    "colorspace": "p3"
+  }
+}
