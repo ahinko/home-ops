@@ -89,8 +89,42 @@ go2rtc:
     utility_entrance_lq: rtspx://192.168.0.1:7441/qEj5EZEGjdLZP9O6
     frontyard_garage_hq: rtspx://192.168.0.1:7441/cVT8xcvPAE1o0Rt4
     frontyard_garage_lq: rtspx://192.168.0.1:7441/TJSnSTiDZ6AjqPvt
+    drive_way_hq: rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h265Preview_01_main
+    drive_way_lq: rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h264Preview_01_sub
 
 cameras:
+  drive_way:
+    ffmpeg:
+      inputs:
+        - path: rtsp://localhost:8554/drive_way_hq
+          roles:
+            - record
+
+        - path: rtsp://localhost:8554/drive_way_lq
+          roles:
+            - detect
+
+    detect:
+      width: 640
+      height: 360
+      fps: 4
+
+    best_image_timeout: 10
+
+    motion:
+      threshold: 15
+
+    mqtt:
+      enabled: true
+      timestamp: false
+      bounding_box: true
+      crop: false
+
+    objects:
+      track:
+        - person
+        - car
+
   frontyard_terrace:
     ffmpeg:
       inputs:
