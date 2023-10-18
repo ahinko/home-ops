@@ -1,8 +1,8 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
     ":enableRenovate",
-    "config:base",
+    "config:recommended",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
@@ -16,48 +16,42 @@
     "github>ahinko/home-ops//.github/renovate/labels.json5",
     "github>ahinko/home-ops//.github/renovate/regexManagers.json5",
     "github>ahinko/home-ops//.github/renovate/semanticCommits.json5",
-    "github>ahinko/home-ops//.github/renovate/versioning.json5"
+    "github>ahinko/home-ops//.github/renovate/versioning.json5",
   ],
-  "platform": "github",
-  "username": "homeops-bot[bot]",
-  "repositories": ["ahinko/home-ops"],
-  "timezone": "Europe/Stockholm",
-  "onboarding": false,
-  "requireConfig": "optional",
-  "gitAuthor": "homeops-bot <104016614+homeops-bot[bot]@users.noreply.github.com>",
-  "dependencyDashboardTitle": "🤖 Renovate Dashboard",
-  "suppressNotifications": ["prIgnoreNotification"],
-  "ignoreDeps": [
+  platform: "github",
+  username: "homeops-bot[bot]",
+  repositories: ["ahinko/home-ops"],
+  timezone: "Europe/Stockholm",
+  onboarding: false,
+  requireConfig: "optional",
+  gitAuthor: "homeops-bot <104016614+homeops-bot[bot]@users.noreply.github.com>",
+  dependencyDashboardTitle: "🤖 Renovate Dashboard",
+  suppressNotifications: ["prIgnoreNotification"],
+  ignoreDeps: [
     "ghcr.io/fluxcd/helm-controller",
     "ghcr.io/fluxcd/image-automation-controller",
     "ghcr.io/fluxcd/image-reflector-controller",
     "ghcr.io/fluxcd/kustomize-controller",
     "ghcr.io/fluxcd/notification-controller",
-    "ghcr.io/fluxcd/source-controller"
+    "ghcr.io/fluxcd/source-controller",
   ],
   "pre-commit": {
-    "enabled": true
+    enabled: true,
   },
   "docker-compose": {
-    "fileMatch": [
+    fileMatch: [
       "(^|/)docker-compose.*\\.yaml$",
       ".taskfiles/.+\\.yaml$",
-      "infrastructure/talos/.+\\.sh$"
-    ]
+      "infrastructure/talos/.+\\.sh$",
+    ],
   },
-  "flux": {
-    "fileMatch": [
-      "kubernetes/.+\\.yaml$"
-    ]
+  flux: {
+    fileMatch: ["kubernetes/.+\\.yaml$"],
   },
   "helm-values": {
-    "fileMatch": [
-      "kubernetes/.+\\.yaml$",
-    ]
+    fileMatch: ["kubernetes/.+\\.yaml$"],
   },
-  "kubernetes": {
-    "fileMatch": [
-      "kubernetes/.+\\.yaml$"
-    ]
+  kubernetes: {
+    fileMatch: ["kubernetes/.+\\.yaml$"],
   },
 }

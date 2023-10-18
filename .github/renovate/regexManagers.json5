@@ -1,51 +1,51 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  regexManagers: [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  customManagers: [
     {
-      description: 'Cloudnative Postgres container',
+      customType: "regex",
+      description: "Cloudnative Postgres container",
       fileMatch: [
-        'kubernetes/apps/databases/cloudnative-pg/clusters/postgres-cluster.yaml'
+        "kubernetes/apps/databases/cloudnative-pg/clusters/postgres-cluster.yaml",
       ],
-      matchStrings: [
-        'imageName: (?<depName>.*?):(?<currentValue>.*)'
-      ],
-      datasourceTemplate: 'docker'
+      matchStrings: ["imageName: (?<depName>.*?):(?<currentValue>.*)"],
+      datasourceTemplate: "docker",
     },
     {
-      description: 'Process Kubernetes versions',
+      customType: "regex",
+      description: "Process Kubernetes versions",
       fileMatch: [
-        'infrastructure/ansible/roles/k8s/defaults/main.yaml',
-        'infrastructure/talos/talconfig.yaml'
+        "infrastructure/ansible/roles/k8s/defaults/main.yaml",
+        "infrastructure/talos/talconfig.yaml",
       ],
       matchStrings: [
-        'kubernetes_version: (?<currentValue>.*)',
-        'kubernetesVersion: (?<currentValue>.*)',
+        "kubernetes_version: (?<currentValue>.*)",
+        "kubernetesVersion: (?<currentValue>.*)",
       ],
-      depNameTemplate: 'ghcr.io/siderolabs/kubelet',
-      datasourceTemplate: 'docker'
+      depNameTemplate: "ghcr.io/siderolabs/kubelet",
+      datasourceTemplate: "docker",
     },
     {
-      description: 'Process Talos versions',
+      customType: "regex",
+      description: "Process Talos versions",
       fileMatch: [
-          'infrastructure/talos/common.sh',
-          'infrastructure/talos/talconfig.yaml',
+        "infrastructure/talos/common.sh",
+        "infrastructure/talos/talconfig.yaml",
       ],
       matchStrings: [
-        'talosVersion: (?<currentValue>.*)',
-        'installer:(?<currentValue>.*)',
+        "talosVersion: (?<currentValue>.*)",
+        "installer:(?<currentValue>.*)",
       ],
-      depNameTemplate: 'ghcr.io/siderolabs/installer',
-      datasourceTemplate: 'docker'
+      depNameTemplate: "ghcr.io/siderolabs/installer",
+      datasourceTemplate: "docker",
     },
     {
-      description: 'Process CLI versions',
-      fileMatch: [
-          '.taskfiles/.+\\.yaml$'
-      ],
+      customType: "regex",
+      description: "Process CLI versions",
+      fileMatch: [".taskfiles/.+\\.yaml$"],
       matchStrings: [
-        'github.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>[a-z0-9.]*)',
+        "github.com/(?<depName>.*?)/releases/download/(?<currentValue>[a-z0-9.]*)",
       ],
-      datasourceTemplate: 'github-releases'
+      datasourceTemplate: "github-releases",
     },
   ],
 }

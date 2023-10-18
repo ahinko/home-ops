@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
 # kubectl port-forward service/sonarr -n default 8989:80
@@ -9,12 +10,6 @@ PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
 
 CONFIG_FILE="/config/config.xml" && [[ "${PUSHOVER_DEBUG}" == "true" ]] && CONFIG_FILE="config.xml"
 ERRORS=()
-
-#
-# Discoverable variables
-#
-# shellcheck disable=SC2086
-PUSHOVER_STARR_APIKEY="$(xmlstarlet sel -t -v "//ApiKey" -nl ${CONFIG_FILE})" && [[ -z "${PUSHOVER_STARR_APIKEY}" ]] && ERRORS+=("PUSHOVER_STARR_APIKEY not defined")
 
 #
 # Configurable variables
@@ -56,16 +51,16 @@ fi
 # Send notification on Download or Upgrade
 #
 if [[ "${sonarr_eventtype:-}" == "Download" ]]; then
-    printf -v PUSHOVER_TITLE "New Episode %s" "${sonarr_eventtype:-Download}"
-    printf -v PUSHOVER_MESSAGE "<b>%s (S%02dE%02d)</b><small>\n%s</small><small>\n\n<b>Quality:</b> %s</small><small>\n<b>Client:</b> %s</small><small>\n<b>Upgrade:</b> %s</small>" \
-        "${sonarr_series_title:-"Mystery Science Theater 3000"}" \
-        "${sonarr_episodefile_seasonnumber:-"8"}" \
-        "${sonarr_episodefile_episodenumbers:-"20"}" \
-        "${sonarr_episodefile_episodetitles:-"Space Mutiny"}" \
-        "${sonarr_episodefile_quality:-"DVD"}" \
-        "${sonarr_download_client:-"qbittorrent"}" \
-        "${sonarr_isupgrade:-"False"}"
-    printf -v PUSHOVER_URL "https://%s/series/%s" "${sonarr_applicationurl:-localhost}" "${sonarr_series_titleslug:-""}"
+    if [[ "${sonarr_isupgrade}" == "True" ]]; then pushover_title="Upgraded"; else pushover_title="Downloaded"; fi
+    printf -v PUSHOVER_TITLE "Episode %s" "${pushover_title}"
+    printf -v PUSHOVER_MESSAGE "<b>%s (S%02dE%02d)</b><small>\n%s</small><small>\n\n<b>Client:</b> %s</small><small>\n<b>Quality:</b> %s</small>" \
+        "${sonarr_series_title}" \
+        "${sonarr_episodefile_seasonnumber}" \
+        "${sonarr_episodefile_episodenumbers}" \
+        "${sonarr_episodefile_episodetitles}" \
+        "${sonarr_download_client}" \
+        "${sonarr_episodefile_quality}"
+    printf -v PUSHOVER_URL "%s/series/%s" "${sonarr_applicationurl:-localhost}" "${sonarr_series_titleslug}"
     printf -v PUSHOVER_URL_TITLE "View series in %s" "${sonarr_instancename:-Sonarr}"
 fi
 

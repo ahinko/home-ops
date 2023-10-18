@@ -29,7 +29,7 @@ spec:
   uninstall:
     keepHistory: false
 
-  # Values link: https://github.com/rook/rook/blob/release-1.11/deploy/charts/rook-ceph/values.yaml
+  # Values link: https://github.com/rook/rook/blob/release-1.12/deploy/charts/rook-ceph/values.yaml
   values:
     crds:
       enabled: true
