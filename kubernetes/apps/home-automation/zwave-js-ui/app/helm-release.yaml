@@ -37,6 +37,18 @@ spec:
                 "ips": ["192.168.71.205/24"]
               }]
 
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values:
+                          - "helios"
+                          - "iris"
+                          - "zeus"
+                          - "poseidon"
         containers:
           main:
             image:
@@ -99,16 +111,3 @@ spec:
         existingClaim: "zwave-js-ui-config"
         globalMounts:
           - path: /usr/src/app/store
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - "helios"
-                    - "iris"
-                    - "zeus"
-                    - "poseidon"

@@ -37,6 +37,18 @@ spec:
                 "ips": ["192.168.71.201/24"]
               }]
 
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values:
+                          - "helios"
+                          - "iris"
+                          - "zeus"
+                          - "poseidon"
         containers:
           main:
             image:
@@ -93,16 +105,3 @@ spec:
         existingClaim: "home-assistant-config"
         globalMounts:
           - path: /config
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - "helios"
-                    - "iris"
-                    - "zeus"
-                    - "poseidon"

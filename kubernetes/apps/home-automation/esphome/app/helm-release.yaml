@@ -37,6 +37,19 @@ spec:
                 "ips": ["192.168.71.200/24"]
               }]
 
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values:
+                          - "helios"
+                          - "iris"
+                          - "zeus"
+                          - "poseidon"
+
         containers:
           main:
             image:
@@ -81,16 +94,3 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /config/.esphome
-
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - "helios"
-                    - "iris"
-                    - "zeus"
-                    - "poseidon"
