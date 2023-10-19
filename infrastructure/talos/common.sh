@@ -64,7 +64,7 @@ check_postgres_health() {
   do
     echo "Checking if Postgres cluster is healthy."
 
-    if kubectl get clusters.postgresql.cnpg.io -n databases postgres | grep -q 'Cluster in healthy state'; then
+    if kubectl get clusters.postgresql.cnpg.io -n databases postgres16 | grep -q 'Cluster in healthy state'; then
       HEALTH=true
     else
       echo -e "${RED}Postgres cluster not healthy, waiting 60s before checking again.${NC}"
