@@ -50,8 +50,6 @@ spec:
               repository: ghcr.io/onedr0p/radarr
               tag: 5.0.3.8127
             env:
-              PUSHOVER_DEBUG: "false"
-              PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
@@ -81,7 +79,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
         hosts:
-          - host: *host
+          - host: &host radarr.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -99,10 +97,3 @@ spec:
         existingClaim: downloads-nfs
         globalMounts:
           - path: /media
-      scripts:
-        type: configMap
-        name: radarr-pushover
-        globalMounts:
-          - path: /scripts/pushover-notify.sh
-            subPath: pushover-notify.sh
-            readOnly: true
