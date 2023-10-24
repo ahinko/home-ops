@@ -14,7 +14,7 @@ spec:
     secretName: element-secrets
     config:
       genericSharedSecretSecretKey: genericSharedSecret
-      domainName: "element.${SECRET_DOMAIN}"
+      domainName: "elements.${SECRET_DOMAIN}"
   components:
     elementWeb:
       secretName: external-elementweb-secrets
@@ -26,18 +26,20 @@ spec:
             certmanager:
               issuer: letsencrypt
             mode: certmanager
-          fqdn: "element-web.${SECRET_DOMAIN}"
+          fqdn: "elements-web.${SECRET_DOMAIN}"
     synapse:
+      secretName: element-secrets
       config:
         additional: |
           enable_registration: False
           enable_registration_without_verification: False
         postgresql:
           host: postgres16-rw.databases.svc.cluster.local
-          user: element-5MXTsN
-          database: element
+          user: elements-tLFJ95
+          database: elements
           passwordSecretKey: pgpassword
           sslMode: disable
+        signingKeySecretKey: signingKey
       k8s:
         ingress:
           # annotations:
@@ -46,7 +48,7 @@ spec:
             certmanager:
               issuer: letsencrypt
             mode: certmanager
-          fqdn: "element-hs.${SECRET_DOMAIN}"
+          fqdn: "elements-hs.${SECRET_DOMAIN}"
     wellKnownDelegation:
       secretName: external-wellknowndelegation-secrets
       k8s:
@@ -62,8 +64,8 @@ spec:
       config:
         postgresql:
           host: postgres16-rw.databases.svc.cluster.local
-          user: element-5MXTsN
-          database: element
+          user: elements-tLFJ95
+          database: elements
           passwordSecretKey: pgpassword
           sslMode: disable
         syncSecretSecretKey: syncSecret
@@ -75,4 +77,4 @@ spec:
             certmanager:
               issuer: letsencrypt
             mode: certmanager
-          fqdn: "element-sync.${SECRET_DOMAIN}"
+          fqdn: "elements-sync.${SECRET_DOMAIN}"

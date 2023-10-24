@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./database.yaml
   - ./sops.secrets.yaml
-  #- ./element-cluster.yaml
+  - ./element-cluster.yaml

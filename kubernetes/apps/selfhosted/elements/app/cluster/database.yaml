@@ -2,18 +2,18 @@
 apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
-  name: element-db
+  name: elements-db
   namespace: selfhosted
 spec:
-  database: element
+  database: elements
 ---
 apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
-  name: element-user
+  name: elements-user
   namespace: selfhosted
 spec:
-  role: element
-  database: element-db
+  role: elements
+  database: elements-db
   secretName: database
   privileges: OWNER
