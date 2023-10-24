@@ -122,7 +122,7 @@ spec:
                 cpu: 100m
                 memory: 256Mi
               limits:
-                memory: 512Mi
+                memory: 2048Mi
 
     service:
       main:
