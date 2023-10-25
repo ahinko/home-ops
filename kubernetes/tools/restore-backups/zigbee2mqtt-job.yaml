@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-zigbee2mqtt
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.53
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.54
           args:
             - /run.sh
           env:
