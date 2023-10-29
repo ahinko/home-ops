@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      version: 6.61.1
+      version: 7.0.1
   interval: 60m
   timeout: 20m
   maxHistory: 2
