@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: v1.12.6
+      version: v1.12.7
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -33,7 +33,7 @@ spec:
   values:
     toolbox:
       enabled: true
-      image: rook/ceph:v1.12.6
+      image: rook/ceph:v1.12.7
 
     monitoring:
       enabled: true
