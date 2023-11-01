@@ -46,7 +46,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-proxy
-              tag: v1.83.0
+              tag: v1.84.0
             env:
               # URLs
               IMMICH_WEB_URL:
