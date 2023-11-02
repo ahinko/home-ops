@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-radicale
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.54
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.55
           args:
             - /run.sh
           env:
