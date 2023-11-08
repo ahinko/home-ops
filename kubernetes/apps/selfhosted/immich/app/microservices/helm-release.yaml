@@ -55,7 +55,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.84.0
+              tag: v1.85.0
             args:
               - start-microservices.sh
 
