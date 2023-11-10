@@ -119,7 +119,7 @@ upgrade_talos_on_node() {
   echo "----------------------------------------------------------------"
   echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
 
-  talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.5.4
+  talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.5.5
 
   # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
   if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
