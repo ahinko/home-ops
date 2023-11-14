@@ -5,7 +5,7 @@ metadata:
   name: emqx
   namespace: home-automation
 spec:
-  image: emqx/emqx:5.3.0
+  image: emqx/emqx:5.3.1
 
   config:
     mode: "Merge"
