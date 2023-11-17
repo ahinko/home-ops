@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph
-      version: v1.12.7
+      version: v1.12.8
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -36,7 +36,7 @@ spec:
 
     image:
       repository: rook/ceph
-      tag: v1.12.7
+      tag: v1.12.8
 
     pspEnable: false
 
