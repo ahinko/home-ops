@@ -26,4 +26,3 @@
     - role: homelab
     - role: backup
     - role: znapzend
-    - role: k8s
