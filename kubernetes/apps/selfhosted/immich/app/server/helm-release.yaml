@@ -130,6 +130,26 @@ spec:
           http:
             port: *port
 
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+          nginx.ingress.kubernetes.io/upstream-hash-by: "$client_ip"
+        hosts:
+          - host: &host photos.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
     persistence:
       config:
         enabled: true

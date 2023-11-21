@@ -1,18 +1,12 @@
 {
   "ffmpeg": {
-    "preset": "faster",
-    "targetResolution": "1080",
     "crf": 23,
     "threads": 0,
+    "preset": "ultrafast",
     "targetVideoCodec": "h264",
     "targetAudioCodec": "aac",
+    "targetResolution": "720",
     "maxBitrate": "0",
-    "bframes": -1,
-    "refs": 0,
-    "gopSize": 0,
-    "npl": 0,
-    "temporalAQ": false,
-    "cqMode": "auto",
     "twoPass": false,
     "transcode": "required",
     "tonemap": "hable",
@@ -40,13 +34,7 @@
     "sidecar": {
       "concurrency": 5
     },
-    "library": {
-      "concurrency": 1
-    },
     "storageTemplateMigration": {
-      "concurrency": 5
-    },
-    "migration": {
       "concurrency": 5
     },
     "thumbnailGeneration": {
@@ -57,13 +45,13 @@
     }
   },
   "machineLearning": {
+    "classification": {
+      "minScore": 0.7,
+      "enabled": true,
+      "modelName": "microsoft/resnet-50"
+    },
     "enabled": true,
     "url": "http://immich-machine-learning.selfhosted.svc.cluster.local:3003",
-    "classification": {
-      "enabled": true,
-      "modelName": "microsoft/resnet-50",
-      "minScore": 0.9
-    },
     "clip": {
       "enabled": true,
       "modelName": "ViT-B-32::openai"
@@ -75,14 +63,6 @@
       "maxDistance": 0.6,
       "minFaces": 1
     }
-  },
-  "map": {
-    "enabled": true,
-    "tileUrl": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-  },
-  "reverseGeocoding": {
-    "enabled": true,
-    "citiesFileOverride": "cities500"
   },
   "oauth": {
     "enabled": false,
@@ -106,7 +86,7 @@
   "thumbnail": {
     "webpSize": 250,
     "jpegSize": 1440,
-    "quality": 80,
+    "quality": 90,
     "colorspace": "p3"
   }
 }
