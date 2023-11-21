@@ -26,7 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
   values:
     image:
       repository: registry.k8s.io/external-dns/external-dns
@@ -38,24 +37,32 @@ spec:
     interval: 60m
     logLevel: warning
     provider: cloudflare
+
     env:
       - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
             name: external-dns-cloudflare-api-key
             key: cloudflare_api_token
+
     extraArgs:
       - --cloudflare-proxied
       - --annotation-filter=external-dns.alpha.kubernetes.io/target
+
     policy: sync
+
     sources:
       - ingress
+      - crd
+
     txtPrefix: "k8s."
     txtOwnerId: "default"
+
     domainFilters:
       - "${SECRET_DOMAIN}"
     serviceMonitor:
       enabled: true
+
     resources:
       requests:
         memory: 100Mi
