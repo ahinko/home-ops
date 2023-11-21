@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: networking
 resources:
   - ./helm-release.yaml
-  - ./certificate.yaml
+  - ./certificates/homelab.yaml
 configMapGenerator:
   - name: cloudflare-ip-ranges
     files:
