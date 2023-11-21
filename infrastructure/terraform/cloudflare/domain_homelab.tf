@@ -80,7 +80,7 @@ module "cf_domain_homelab" {
     {
       enabled     = true
       description = "Firewall rule to block all countries except SE/DK/NO/FI"
-      expression  = "(ip.geoip.country ne \"SE\") and (ip.geoip.country ne \"DK\") and (ip.geoip.country ne \"NO\") and (ip.geoip.country ne \"FI\")"
+      expression  = "(not ip.geoip.country in {\"SE\" \"DK\" \"NO\" \"FI\"})"
       action      = "block"
     },
   ]
