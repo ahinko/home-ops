@@ -14,12 +14,13 @@
       customType: "regex",
       description: "Process Kubernetes versions",
       fileMatch: [
-        "infrastructure/ansible/roles/k8s/defaults/main.yaml",
         "infrastructure/talos/talconfig.yaml",
+        "infrastructure/talos/upgrade-k8s.sh",
       ],
       matchStrings: [
         "kubernetes_version: (?<currentValue>.*)",
         "kubernetesVersion: (?<currentValue>.*)",
+        "--to (?<currentValue>.*)",
       ],
       depNameTemplate: "ghcr.io/siderolabs/kubelet",
       datasourceTemplate: "docker",

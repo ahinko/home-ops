@@ -19,3 +19,4 @@ includes:
   flux: .taskfiles/flux.yaml
   maintenance: .taskfiles/maintenance.yaml
   rook: .taskfiles/rook/tasks.yaml
+  talos: .taskfiles/talos.yaml

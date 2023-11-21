@@ -32,7 +32,7 @@ spec:
                 - name: DELETE_OLDER_THAN
                   value: "14d"
                 - name: EXCLUDE
-                  value: ""
+                  value: "./metadata"
                 - name: HEALTHCHECK_URL
                   value: "http://uptime-kuma.monitoring:3001/api/push/DaWtMnBk5h?status=up&msg=OK&ping="
               volumeMounts:
