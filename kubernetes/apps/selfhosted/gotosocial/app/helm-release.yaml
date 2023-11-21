@@ -1,0 +1,149 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app gotosocial
+  namespace: selfhosted
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: 0.4.14
+      sourceRef:
+        kind: HelmRepository
+        name: fsociety-charts
+        namespace: flux-system
+      interval: 60m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    replicaCount: 1
+
+    image:
+      repository: superseriousbusiness/gotosocial
+      tag: 0.12.2
+
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
+      hosts:
+        - host: &host "mstdn.${SECRET_SOCIAL_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+          secretName: ${SECRET_SOCIAL_TLS_NAME}
+
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+
+    gotosocial:
+      strategy:
+        type: Recreate
+
+      persistence:
+        enabled: true
+        accessMode: "ReadWriteMany"
+        size: "100Gi"
+        storageClass: rook-cephfs
+
+      config:
+        logLevel: "warn"
+        logDBQueries: false
+        logClientIp: true
+        logTimestampFormat: "02/01/2006 15:04:05.000"
+        applicationName: "gotosocial"
+        landingPageUser: ""
+        host: *host
+        accountDomain: *host
+        protocol: "https"
+        bindAddress: "0.0.0.0"
+        trustedProxies:
+          - "10.0.0.0/8"
+          - "172.16.0.0/12"
+          - "192.168.0.0/16"
+        db:
+          sqliteAddress: "/gotosocial/storage/sqlite.db"
+          maxOpenConnsMultiplier: "8"
+          sqliteSynchronous: "NORMAL"
+          sqliteCacheSize: "8MiB"
+          sqliteBusyTimeout: "30m"
+          sqliteTmpdir: "/gotosocial/storage/"
+          visibilitySweepFreq: "1m"
+          cache:
+            memoryTarget: "100MiB"
+        web:
+          templateBaseDir: "./web/template/"
+          assetBaseDir: "./web/assets/"
+          accountsCustomCssLength: "10000"
+          deliverToSharedInboxes: "true"
+          injectMastodonVersion: "false"
+        instance:
+          federationMode: "blocklist"
+          exposePeers: false
+          exposeSuspended: false
+          exposeSuspendedWeb: false
+          exposePublicTimeline: false
+          deliverToSharedInboxes: true
+        accounts:
+          registrationOpen: false
+          approvalRequired: true
+          reasonRequired: true
+          allowCustomCSS: false
+        media:
+          imageMaxSize: "10485760"
+          videoMaxSize: "41943040"
+          descriptionMinChars: "0"
+          descriptionMaxChars: "500"
+          mediaRemoteCacheDays: "2"
+          emojiLocalMaxSize: "51200"
+          emojiRemoteMaxSize: "102400"
+        storage:
+          backend: "local"
+          localBasePath: "/gotosocial/storage"
+        statuses:
+          maxChars: "5000"
+          cwMaxChars: "100"
+          pollMaxOptions: "6"
+          pollOptionMaxChars: "50"
+          mediaMaxFiles: "6"
+        letsencrypt:
+          enabled: false
+          port: "80"
+          certDir: "/gotosocial/storage/certs"
+          emailAddress: ""
+        tls:
+          certificateChain: ""
+          certificateKey: ""
+
+    postgresql:
+      enabled: false
+
+    externalPostgresql:
+      enabled: true
+      host: postgres16-rw.databases.svc.cluster.local
+      port: 5432
+      username: gotosocial-5XBJ8X
+      existingSecret: database-gotosocial-user
+      existingSecretPasswordKey: PASSWORD
+      tls_mode: disable
+      database: gotosocial

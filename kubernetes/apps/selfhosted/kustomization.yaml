@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./element/install.yaml
+  - ./gotosocial/install.yaml
   - ./immich/install.yaml
   - ./linkding/install.yaml
   - ./miniflux/install.yaml
