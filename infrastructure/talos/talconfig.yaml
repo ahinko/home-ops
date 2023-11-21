@@ -1,15 +1,15 @@
 ---
 clusterName: metal
+endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
+
 talosVersion: v1.5.5
 kubernetesVersion: v1.28.4
-endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 
 cniConfig:
   name: none
 
 nodes:
   - hostname: hades
-    disableSearchDomain: true
     ipAddress: 192.168.20.23
     controlPlane: true
     installDisk: /dev/sda
@@ -23,6 +23,10 @@ nodes:
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
     patches:
       - |-
         machine:
@@ -31,7 +35,6 @@ nodes:
               - talos.board=rpi_generic
 
   - hostname: poseidon
-    disableSearchDomain: true
     ipAddress: 192.168.20.24
     controlPlane: true
     installDisk: /dev/nvme0n1
@@ -51,16 +54,16 @@ nodes:
               routeMetric: 4096
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/i915-ucode:20230310
-              - image: ghcr.io/siderolabs/intel-ucode:20230512
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
 
   - hostname: zeus
-    disableSearchDomain: true
     ipAddress: 192.168.20.25
     controlPlane: true
     installDisk: /dev/nvme0n1
@@ -80,16 +83,16 @@ nodes:
               routeMetric: 4096
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/i915-ucode:20230310
-              - image: ghcr.io/siderolabs/intel-ucode:20230512
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
 
   - hostname: helios
-    disableSearchDomain: true
     ipAddress: 192.168.20.21
     controlPlane: false
     installDisk: /dev/nvme0n1
@@ -107,6 +110,14 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
 
   - hostname: iris
     disableSearchDomain: true
@@ -127,9 +138,32 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
 
 controlPlane:
   patches:
+    # Disable search domain everywhere
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - gbg2.ntp.se
+            - sth1.ntp.se
+
     # Enable KubePrism
     - |-
       machine:
@@ -167,6 +201,8 @@ controlPlane:
               endpoints:
                 - https://zot.${SECRET_DOMAIN}/v2/public.ecr.aws
               overridePath: true
+
+    # Cluster configuration
     - |-
       cluster:
         allowSchedulingOnMasters: false
@@ -180,10 +216,7 @@ controlPlane:
           - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
 
-    - |-
-      - op: remove
-        path: /cluster/apiServer/admissionControl
-
+    # Configure containerd
     - |-
       machine:
         files:
@@ -195,6 +228,14 @@ controlPlane:
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
 
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Kubelet configuration
+    - |-
+      machine:
         kubelet:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
@@ -205,18 +246,38 @@ controlPlane:
             validSubnets:
                 - 192.168.20.0/24
 
+    # Custom sysctls
+    - |-
+      machine:
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
 
+worker:
+  patches:
+    # Disable search domain everywhere
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Configure NTP
+    - |-
+      machine:
         time:
           disabled: false
           servers:
             - gbg2.ntp.se
             - sth1.ntp.se
 
-worker:
-  patches:
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
     # Configure pull through cache
     - |-
       machine:
@@ -246,6 +307,8 @@ worker:
               endpoints:
                 - https://zot.${SECRET_DOMAIN}/v2/public.ecr.aws
               overridePath: true
+
+    # Configure containerd
     - |-
       machine:
         files:
@@ -257,6 +320,9 @@ worker:
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
 
+    # Kubelet configuration
+    - |-
+      machine:
         kubelet:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
@@ -267,17 +333,9 @@ worker:
             validSubnets:
                 - 192.168.20.0/24
 
-        install:
-          extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20230310
-            - image: ghcr.io/siderolabs/intel-ucode:20230512
-
+    # Custom sysctls
+    - |-
+      machine:
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
-
-        time:
-          disabled: false
-          servers:
-            - gbg2.ntp.se
-            - sth1.ntp.se
