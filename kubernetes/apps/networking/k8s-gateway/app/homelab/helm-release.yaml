@@ -2,13 +2,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app k8s-gateway
+  name: k8s-gateway-homelab
   namespace: networking
 spec:
   interval: 60m
   chart:
     spec:
-      chart: *app
+      chart: k8s-gateway
       version: 2.0.4
       sourceRef:
         kind: HelmRepository
@@ -36,4 +36,4 @@ spec:
       type: LoadBalancer
       port: 53
       annotations:
-        metallb.universe.tf/loadBalancerIPs: "${LB_K8S_GATEWAY}"
+        metallb.universe.tf/loadBalancerIPs: "${LB_K8S_GATEWAY_HOMELAB}"
