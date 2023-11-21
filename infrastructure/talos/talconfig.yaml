@@ -130,6 +130,14 @@ nodes:
 
 controlPlane:
   patches:
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
     # Configure pull through cache
     - |-
       machine:
