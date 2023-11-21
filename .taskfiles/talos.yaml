@@ -1,0 +1,69 @@
+---
+version: "3"
+
+tasks:
+  generate:
+    desc: Generate Talos machine configurations (task talos:generate)
+    dir: infrastructure/talos
+    silent: true
+    cmds:
+      - talhelper genconfig
+    sources:
+      - talconfig.yaml
+      - talenv.yaml
+      - talsecret.yaml
+    generates:
+      - clusterconfig/*.yaml
+      - clusterconfig/talosconfig
+
+  upgrade-k8s:
+    desc: Upgrade Kubernetes
+    dir: infrastructure/talos
+    silent: true
+    cmds:
+      - ./upgrade-k8s.sh
+
+  upgrade-nodes:
+    desc: Upgrade Talos on all nodes
+    dir: infrastructure/talos
+    silent: true
+    cmds:
+      - task: generate
+      - ./upgrade-talos.sh
+
+  update-integrations:
+    desc: Update manifests to be installed along side Talos
+    cmds:
+      - kustomize build --enable-helm --load-restrictor LoadRestrictionsNone infrastructure/talos/integrations/kubelet-csr-approver/ --output infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+      - kustomize build --enable-helm --load-restrictor LoadRestrictionsNone infrastructure/talos/integrations/cni/ --output infrastructure/talos/integrations/cni/cilium.yaml
+      - rm -rf infrastructure/talos/integrations/kubelet-csr-approver/charts
+      - rm -rf infrastructure/talos/integrations/cni/charts
+    silent: true
+
+  write-talos-arm64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.5.5/metal-rpi_4-arm64.img.xz && xz -d metal-rpi_4-arm64.img.xz"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=metal-rpi_4-arm64.img of=${path} bs=4m
+      - "rm metal-rpi_4-arm64.img"
+
+  write-talos-amd64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.5.5/talos-amd64.iso"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=talos-amd64.iso of=${path} bs=4m && sync
+      - "rm talos-amd64.iso"

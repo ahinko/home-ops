@@ -11,17 +11,7 @@ NODE=${NODE:2}
 echo -e "${BLUE}Taking a snapshot of etcd that can be used in disaster recovery${NC}"
 talosctl -n $NODE etcd snapshot etcd.backup
 
-get_nodes
-
-for key in "${!controlplanes[@]}";
-do
-  upgrade_k8s_on_node "$key" "${controlplanes[$key]}"
-done
-
-for key in "${!workers[@]}";
-do
-  upgrade_k8s_on_node "$key" "${workers[$key]}"
-done
+talosctl upgrade-k8s -n $NODE --to v1.28.4
 
 echo "----------------------------------------------------------------"
 echo -e "${GREEN}Upgrade complete!${NC}"

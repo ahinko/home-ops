@@ -33,7 +33,7 @@ So what I have done is to prepare my Raspberry Pis for USB boot (use Google for 
 But first I connect the SSD (using USB) to my laptop and then I write Talos to that disk by running:
 
 ```shell
-task k8s:write-talos-arm64-to-usb
+task talos:write-talos-arm64-to-usb
 ```
 
 The task will ask witch disk to write to. Use `diskutil list` to identify the attached disk. After that I attach the SSD to the Raspberry Pi and Talos will boot in to maintenace mode.
@@ -43,7 +43,7 @@ The task will ask witch disk to write to. Use `diskutil list` to identify the at
 For my Intel NUC:s I write Talos to a USB stick using:
 
 ```shell
-task k8s:write-talos-amd64-to-usb
+task talos:write-talos-amd64-to-usb
 ```
 
 After that I attach the USB stick to the NUC, boot it from the USB drive and Talos will boot in to maintenace mode. When Talos has booted up you can remove the USB stick and attach it to another node if wanted.
@@ -69,6 +69,8 @@ files and after that the script will both provision any worker nodes and as well
 
 When we are happy with the configuration we run:
 
+*** DISCLAMER: this script has not been tested in a while. No guaranties that it will work. ***
+
 ```shell
 task k8s:provision
 ```
@@ -86,17 +88,7 @@ Therefor you need to modify the [secrets file](../../infrastructure/terraform/cl
 
 ## 6. Restore backups
 
-Since I rebuild my cluster from the ground up every now and then I have a need to restore backups for some of my running services when the cluster is being rebuilt. For this I have created a separate script that we can run:
-
-```shell
-task k8s:restore-backup-all
-```
-
-This script will find all PVCs that uses the `storageclass` named `rook-cephfs` and then find all deployments that uses those PVCs.
-
-Each deployment will be scaled down to 0 replicas and then the restore job will be created.
-
-When the restore job has completed the deployment will be scaled up to 1 replica.
+`TODO`
 
 ## 7. Additional notes
 

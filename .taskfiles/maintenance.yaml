@@ -14,28 +14,16 @@ tasks:
       - echo "Run kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090 9090 first"
       - krr simple -p http://127.0.0.1:9090
 
-  on:
-    desc: Set cluster in maintenance mode
-    silent: true
-    cmds:
-      - task: nfs:pause
-
-  off:
-    desc: Turn off maintenance mode
-    silent: true
-    cmds:
-      - task: nfs:resume
-
   nfs:pause:
     desc: Pause all Helm Releases that rely on NFS storage
     silent: true
     cmds:
-      - kubectl drain atlas --delete-emptydir-data --ignore-daemonsets --force
       - flux suspend hr -n downloads lidarr
       - flux suspend hr -n downloads radarr
       - flux suspend hr -n downloads sonarr-v4
       - flux suspend hr -n downloads sonarr-requests
       - flux suspend hr -n downloads sabnzbd
+      - flux suspend hr -n downloads slskd
       - flux suspend hr -n selfhosted immich-web
       - flux suspend hr -n selfhosted immich-machine-learning
       - flux suspend hr -n selfhosted immich-microservices
@@ -47,12 +35,14 @@ tasks:
       - kubectl scale -n downloads deploy/sonarr-v4 --replicas 0
       - kubectl scale -n downloads deploy/sonarr-requests --replicas 0
       - kubectl scale -n downloads deploy/sabnzbd --replicas 0
+      - kubectl scale -n downloads deploy/slskd --replicas 0
       - kubectl scale -n selfhosted deploy/immich-web --replicas 0
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
       - kubectl scale -n selfhosted deploy/immich-microservices --replicas 0
       - kubectl scale -n selfhosted deploy/immich-server --replicas 0
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 0
       - kubectl scale -n selfhosted deploy/minio --replicas 0
+      - kubectl drain atlas --delete-emptydir-data --ignore-daemonsets --force
 
   nfs:resume:
     desc: Resume all Helm Releases that rely on NFS storage
@@ -61,10 +51,11 @@ tasks:
       - kubectl uncordon atlas
       - kubectl scale -n selfhosted deploy/minio --replicas 1
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
-      - kubectl scale -n selfhosted deploy/immich-server --replicas 2
-      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 2
-      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 3
-      - kubectl scale -n selfhosted deploy/immich-web --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-server --replicas 1
+      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 1
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 1
+      - kubectl scale -n selfhosted deploy/immich-web --replicas 1
+      - kubectl scale -n downloads deploy/slskd --replicas 1
       - kubectl scale -n downloads deploy/sabnzbd --replicas 1
       - kubectl scale -n downloads deploy/lidarr --replicas 1
       - kubectl scale -n downloads deploy/radarr --replicas 1
@@ -76,6 +67,7 @@ tasks:
       - flux resume hr -n selfhosted immich-machine-learning
       - flux resume hr -n selfhosted immich-microservices
       - flux resume hr -n selfhosted immich-web
+      - flux resume hr -n downloads slskd
       - flux resume hr -n downloads sabnzbd
       - flux resume hr -n downloads lidarr
       - flux resume hr -n downloads radarr

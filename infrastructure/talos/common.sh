@@ -35,20 +35,15 @@ check_rook_health() {
   do
     echo "Checking if Rook/Ceph cluster is healthy."
 
-    # Get name of rook ceph tools pod
-    ROOK_CEPH_TOOLS_POD=$(kubectl get pod -l app=rook-ceph-tools -n rook-ceph -o jsonpath="{.items[0].metadata.name}")
-
-    # make sure rook ceph is healthy
-    HEALTH_CHECK=$(kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -c rook-ceph-tools -- ceph status | grep "health:")
-
-    if [[ $HEALTH_CHECK == *"HEALTH_OK"* ]]; then
+    if kubectl get -n rook-ceph cephcluster rook-ceph | grep -q 'HEALTH_OK'; then
       HEALTH=true
     else
-      echo -e "${RED}Rook/Ceph not healthy, waiting 60s before checking again.${NC}"
+      echo -e "${RED}Rook/Ceph cluster not healthy, waiting 60s before checking again.${NC}"
       sleep 60
 
       # Archive any crash messages since those will be holding up everything since the health will be false until those
       # messages has been archived
+      ROOK_CEPH_TOOLS_POD=$(kubectl get pod -l app=rook-ceph-tools -n rook-ceph -o jsonpath="{.items[0].metadata.name}")
       kubectl exec -n rook-ceph $ROOK_CEPH_TOOLS_POD -c rook-ceph-tools -- ceph crash archive-all
     fi
   done
@@ -91,27 +86,6 @@ get_nodes() {
   done <<< "$config"
 }
 
-upgrade_k8s_on_node() {
-  NODENAME=$1
-  IP=$2
-
-  echo "----------------------------------------------------------------"
-  echo -e "${BLUE}Upgrading Kubernetes on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. Will also sleep for 60 seconds between nodes."
-
-  talosctl apply-config -n ${IP} -f $(dirname "$0")/clusterconfig/metal-${NODENAME}.yaml
-
-  sleep 60
-
-  # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
-  if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
-    kubectl delete job -n kube-system tainter-temp
-    kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
-  fi
-
-  check_rook_health
-  check_postgres_health
-}
-
 upgrade_talos_on_node() {
   NODENAME=$1
   IP=$2
@@ -119,10 +93,11 @@ upgrade_talos_on_node() {
   echo "----------------------------------------------------------------"
   echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
 
-  talosctl upgrade --preserve --wait -n $IP --image ghcr.io/siderolabs/installer:v1.5.5
+  talosctl apply-config -n ${IP} -f $(dirname "$0")/clusterconfig/metal-${NODENAME}.yaml
 
   # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
   if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
+    kubectl delete job -n kube-system tainter-temp
     kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
   fi
 
