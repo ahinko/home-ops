@@ -84,7 +84,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        className: "nginx"
         annotations:
           nginx.org/websocket-services: home-assistant
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}

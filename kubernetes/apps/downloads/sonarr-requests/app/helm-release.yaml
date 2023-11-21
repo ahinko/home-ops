@@ -70,7 +70,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        className: "nginx"
         hosts:
           - host: &host sonarr-req.${SECRET_DOMAIN}
             paths:
