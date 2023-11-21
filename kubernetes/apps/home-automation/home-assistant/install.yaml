@@ -18,4 +18,4 @@ spec:
     - name: apps-rook-ceph-cluster
     - name: apps-emqx-cluster
     - name: apps-postgres-cluster
-    - name: apps-cilium
+    - name: apps-metallb

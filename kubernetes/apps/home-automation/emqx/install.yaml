@@ -30,4 +30,4 @@ spec:
   wait: true
   dependsOn:
     - name: apps-emqx-operator
-    - name: apps-cilium
+    - name: apps-metallb
