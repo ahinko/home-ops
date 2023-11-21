@@ -15,4 +15,4 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: apps-cilium
+    - name: apps-metallb
