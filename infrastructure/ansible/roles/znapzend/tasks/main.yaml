@@ -7,7 +7,7 @@
 
 - name: Install Znapzend
   ansible.builtin.apt:
-    name: ["znapzend"]
+    name: ["znapzend", "librole-tiny-perl"]
     state: present
 
 - name: Daemonize Znapzend
