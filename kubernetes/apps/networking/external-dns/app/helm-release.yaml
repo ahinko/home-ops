@@ -60,6 +60,8 @@ spec:
 
     domainFilters:
       - "${SECRET_DOMAIN}"
+      - "${SECRET_SOCIAL_DOMAIN}"
+
     serviceMonitor:
       enabled: true
 

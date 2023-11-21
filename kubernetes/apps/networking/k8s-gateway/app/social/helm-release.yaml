@@ -1,0 +1,39 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: k8s-gateway-social
+  namespace: networking
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: k8s-gateway
+      version: 2.0.4
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-gateway-charts
+        namespace: flux-system
+      interval: 60m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # Values link: https://github.com/ori-edge/k8s_gateway/blob/master/charts/k8s-gateway/values.yaml
+  values:
+    domain: ${SECRET_SOCIAL_DOMAIN}
+
+    replicaCount: 1
+
+    service:
+      type: LoadBalancer
+      port: 53
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: "${LB_K8S_GATEWAY_SOCIAL}"
