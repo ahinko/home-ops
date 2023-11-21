@@ -14,19 +14,19 @@ spec:
     secretName: element-secrets
     config:
       genericSharedSecretSecretKey: genericSharedSecret
-      domainName: "elements.${SECRET_DOMAIN}"
+      domainName: "element.${SECRET_SOCIAL_DOMAIN}"
   components:
     elementWeb:
       secretName: external-elementweb-secrets
       k8s:
         ingress:
-          # annotations:
-          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          annotations:
+            external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
           tls:
-            certmanager:
-              issuer: letsencrypt
             mode: certmanager
-          fqdn: "elements-web.${SECRET_DOMAIN}"
+            certmanager:
+              issuer: letsencrypt-production
+          fqdn: "elementx.${SECRET_SOCIAL_DOMAIN}"
     synapse:
       secretName: element-secrets
       config:
@@ -35,46 +35,46 @@ spec:
           enable_registration_without_verification: False
         postgresql:
           host: postgres16-rw.databases.svc.cluster.local
-          user: elements-tLFJ95
-          database: elements
+          user: element-hIu6EH
+          database: element
           passwordSecretKey: pgpassword
           sslMode: disable
         signingKeySecretKey: signingKey
       k8s:
         ingress:
-          # annotations:
-          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          annotations:
+            external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
           tls:
-            certmanager:
-              issuer: letsencrypt
             mode: certmanager
-          fqdn: "elements-hs.${SECRET_DOMAIN}"
+            certmanager:
+              issuer: letsencrypt-production
+          fqdn: "element-hs.${SECRET_SOCIAL_DOMAIN}"
     wellKnownDelegation:
       secretName: external-wellknowndelegation-secrets
       k8s:
         ingress:
-          # annotations:
-          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          annotations:
+            external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
           tls:
-            certmanager:
-              issuer: letsencrypt
             mode: certmanager
+            certmanager:
+              issuer: letsencrypt-production
     slidingSync:
       secretName: element-secrets
       config:
         postgresql:
           host: postgres16-rw.databases.svc.cluster.local
-          user: elements-tLFJ95
-          database: elements
+          user: element-hIu6EH
+          database: element
           passwordSecretKey: pgpassword
           sslMode: disable
         syncSecretSecretKey: syncSecret
       k8s:
         ingress:
-          # annotations:
-          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          annotations:
+            external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
           tls:
-            certmanager:
-              issuer: letsencrypt
             mode: certmanager
-          fqdn: "elements-sync.${SECRET_DOMAIN}"
+            certmanager:
+              issuer: letsencrypt-production
+          fqdn: "element-sync.${SECRET_SOCIAL_DOMAIN}"

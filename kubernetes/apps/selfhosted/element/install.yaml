@@ -8,7 +8,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 10m
-  path: ./kubernetes/apps/selfhosted/elements/app
+  path: ./kubernetes/apps/selfhosted/element/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -18,3 +18,4 @@ spec:
     - name: apps-postgres-cluster
     - name: apps-cert-manager
     - name: apps-ingress-nginx
+    - name: apps-cloudflared
