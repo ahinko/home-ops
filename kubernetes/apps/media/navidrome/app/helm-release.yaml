@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/navidrome/navidrome
-              tag: 0.50.0
+              tag: 0.50.1
 
             env:
               ND_DATAFOLDER: /data
