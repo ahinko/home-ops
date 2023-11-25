@@ -49,7 +49,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/jellyfin
-              tag: 10.8.11@sha256:926e2a9f6677a0c7b12feba29f36c954154869318d6a52df72f72ff9c74cf494
+              tag: 10.8.11
 
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
