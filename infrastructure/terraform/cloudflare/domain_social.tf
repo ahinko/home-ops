@@ -48,12 +48,6 @@ module "cf_domain_social" {
       expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
       action      = "block"
     },
-    {
-      enabled     = true
-      description = "Firewall rule to block all countries except SE/DK/NO/FI"
-      expression  = "(not ip.geoip.country in {\"SE\" \"DK\" \"NO\" \"FI\"})"
-      action      = "block"
-    },
   ]
 }
 
