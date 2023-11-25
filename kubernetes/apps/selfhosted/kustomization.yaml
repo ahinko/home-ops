@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
   - ./element/install.yaml
   - ./immich/install.yaml
+  - ./kitchenowl/install.yaml
   - ./linkding/install.yaml
   - ./miniflux/install.yaml
   - ./minio/install.yaml

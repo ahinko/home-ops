@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: kitchenowl-db
+spec:
+  database: kitchenowl
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: kitchenowl-user
+spec:
+  role: kitchenowl
+  database: kitchenowl-db
+  secretName: database
+  privileges: OWNER
