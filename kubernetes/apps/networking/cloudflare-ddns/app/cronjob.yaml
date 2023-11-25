@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: cloudflare-ddns
-  namespace: networking
 spec:
   schedule: "*/15 * * * *"
   concurrencyPolicy: "Forbid"

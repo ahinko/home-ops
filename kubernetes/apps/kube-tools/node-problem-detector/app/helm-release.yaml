@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app node-problem-detector
-  namespace: kube-tools
 spec:
   interval: 60m
   chart:

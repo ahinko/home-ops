@@ -2,11 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-nextcloud
+  name: &appname nextcloud
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: selfhosted
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/apps/selfhosted/nextcloud/app"
   prune: true
@@ -15,17 +19,21 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: apps-rook-ceph-cluster
-    - name: apps-nextcloud-redis
-    - name: apps-postgres-cluster
+    - name: rook-ceph-cluster
+    - name: nextcloud-redis
+    - name: postgres-cluster
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-nextcloud-redis
+  name: &appname-redis nextcloud-redis
   namespace: flux-system
 spec:
+  targetNamespace: selfhosted
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname-redis
   interval: 10m
   path: "./kubernetes/apps/selfhosted/nextcloud/redis"
   prune: true

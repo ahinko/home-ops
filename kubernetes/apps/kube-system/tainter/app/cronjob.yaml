@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: tainter
-  namespace: kube-system
 spec:
   schedule: "*/15 * * * *"
   concurrencyPolicy: "Forbid"

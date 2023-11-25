@@ -2,8 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app influxdb
-  namespace: databases
+  name: influxdb
 spec:
   interval: 60m
   chart:

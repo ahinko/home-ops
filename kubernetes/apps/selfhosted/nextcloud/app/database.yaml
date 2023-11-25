@@ -3,7 +3,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: nextcloud-db
-  namespace: selfhosted
 spec:
   database: nextcloud
 ---
@@ -11,7 +10,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: nextcloud-user
-  namespace: selfhosted
 spec:
   role: nextcloud
   database: nextcloud-db

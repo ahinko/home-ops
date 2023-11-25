@@ -2,9 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-cert-manager
+  name: &appname cert-manager
   namespace: flux-system
 spec:
+  targetNamespace: cert-manager
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/apps/cert-manager/cert-manager/app"
   prune: true
@@ -16,11 +20,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-cert-manager-issuers
+  name: &appname-issuer cert-manager-issuers
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: databases
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname-issuer
   interval: 10m
   path: "./kubernetes//apps/cert-manager/cert-manager/issuers"
   prune: true
@@ -29,4 +37,4 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: apps-cert-manager
+    - name: cert-manager

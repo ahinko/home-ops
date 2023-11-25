@@ -3,7 +3,6 @@ apiVersion: apps.emqx.io/v2beta1
 kind: EMQX
 metadata:
   name: emqx
-  namespace: home-automation
 spec:
   image: emqx/emqx:5.3.1
 

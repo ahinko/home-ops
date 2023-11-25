@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-slskd-config
-  namespace: downloads
 spec:
   schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 1

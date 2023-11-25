@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-minecraft
-  namespace: games
 spec:
   schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 1

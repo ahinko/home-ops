@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-influxdb-data
-  namespace: databases
 spec:
   schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 1

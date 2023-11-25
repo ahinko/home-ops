@@ -3,7 +3,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: element-db
-  namespace: selfhosted
 spec:
   database: element
 ---
@@ -11,7 +10,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: element-user
-  namespace: selfhosted
 spec:
   role: element
   database: element-db

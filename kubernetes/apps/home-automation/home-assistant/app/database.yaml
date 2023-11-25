@@ -3,7 +3,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: homeassistant-db
-  namespace: home-automation
 spec:
   database: homeassistant
 ---
@@ -11,7 +10,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: homeassistant-user
-  namespace: home-automation
 spec:
   role: homeassistant
   database: homeassistant-db

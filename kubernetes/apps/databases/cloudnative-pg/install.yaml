@@ -2,11 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-cloudnative-pg
+  name: &appname cloudnative-pg
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: databases
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/apps/databases/cloudnative-pg/app"
   prune: true
@@ -18,11 +22,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-postgres-cluster
+  name: &appname-cluster postgres-cluster
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: databases
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname-cluster
   interval: 10m
   path: "./kubernetes/apps/databases/cloudnative-pg/clusters"
   prune: true
@@ -31,5 +39,5 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: apps-cloudnative-pg
-    - name: apps-rook-ceph-cluster
+    - name: cloudnative-pg
+    - name: rook-ceph-cluster

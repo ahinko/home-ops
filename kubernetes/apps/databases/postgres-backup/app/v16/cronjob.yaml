@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: postgres16-backup
-  namespace: databases
 spec:
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid

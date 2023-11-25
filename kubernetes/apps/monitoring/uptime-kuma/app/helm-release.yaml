@@ -2,8 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app uptime-kuma
-  namespace: monitoring
+  name: uptime-kuma
 spec:
   interval: 60m
   chart:

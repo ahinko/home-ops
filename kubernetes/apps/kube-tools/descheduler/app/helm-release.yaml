@@ -2,8 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app descheduler
-  namespace: kube-tools
+  name: descheduler
 spec:
   interval: 60m
   chart:

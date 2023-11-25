@@ -2,9 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-emqx-operator
+  name: &appname emqx-operator
   namespace: flux-system
 spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/apps/home-automation/emqx/app"
   prune: true
@@ -16,11 +20,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-emqx-cluster
+  name: &appname-cluster emqx-cluster
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname-cluster
   interval: 10m
   path: "./kubernetes/apps/home-automation/emqx/cluster"
   prune: true
@@ -29,5 +37,5 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: apps-emqx-operator
-    - name: apps-metallb
+    - name: emqx-operator
+    - name: metallb

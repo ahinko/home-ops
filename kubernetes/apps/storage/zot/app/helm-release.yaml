@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: zot
-  namespace: storage
 spec:
   interval: 60m
   chart:

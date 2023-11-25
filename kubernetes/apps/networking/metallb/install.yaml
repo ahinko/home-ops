@@ -2,9 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-metallb
+  name: &appname metallb
   namespace: flux-system
 spec:
+  targetNamespace: networking
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/apps/networking/metallb/app"
   prune: true
@@ -16,11 +20,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-metallb-config
+  name: &appname-config metallb-config
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: networking
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname-config
   interval: 10m
   path: "./kubernetes/apps/networking/metallb/config"
   prune: true
@@ -29,4 +37,4 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: apps-metallb
+    - name: metallb

@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-zwave-js-ui-config
-  namespace: home-automation
 spec:
   schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 1

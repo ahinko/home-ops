@@ -3,7 +3,6 @@ apiVersion: matrix.element.io/v1alpha1
 kind: ElementDeployment
 metadata:
   name: element
-  namespace: selfhosted
 spec:
   global:
     k8s:

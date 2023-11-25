@@ -3,7 +3,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: immich-db
-  namespace: selfhosted
 spec:
   database: immich
 ---
@@ -11,7 +10,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: immich-user
-  namespace: selfhosted
 spec:
   role: immich
   database: immich-db

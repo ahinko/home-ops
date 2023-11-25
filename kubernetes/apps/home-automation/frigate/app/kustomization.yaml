@@ -5,7 +5,6 @@ resources:
   - ./config-pvc.yaml
   - ./media-pvc.yaml
   - ./helm-release.yaml
-namespace: home-automation
 configMapGenerator:
   - name: frigate-configmap
     files:

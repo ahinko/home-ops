@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: element-updater
-  namespace: selfhosted
 spec:
   interval: 60m
   chart:

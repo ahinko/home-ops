@@ -3,7 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres16-loadbalancer
-  namespace: databases
   labels:
     postgresql: postgres16
     role: primary

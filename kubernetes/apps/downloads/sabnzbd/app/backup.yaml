@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-sabnzbd-config
-  namespace: downloads
 spec:
   schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 1
