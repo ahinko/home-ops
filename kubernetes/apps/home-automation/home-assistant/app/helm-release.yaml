@@ -79,6 +79,10 @@ spec:
             port: 1400
           http:
             port: 8123
+          govee:
+            enabled: true
+            port: 4003
+            protocol: UDP
 
     ingress:
       main:
