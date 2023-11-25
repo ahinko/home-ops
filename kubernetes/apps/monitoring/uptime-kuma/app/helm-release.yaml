@@ -52,7 +52,7 @@ spec:
           main:
             image:
               repository: louislam/uptime-kuma
-              tag: "1.23.6"
+              tag: "1.23.7"
 
             resources:
               requests:
