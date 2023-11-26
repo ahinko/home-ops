@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
-              tag: 4.0.0.731
+              tag: 4.0.0.733
             env:
               PUSHOVER_DEBUG: "false"
               SONARR__INSTANCE_NAME: Sonarr
