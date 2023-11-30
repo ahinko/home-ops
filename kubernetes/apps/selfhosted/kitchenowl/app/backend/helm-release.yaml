@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: tombursch/kitchenowl
-              tag: v88
+              tag: v91
 
             env:
               FRONT_URL: kitchenowl.${SECRET_DOMAIN}
