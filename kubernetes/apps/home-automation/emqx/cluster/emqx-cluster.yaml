@@ -4,7 +4,7 @@ kind: EMQX
 metadata:
   name: emqx
 spec:
-  image: emqx/emqx:5.3.1
+  image: emqx/emqx:5.3.2
 
   config:
     mode: "Merge"
