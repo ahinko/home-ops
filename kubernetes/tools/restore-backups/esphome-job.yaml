@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-esphome
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.59
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.60
           args:
             - /run.sh
           env:
