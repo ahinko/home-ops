@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-uptime-kuma
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.60
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.61
           args:
             - /run.sh
           env:
