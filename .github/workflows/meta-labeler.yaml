@@ -22,7 +22,7 @@ jobs:
           app_id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
           private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
       - name: Labeler
-        uses: actions/labeler@v4.3.0
+        uses: actions/labeler@v5.0.0
         with:
           configuration-path: .github/labeler.yaml
           repo-token: "${{ steps.generate-token.outputs.token }}"
