@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-minecraft
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.62
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.63
           args:
             - /run.sh
           env:
