@@ -19,6 +19,7 @@
     "github>ahinko/home-ops//.github/renovate/versioning.json5",
   ],
   platform: "github",
+  platformCommit: true,
   username: "homeops-bot[bot]",
   repositories: ["ahinko/home-ops"],
   timezone: "Europe/Stockholm",
