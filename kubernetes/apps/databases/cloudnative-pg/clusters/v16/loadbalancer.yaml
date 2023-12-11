@@ -3,9 +3,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres16-loadbalancer
+  namespace: databases
   labels:
-    postgresql: postgres16
-    role: primary
+    cnpg.io/cluster: postgres16
   annotations:
     metallb.universe.tf/loadBalancerIPs: ${LB_POSTGRES}
 spec:
@@ -13,6 +13,6 @@ spec:
     - protocol: TCP
       port: 5432
   selector:
-    postgresql: postgres16
+    cnpg.io/cluster: postgres16
     role: primary
   type: LoadBalancer
