@@ -60,12 +60,6 @@ spec:
           gnetId: 1860
           revision: 31
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/763-redis-dashboard-for-prometheus-redis-exporter-1-x/
-        redis:
-          gnetId: 763
-          revision: 5
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5342-ceph-pools/
         zfs:
           gnetId: 7845 # https://grafana.com/grafana/dashboards/7845?tab=revisions
           revision: 4

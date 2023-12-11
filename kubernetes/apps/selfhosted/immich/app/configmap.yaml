@@ -10,7 +10,7 @@ data:
   PUBLIC_IMMICH_SERVER_URL: https://photos.${SECRET_DOMAIN}
 
   # REDIS
-  REDIS_URL: ioredis://eyJkYiI6MTUsInNlbnRpbmVscyI6W3siaG9zdCI6InJlZGlzLW5vZGUtMC5yZWRpcy1oZWFkbGVzcy5kYXRhYmFzZXMuc3ZjLmNsdXN0ZXIubG9jYWwiLCJwb3J0IjoyNjM3OX0seyJob3N0IjoicmVkaXMtbm9kZS0xLnJlZGlzLWhlYWRsZXNzLmRhdGFiYXNlcy5zdmMuY2x1c3Rlci5sb2NhbCIsInBvcnQiOjI2Mzc5fSx7Imhvc3QiOiJyZWRpcy1ub2RlLTIucmVkaXMtaGVhZGxlc3MuZGF0YWJhc2VzLnN2Yy5jbHVzdGVyLmxvY2FsIiwicG9ydCI6MjYzNzl9XSwibmFtZSI6InJlZGlzLW1hc3RlciJ9
+  REDIS_HOSTNAME: immich-redis.selfhosted
 
   # TYPESENSE
   TYPESENSE_ENABLED: "true"

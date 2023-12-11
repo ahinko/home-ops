@@ -89,11 +89,11 @@ spec:
                     key: DATABASE_NAME
               DB_PORT: 5432
               # Redis
-              REDIS_URL:
+              REDIS_HOSTNAME:
                 valueFrom:
                   configMapKeyRef:
                     name: immich-configmap
-                    key: REDIS_URL
+                    key: REDIS_HOSTNAME
               # Typesense
               TYPESENSE_ENABLED:
                 valueFrom:
