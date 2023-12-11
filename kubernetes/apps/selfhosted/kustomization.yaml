@@ -10,4 +10,5 @@ resources:
   - ./miniflux/install.yaml
   - ./minio/install.yaml
   - ./nextcloud/install.yaml
+  - ./paperless/install.yaml
   - ./radicale/install.yaml
