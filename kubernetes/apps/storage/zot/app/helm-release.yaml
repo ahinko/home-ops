@@ -70,7 +70,7 @@ spec:
             subPath: config.json
             readOnly: true
       registry:
-        type: emptyDir
-        hostPathType: Directory
+        type: persistentVolumeClaim
+        existingClaim: zot
         globalMounts:
           - path: /var/lib/registry
