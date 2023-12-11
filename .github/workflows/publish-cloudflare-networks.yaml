@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate Token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
+        uses: actions/create-github-app-token@v1.6.2
         id: generate-token
         with:
-          app_id: ${{ secrets.HOMEOPS_BOT_APP_ID }}
-          private_key: ${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}
+          app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
+          private-key: "${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}"
 
       - name: Checkout
         uses: actions/checkout@v4.1.1
