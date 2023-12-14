@@ -53,7 +53,7 @@ spec:
           main:
             image:
               repository: ghcr.io/miniflux/miniflux
-              tag: 2.0.50
+              tag: 2.0.51
 
             env:
               BASE_URL: https://rss.${SECRET_DOMAIN}
