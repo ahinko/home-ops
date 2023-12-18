@@ -5,7 +5,22 @@
     "dedupe": true,
     "gc": true,
     "gcDelay": "1h",
-    "gcInterval": "24h"
+    "gcInterval": "24h",
+    "retention": {
+      "dryRun": false,
+      "delay": "24h",
+      "policies": [
+        {
+          "repositories": ["**"],
+          "deleteReferrers": true,
+          "deleteUntagged": true,
+          "KeepTags": [{
+            "pulledWithin": "72h",
+            "pushedWithin": "72h"
+          }]
+        }
+      ]
+    }
   },
   "http": {
     "address": "0.0.0.0",
