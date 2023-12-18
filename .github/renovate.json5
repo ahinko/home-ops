@@ -27,6 +27,8 @@
   requireConfig: "optional",
   gitAuthor: "homeops-bot <104016614+homeops-bot[bot]@users.noreply.github.com>",
   dependencyDashboardTitle: "🤖 Renovate Dashboard",
+  assigneesFromCodeOwners: true,
+  reviewersFromCodeOwners: true,
   suppressNotifications: ["prIgnoreNotification"],
   ignoreDeps: [
     "ghcr.io/fluxcd/helm-controller",

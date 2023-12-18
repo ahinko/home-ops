@@ -18,7 +18,6 @@
         "infrastructure/talos/upgrade-k8s.sh",
       ],
       matchStrings: [
-        "kubernetes_version: (?<currentValue>.*)",
         "kubernetesVersion: (?<currentValue>.*)",
         "--to (?<currentValue>.*)",
       ],
