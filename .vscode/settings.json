@@ -39,7 +39,7 @@
     "kubernetes": "kubernetes/*.yaml",
     "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json": "**/kustomization.yaml",
     "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json": "**/install.yaml",
-    "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json": "**/helm-release.yaml"
+    "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json": "**/helm-release.yaml"
   },
   "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,
