@@ -58,7 +58,6 @@ spec:
             env:
               # General
               LOG_LEVEL: log
-              IMMICH_CONFIG_FILE: /config/immich-config.json
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
               # Ports
               SERVER_PORT: &port 3001
@@ -150,13 +149,6 @@ spec:
               - *host
 
     persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: immich-server-config
-        globalMounts:
-          - path: /config
-
       library:
         type: persistentVolumeClaim
         existingClaim: immich-nfs
