@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      allowedVersions: '<=1.28', // Talos dependency
+      allowedVersions: '<=1.29', // Talos dependency
       matchDatasources: ['docker'],
       matchPackageNames: [
         'ghcr.io/siderolabs/kubelet',
