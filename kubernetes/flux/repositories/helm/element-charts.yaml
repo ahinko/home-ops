@@ -6,5 +6,5 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://vector-im.github.io/ess-starter-edition-core
+  url: https://element-hq.github.io/ess-starter-edition-core
   timeout: 3m
