@@ -7,6 +7,7 @@ resources:
   - ./immich/install.yaml
   - ./kitchenowl/install.yaml
   - ./linkding/install.yaml
+  - ./mailrise/install.yaml
   - ./miniflux/install.yaml
   - ./minio/install.yaml
   - ./nextcloud/install.yaml

@@ -1,0 +1,7 @@
+---
+configs:
+  homelab@mailrise.home.arpa:
+    mailrise:
+      title_template: "HOMELAB"
+    urls:
+      - !env_var PUSHOVER_HOMELAB

@@ -1,0 +1,95 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app mailrise
+  namespace: selfhosted
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        strategy: RollingUpdate
+        replicas: 3
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/yoryan/mailrise
+              tag: 1.4.0
+
+            envFrom:
+              - secretRef:
+                  name: mailrise-secrets
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 200Mi
+
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: "${LB_MAILRISE}"
+        externalTrafficPolicy: Cluster
+        ports:
+          http:
+            port: 8025
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        hosts:
+          - host: &host "mailrise.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: mailrise-configmap
+        globalMounts:
+          - path: /etc/mailrise.conf
+            subPath: mailrise.conf
+            readOnly: true
