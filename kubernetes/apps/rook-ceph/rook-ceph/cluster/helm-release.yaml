@@ -32,7 +32,6 @@ spec:
   values:
     toolbox:
       enabled: true
-      image: rook/ceph:v1.13.0
 
     monitoring:
       enabled: true
@@ -63,11 +62,6 @@ spec:
       network:
         provider: host
 
-      # Note about ceph version. v16.2.7 was used when recreating the cluster since we had issues with
-      # prepare osd pods failing. Might also have been due to resource limitations. Did change both at the same time
-      # so I'm not exactly sure what the fix was.
-      # cephVersion:
-      # image: quay.io/ceph/ceph:v16.2.7
       dataDirHostPath: /var/lib/rook
       mon:
         count: 3

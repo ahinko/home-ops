@@ -33,10 +33,6 @@ spec:
     crds:
       enabled: true
 
-    image:
-      repository: rook/ceph
-      tag: v1.13.0
-
     pspEnable: false
 
     monitoring:
