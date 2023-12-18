@@ -27,16 +27,12 @@ spec:
     keepHistory: false
   # Values link: https://github.com/stakater/Reloader/blob/master/deployments/kubernetes/chart/reloader/values.yaml
   values:
+    fullnameOverride: reloader
     reloader:
-      reloadStrategy: annotations
-
+      enableHA: true
+      deployment:
+        replicas: 2
+      readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
-
-      deployment:
-        resources:
-          requests:
-            cpu: 15m
-            memory: 184M
-          limits:
-            memory: 184M
+        namespace: "{{ .Release.Namespace }}"
