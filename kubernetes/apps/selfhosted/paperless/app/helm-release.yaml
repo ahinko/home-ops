@@ -103,7 +103,7 @@ spec:
           gotenburg:
             image:
               repository: thecodingmachine/gotenberg
-              tag: 7.10.1
+              tag: 7.10.2
             env:
               DISABLE_GOOGLE_CHROME: "1"
             resources:
