@@ -238,7 +238,6 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
@@ -325,7 +324,6 @@ worker:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
