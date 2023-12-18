@@ -22,21 +22,21 @@ module "cf_domain_extra1" {
     {
       id      = "protonmail_domainkey_1"
       name    = "protonmail._domainkey"
-      value   = "protonmail.domainkey.d43abnd2ilgint7l4m2btuhquj5ibbo2pngsy73ohbq5svyzts46a.domains.proton.ch"
+      value   = "protonmail.domainkey.d43abnd2ilgint7l4m2btuhquj5ibbo2pngsy73ohbq5svyzts46a.domains.proton.ch."
       type    = "CNAME"
       proxied = false
     },
     {
       id      = "protonmail_domainkey_2"
       name    = "protonmail2._domainkey"
-      value   = "protonmail2.domainkey.d43abnd2ilgint7l4m2btuhquj5ibbo2pngsy73ohbq5svyzts46a.domains.proton.ch"
+      value   = "protonmail2.domainkey.d43abnd2ilgint7l4m2btuhquj5ibbo2pngsy73ohbq5svyzts46a.domains.proton.ch."
       type    = "CNAME"
       proxied = false
     },
     {
       id      = "protonmail_domainkey_3"
       name    = "protonmail3._domainkey"
-      value   = "protonmail3.domainkey.d43abnd2ilgint7l4m2btuhquj5ibbo2pngsy73ohbq5svyzts46a.domains.proton.ch"
+      value   = "protonmail3.domainkey.d43abnd2ilgint7l4m2btuhquj5ibbo2pngsy73ohbq5svyzts46a.domains.proton.ch."
       type    = "CNAME"
       proxied = false
     },
@@ -44,7 +44,7 @@ module "cf_domain_extra1" {
     {
       id    = "protonmail_dmarc"
       name  = "_dmarc"
-      value = "v=DMARC1; p=quarantine"
+      value = "v=DMARC1; p=none"
       type  = "TXT"
     },
     {

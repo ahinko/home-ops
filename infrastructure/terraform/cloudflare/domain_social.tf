@@ -3,41 +3,58 @@ module "cf_domain_social" {
   domain     = data.sops_file.cloudflare_secrets.data["cloudflare_domain_social"]
   account_id = data.sops_file.cloudflare_secrets.data["cloudflare_account_id"]
   dns_entries = [
-    #    {
-    #      id      = "www"
-    #      name    = "www"
-    #      value   = "ingress.${data.sops_file.cloudflare_secrets.data["cloudflare_domain_social"]}"
-    #      type    = "CNAME"
-    #      ttl     = 1
-    #      proxied = true
-    #    },
     {
-      id    = "mx_no_mail"
+      id    = "protonmail_verification"
       name  = "@"
-      value = "."
-      type  = "MX"
-      ttl   = 1
+      value = "protonmail-verification=8d67a77d13d966d68ecc2ccbf583e5a015ff1d08"
+      type  = "TXT"
     },
     {
-      id    = "dmarc_no_mail"
+      id       = "protonmail_mx_1"
+      name     = "@"
+      priority = 10
+      value    = "mail.protonmail.ch"
+      type     = "MX"
+    },
+    {
+      id       = "protonmail_mx_2"
+      name     = "@"
+      priority = 20
+      value    = "mailsec.protonmail.ch"
+      type     = "MX"
+    },
+    {
+      id    = "protonmail_spf1"
+      name  = "@"
+      value = "v=spf1 include:_spf.protonmail.ch mx ~all"
+      type  = "TXT"
+    },
+    {
+      id      = "protonmail_domainkey_1"
+      name    = "protonmail._domainkey"
+      value   = "protonmail.domainkey.dv2agox7wmym2m3i5quivyz3gb5ujsptc25jz7d2ewhgogsfmxkua.domains.proton.ch."
+      type    = "CNAME"
+      proxied = false
+    },
+    {
+      id      = "protonmail_domainkey_2"
+      name    = "protonmail2._domainkey"
+      value   = "protonmail2.domainkey.dv2agox7wmym2m3i5quivyz3gb5ujsptc25jz7d2ewhgogsfmxkua.domains.proton.ch."
+      type    = "CNAME"
+      proxied = false
+    },
+    {
+      id      = "protonmail_domainkey_3"
+      name    = "protonmail3._domainkey"
+      value   = "protonmail3.domainkey.dv2agox7wmym2m3i5quivyz3gb5ujsptc25jz7d2ewhgogsfmxkua.domains.proton.ch."
+      type    = "CNAME"
+      proxied = false
+    },
+    {
+      id    = "protonmail_dmarc"
       name  = "_dmarc"
-      value = "v=DMARC1;p=reject;sp=reject;adkim=s;aspf=s"
+      value = "v=DMARC1; p=none"
       type  = "TXT"
-      ttl   = 1
-    },
-    {
-      id    = "domainkey_no_mail"
-      name  = "*._domainkey"
-      value = "v=DKIM1; p="
-      type  = "TXT"
-      ttl   = 1
-    },
-    {
-      id    = "spf1_no_mail"
-      name  = "@"
-      value = "v=spf1 -all"
-      type  = "TXT"
-      ttl   = 1
     },
   ]
 
