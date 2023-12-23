@@ -20,7 +20,7 @@ tasks:
       - "ansible-galaxy collection install -r infrastructure/ansible/requirements.yaml --force"
 
       # Install Talosctl
-      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.6.0/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-arm64 && sudo chmod +x /usr/local/bin/talosctl
+      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.6.1/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-arm64 && sudo chmod +x /usr/local/bin/talosctl
       # Install talhelper
       - sudo rm -f /usr/local/bin/talhelper
       - curl -Lo talhelper.tar.gz https://github.com/budimanjojo/talhelper/releases/download/v1.16.3/talhelper_$(uname -s | tr "[:upper:]" "[:lower:]")_arm64.tar.gz && sudo tar -xzvf talhelper.tar.gz -C /usr/local/bin/ talhelper && sudo chmod +x /usr/local/bin/talhelper && rm talhelper.tar.gz
