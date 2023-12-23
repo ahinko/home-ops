@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-home-assistant
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.64
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.66
           args:
             - /run.sh
           env:
