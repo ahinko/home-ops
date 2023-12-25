@@ -10,6 +10,7 @@ spec:
   storage:
     size: 50Gi
     storageClass: rook-cephfs
+  enableSuperuserAccess: true
   superuserSecret:
     name: postgres16-superuser
   monitoring:
