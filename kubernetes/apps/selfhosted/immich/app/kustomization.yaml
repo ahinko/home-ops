@@ -6,7 +6,6 @@ resources:
   - ./database.yaml
   - ./nfs-pvc.yaml
   - ./configmap.yaml
-  - ./typesense
   - ./server
   - ./microservices
   - ./machine-learning

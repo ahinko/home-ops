@@ -27,9 +27,6 @@ spec:
   uninstall:
     keepHistory: false
 
-  dependsOn:
-    - name: immich-typesense
-
   values:
     controllers:
       main:
@@ -51,13 +48,13 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.90.2
+              tag: v1.91.4
             args:
               - start-server.sh
 
             env:
               # General
-              LOG_LEVEL: log
+              LOG_LEVEL: verbose
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
               # Ports
               SERVER_PORT: &port 3001
@@ -89,38 +86,37 @@ spec:
                   configMapKeyRef:
                     name: immich-configmap
                     key: REDIS_HOSTNAME
-              # Typesense
-              TYPESENSE_ENABLED:
-                valueFrom:
-                  configMapKeyRef:
-                    name: immich-configmap
-                    key: TYPESENSE_ENABLED
-              TYPESENSE_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: immich-secret
-                    key: TYPESENSE_API_KEY
-              TYPESENSE_HOST:
-                valueFrom:
-                  configMapKeyRef:
-                    name: immich-configmap
-                    key: TYPESENSE_HOST
-              TYPESENSE_PORT:
-                valueFrom:
-                  configMapKeyRef:
-                    name: immich-configmap
-                    key: TYPESENSE_PORT
-              TYPESENSE_PROTOCOL:
-                valueFrom:
-                  configMapKeyRef:
-                    name: immich-configmap
-                    key: TYPESENSE_PROTOCOL
             resources:
               requests:
                 cpu: 100m
                 memory: 256Mi
               limits:
                 memory: 2048Mi
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server-info/ping
+                    port: 3001
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server-info/ping
+                    port: 3001
+                  failureThreshold: 30
+                  periodSeconds: 5
+                  successThreshold: 1
+                  timeoutSeconds: 1
 
     service:
       main:

@@ -11,9 +11,3 @@ data:
 
   # REDIS
   REDIS_HOSTNAME: immich-redis.selfhosted
-
-  # TYPESENSE
-  TYPESENSE_ENABLED: "true"
-  TYPESENSE_HOST: immich-typesense.selfhosted
-  TYPESENSE_PORT: "8108"
-  TYPESENSE_PROTOCOL: http
