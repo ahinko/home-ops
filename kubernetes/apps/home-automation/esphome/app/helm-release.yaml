@@ -53,7 +53,7 @@ spec:
           main:
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2023.12.3
+              tag: 2023.12.5
 
             resources:
               requests:
