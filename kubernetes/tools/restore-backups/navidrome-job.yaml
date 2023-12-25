@@ -1,0 +1,45 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restore-navidrome
+  namespace: media
+spec:
+  template:
+    spec:
+      containers:
+        - name: restore-navidrome
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.66
+          args:
+            - /run.sh
+          env:
+            - name: FORCE_RESTORE
+              value: "1"
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backups-secrets
+                  key: MINIO_ACCESS_KEY
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backups-secrets
+                  key: MINIO_SECRET_KEY
+            - name: MINIO_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: backups-secrets
+                  key: MINIO_HOST
+            - name: MINIO_BUCKET
+              value: "backups"
+            - name: BACKUP_NAME
+              value: "navidrome"
+          volumeMounts:
+            - name: navidrome-storage
+              mountPath: /navidrome
+      volumes:
+        - name: navidrome-storage
+          persistentVolumeClaim:
+            claimName: navidrome-config
+      restartPolicy: Never
+  backoffLimit: 4
