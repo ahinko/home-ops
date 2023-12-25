@@ -10,7 +10,7 @@ spec:
   ref:
     branch: main
   secretRef:
-    name: flux-system
+    name: homelab-flux-secret
   url: ssh://git@github.com/ahinko/home-ops
   ignore: |
     # exclude all

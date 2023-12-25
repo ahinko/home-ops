@@ -10,4 +10,3 @@ resources:
   - ./ingress-nginx/install.yaml
   - ./k8s-gateway/install.yaml
   - ./metallb/install.yaml
-  - ./multus/install.yaml

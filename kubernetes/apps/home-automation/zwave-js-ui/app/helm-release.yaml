@@ -28,14 +28,6 @@ spec:
     controllers:
       main:
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["192.168.71.205/24"]
-              }]
-
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

@@ -59,6 +59,20 @@ spec:
               - rook.${SECRET_DOMAIN}
 
     cephClusterSpec:
+      placement:
+        all:
+          tolerations:
+            - effect: NoSchedule
+              key: node-role.kubernetes.io/control-plane
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: NotIn
+                      values:
+                        - "hades"
+
       network:
         provider: host
 
