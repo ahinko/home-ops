@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/radarr
-              tag: 5.1.3.8246
+              tag: 5.2.6.8376
             env:
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
