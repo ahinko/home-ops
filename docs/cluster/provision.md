@@ -11,8 +11,6 @@ task tools:install
 
 This will install the tools we need like `kubectl`, `talosctl` & `talhelper`.
 
-We also need to create a `.env` file in the root of this project. See `.env-example` for which info is needed.
-
 ## 1.1 SOPS
 
 SOPS is a way of keeping our secrets encrypted so we can commit them to git. These encrypted secrets are then decrypted before they are applied to the Kubernetes cluster.
@@ -48,43 +46,55 @@ task talos:write-talos-amd64-to-usb
 
 After that I attach the USB stick to the NUC, boot it from the USB drive and Talos will boot in to maintenace mode. When Talos has booted up you can remove the USB stick and attach it to another node if wanted.
 
-## 3. Modify Talos configs
+## 3. Talos
 
-I use the excelent tool [Talhelper](https://github.com/budimanjojo/talhelper) to handle Talos config files. We start by modifying [talconfig.yaml](../../infrastructure/talos/clusterconfig/talosconfig) to match our needs.
+### 3.1 Prepare configs
+
+I use the excellent tool [Talhelper](https://github.com/budimanjojo/talhelper) to handle Talos config files. We start by modifying [talconfig.yaml](../../infrastructure/talos/clusterconfig/talosconfig) to match our needs.
 It's quite straight forward and we can use the [Talos documentation](https://www.talos.dev/latest/reference/configuration/) as a reference.
 
-Make sure your [cluster-settings](../../kubernetes/config/cluster-settings.yaml) file matches your Talos configuration (mainly IP address for the cluster endpoint).
+Make sure your [cluster-settings](../../kubernetes/flux/config/cluster.yaml) file matches your Talos configuration (mainly IP address for the cluster endpoint).
 
-While you are at it you can also take a look at the [cluster secrets file as well](../../kubernetes/config/sops.cluster-secrets.yaml).
+While you are at it you can also take a look at the [cluster secrets file as well](../../kubernetes/flux/config/sops.cluster-secrets.yaml).
 
-## 4. Run provision script
+## 3.2 Apply config & bootstrap cluster
 
-I use the VIP (Virtual IP) functionallity that is built in to Talos. But there is one issue with this. There is a chicken and egg problem where the VIP will not be available unless at least two controlplane nodes has been provisioned.
-But if we set the VIP as the endpoint for the controlplane (which we actually want to do) the nodes will not be able to create the cluster.
+Time to boostrap you cluster. Start with applying the talos config for one of your control planes:
 
-So what this provision script does is that it first modifies the Talos configuration files to first use one of the controlplane nodes as the endpoint so that the cluster can be created.
+* `talosctl apply-config -n <IP> -f clusterconfig/metal-<node>.yaml --insecure`
+* Use `talosctl dmesg -n <IP> -f` and when you see a message about bootstraping etcd you need to run: `talosctl bootstrap -n <IP>`
+* When the boostraping has completed you can apply the rest of the nodes configs using the same command as above.
+* `talosctl kubeconfig ~/.kube/configs/metal -n <IP>``
+* `kubectl config rename-context admin@metal metal``
 
-The script will provision the controlplane nodes first and bootstrap the cluster. After making sure that the cluster is up and running the script will revert the change made to the controlplane endpoint in the Talos configuration
-files and after that the script will both provision any worker nodes and as well apply the reverted configuration to the controlplane nodes.
+## 4. Flux
 
-When we are happy with the configuration we run:
+* Install Flux in the cluster: `k apply --server-side --kustomize kubernetes/bootstrap/`
 
-*** DISCLAMER: this script has not been tested in a while. No guaranties that it will work. ***
+### 4.1 Create needed secrets
 
-```shell
-task k8s:provision
-```
+Next we need to set up a few secrets:
 
-When the cluster is up and running the script will fetch the `kubeconfig`. See my notes regarding how I handle my `kubeconfigs` further down in this document.
+* `export GITHUB_USER=<your-github-username>`
+* `flux create secret git homelab-flux-secret --url=ssh://git@github.com/<username>/<repo>`
+* You can find a deploy key in the output from the above command. Add it here: https://github.com/<username>/<repo>/settings/keys
+* Deploy SOPS key: `cat homelab.agekey | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin`
 
-Last but not least the provision script will provision Flux to the cluster.
+### 4.2 Sync repo & cluster
 
-## 5. Run Terraform
+Time to start Flux to do its thing. Please note that if you would deploy everything at the same time you will run in to problems. There are a few "catch 22" scenarios in the setup. What I do before triggering the command below is to prevent most of the different deployments from deploying and only do the essentials first. For example, ingress is needed by many deployments. Same for Rook/Ceph and Postgres. In many cases I also want to restore backups of PVCs and databases before deployments can run.
 
-We use Terraform for provisioning and keeping our Cloudflare settings up to date. Terraform will set up the domain we use as well as creating a few Kubernetes secrets for Cloudflare API tokens that is used by a few services running on the cluster.
-See [expose-services.md](expose-services.md) for more information.
+It's a good idea to disable any monitoring until you have Prometheus and Thanos up and running.
 
-Therefor you need to modify the [secrets file](../../infrastructure/terraform/cloudflare/sops.secrets.yaml) to set it up according to your needs.
+* `k apply --server-side --kustomize kubernetes/flux/vars/`
+* `k apply --server-side --kustomize kubernetes/flux/config/`
+
+## 5. Terraform
+
+We need to run Terraform.
+
+* Start with Cloudflare, it should work without issues.
+* Minio will require that you have Ingress and Minio working before it's possible to complete it without issues.
 
 ## 6. Restore backups
 
@@ -106,16 +116,7 @@ References:
 - [How do I add a kernel boot parameter](https://askubuntu.com/questions/19486/how-do-i-add-a-kernel-boot-parameter)
 - [Resetting a machine](https://www.talos.dev/v1.1/talos-guides/resetting-a-machine/)
 
-### 7.2 Rook/Ceph issue with prepare-osd pods
-
-I had issues where the prepare-osd pods failed due to "unparsable uuid". I did two things at the same time when the issue was fixed so I'm not sure exactly what fixed it:
-
-- I downgraded ceph to version v16.2.7
-- I removed the resource limitations.
-
-I have a vague recollection that I have had a similar issue before and if I remember correctly the that was also fixed by using a specific version of ceph. But I do not remember which versions I tested with that time.
-
-### 7.3 Manage kubeconfigs
+### 7.2 Manage kubeconfigs
 
 I have created `~/.kube/clusters` where I store each `kubeconfig` in a separate file.
 

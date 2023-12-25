@@ -33,16 +33,6 @@ Checklist:
 - [ ] Delete the old postgres cluster by removing the manifests in `kubernetes/apps/databases/cloudnative-pg/clusters`.
 - [ ] Deploy new loadbalancer
 
-## Reset node
-
-I have this recurring issue where one of the master nodes (a RPi 4) ends up in a weird state and its "NotReady". The only fix I have found is to reset the node:
-
-```shell
-talosctl etcd remove-member <node> -n <ip>
-talosctl reset --system-labels-to-wipe=STATE,EPHEMERAL --reboot --graceful=false -n <ip>
-talosctl apply-config -n <ip> -f clusterconfig/metal-<node>.yaml --insecure
-```
-
 ## Reset Rook Ceph cluster
 
 I ran in to an issue where I had to reset the Rook-Ceph cluster due to restructuring the repo. I should have been more careful but it was also a learning experience. To fully reset the cluster I had to go through the following steps.:
@@ -54,7 +44,7 @@ I ran in to an issue where I had to reset the Rook-Ceph cluster due to restructu
 * Handle cluster finalizers: `kubectl patch cephclusters.ceph.rook.io -n rook-ceph rook-ceph -p '{"metadata":{"finalizers":[]}}' --type=merge`
 * Delete all resources: `kubectl delete all -n rook-ceph --force --grace-period=0`
 * Delete all CRDs that starts with ceph*
-* Wipe disks: `kubectl apply -f kubernetes/tools/rook/wipe.yaml`
+* Wipe disks: `kubectl apply -f kubernetes/tools/rook/wipe-job.yaml`
 * Reset nodes and reboot: `talosctl reset --system-labels-to-wipe=STATE,EPHEMERAL --reboot --graceful=true -n <IP>`
   * Apply config again: `talosctl apply-config -n <IP> -f infrastructure/talos/clusterconfig/<CONFIG FILE>.yaml --insecure`
 
