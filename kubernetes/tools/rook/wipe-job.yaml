@@ -1,0 +1,103 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-poseidon
+  namespace: kube-system # run in kube-system ns since we need a privileged pod
+spec:
+  restartPolicy: Never
+  nodeName: poseidon
+  containers:
+    - name: disk-wipe-poseidon
+      image: alpine
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "-c"]
+      args:
+        [
+          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
+        ]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 400M
+        limits:
+          memory: 2500M
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-iris
+  namespace: kube-system # run in kube-system ns since we need a privileged pod
+spec:
+  restartPolicy: Never
+  nodeName: iris
+  containers:
+    - name: disk-wipe-iris
+      image: alpine
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "-c"]
+      args:
+        [
+          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
+        ]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 400M
+        limits:
+          memory: 2500M
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-zeus
+  namespace: kube-system # run in kube-system ns since we need a privileged pod
+spec:
+  restartPolicy: Never
+  nodeName: zeus
+  containers:
+    - name: disk-wipe-zeus
+      image: alpine
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "-c"]
+      args:
+        [
+          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
+        ]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 400M
+        limits:
+          memory: 2500M
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-helios
+  namespace: kube-system # run in kube-system ns since we need a privileged pod
+spec:
+  restartPolicy: Never
+  nodeName: helios
+  containers:
+    - name: disk-wipe-helios
+      image: alpine
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "-c"]
+      args:
+        [
+          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
+        ]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 400M
+        limits:
+          memory: 2500M

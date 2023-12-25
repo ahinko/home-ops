@@ -18,5 +18,5 @@ includes:
   k8s: .taskfiles/kubernetes.yaml
   flux: .taskfiles/flux.yaml
   maintenance: .taskfiles/maintenance.yaml
-  rook: .taskfiles/rook/tasks.yaml
+  rook: .taskfiles/rook.yaml
   talos: .taskfiles/talos.yaml
