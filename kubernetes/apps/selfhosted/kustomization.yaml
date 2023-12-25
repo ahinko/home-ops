@@ -8,6 +8,7 @@ resources:
   - ./kitchenowl/install.yaml
   - ./linkding/install.yaml
   - ./mailrise/install.yaml
+  - ./mastodon/install.yaml
   - ./miniflux/install.yaml
   - ./nextcloud/install.yaml
   - ./paperless/install.yaml

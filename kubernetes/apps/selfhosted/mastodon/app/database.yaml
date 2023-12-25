@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: mastodon-db
+spec:
+  database: mastodon
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: mastodon-user
+spec:
+  role: mastodon
+  database: mastodon-db
+  secretName: database
+  privileges: OWNER

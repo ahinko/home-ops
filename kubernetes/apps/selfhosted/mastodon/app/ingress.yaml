@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mastodon
+  labels:
+    app.kubernetes.io/instance: mastodon
+    app.kubernetes.io/name: mastodon
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: &host "toot.${SECRET_SOCIAL_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mastodon-web
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - *host
+      secretName: ${SECRET_SOCIAL_TLS_NAME}
