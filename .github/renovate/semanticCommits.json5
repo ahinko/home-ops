@@ -1,79 +1,153 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(container): "
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["major"],
+      commitMessagePrefix: "feat(container)!: ",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: " ( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "container"
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      semanticCommitScope: "container",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "container"
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      semanticCommitScope: "container",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(helm): "
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["digest"],
+      semanticCommitType: "chore",
+      semanticCommitScope: "container",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
     },
     {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "helm"
+      matchDatasources: ["helm"],
+      matchUpdateTypes: ["major"],
+      commitMessagePrefix: "feat(helm)!: ",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchDatasources: ["helm"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      semanticCommitScope: "helm",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
 
     {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "helm"
+      matchDatasources: ["helm"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      semanticCommitScope: "helm",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["galaxy"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(ansible): "
+      matchDatasources: ["galaxy", "galaxy-collection"],
+      matchUpdateTypes: ["major"],
+      commitMessagePrefix: "feat(ansible)!: ",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["galaxy"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "ansible"
+      matchDatasources: ["galaxy", "galaxy-collection"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      semanticCommitScope: "ansible",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
 
     {
-      "matchDatasources": ["galaxy"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "ansible"
+      matchDatasources: ["galaxy", "galaxy-collection"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      semanticCommitScope: "ansible",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["terraform-provider"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(terraform)!: "
+      matchDatasources: ["terraform-provider"],
+      matchUpdateTypes: ["major"],
+      commitMessagePrefix: "feat(terraform)!: ",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["terraform-provider"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "terraform"
+      matchDatasources: ["terraform-provider"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      semanticCommitScope: "terraform",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchDatasources": ["terraform-provider"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "terraform"
+      matchDatasources: ["terraform-provider"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      semanticCommitScope: "terraform",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
     },
     {
-      "matchManagers": ["github-actions"],
-      "semanticCommitType": "ci"
-    }
-  ]
+      matchDatasources: ["github-releases", "github-tags"],
+      matchUpdateTypes: ["major"],
+      commitMessagePrefix: "feat(github-release)!: ",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchDatasources: ["github-releases", "github-tags"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      semanticCommitScope: "github-release",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchDatasources: ["github-releases", "github-tags"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      semanticCommitScope: "github-release",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["major"],
+      commitMessagePrefix: "feat(github-action)!: ",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      semanticCommitScope: "github-action",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      semanticCommitScope: "github-action",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+  ],
 }

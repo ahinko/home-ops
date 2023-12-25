@@ -30,7 +30,7 @@ jobs:
         uses: booxmedialtd/ws-action-parse-semver@v1.4.7
         with:
           input_string: "${{ github.event.head_commit.message }}"
-          version_extractor_regex: "v([0-9.]*)"
+          version_extractor_regex: "→ v([0-9.]*)"
 
       - name: Create issue if new version of Kubernetes is available
         if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
