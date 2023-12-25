@@ -8,9 +8,3 @@ tasks:
       - talosctl kubeconfig ~/.kube/configs/metal -n 192.168.20.21
       - kubectl config rename-context admin@metal metal
     silent: true
-
-  provision:
-    desc: Provision cluster
-    silent: true
-    cmds:
-      - ./infrastructure/talos/provision.sh

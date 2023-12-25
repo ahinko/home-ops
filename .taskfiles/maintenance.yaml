@@ -29,27 +29,24 @@ tasks:
       - flux suspend hr -n selfhosted immich-microservices
       - flux suspend hr -n selfhosted immich-server
       - flux suspend hr -n selfhosted nextcloud
-      - flux suspend hr -n selfhosted minio
+      - flux suspend hr -n storage minio
       - kubectl scale -n downloads deploy/lidarr --replicas 0
       - kubectl scale -n downloads deploy/radarr --replicas 0
       - kubectl scale -n downloads deploy/sonarr-v4 --replicas 0
       - kubectl scale -n downloads deploy/sonarr-requests --replicas 0
       - kubectl scale -n downloads deploy/sabnzbd --replicas 0
       - kubectl scale -n downloads deploy/slskd --replicas 0
-      - kubectl scale -n selfhosted deploy/immich-web --replicas 0
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
       - kubectl scale -n selfhosted deploy/immich-microservices --replicas 0
       - kubectl scale -n selfhosted deploy/immich-server --replicas 0
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 0
-      - kubectl scale -n selfhosted deploy/minio --replicas 0
-      - kubectl drain atlas --delete-emptydir-data --ignore-daemonsets --force
+      - kubectl scale -n storage deploy/minio --replicas 0
 
   nfs:resume:
     desc: Resume all Helm Releases that rely on NFS storage
     silent: true
     cmds:
-      - kubectl uncordon atlas
-      - kubectl scale -n selfhosted deploy/minio --replicas 1
+      - kubectl scale -n storage deploy/minio --replicas 1
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
       - kubectl scale -n selfhosted deploy/immich-server --replicas 1
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 1
@@ -61,12 +58,11 @@ tasks:
       - kubectl scale -n downloads deploy/radarr --replicas 1
       - kubectl scale -n downloads deploy/sonarr-v4 --replicas 1
       - kubectl scale -n downloads deploy/sonarr-requests --replicas 1
-      - flux resume hr -n selfhosted minio
+      - flux resume hr -n storage minio
       - flux resume hr -n selfhosted nextcloud
       - flux resume hr -n selfhosted immich-server
       - flux resume hr -n selfhosted immich-machine-learning
       - flux resume hr -n selfhosted immich-microservices
-      - flux resume hr -n selfhosted immich-web
       - flux resume hr -n downloads slskd
       - flux resume hr -n downloads sabnzbd
       - flux resume hr -n downloads lidarr
@@ -78,7 +74,6 @@ tasks:
     desc: Pause all Helm releases depending on Postgres
     silent: true
     cmds:
-      - flux suspend hr -n selfhosted immich-web
       - flux suspend hr -n selfhosted immich-machine-learning
       - flux suspend hr -n selfhosted immich-microservices
       - flux suspend hr -n selfhosted immich-server
@@ -87,7 +82,6 @@ tasks:
       - flux suspend hr -n selfhosted miniflux
       - flux suspend hr -n home-automation home-assistant
 
-      - kubectl scale -n selfhosted deploy/immich-web --replicas 0
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
       - kubectl scale -n selfhosted deploy/immich-microservices --replicas 0
       - kubectl scale -n selfhosted deploy/immich-server --replicas 0
@@ -100,16 +94,14 @@ tasks:
     desc: Resume all Helm releases depending on Postgres
     silent: true
     cmds:
-      - kubectl scale -n selfhosted deploy/immich-web --replicas 2
-      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 2
-      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 3
-      - kubectl scale -n selfhosted deploy/immich-server --replicas 2
+      - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 1
+      - kubectl scale -n selfhosted deploy/immich-microservices --replicas 1
+      - kubectl scale -n selfhosted deploy/immich-server --replicas 1
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
       - kubectl scale -n selfhosted deploy/linkding --replicas 1
       - kubectl scale -n selfhosted deploy/miniflux --replicas 2
       - kubectl scale -n home-automation deploy/home-assistant --replicas 1
 
-      - flux resume hr -n selfhosted immich-web
       - flux resume hr -n selfhosted immich-machine-learning
       - flux resume hr -n selfhosted immich-microservices
       - flux resume hr -n selfhosted immich-server
