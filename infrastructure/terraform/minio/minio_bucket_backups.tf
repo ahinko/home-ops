@@ -14,7 +14,7 @@ resource "kubernetes_secret" "minio_secret_backups_databases" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
@@ -28,7 +28,7 @@ resource "kubernetes_secret" "minio_secret_backups_games" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
@@ -42,7 +42,7 @@ resource "kubernetes_secret" "minio_secret_backups_home-automation" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
@@ -56,7 +56,7 @@ resource "kubernetes_secret" "minio_secret_backups_downloads" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
@@ -70,7 +70,7 @@ resource "kubernetes_secret" "minio_secret_backups_media" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
@@ -84,7 +84,7 @@ resource "kubernetes_secret" "minio_secret_backups_selfhosted" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key
@@ -98,7 +98,7 @@ resource "kubernetes_secret" "minio_secret_backups_monitoring" {
   }
 
   data = {
-    "MINIO_HOST"       = "http://minio.selfhosted:9000"
+    "MINIO_HOST"       = "http://minio.storage:9000"
     "MINIO_BUCKET"     = module.minio_bucket_backups.bucket_name
     "MINIO_ACCESS_KEY" = module.minio_bucket_backups.user_name
     "MINIO_SECRET_KEY" = module.minio_bucket_backups.secret_key

@@ -19,7 +19,7 @@ resource "kubernetes_secret" "minio_secret_thanos" {
       config = {
         access_key = module.minio_bucket_thanos.user_name
         bucket     = module.minio_bucket_thanos.bucket_name
-        endpoint   = "minio.selfhosted:9000"
+        endpoint   = "minio.storage:9000"
         insecure   = true
         secret_key = module.minio_bucket_thanos.secret_key
       }

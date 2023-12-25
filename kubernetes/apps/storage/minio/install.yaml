@@ -7,12 +7,12 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  targetNamespace: selfhosted
+  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/apps/selfhosted/minio/app"
+  path: "./kubernetes/apps/storage/minio/app"
   prune: true
   sourceRef:
     kind: GitRepository

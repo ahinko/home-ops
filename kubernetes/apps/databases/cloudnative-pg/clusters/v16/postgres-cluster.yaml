@@ -51,8 +51,8 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgres/
-      endpointURL: http://minio.selfhosted:9000
-      serverName: postgres16-001
+      endpointURL: http://minio.storage:9000
+      serverName: postgres16-003
       s3Credentials:
         accessKeyId:
           name: cnpg-backup-secrets
