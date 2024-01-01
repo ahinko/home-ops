@@ -85,8 +85,8 @@ go2rtc:
     backyard_terrace_lq: rtspx://192.168.0.1:7441/MeQnTvehpe9mNOy0
     east_side_hq: rtspx://192.168.0.1:7441/bD35LvIY0mVXDGAV
     east_side_lq: rtspx://192.168.0.1:7441/7Cmt7IGfBgRFnY6y
-    utility_entrance_hq: rtspx://192.168.0.1:7441/4HGg2c1YLJSwtsNW
-    utility_entrance_lq: rtspx://192.168.0.1:7441/qEj5EZEGjdLZP9O6
+    utility_entrance_hq: rtspx://192.168.0.1:7441/3nL73LfCRXy44j8o
+    utility_entrance_lq: rtspx://192.168.0.1:7441/fZve7zjsUYPNcmoR
     frontyard_garage_hq: rtspx://192.168.0.1:7441/cVT8xcvPAE1o0Rt4
     frontyard_garage_lq: rtspx://192.168.0.1:7441/TJSnSTiDZ6AjqPvt
     drive_way_hq: rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h265Preview_01_main
@@ -103,6 +103,17 @@ cameras:
         - path: rtsp://localhost:8554/drive_way_lq
           roles:
             - detect
+
+    zones:
+      entire_yard:
+        coordinates: 0,78,96,55,136,28,359,0,640,53,640,360,0,360
+        objects:
+          - person
+
+      front_yard_street:
+        coordinates: 0,0,88,0,99,50,0,76
+        objects:
+          - car
 
     detect:
       width: 640
@@ -124,6 +135,12 @@ cameras:
       track:
         - person
         - car
+      filters:
+        person:
+          min_area: 4000
+          max_area: 10000
+          min_score: 0.4
+          threshold: 0.7
 
   frontyard_terrace:
     ffmpeg:
@@ -262,11 +279,15 @@ cameras:
           roles:
             - detect
 
+    detect:
+      width: 1280
+      height: 720
+
     best_image_timeout: 10
 
     motion:
       mask:
-        - 764,113,914,384,1024,363,1024,0,761,0
+        - 1060,206,1189,475,1280,446,1280,0,939,0
 
     mqtt:
       enabled: true
