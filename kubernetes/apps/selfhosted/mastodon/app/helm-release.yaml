@@ -29,6 +29,11 @@ spec:
     global:
       storageClass: "rook-cephfs"
 
+    image:
+      registry: docker.io
+      repository: bitnami/mastodon
+      tag: 4.2.3-debian-11-r2
+
     environment: production
     adminUser: "peter"
     adminEmail: "peter@${SECRET_SOCIAL_DOMAIN}"
@@ -63,7 +68,7 @@ spec:
         http: 3000
       resources:
         limits:
-          memory: 1024Mi
+          memory: 2048Mi
         requests:
           memory: 500Mi
       podAnnotations:
@@ -131,6 +136,7 @@ spec:
     persistence:
       enabled: true
       existingClaim: *app
+      mountPath: /opt/bitnami/mastodon/public/system
 
     volumePermissions:
       enabled: false
