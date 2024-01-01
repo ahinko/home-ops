@@ -11,5 +11,4 @@ resources:
   - ./mastodon/install.yaml
   - ./miniflux/install.yaml
   - ./nextcloud/install.yaml
-  - ./paperless/install.yaml
   - ./radicale/install.yaml
