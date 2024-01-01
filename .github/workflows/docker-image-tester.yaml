@@ -1,14 +1,14 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: "Flux Helm Release Image Test"
+name: "Docker Image Test"
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
+    paths: ["kubernetes/**"]
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v41
         with:
-          files: kubernetes/**/helmrelease.yaml
+          files: kubernetes/**/helm-release.yaml
           json: true
           quotepath: false
           escape_json: false
@@ -72,7 +72,7 @@ jobs:
       - name: Extract Images from Helm Release
         id: extract-images
         run: |
-          images=$(npx zx ".ci/scripts/extract-images.mjs" --kubernetes-dir "./kubernetes" --helmrelease "${{ matrix.files }}")
+          images=$(npx zx ".github/scripts/extract-images.mjs" --kubernetes-dir "./kubernetes" --helmrelease "${{ matrix.files }}")
           echo "images=${images}" >> $GITHUB_OUTPUT
           echo "${images}"
 
