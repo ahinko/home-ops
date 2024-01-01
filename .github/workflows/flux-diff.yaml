@@ -1,9 +1,14 @@
 ---
-name: "Flux Diff"
+name: Flux Diff
 
 on:
   pull_request:
     branches: ["main"]
+    paths: ["kubernetes/**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   flux-diff:
@@ -13,47 +18,72 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        path: ["kubernetes"]
-        resource: ["helmrelease", "kustomization"]
+        paths: ["kubernetes"]
+        resources: ["helmrelease", "kustomization"]
+      max-parallel: 4
+      fail-fast: false
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@v1.6.2
-        id: generate-token
+        uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1
+        id: app-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
           private-key: "${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}"
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+      - name: Checkout Default Branch
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          registry: ghcr.io
-          username: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
-          password: "${{ steps.generate-token.outputs.token }}"
+          token: "${{ steps.app-token.outputs.token }}"
+          ref: "${{ github.event.repository.default_branch }}"
+          path: default
 
-      - name: Setup Workflow Tools
-        uses: jdx/rtx-action@v1
+      - name: Checkout Pull Request Branch
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          install: true
-          cache: true
-          rtx_toml: |
-            [tools]
-            flux2 = "latest"
+          token: "${{ steps.app-token.outputs.token }}"
+          path: pull
 
       - name: Diff Resources
-        uses: allenporter/flux-local/action/diff@c4c5ce19ed7aa792b4ead75776597a82242866c6 # 4.2.1
-        id: diff
+        uses: docker://ghcr.io/allenporter/flux-local:main
         with:
-          path: ${{ matrix.path }}
-          resource: ${{ matrix.resource }}
+          args: >-
+            --log-level DEBUG
+            diff ${{ matrix.resources }}
+            --unified 6
+            --path-orig /github/workspace/default/${{ matrix.paths }}
+            --path /github/workspace/pull/${{ matrix.paths }}
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
+            --limit-bytes 10000
+            --all-namespaces
+            --output-file diff.patch
 
-      - name: Add comment
-        uses: mshick/add-pr-comment@7c0890544fb33b0bdd2e59467fbacb62e028a096 # v2
-        if: ${{ steps.diff.outputs.diff != '' }}
+      - name: Generate Diff
+        id: diff
+        run: |
+          cat diff.patch
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          cat diff.patch >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Add Comment
+        uses: mshick/add-pr-comment@7c0890544fb33b0bdd2e59467fbacb62e028a096 # v2.8.1
         with:
-          repo-token: ${{ steps.generate-token.outputs.token }}
-          message-id: ${{ matrix.path }}/${{ matrix.resource }}
+          repo-token: "${{ steps.app-token.outputs.token }}"
+          message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
           message-failure: Diff was not successful
           message: |
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
+
+  # Summarize matrix https://github.community/t/status-check-for-a-matrix-jobs/127354/7
+  flux-diff-success:
+    if: ${{ always() }}
+    needs: ["flux-diff"]
+    name: Flux Diff Successful
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        name: Check matrix status
+        run: exit 1
