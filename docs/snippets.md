@@ -54,3 +54,27 @@ I had an issue where the /var directory on some of my nodes was filling up. Seem
 
 * Reset nodes and reboot: `talosctl reset --system-labels-to-wipe=STATE,EPHEMERAL --reboot --graceful=true -n <IP>`
 * Apply config again: `talosctl apply-config -n <IP> -f infrastructure/talos/clusterconfig/<CONFIG FILE>.yaml --insecure`
+
+## Upgrade Tube's Zigbee Gateway firmware
+
+> Note to self: do not update over WIFI and remember to scale down zigbee2mqtt pod in the cluster
+
+First upgrade the firmware:
+
+- Goto devices esphome page: http://192.168.70.56/
+- Toggle Prep the cc2652p2 for firmware update
+- Run:
+
+```
+git clone https://github.com/JelmerT/cc2538-bsl.git
+
+curl -L \
+  -o CC1352P2_CC2652P_launchpad_coordinator_20210708.zip \
+  https://github.com/Koenkk/Z-Stack-firmware/blob/master/coordinator/Z-Stack_3.x.0/bin/CC1352P2_CC2652P_launchpad_coordinator_20210708.zip?raw=true
+
+unzip CC1352P2_CC2652P_launchpad_coordinator_20210708.zip
+
+cd cc2538-bsl
+
+python3 ./cc2538-bsl.py -p socket://192.168.70.56:6638 -evw ../CC1352P2_CC2652P_launchpad_coordinator_20210708.hex
+```
