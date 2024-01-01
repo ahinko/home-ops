@@ -20,6 +20,6 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph-cluster
-    - name: emqx-cluster
+    - name: mosquitto
     - name: postgres-cluster
     - name: metallb

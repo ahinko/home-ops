@@ -10,7 +10,6 @@ resources:
   - ./cloudnative-pg-charts.yaml
   - ./deliveryhero-charts.yaml
   - ./element-charts.yaml
-  - ./emqx-charts.yaml
   - ./ext-postgres-operator-charts.yaml
   - ./external-dns-charts.yaml
   - ./grafana-charts.yaml

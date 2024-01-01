@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname frigate
+  name: &appname mosquitto
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/apps/home-automation/frigate/app"
+  path: "./kubernetes/apps/home-automation/mosquitto/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,6 +20,4 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph-cluster
-    - name: mosquitto
-    - name: intel-device-plugins-gpu
-    - name: node-feature-discovery
+    - name: metallb

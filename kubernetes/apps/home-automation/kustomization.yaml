@@ -3,11 +3,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./emqx/install.yaml
   - ./esphome/install.yaml
   - ./frigate/install.yaml
   - ./home-assistant/install.yaml
   - ./home-assistant-code/install.yaml
+  - ./mosquitto/install.yaml
   - ./wyoming-piper/install.yaml
   - ./zigbee2mqtt/install.yaml
   - ./zwave-js-ui/install.yaml
