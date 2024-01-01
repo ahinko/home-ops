@@ -2,13 +2,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: restore-influxdb
-  namespace: databases
+  name: restore-slskd
+  namespace: downloads
 spec:
   template:
     spec:
       containers:
-        - name: restore-influxdb
+        - name: restore-slskd
           image: ghcr.io/ahinko/simple-k8s-backup:v4.2.66
           args:
             - /run.sh
@@ -33,13 +33,13 @@ spec:
             - name: MINIO_BUCKET
               value: "backups"
             - name: BACKUP_NAME
-              value: "influxdb2"
+              value: "slskd"
           volumeMounts:
-            - name: influxdb-storage
-              mountPath: /influxdb2
+            - name: slskd-storage
+              mountPath: /slskd
       volumes:
-        - name: influxdb-storage
+        - name: slskd-storage
           persistentVolumeClaim:
-            claimName: influxdb-data
+            claimName: slskd-config
       restartPolicy: Never
   backoffLimit: 4
