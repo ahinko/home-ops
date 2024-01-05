@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: ext-postgres-operator
-      version: 1.2.4
+      version: 1.2.5
       sourceRef:
         kind: HelmRepository
         name: ext-postgres-operator-charts
