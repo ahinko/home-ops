@@ -43,4 +43,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: ${SECRET_SOCIAL_TLS_NAME}
+      secretName: mastodon-tls
