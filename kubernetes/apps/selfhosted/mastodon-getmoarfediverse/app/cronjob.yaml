@@ -1,0 +1,34 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: &app mastodon-getmoarfediverse
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: "Forbid"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 5
+  startingDeadlineSeconds: 10
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: mastodon-getmoarfediverse
+              image: ghcr.io/g3rv4/getmoarfediverse:1.0.59-amd64
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: config
+                  mountPath: /data/config.json
+                  subPath: config.json
+          volumes:
+            - name: config
+              secret:
+                secretName: mastodon-getmoarfediverse-config
+            - name: data
+              persistentVolumeClaim:
+                claimName: *app

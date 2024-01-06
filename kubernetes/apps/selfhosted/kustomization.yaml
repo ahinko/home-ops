@@ -10,6 +10,7 @@ resources:
   - ./mailrise/install.yaml
   - ./mastodon/install.yaml
   - ./mastodon-fakerelay/install.yaml
+  - ./mastodon-getmoarfediverse/install.yaml
   - ./miniflux/install.yaml
   - ./nextcloud/install.yaml
   - ./radicale/install.yaml
