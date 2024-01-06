@@ -1,0 +1,96 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app mastodon-fakerelay
+  namespace: selfhosted
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        strategy: RollingUpdate
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/g3rv4/fakerelay
+              tag: 1.0.49
+
+            args:
+              - web
+
+            env:
+              ASPNETCORE_ENVIRONMENT: "production"
+              ASPNETCORE_URLS: "http://+:5000"
+              CONFIG_PATH: "/data/config.json"
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 200Mi
+
+    service:
+      main:
+        ports:
+          http:
+            port: 5000
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_SOCIAL_DOMAIN}
+          nginx.ingress.kubernetes.io/proxy-max-temp-file-size: "0"
+          nginx.ingress.kubernetes.io/server-snippets: |
+            location / {
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto https;
+              proxy_set_header Proxy "";
+            }
+        hosts:
+          - host: &host "fakerelay.${SECRET_SOCIAL_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: mastodon-fakerelay-tls
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: *app
+        globalMounts:
+          - path: /data

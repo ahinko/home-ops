@@ -9,6 +9,7 @@ resources:
   - ./linkding/install.yaml
   - ./mailrise/install.yaml
   - ./mastodon/install.yaml
+  - ./mastodon-fakerelay/install.yaml
   - ./miniflux/install.yaml
   - ./nextcloud/install.yaml
   - ./radicale/install.yaml
