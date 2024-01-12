@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-zwave-js-ui
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.68
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.69
           args:
             - /run.sh
           env:
