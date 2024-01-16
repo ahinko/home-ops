@@ -40,77 +40,189 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          - name: "default"
-            orgId: 1
+          - name: default
+            disableDeletion: false
+            editable: true
             folder: ""
+            options:
+              path: /var/lib/grafana/dashboards/default
+            orgId: 1
+            type: file
+          - name: ceph
+            orgId: 1
+            folder: Ceph
             type: file
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/default
+              path: /var/lib/grafana/dashboards/ceph
+          - name: flux
+            orgId: 1
+            folder: Flux
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/flux
+          - name: nginx
+            orgId: 1
+            folder: Nginx
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/nginx
+          - name: thanos
+            orgId: 1
+            folder: Thanos
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/thanos
+          - name: unpoller
+            disableDeletion: false
+            editable: true
+            folder: "UniFi Poller"
+            options:
+              path: /var/lib/grafana/dashboards/unpoller
+            orgId: 1
+            type: file
 
     dashboards:
       default:
-        external-dns:
-          gnetId: 15038 # https://grafana.com/grafana/dashboards/15038?tab=revisions
+        spegel:
+          # renovate: depName="Spegel"
+          gnetId: 18089
           revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+        cert-manager:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+
+        cloudflared:
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+        external-dns:
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
+
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+          datasource: Prometheus
+
         node-exporter-full:
+          # renovate: depName="Node Exporter Full"
           gnetId: 1860
-          revision: 31
+          revision: 33
           datasource: Prometheus
-        zfs:
-          gnetId: 7845 # https://grafana.com/grafana/dashboards/7845?tab=revisions
+
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: Prometheus
+
+        speedtest-exporter-hub:
+          gnetId: 13665
           revision: 4
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+
+        zfs:
+          # renovate: depName="ZFS"
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
+
+      ceph:
+        ceph-cluster:
+          gnetId: 2842
+          revision: 17
+          datasource: Prometheus
+        ceph-osd:
+          gnetId: 5336
+          revision: 9
           datasource: Prometheus
         ceph-pools:
           gnetId: 5342
           revision: 9
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5336-ceph-osd-single/
-        ceph-osd:
-          gnetId: 5336
-          revision: 9
+
+      flux:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/2842-ceph-cluster/
-        ceph-cluster:
-          gnetId: 2842
-          revision: 17
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
-        cert-manager:
-          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
           datasource: Prometheus
-        kubernetes-api-server:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
-          datasource: Prometheus
-        kubernetes-coredns:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
-          datasource: Prometheus
-        kubernetes-global:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
-          datasource: Prometheus
-        kubernetes-namespaces:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
-          datasource: Prometheus
-        kubernetes-nodes:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
-          datasource: Prometheus
-        kubernetes-pods:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
-          datasource: Prometheus
-        cloudnative-pg-dashboard:
-          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
-          datasource: Prometheus
-        kyverno:
-          url: https://raw.githubusercontent.com/kyverno/grafana-dashboard/master/grafana/dashboard.json
-          datasource: Prometheus
-        nginx-dashboard:
+
+      nginx:
+        nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
-        nginx-request-handling-performance-dashboard:
+        nginx-request-handling-performance:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
+
+      thanos:
+        thanos-bucket-replicate:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/bucket-replicate.json
+          datasource: Prometheus
+        thanos-compact:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/compact.json
+          datasource: Prometheus
+        thanos-overview:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/overview.json
+          datasource: Prometheus
+        thanos-query:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/query.json
+          datasource: Prometheus
+        thanos-query-frontend:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/query-frontend.json
+          datasource: Prometheus
+        thanos-receieve:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/receive.json
+          datasource: Prometheus
+        thanos-rule:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/rule.json
+          datasource: Prometheus
+        thanos-sidecar:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/sidecar.json
+          datasource: Prometheus
+        thanos-store:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/store.json
+          datasource: Prometheus
+
+      unpoller:
+        clients:
+          gnetId: 11315
+          revision: 9
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+        usw:
+          gnetId: 11312
+          revision: 9
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+        uap:
+          gnetId: 11314
+          revision: 10
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
 
     datasources:
       datasources.yaml:
