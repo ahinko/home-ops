@@ -1,0 +1,11 @@
+---
+- name: Apt - install packages needs with no recommends
+  ansible.builtin.apt:
+    name: ["qemu-system", "libvirt-clients", "libvirt-daemon-system"]
+    state: present
+    install_recommends: false
+
+- name: Apt - install additional packages needed
+  ansible.builtin.apt:
+    name: ["ovmf", "qemu-utils", "virtinst", "lxml"]
+    state: present

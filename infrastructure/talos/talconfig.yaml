@@ -123,6 +123,28 @@ nodes:
             - siderolabs/i915-ucode
             - siderolabs/intel-ucode
 
+  - hostname: atlas
+    disableSearchDomain: true
+    ipAddress: 192.168.20.22
+    controlPlane: false
+    installDisk: /dev/sda
+    nameservers:
+      - 192.168.20.1
+    networkInterfaces:
+      - interface: vnet1
+        addresses:
+          - 192.168.20.22/24
+        mtu: 0
+        dhcp: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+
 controlPlane:
   patches:
     # Disable search domain everywhere

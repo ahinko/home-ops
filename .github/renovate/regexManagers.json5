@@ -30,10 +30,12 @@
       fileMatch: [
         "infrastructure/talos/common.sh",
         "infrastructure/talos/talconfig.yaml",
+        "infrastructure/ansible/inventory/host_vars/atlas/kvm_qemu.yaml",
       ],
       matchStrings: [
         "talosVersion: (?<currentValue>.*)",
         "installer:(?<currentValue>.*)",
+        "download/(?<currentValue>.*)/metal-amd64",
       ],
       depNameTemplate: "ghcr.io/siderolabs/installer",
       datasourceTemplate: "docker",
