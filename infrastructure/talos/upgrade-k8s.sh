@@ -4,6 +4,7 @@
 echo -e "${BLUE}This will upgrade Kubernetes on each Talos node in the cluster.${NC}"
 
 check_rook_health
+check_postgres_health
 
 NODE=$(yq '.nodes | map(select(.controlPlane == true)) | pick([0]) | map(.ipAddress)' < $(dirname "$0")/talconfig.yaml)
 NODE=${NODE:2}

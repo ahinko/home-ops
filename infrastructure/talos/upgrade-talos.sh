@@ -6,17 +6,30 @@ echo -e "${BLUE}This will upgrade Talos on each node in the cluster.${NC}"
 check_rook_health
 check_postgres_health
 
-get_nodes
+config=$(yq e -o=j -I=0 '.nodes[]' $(dirname "$0")/talconfig.yaml)
 
-for key in "${!workers[@]}";
-do
-  upgrade_talos_on_node "$key" "${workers[$key]}"
-done
+while IFS=\= read node; do
+  NODENAME=$(echo "$node" | yq e '.hostname')
+  IP=$(echo "$node" | yq e '.ipAddress')
 
-for key in "${!controlplanes[@]}";
-do
-  upgrade_talos_on_node "$key" "${controlplanes[$key]}"
-done
+  echo "----------------------------------------------------------------"
+  echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
+
+  talosctl apply-config -n ${IP} -f $(dirname "$0")/clusterconfig/metal-${NODENAME}.yaml
+
+  # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
+  if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
+    kubectl delete job -n kube-system tainter-temp
+    kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
+  fi
+
+  # Give the node some time to recover and start up pods
+  sleep 60
+
+  check_rook_health
+  check_postgres_health
+
+done <<< "$config"
 
 echo "----------------------------------------------------------------"
 echo -e "${GREEN}Upgrade complete!${NC}"
