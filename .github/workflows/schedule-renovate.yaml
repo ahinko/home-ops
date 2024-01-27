@@ -34,7 +34,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
       - name: Generate Token
-        uses: actions/create-github-app-token@v1.6.4
+        uses: actions/create-github-app-token@v1.7.0
         id: generate-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
