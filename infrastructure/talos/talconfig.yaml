@@ -5,153 +5,97 @@ endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 talosVersion: v1.6.3
 kubernetesVersion: v1.29.1
 
+additionalApiServerCertSans: &sans
+  - ${CLUSTER_ENDPOINT_IP}
+  - 127.0.0.1 # KubePrism
+
+additionalMachineCertSans: *sans
+
 cniConfig:
   name: none
 
 nodes:
-  - hostname: hades
-    ipAddress: 192.168.20.23
+  - hostname: atlas
+    disableSearchDomain: true
+    ipAddress: 192.168.20.22
     controlPlane: true
     installDisk: /dev/sda
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
-      - interface: eth0
+      - interface: vnet1
         addresses:
-          - 192.168.20.23/24
-        mtu: 0
+          - 192.168.20.22/24
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-    patches:
-      - |-
-        machine:
-          install:
-            extraKernelArgs:
-              - talos.board=rpi_generic
 
   - hostname: poseidon
     ipAddress: 192.168.20.24
     controlPlane: true
     installDisk: /dev/nvme0n1
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
           - 192.168.20.24/24
-        mtu: 0
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
 
   - hostname: zeus
     ipAddress: 192.168.20.25
     controlPlane: true
     installDisk: /dev/nvme0n1
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
           - 192.168.20.25/24
-        mtu: 0
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
 
   - hostname: helios
     ipAddress: 192.168.20.21
     controlPlane: false
     installDisk: /dev/nvme0n1
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
           - 192.168.20.21/24
-        mtu: 0
         dhcp: true
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
 
   - hostname: iris
     disableSearchDomain: true
     ipAddress: 192.168.20.26
     controlPlane: false
     installDisk: /dev/nvme0n1
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
       - interface: eth0
         addresses:
           - 192.168.20.26/24
-        mtu: 0
         dhcp: true
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-
-  - hostname: atlas
-    disableSearchDomain: true
-    ipAddress: 192.168.20.22
-    controlPlane: false
-    installDisk: /dev/sda
-    nameservers:
-      - 192.168.20.1
-    networkInterfaces:
-      - interface: vnet1
-        addresses:
-          - 192.168.20.22/24
-        mtu: 0
-        dhcp: true
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
 
 controlPlane:
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/i915-ucode
+          - siderolabs/intel-ucode
+
   patches:
     # Disable search domain everywhere
     - |-
       machine:
         network:
           disableSearchDomain: true
+
+    # Force nameserver
+    - |-
+      machine:
+        network:
+          nameservers:
+            - 192.168.20.1
 
     # Configure NTP
     - |-
@@ -173,13 +117,9 @@ controlPlane:
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: false
+        allowSchedulingOnMasters: true
         proxy:
           disabled: true
-        discovery:
-          registries:
-            service:
-              disabled: true
         extraManifests:
           - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
@@ -209,9 +149,6 @@ controlPlane:
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
-          nodeIP:
-            validSubnets:
-                - 192.168.20.0/24
 
     # Custom sysctls
     - |-
@@ -221,12 +158,28 @@ controlPlane:
           fs.inotify.max_user_instances: "8192"
 
 worker:
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/i915-ucode
+          - siderolabs/intel-ucode
+
   patches:
     # Disable search domain everywhere
     - |-
       machine:
         network:
           disableSearchDomain: true
+
+    # Force nameserver
+    - |-
+      machine:
+        network:
+          nameservers:
+            - 192.168.20.1
 
     # Configure NTP
     - |-
@@ -265,9 +218,6 @@ worker:
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
-          nodeIP:
-            validSubnets:
-                - 192.168.20.0/24
 
     # Custom sysctls
     - |-

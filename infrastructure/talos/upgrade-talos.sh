@@ -11,11 +11,14 @@ config=$(yq e -o=j -I=0 '.nodes[]' $(dirname "$0")/talconfig.yaml)
 while IFS=\= read node; do
   NODENAME=$(echo "$node" | yq e '.hostname')
   IP=$(echo "$node" | yq e '.ipAddress')
+  IMAGE=$(yq e -o=j -I=0 '.machine.install.image' $(dirname "$0")/clusterconfig/metal-${NODENAME}.yaml | tr -d '"')
 
   echo "----------------------------------------------------------------"
-  echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}. ${BLUE}This will reboot the node${NC}."
+  echo -e "${BLUE}Upgrading Talos on node ${NC}${NODENAME}${BLUE} with IP ${NC}${IP}"
+  echo -e "${BLUE}Using image: ${NC}${IMAGE}"
+  echo -e "${BLUE}This will reboot the node${NC}."
 
-  talosctl apply-config -n ${IP} -f $(dirname "$0")/clusterconfig/metal-${NODENAME}.yaml
+  talosctl upgrade --wait --image ${IMAGE} -n ${IP}
 
   # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
   if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
