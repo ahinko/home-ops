@@ -8,3 +8,13 @@ tasks:
       - talosctl kubeconfig ~/.kube/configs/metal -n 192.168.20.21
       - kubectl config rename-context admin@metal metal
     silent: true
+
+  delete-failed-pods:
+    desc: Deletes pods with Failed phase
+    cmds:
+      - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+
+  delete-succeeded-pods:
+    desc: Deletes pods with Succeeded phase
+    cmds:
+      - kubectl delete pods --field-selector status.phase=Succeeded -A --ignore-not-found=true
