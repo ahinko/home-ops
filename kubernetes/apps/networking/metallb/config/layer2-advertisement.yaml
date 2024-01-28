@@ -6,3 +6,8 @@ metadata:
 spec:
   ipAddressPools:
     - lb-pool
+  nodeSelectors:
+    - matchLabels:
+        kubernetes.io/hostname: atlas
+    - matchLabels:
+        kubernetes.io/hostname: poseidon
