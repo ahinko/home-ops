@@ -18,3 +18,5 @@ talosconfig*
 *.backup
 **/.secrets
 .history
+*.dmg
+*.iso

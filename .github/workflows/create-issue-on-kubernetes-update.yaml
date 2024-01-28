@@ -26,14 +26,14 @@ jobs:
 
       - name: Parse semver string
         id: semver_parser
-        if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
+        if: contains(github.event.head_commit.message, 'update ghcr.io/siderolabs/kubelet')
         uses: booxmedialtd/ws-action-parse-semver@v1.4.7
         with:
           input_string: "${{ github.event.head_commit.message }}"
           version_extractor_regex: "→ v([0-9.]*)"
 
       - name: Create issue if new version of Kubernetes is available
-        if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
+        if: contains(github.event.head_commit.message, 'update ghcr.io/siderolabs/kubelet')
         uses: dacbd/create-issue-action@v1.2.1
         with:
           token: "${{ steps.generate-token.outputs.token }}"

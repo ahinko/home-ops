@@ -14,7 +14,8 @@ concurrency:
 jobs:
   changed-files:
     name: Get Changed Files
-    runs-on: ubuntu-latest
+    runs-on:
+      - arc-runner-set-homelab
     outputs:
       matrix: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
     steps:
@@ -35,7 +36,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v42
         with:
-          files: kubernetes/**/{helm-release,backup,cronjob}.yaml
+          files: kubernetes/**/helm-release.yaml
           json: true
           quotepath: false
           escape_json: false
@@ -45,7 +46,8 @@ jobs:
 
   extract-images:
     name: Extract images from Helm Release
-    runs-on: ubuntu-latest
+    runs-on:
+      - arc-runner-set-homelab
     needs:
       - changed-files
     if: ${{ needs.changed-files.outputs.matrix != '[]' }}
