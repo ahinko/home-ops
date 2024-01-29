@@ -15,7 +15,7 @@ jobs:
   changed-files:
     name: Get Changed Files
     runs-on:
-      - arc-runner-set-homelab
+      - ubuntu-latest
     outputs:
       matrix: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
     steps:
@@ -47,7 +47,7 @@ jobs:
   extract-images:
     name: Extract images from Helm Release
     runs-on:
-      - arc-runner-set-homelab
+      - ubuntu-latest
     needs:
       - changed-files
     if: ${{ needs.changed-files.outputs.matrix != '[]' }}
