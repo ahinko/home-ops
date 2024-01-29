@@ -8,8 +8,8 @@ metadata:
     app.kubernetes.io/instance: kubelet-csr-approver
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: kubelet-csr-approver
-    app.kubernetes.io/version: v1.0.6
-    helm.sh/chart: kubelet-csr-approver-1.0.6
+    app.kubernetes.io/version: v1.0.7
+    helm.sh/chart: kubelet-csr-approver-1.0.7
   name: kubelet-csr-approver
   namespace: kube-system
 ---
@@ -91,8 +91,8 @@ metadata:
     app.kubernetes.io/instance: kubelet-csr-approver
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: kubelet-csr-approver
-    app.kubernetes.io/version: v1.0.6
-    helm.sh/chart: kubelet-csr-approver-1.0.6
+    app.kubernetes.io/version: v1.0.7
+    helm.sh/chart: kubelet-csr-approver-1.0.7
   name: kubelet-csr-approver
   namespace: kube-system
 spec:
@@ -116,8 +116,8 @@ metadata:
     app.kubernetes.io/instance: kubelet-csr-approver
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: kubelet-csr-approver
-    app.kubernetes.io/version: v1.0.6
-    helm.sh/chart: kubelet-csr-approver-1.0.6
+    app.kubernetes.io/version: v1.0.7
+    helm.sh/chart: kubelet-csr-approver-1.0.7
   name: kubelet-csr-approver
   namespace: kube-system
 spec:
@@ -146,7 +146,7 @@ spec:
           value: "true"
         - name: ALLOWED_DNS_NAMES
           value: "1"
-        image: ghcr.io/postfinance/kubelet-csr-approver:v1.0.6
+        image: ghcr.io/postfinance/kubelet-csr-approver:v1.0.7
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -194,8 +194,8 @@ metadata:
     app.kubernetes.io/instance: kubelet-csr-approver
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: kubelet-csr-approver
-    app.kubernetes.io/version: v1.0.6
-    helm.sh/chart: kubelet-csr-approver-1.0.6
+    app.kubernetes.io/version: v1.0.7
+    helm.sh/chart: kubelet-csr-approver-1.0.7
   name: kubelet-csr-approver-test-connection
   namespace: kube-system
 spec:
