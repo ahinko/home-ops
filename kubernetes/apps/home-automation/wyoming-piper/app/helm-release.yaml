@@ -38,7 +38,7 @@ spec:
           main:
             image:
               repository: rhasspy/wyoming-piper
-              tag: latest
+              tag: 1.4.0
 
             args:
               - --voice
