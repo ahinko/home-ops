@@ -32,7 +32,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/mastodon
-      tag: 4.2.3-debian-11-r2
+      tag: 4.2.4-debian-11-r2
 
     environment: production
     adminUser: "peter"
