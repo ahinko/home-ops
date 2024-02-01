@@ -1,0 +1,24 @@
+---
+debug: True
+datalogger:
+  host: 192.168.71.135
+  port: 502
+  slave_id: 1
+  poll_interval: 60
+  poll_interval_if_off: 600
+  http:
+    enabled: True
+inverter:
+  name: Solis
+  manufacturer: Ginlong Technologies
+  model: S5-GR3P15K
+mqtt:
+  enabled: True
+  host: mosquitto
+  port: 1883
+  topic_prefix: tcpsolis2mqtt
+  client_id: tcpsolis2mqtt
+  user: ${SECRET_MQTT_USERNAME}
+  password: ${SECRET_MQTT_PASSWORD}
+  use_ssl: False
+  validate_cert: False

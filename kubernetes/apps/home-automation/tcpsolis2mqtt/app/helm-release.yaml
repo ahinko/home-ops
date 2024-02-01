@@ -1,0 +1,64 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: tcpsolis2mqtt
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/ahinko/tcpsolis2mqtt
+              tag: main@sha256:ddfe994e76cae48e31e838261a1e682dba0ba66f2a4693d1ce792a974942d3c6
+
+            resources:
+              limits:
+                memory: 256Mi
+              requests:
+                cpu: 100m
+                memory: 64Mi
+
+    service:
+      main:
+        enabled: false
+
+    persistence:
+      config-file:
+        enabled: true
+        type: configMap
+        name: tcpsolis2mqtt-configmap
+        globalMounts:
+          - path: /usr/app/src/config.yaml
+            subPath: config.yaml
