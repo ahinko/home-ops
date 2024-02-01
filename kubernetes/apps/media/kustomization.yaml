@@ -5,5 +5,4 @@ resources:
   - ./namespace.yaml
   - ./nfs-pvc.yaml
   - ./bonob/install.yaml
-  - ./jellyfin/install.yaml
   - ./navidrome/install.yaml
