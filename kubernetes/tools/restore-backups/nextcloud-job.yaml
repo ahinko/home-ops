@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-nextcloud-config
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.74
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.75
           args:
             - /run.sh
           env:
@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
         - name: restore-nextcloud-data
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.74
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.75
           args:
             - /run.sh
           env:
