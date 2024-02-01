@@ -11,3 +11,5 @@ spec:
         kubernetes.io/hostname: atlas
     - matchLabels:
         kubernetes.io/hostname: poseidon
+    - matchLabels:
+        kubernetes.io/hostname: zeus
