@@ -1,5 +1,5 @@
 ---
 providerRegex: |
-  ^(atlas|hades|helios|iris|poseidon|zeus)$
+  ^(atlas|hades|eos|helios|iris|poseidon|zeus)$
 
 bypassDnsResolution: true

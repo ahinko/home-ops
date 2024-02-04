@@ -12,4 +12,6 @@ spec:
     - matchLabels:
         kubernetes.io/hostname: poseidon
     - matchLabels:
-        kubernetes.io/hostname: zeus
+        kubernetes.io/hostname: eos
+    - matchLabels:
+        kubernetes.io/hostname: hades

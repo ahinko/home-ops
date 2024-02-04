@@ -64,6 +64,15 @@ spec:
           tolerations:
             - effect: NoSchedule
               key: node-role.kubernetes.io/control-plane
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: NotIn
+                      values:
+                        - "hades"
+                        - "eos"
 
       network:
         provider: host

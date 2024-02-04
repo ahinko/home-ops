@@ -141,7 +141,7 @@ spec:
         - -leader-election
         env:
         - name: PROVIDER_REGEX
-          value: ^(atlas|hades|helios|iris|poseidon|zeus)$
+          value: ^(atlas|hades|eos|helios|iris|poseidon|zeus)$
         - name: BYPASS_DNS_RESOLUTION
           value: "true"
         - name: ALLOWED_DNS_NAMES

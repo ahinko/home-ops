@@ -15,18 +15,53 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: atlas
-    disableSearchDomain: true
-    ipAddress: 192.168.20.22
+  - hostname: hades
+    ipAddress: 192.168.20.23
     controlPlane: true
     installDisk: /dev/sda
+    nameservers:
+      - 192.168.20.1
     networkInterfaces:
-      - interface: vnet1
+      - interface: eth0
         addresses:
-          - 192.168.20.22/24
+          - 192.168.20.23/24
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+    patches:
+      - |-
+        machine:
+          install:
+            extraKernelArgs:
+              - talos.board=rpi_generic
+
+  - hostname: eos
+    ipAddress: 192.168.20.27
+    controlPlane: true
+    installDisk: /dev/sda
+    nameservers:
+      - 192.168.20.1
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.20.27/24
+        dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+    patches:
+      - |-
+        machine:
+          install:
+            extraKernelArgs:
+              - talos.board=rpi_generic
 
   - hostname: poseidon
     ipAddress: 192.168.20.24
@@ -39,18 +74,34 @@ nodes:
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+
+  - hostname: atlas
+    ipAddress: 192.168.20.22
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: vnet1
+        addresses:
+          - 192.168.20.22/24
+        dhcp: true
 
   - hostname: zeus
     ipAddress: 192.168.20.25
-    controlPlane: true
+    controlPlane: false
     installDisk: /dev/nvme0n1
     networkInterfaces:
       - interface: eth0
         addresses:
           - 192.168.20.25/24
         dhcp: true
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
 
   - hostname: helios
     ipAddress: 192.168.20.21
@@ -63,7 +114,6 @@ nodes:
         dhcp: true
 
   - hostname: iris
-    disableSearchDomain: true
     ipAddress: 192.168.20.26
     controlPlane: false
     installDisk: /dev/nvme0n1
@@ -74,31 +124,22 @@ nodes:
         dhcp: true
 
 controlPlane:
-  schematic:
-    customization:
-      extraKernelArgs:
-        - net.ifnames=0
-      systemExtensions:
-        officialExtensions:
-          - siderolabs/i915-ucode
-          - siderolabs/intel-ucode
-
   patches:
     # Disable search domain everywhere
-    - |-
+    - &disableSearchDomainPatch |-
       machine:
         network:
           disableSearchDomain: true
 
     # Force nameserver
-    - |-
+    - &nameServersPatch |-
       machine:
         network:
           nameservers:
             - 192.168.20.1
 
     # Configure NTP
-    - |-
+    - &timeServersPatch |-
       machine:
         time:
           disabled: false
@@ -107,34 +148,45 @@ controlPlane:
             - sth1.ntp.se
 
     # Enable KubePrism
-    - |-
+    - &kubePrismPatch |-
       machine:
         features:
           kubePrism:
             enabled: true
             port: 7445
 
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - kube-system
+
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: true
+        allowSchedulingOnMasters: false
         proxy:
           disabled: true
-        extraManifests:
-          - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
-          - https://raw.githubusercontent.com/ahinko/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
 
     # Configure containerd
-    - |-
+    - &containerdConfigPatch |-
       machine:
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
             content: |
-              [plugins]
-                [plugins."io.containerd.grpc.v1.cri"]
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
 
     # Disable default API server admission plugins.
     - |-
@@ -142,7 +194,7 @@ controlPlane:
         path: /cluster/apiServer/admissionControl
 
     # Kubelet configuration
-    - |-
+    - &kubeletPatch |-
       machine:
         kubelet:
           extraArgs:
@@ -151,7 +203,7 @@ controlPlane:
             maxPods: 150
 
     # Custom sysctls
-    - |-
+    - &sysctlsPatch |-
       machine:
         sysctls:
           fs.inotify.max_user_watches: "1048576"
@@ -168,60 +220,10 @@ worker:
           - siderolabs/intel-ucode
 
   patches:
-    # Disable search domain everywhere
-    - |-
-      machine:
-        network:
-          disableSearchDomain: true
-
-    # Force nameserver
-    - |-
-      machine:
-        network:
-          nameservers:
-            - 192.168.20.1
-
-    # Configure NTP
-    - |-
-      machine:
-        time:
-          disabled: false
-          servers:
-            - gbg2.ntp.se
-            - sth1.ntp.se
-
-    # Enable KubePrism
-    - |-
-      machine:
-        features:
-          kubePrism:
-            enabled: true
-            port: 7445
-
-    # Configure containerd
-    - |-
-      machine:
-        files:
-          - op: create
-            path: /etc/cri/conf.d/20-customization.part
-            content: |
-              [plugins]
-                [plugins."io.containerd.grpc.v1.cri"]
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
-
-    # Kubelet configuration
-    - |-
-      machine:
-        kubelet:
-          extraArgs:
-            rotate-server-certificates: "true"
-          extraConfig:
-            maxPods: 150
-
-    # Custom sysctls
-    - |-
-      machine:
-        sysctls:
-          fs.inotify.max_user_watches: "1048576"
-          fs.inotify.max_user_instances: "8192"
+    - *disableSearchDomainPatch
+    - *nameServersPatch
+    - *timeServersPatch
+    - *kubePrismPatch
+    - *containerdConfigPatch
+    - *kubeletPatch
+    - *sysctlsPatch

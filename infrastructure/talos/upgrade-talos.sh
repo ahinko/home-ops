@@ -21,7 +21,7 @@ while IFS=\= read node; do
   talosctl upgrade --wait --image ${IMAGE} -n ${IP}
 
   # HACK: zeus or poseidon will hold up everything (because rook-ceph + controlplane) for up to 15 minutes until the taint has been removed.
-  if [[ $NODENAME == "zeus" || $NODENAME == "poseidon" ]]; then
+  if [[ $NODENAME == "poseidon" ]]; then
     kubectl delete job -n kube-system tainter-temp
     kubectl create job --from=cronjob/tainter -n kube-system tainter-temp
   fi
