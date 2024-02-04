@@ -1,5 +1,0 @@
----
-# Credentials for NUT client/server traffic:
-nut_user: pinut
-
-nut_config_dir: /docker

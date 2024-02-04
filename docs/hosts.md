@@ -2,7 +2,7 @@
 
 A large part of my homelab consists of my Kubernetes cluster that runs on 6 nodes:
 * 4 Intel NUCs running Talos.
-* 1 RPi4 running Talos.
+* 2 RPi4 running Talos.
 * 1 whitebox that mainly works as a NAS but also has K8s installed. This box runs Ubuntu 23.04.
 
 Besides these nodes I also have a few smaller hosts that handles simpler tasks:
@@ -13,6 +13,5 @@ Besides these nodes I also have a few smaller hosts that handles simpler tasks:
 I haven't set up any gitops flow to keep them up to date for various reasons and I also tend to not wanting to mess with these because I heavily rely on them being online:
 * I haven't found a good way to do this for PiKVM and to quote the docs: "This is ONLY recommended if you need a feature...".
 * The zwave-coordinator doesn't have many things running on it but an apt update should be enough but I would only do that if I absolutely need and when I have time to fix any issues that might occur. My smart home relies heavily on this host being online.
-* pinut on the other hand could have some gitops in place for at least updating the Docker image used for the two containers. I haven't thought much about it since NUT is such a mature project with barely any updates. I might add this sometime in the future.
 
 Kronos acts as a backup server that mostly is powered of and only powered on a weekly basis. Znapzend sends ZFS snapshots when Kronos is up and running. Kronos runs on Ubuntu 23.10 and its also a whitebox.

@@ -7,9 +7,6 @@ metal:
     kronos:
       ansible_host: 192.168.20.4
       mac: d0:50:99:c0:15:b1
-    pinut:
-      ansible_host: 192.168.20.30
-      mac: e4:5f:01:2a:76:06
 
 kvm:
   hosts:

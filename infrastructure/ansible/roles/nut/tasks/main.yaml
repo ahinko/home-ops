@@ -1,4 +1,0 @@
----
-- name: Create NUT configuration files
-  ansible.builtin.include_tasks:
-    file: configure.yaml

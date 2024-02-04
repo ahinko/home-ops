@@ -1,3 +1,0 @@
----
-# NUT UPS device match pattern:
-nut_matcher: ".*(UPS|Uninterruptible Power Supply).*"
