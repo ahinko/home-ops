@@ -243,29 +243,7 @@ spec:
       enabled: false
 
     metrics:
-      enabled: true
-      replicaCount: 1
-      https: false
-      timeout: 5s
-
-      image:
-        repository: xperimental/nextcloud-exporter
-        tag: 0.6.2
-        pullPolicy: IfNotPresent
-
-      service:
-        type: ClusterIP
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/port: "9205"
-        labels: {}
-
-      resources:
-        limits:
-          memory: 64M
-        requests:
-          cpu: 10m
-          memory: 64M
+      enabled: false
 
     rbac:
       enabled: false
