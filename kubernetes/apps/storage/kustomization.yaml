@@ -4,4 +4,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./minio/install.yaml
+  - ./snapshot-controller/install.yaml
   - ./spegel/install.yaml
+  - ./volsync/install.yaml
