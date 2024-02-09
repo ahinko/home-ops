@@ -23,7 +23,6 @@ resources:
   - ./kubernetes-sigs-descheduler-charts.yaml
   - ./kubernetes-sigs-metrics-server-charts.yaml
   - ./kubernetes-sigs-node-feature-discovery-charts.yaml
-  - ./metallb-charts.yaml
   - ./nextcloud-charts.yaml
   - ./postfinance-charts.yaml
   - ./prometheus-community-charts.yaml

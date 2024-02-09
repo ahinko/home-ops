@@ -84,7 +84,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          metallb.universe.tf/loadBalancerIPs: "${LB_SLSKD}"
+          io.cilium/lb-ipam-ips: ${LB_SLSKD}
         externalTrafficPolicy: Cluster
         ports:
           http:

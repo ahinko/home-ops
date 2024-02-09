@@ -63,7 +63,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          metallb.universe.tf/loadBalancerIPs: "${LB_MAILRISE}"
+          io.cilium/lb-ipam-ips: ${LB_MAILRISE}
         externalTrafficPolicy: Cluster
         ports:
           http:

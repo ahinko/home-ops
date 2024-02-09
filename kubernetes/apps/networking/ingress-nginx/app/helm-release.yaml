@@ -38,8 +38,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          metallb.universe.tf/loadBalancerIPs: "${LB_INGRESS}"
-
+          io.cilium/lb-ipam-ips: ${LB_INGRESS}
       publishService:
         enabled: true
 

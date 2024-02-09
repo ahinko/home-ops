@@ -16,7 +16,7 @@ bgp:
     podCIDR: false
 
 l2announcements:
-  enabled: false
+  enabled: true
   leaseDuration: 120s
   leaseRenewDeadline: 60s
   leaseRetryPeriod: 1s

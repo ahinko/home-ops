@@ -22,4 +22,4 @@ spec:
     - name: rook-ceph-cluster
     - name: mosquitto
     - name: postgres-cluster
-    - name: metallb
+    - name: cilium

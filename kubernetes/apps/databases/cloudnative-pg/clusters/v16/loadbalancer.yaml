@@ -7,7 +7,7 @@ metadata:
   labels:
     cnpg.io/cluster: postgres16
   annotations:
-    metallb.universe.tf/loadBalancerIPs: ${LB_POSTGRES}
+    io.cilium/lb-ipam-ips: ${LB_POSTGRES}
 spec:
   ports:
     - protocol: TCP

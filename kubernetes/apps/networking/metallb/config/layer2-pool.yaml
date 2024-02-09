@@ -1,8 +1,0 @@
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: lb-pool
-spec:
-  addresses:
-    - ${METALLB_ARP_RANGE}

@@ -20,4 +20,4 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph-cluster
-    - name: metallb
+    - name: cilium
