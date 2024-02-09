@@ -20,7 +20,7 @@ jobs:
       matrix: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v1.7.0
         id: app-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
@@ -60,7 +60,7 @@ jobs:
       matrix: ${{ steps.extract-images.outputs.images }}
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v1.7.0
         id: app-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
