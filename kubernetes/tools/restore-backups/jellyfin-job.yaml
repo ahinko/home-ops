@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: restore-jellyfin
-          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.75
+          image: ghcr.io/ahinko/simple-k8s-backup:v4.2.76
           args:
             - /run.sh
           env:
