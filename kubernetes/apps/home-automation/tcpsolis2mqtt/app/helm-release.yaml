@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/ahinko/tcpsolis2mqtt
-              tag: main@sha256:0b4060feaac37b325e81c12048b5256cfe3810a6c8d3aa5341751ce2a8034141
+              tag: main@sha256:5ca78667a9b8352f670572986dc0e4d44df99b63ddd6b503a9ac4919e4bfbe52
 
             resources:
               limits:
