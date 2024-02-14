@@ -6,6 +6,5 @@ resources:
   - ./cloudflared/install.yaml
   - ./cloudflare-ddns/install.yaml
   - ./external-dns/install.yaml
-  - ./external-services/install.yaml
   - ./ingress-nginx/install.yaml
   - ./k8s-gateway/install.yaml
