@@ -11,4 +11,3 @@ resources:
   - ./sabnzbd/install.yaml
   - ./slskd/install.yaml
   - ./sonarr/install.yaml
-  - ./sonarr-requests/install.yaml
