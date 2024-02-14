@@ -12,6 +12,7 @@
     "github>ahinko/home-ops//.github/renovate/autoMerge.json5",
     "github>ahinko/home-ops//.github/renovate/commitMessage.json5",
     "github>ahinko/home-ops//.github/renovate/disabledDatasources.json5",
+    "github>ahinko/home-ops//.github/renovate/grafanadashboards.json5",
     "github>ahinko/home-ops//.github/renovate/groups.json5",
     "github>ahinko/home-ops//.github/renovate/labels.json5",
     "github>ahinko/home-ops//.github/renovate/regexManagers.json5",

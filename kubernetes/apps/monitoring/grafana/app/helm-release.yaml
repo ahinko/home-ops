@@ -80,12 +80,20 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/thanos
-          - name: unpoller
+          - name: kubernetes
             disableDeletion: false
             editable: true
-            folder: "UniFi Poller"
+            folder: "Kubernetes"
             options:
-              path: /var/lib/grafana/dashboards/unpoller
+              path: /var/lib/grafana/dashboards/kubernetes
+            orgId: 1
+            type: file
+          - name: prometheus
+            disableDeletion: false
+            editable: true
+            folder: "Prometheus"
+            options:
+              path: /var/lib/grafana/dashboards/prometheus
             orgId: 1
             type: file
 
@@ -103,21 +111,25 @@ spec:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
 
-        cloudflared:
-          gnetId: 17457
-          revision: 6
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-
         external-dns:
+          # renovate: depName="External-dns"
           gnetId: 15038
           revision: 3
           datasource: Prometheus
 
-        external-secrets:
-          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
-          datasource: Prometheus
+        minio:
+          # renovate: depName="MinIO Dashboard"
+          gnetId: 13502
+          revision: 25
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+
+        cloudflared:
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
@@ -127,6 +139,10 @@ spec:
 
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: Prometheus
+
+        cloudnative-pg:
+          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
           datasource: Prometheus
 
         speedtest-exporter-hub:
@@ -144,16 +160,63 @@ spec:
 
       ceph:
         ceph-cluster:
+          # renovate: depName="Ceph Cluster"
           gnetId: 2842
           revision: 17
           datasource: Prometheus
         ceph-osd:
+          # renovate: depName="Ceph - OSD (Single)"
           gnetId: 5336
           revision: 9
           datasource: Prometheus
         ceph-pools:
+          # renovate: depName="Ceph - Pools"
           gnetId: 5342
           revision: 9
+          datasource: Prometheus
+
+      kubernetes:
+        kubernetes-api-server:
+          # renovate: depName="Kubernetes / System / API Server"
+          gnetId: 15761
+          revision: 16
+          datasource: Prometheus
+        kubernetes-coredns:
+          # renovate: depName="Kubernetes / System / CoreDNS"
+          gnetId: 15762
+          revision: 17
+          datasource: Prometheus
+        kubernetes-global:
+          # renovate: depName="Kubernetes / Views / Global"
+          gnetId: 15757
+          revision: 37
+          datasource: Prometheus
+        kubernetes-namespaces:
+          # renovate: depName="Kubernetes / Views / Namespaces"
+          gnetId: 15758
+          revision: 34
+          datasource: Prometheus
+        kubernetes-nodes:
+          # renovate: depName="Kubernetes / Views / Nodes"
+          gnetId: 15759
+          revision: 29
+          datasource: Prometheus
+        kubernetes-pods:
+          # renovate: depName="Kubernetes / Views / Pods"
+          gNetId: 15760
+          revision: 21
+          datasource: Prometheus
+        kubernetes-volumes:
+          # renovate: depName="K8s / Storage / Volumes / Cluster"
+          gnetId: 11454
+          revision: 14
+          datasource: Prometheus
+
+      prometheus:
+        prometheus:
+          # renovate: depName="Prometheus"
+          gnetId: 19105
+          revision: 3
           datasource: Prometheus
 
       flux:
@@ -203,26 +266,6 @@ spec:
         thanos-store:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/store.json
           datasource: Prometheus
-
-      unpoller:
-        clients:
-          gnetId: 11315
-          revision: 9
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        usw:
-          gnetId: 11312
-          revision: 9
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        uap:
-          gnetId: 11314
-          revision: 10
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
 
     datasources:
       datasources.yaml:
