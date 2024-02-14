@@ -13,14 +13,8 @@
     {
       customType: "regex",
       description: "Process Kubernetes versions",
-      fileMatch: [
-        "infrastructure/talos/talconfig.yaml",
-        "infrastructure/talos/upgrade-k8s.sh",
-      ],
-      matchStrings: [
-        "kubernetesVersion: (?<currentValue>.*)",
-        "--to (?<currentValue>.*)",
-      ],
+      fileMatch: ["infrastructure/talos/talconfig.yaml"],
+      matchStrings: ["kubernetesVersion: (?<currentValue>.*)"],
       depNameTemplate: "ghcr.io/siderolabs/kubelet",
       datasourceTemplate: "docker",
     },
@@ -28,13 +22,11 @@
       customType: "regex",
       description: "Process Talos versions",
       fileMatch: [
-        "infrastructure/talos/common.sh",
         "infrastructure/talos/talconfig.yaml",
         "infrastructure/ansible/inventory/host_vars/atlas/kvm_qemu.yaml",
       ],
       matchStrings: [
         "talosVersion: (?<currentValue>.*)",
-        "installer:(?<currentValue>.*)",
         "download/(?<currentValue>.*)/metal-amd64",
       ],
       depNameTemplate: "ghcr.io/siderolabs/installer",

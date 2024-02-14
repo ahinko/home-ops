@@ -1,35 +1,27 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 ---
-version: "3"
+version: 3
+
+env:
+  BREW: |-
+    ansible fluxcd/tap/flux kubectl terraform pre-commit shellcheck yamllint sops age libpq coreutils tfsec yq gh zx talhelper siderolabs/tap/talosctl helmfile
 
 tasks:
-  generate:
-    desc: Generate Talos machine configurations (task talos:generate)
-    dir: infrastructure/talos
+  install:
+    desc: Install/update all required dependencies
     silent: true
     cmds:
-      - talhelper genconfig
-    sources:
-      - talconfig.yaml
-      - talenv.yaml
-      - talsecret.yaml
-    generates:
-      - clusterconfig/*.yaml
-      - clusterconfig/talosconfig
+      # Install dependencies using Brew
+      - "brew install {{.BREW}}"
+      # Upgrade brew formulaes
+      - brew upgrade
 
-  upgrade-k8s:
-    desc: Upgrade Kubernetes
-    dir: infrastructure/talos
-    silent: true
-    cmds:
-      - ./upgrade-k8s.sh
+      # Install Ansible dependencies
+      - "ansible-galaxy install -r infrastructure/ansible/requirements.yaml --force"
+      - "ansible-galaxy collection install -r infrastructure/ansible/requirements.yaml --force"
 
-  upgrade-nodes:
-    desc: Upgrade Talos on all nodes
-    dir: infrastructure/talos
-    silent: true
-    cmds:
-      - task: generate
-      - ./upgrade-talos.sh
+      # Set up pre-commit hooks
+      - pre-commit install-hooks
 
   write-talos-arm64-to-usb:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4

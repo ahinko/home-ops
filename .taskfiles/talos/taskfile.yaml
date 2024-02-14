@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  bootstrap:
+    desc: Bootstrap Talos
+
+    cmds:
+      - task: :talos:generate
+      - task: :talos:bootstrap-apply-config
+      - task: :talos:bootstrap-etcd
+        vars: &vars
+          controlplane: "{{.controlplane}}"
+      - task: :talos:kubeconfig
+        vars: *vars
+      - task: :talos:bootstrap-core-apps
+    requires:
+      vars: ["controlplane"]
+
+  generate:
+    desc: Generate Talos machine configurations (task talos:generate)
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - talhelper genconfig
+    sources:
+      - talconfig.yaml
+      - talenv.yaml
+      - talsecret.yaml
+    generates:
+      - clusterconfig/*.yaml
+      - clusterconfig/talosconfig
+
+  apply-config:
+    desc: Apply Talos config on a node
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - task: wait_for_health
+        vars: { TIMEOUT: 30s }
+      - talhelper gencommand upgrade -n {{.node}} --extra-flags=preserve=true | bash
+    requires:
+      vars: ["node"]
+
+  upgrade-talos:
+    desc: Upgrade Talos on a node
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - task: wait_for_health
+        vars: { TIMEOUT: 30s }
+      - talhelper gencommand upgrade -n {{.node}} --extra-flags=preserve=true | bash
+    requires:
+      vars: ["node"]
+
+  upgrade-k8s:
+    desc: Upgrade Kubernetes
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - task: wait_for_health
+        vars: { TIMEOUT: 30s }
+      - talosctl -n {{.controlplane}} etcd snapshot etcd.backup
+      - talhelper gencommand upgrade-k8s | bash
+    requires:
+      vars: ["controlplane"]
+
+  wait_for_health:
+    internal: True
+    desc: Wait for services in cluster to be healthy
+    cmds:
+      # Ensure CephCluster is healthy
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
+      # Ensure CloudNative-PG cluster has 3 ready instances
+      - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
+
+  bootstrap-apply-config:
+    desc: Apply Talos config on all nodes
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - talhelper gencommand apply --extra-flags=--insecure | bash
+
+  bootstrap-etcd:
+    desc: Bootstrap etcd
+    cmds:
+      - until talosctl --nodes {{.controller}} bootstrap; do sleep 10; done
+    requires:
+      vars: ["controlplane"]
+
+  bootstrap-core-apps:
+    desc: Bootstrap core helm apps
+    cmds:
+      - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
+      - helmfile --file {{.TALOS_DIR}}/bootstrap/helmfile.yaml apply
+      - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
+
+  kubeconfig:
+    desc: Get an updated version of kubeconfig with updated/rotated certificates
+    cmds:
+      - talosctl kubeconfig ~/.kube/configs/metal -n {{.controlplane}}
+      - kubectl config rename-context admin@metal metal
+    requires:
+      vars: ["controlplane"]

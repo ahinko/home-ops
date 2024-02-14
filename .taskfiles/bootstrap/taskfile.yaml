@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  cluster:
+    desc: Bootstrap Talos and K8s cluster
+    vars: &vars
+      controlplane: 192.168.20.23
+
+    cmds:
+      - task: :tools:install
+      - task: :talos:bootstrap
+        vars: *vars
+      - task: :rook:wipe
+      - task: :flux:bootstrap

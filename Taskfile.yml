@@ -1,11 +1,13 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-dotenv: [".env"]
-
 vars:
-  PROJECT_ROOT:
-    sh: git rev-parse --show-toplevel
+  ANSIBLE_DIR: "{{.ROOT_DIR}}/infrastructure/ansible"
+  TALOS_DIR: "{{.ROOT_DIR}}/infrastructure/talos"
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  # PROJECT_ROOT:
+  # sh: git rev-parse --show-toplevel
 
 tasks:
   default:
@@ -14,9 +16,11 @@ tasks:
       - task --list
 
 includes:
-  tools: .taskfiles/tools.yaml
-  k8s: .taskfiles/kubernetes.yaml
-  flux: .taskfiles/flux.yaml
-  maintenance: .taskfiles/maintenance.yaml
-  rook: .taskfiles/rook.yaml
-  talos: .taskfiles/talos.yaml
+  #ansible: .taskfiles/ansible/taskfile.yaml
+  bootstrap: .taskfiles/bootstrap/taskfile.yaml
+  flux: .taskfiles/flux/taskfile.yaml
+  k8s: .taskfiles/kubernetes/taskfile.yaml
+  #maintenance: .taskfiles/maintenance/taskfile.yaml
+  rook: .taskfiles/rook/taskfile.yaml
+  talos: .taskfiles/talos/taskfile.yaml
+  tools: .taskfiles/tools/taskfile.yaml

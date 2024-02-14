@@ -8,12 +8,6 @@ tasks:
       - kubectl describe nodes | grep -A 9 -e "^\\s*Allocated resources"
     silent: true
 
-  krr:
-    desc: Run KRR
-    cmds:
-      - echo "Run kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090 9090 first"
-      - krr simple -p http://127.0.0.1:9090
-
   nfs:pause:
     desc: Pause all Helm Releases that rely on NFS storage
     silent: true
@@ -80,6 +74,9 @@ tasks:
       - flux suspend hr -n selfhosted nextcloud
       - flux suspend hr -n selfhosted linkding
       - flux suspend hr -n selfhosted miniflux
+      - flux suspend hr -n selfhosted elements
+      - flux suspend hr -n selfhosted kitchenowl
+      - flux suspend hr -n selfhosted mastodon
       - flux suspend hr -n home-automation home-assistant
 
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
@@ -88,6 +85,9 @@ tasks:
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 0
       - kubectl scale -n selfhosted deploy/linkding --replicas 0
       - kubectl scale -n selfhosted deploy/miniflux --replicas 0
+      - kubectl scale -n selfhosted deploy/elements --replicas 0
+      - kubectl scale -n selfhosted deploy/kitchenowl --replicas 0
+      - kubectl scale -n selfhosted deploy/mastodon --replicas 0
       - kubectl scale -n home-automation deploy/home-assistant --replicas 0
 
   db:resume:
@@ -99,7 +99,10 @@ tasks:
       - kubectl scale -n selfhosted deploy/immich-server --replicas 1
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
       - kubectl scale -n selfhosted deploy/linkding --replicas 1
-      - kubectl scale -n selfhosted deploy/miniflux --replicas 2
+      - kubectl scale -n selfhosted deploy/miniflux --replicas 1
+      - kubectl scale -n selfhosted deploy/elements --replicas 1
+      - kubectl scale -n selfhosted deploy/kitchenowl --replicas 1
+      - kubectl scale -n selfhosted deploy/mastodon --replicas 1
       - kubectl scale -n home-automation deploy/home-assistant --replicas 1
 
       - flux resume hr -n selfhosted immich-machine-learning
@@ -108,4 +111,7 @@ tasks:
       - flux resume hr -n selfhosted nextcloud
       - flux resume hr -n selfhosted linkding
       - flux resume hr -n selfhosted miniflux
+      - flux resume hr -n selfhosted elements
+      - flux resume hr -n selfhosted kitchenowl
+      - flux resume hr -n selfhosted mastodon
       - flux resume hr -n home-automation home-assistant

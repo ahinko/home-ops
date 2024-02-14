@@ -1,5 +1,7 @@
 # Provision bare metal nodes & Kubernetes
 
+> **This document is out of date, an updated version will be available shortly**
+
 ## 1. Install needed tools
 
 The first thing we need to do is to install some tools. Start by installing [Brew](https://brew.sh/) and [Taskfiles](https://taskfile.dev) after that we can use Taskfile to do a lot of the things we need to do.
