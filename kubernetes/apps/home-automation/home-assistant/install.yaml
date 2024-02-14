@@ -11,15 +11,25 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
   path: "./kubernetes/apps/home-automation/home-assistant/app"
-  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
-  wait: true
   dependsOn:
     - name: rook-ceph-cluster
     - name: mosquitto
     - name: postgres-cluster
     - name: cilium
+    - name: volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: home-assistant-config
+      VOLSYNC_CAPACITY: 2Gi
+  prune: true
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

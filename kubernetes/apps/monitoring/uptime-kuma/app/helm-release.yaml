@@ -87,6 +87,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "uptime-kuma-config"
+        existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /app/data

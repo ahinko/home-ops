@@ -99,6 +99,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "zwave-js-ui-config"
+        existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /usr/src/app/store

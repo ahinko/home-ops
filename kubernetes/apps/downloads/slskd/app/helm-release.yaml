@@ -23,9 +23,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       main:
@@ -34,9 +31,9 @@ spec:
 
         pod:
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups:
               - 65539
@@ -50,7 +47,7 @@ spec:
               TZ: Europe/Stockholm
               SLSKD_HTTP_PORT: &port 80
               SLSKD_NO_HTTPS: true
-              #SLSKD_NO_SHARE_SCAN: true
+              # SLSKD_NO_SHARE_SCAN: true
               SLSKD_NO_VERSION_CHECK: true
               SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50300
               SLSKD_APP_DIR: /config
@@ -82,10 +79,6 @@ spec:
 
     service:
       main:
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: ${LB_SLSKD}
-        externalTrafficPolicy: Cluster
         ports:
           http:
             port: *port
@@ -113,7 +106,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: slskd-config
+        existingClaim: "${VOLSYNC_CLAIM}"
       media:
         existingClaim: downloads-nfs
         globalMounts:

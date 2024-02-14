@@ -80,7 +80,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: esphome-config
+        existingClaim: "${VOLSYNC_CLAIM}"
       esphome-cache:
         type: emptyDir
         globalMounts:

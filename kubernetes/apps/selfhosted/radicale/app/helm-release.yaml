@@ -36,9 +36,9 @@ spec:
         pod:
           enableServiceLinks: false
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
             fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
@@ -91,7 +91,7 @@ spec:
 
       data:
         type: persistentVolumeClaim
-        existingClaim: radicale-data
+        existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /data
 

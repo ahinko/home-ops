@@ -92,6 +92,6 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: "zigbee2mqtt-data"
+        existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /data

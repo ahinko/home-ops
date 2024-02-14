@@ -54,7 +54,7 @@ spec:
     persistence:
       enabled: true
       useExisting: true
-      name: influxdb-data
+      name: "${VOLSYNC_CLAIM}"
 
     ingress:
       enabled: true

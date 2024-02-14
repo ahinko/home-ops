@@ -11,12 +11,22 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
   path: "./kubernetes/apps/databases/influxdb/app"
-  prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
-  wait: true
   dependsOn:
     - name: rook-ceph-cluster
+    - name: volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: influxdb-data
+      VOLSYNC_CAPACITY: 10Gi
+  prune: true
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
