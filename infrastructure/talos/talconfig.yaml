@@ -3,7 +3,7 @@ clusterName: metal
 endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 
 talosVersion: v1.6.4
-kubernetesVersion: v1.29.1
+kubernetesVersion: v1.29.2
 
 additionalApiServerCertSans: &sans
   - ${CLUSTER_ENDPOINT_IP}
