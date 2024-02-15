@@ -44,7 +44,7 @@ spec:
           main:
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
-              tag: 9.8.3
+              tag: 9.9.0
 
             resources:
               requests:
