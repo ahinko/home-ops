@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emqx
+  labels:
+    apps.emqx.io/db-role: core
+    apps.emqx.io/instance: emqx
+  annotations:
+    io.cilium/lb-ipam-ips: ${LB_MQTT}
+spec:
+  type: LoadBalancer
+  ports:
+    - name: mqtt
+      protocol: TCP
+      port: 1883
+    - name: ws
+      protocol: TCP
+      port: 8083
+  selector:
+    apps.emqx.io/db-role: core
+    apps.emqx.io/instance: emqx

@@ -1,0 +1,40 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname emqx-operator
+  namespace: flux-system
+spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/apps/home-automation/emqx/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname-cluster emqx-cluster
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname-cluster
+  interval: 10m
+  path: "./kubernetes/apps/home-automation/emqx/cluster"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+  dependsOn:
+    - name: emqx-operator

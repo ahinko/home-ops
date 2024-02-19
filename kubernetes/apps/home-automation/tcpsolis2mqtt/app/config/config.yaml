@@ -14,7 +14,7 @@ inverter:
   model: S5-GR3P15K
 mqtt:
   enabled: True
-  host: mosquitto
+  host: emqx-listeners
   port: 1883
   topic_prefix: tcpsolis2mqtt
   client_id: tcpsolis2mqtt

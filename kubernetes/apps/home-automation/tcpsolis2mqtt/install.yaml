@@ -19,4 +19,4 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: mosquitto
+    - name: emqx-cluster

@@ -1,6 +1,6 @@
 ---
 mqtt:
-  host: mosquitto
+  host: emqx-listeners
   user: ${SECRET_MQTT_USERNAME}
   password: ${SECRET_MQTT_PASSWORD}
 

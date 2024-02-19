@@ -1,0 +1,21 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: emqx-dashboard
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: &host emqx.${SECRET_DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: emqx-dashboard
+                port:
+                  number: 18083
+  tls:
+    - hosts:
+        - *host

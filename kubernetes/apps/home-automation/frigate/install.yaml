@@ -20,6 +20,6 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph-cluster
-    - name: mosquitto
+    - name: emqx-cluster
     - name: intel-device-plugins-gpu
     - name: node-feature-discovery
