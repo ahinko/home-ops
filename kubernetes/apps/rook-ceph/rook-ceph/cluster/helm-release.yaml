@@ -17,6 +17,8 @@ spec:
   dependsOn:
     - name: rook-ceph-operator
       namespace: rook-ceph
+    - name: snapshot-controller
+      namespace: storage
   maxHistory: 2
   install:
     createNamespace: true
@@ -28,7 +30,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/rook/rook/blob/release-1.12/deploy/charts/rook-ceph-cluster/values.yaml
+  # Values link: https://github.com/rook/rook/blob/release-1.13/deploy/charts/rook-ceph-cluster/values.yaml
   values:
     toolbox:
       enabled: true
@@ -46,17 +48,12 @@ spec:
     ingress:
       dashboard:
         ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          nginx.ingress.kubernetes.io/server-snippet: |
-            proxy_ssl_verify off;
         host:
-          name: rook.${SECRET_DOMAIN}
+          name: &host rook.${SECRET_DOMAIN}
           path: "/"
         tls:
           - hosts:
-              - rook.${SECRET_DOMAIN}
+              - *host
 
     cephClusterSpec:
       placement:
@@ -76,6 +73,8 @@ spec:
 
       network:
         provider: host
+        # connections:
+        #   requireMsgr2: true
 
       dataDirHostPath: /var/lib/rook
       mon:
@@ -83,6 +82,8 @@ spec:
         allowMultiplePerNode: false
       dashboard:
         enabled: true
+        urlPrefix: /
+        ssl: false
 
       storage: # cluster level storage configuration and selection
         useAllNodes: false
