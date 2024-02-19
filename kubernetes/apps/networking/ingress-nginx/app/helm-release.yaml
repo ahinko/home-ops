@@ -115,7 +115,7 @@ spec:
               topologyKey: kubernetes.io/hostname
 
       podAnnotations:
-        configmap.reloader.stakater.com/reload: "cloudflare-ip-ranges,ingress-nginx-controller"
+        reloader.stakater.com/auto: "true"
 
       resources:
         requests:

@@ -31,7 +31,7 @@ spec:
       tag: v0.14.0
 
     podAnnotations:
-      secret.reloader.stakater.com/reload: "external-dns-cloudflare-api-key"
+      reloader.stakater.com/auto: "true"
 
     interval: 60m
     logLevel: warning

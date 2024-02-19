@@ -370,7 +370,7 @@ spec:
       - vonage-status-panel
 
     podAnnotations:
-      configmap.reloader.stakater.com/reload: grafana
+      reloader.stakater.com/auto: "true"
 
     resources:
       limits:

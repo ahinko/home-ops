@@ -34,7 +34,7 @@ spec:
     query:
       enabled: true
       podAnnotations:
-        secret.reloader.stakater.com/reload: thanos
+        reloader.stakater.com/auto: "true"
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
@@ -57,12 +57,12 @@ spec:
     queryFrontend:
       enabled: false
       podAnnotations:
-        secret.reloader.stakater.com/reload: thanos
+        reloader.stakater.com/auto: "true"
 
     bucketweb:
       enabled: true
       podAnnotations:
-        secret.reloader.stakater.com/reload: thanos
+        reloader.stakater.com/auto: "true"
       resources:
         requests:
           cpu: 15m
@@ -92,7 +92,7 @@ spec:
     storegateway:
       enabled: true
       podAnnotations:
-        secret.reloader.stakater.com/reload: thanos
+        reloader.stakater.com/auto: "true"
       resources:
         requests:
           cpu: 23m
@@ -107,7 +107,7 @@ spec:
     ruler:
       enabled: true
       podAnnotations:
-        secret.reloader.stakater.com/reload: thanos
+        reloader.stakater.com/auto: "true"
       alertmanagers:
         - http://kube-prometheus-stack-alertmanager.monitoring:9093
       clusterName: ${CLUSTER_NAME}

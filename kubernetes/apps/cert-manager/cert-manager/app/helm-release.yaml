@@ -33,7 +33,7 @@ spec:
     installCRDs: true
 
     podAnnotations:
-      secret.reloader.stakater.com/reload: "cert-manager-cloudflare-api-key"
+      reloader.stakater.com/auto: "true"
 
     webhook:
       enabled: true
