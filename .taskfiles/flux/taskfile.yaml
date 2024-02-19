@@ -18,12 +18,11 @@ tasks:
       - kubectl apply --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
       # Install Flux
       - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/bootstrap
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml | kubectl --context {{.cluster}} apply -f -
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml | kubectl --context {{.cluster}} apply -f -
-      - sops --decrypt --in-place {{.KUBERNETES_DIR}}/flux/vars/sops.cluster-secrets.yaml
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/flux/vars
+      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml | kubectl apply --server-side --filename -
+      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml | kubectl apply --server-side --filename -
+      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/vars/sops.cluster-secrets.yaml | kubectl apply --server-side --filename -
+      - kubectl apply --server-side --filename {{.KUBERNETES_DIR}}/flux/vars/cluster-settings.yaml
       - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/flux/config
-      - defer: sops --encrypt --in-place {{.KUBERNETES_DIR}}/flux/vars/sops.cluster-secrets.yaml
     preconditions:
       - test -f {{.ROOT_DIR}}/homelab.agekey
       - test -f {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml

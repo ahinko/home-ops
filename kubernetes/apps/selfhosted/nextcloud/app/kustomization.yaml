@@ -7,4 +7,4 @@ resources:
   - ./config-pvc.yaml
   - ./data-pvc.yaml
   - ./helm-release.yaml
-  - ./backup.yaml
+  #- ./backup.yaml

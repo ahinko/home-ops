@@ -4,7 +4,9 @@ version: 3
 
 env:
   BREW: |-
-    ansible fluxcd/tap/flux kubectl terraform pre-commit shellcheck yamllint sops age libpq coreutils tfsec yq gh zx talhelper siderolabs/tap/talosctl helmfile
+    coreutils ansible fluxcd/tap/flux kubernetes-cli terraform pre-commit shellcheck yamllint sops age libpq tfsec yq gh zx talhelper siderolabs/tap/talosctl helmfile krew
+  KREW: |-
+    cpng rook-ceph
 
 tasks:
   install:
@@ -22,6 +24,9 @@ tasks:
 
       # Set up pre-commit hooks
       - pre-commit install-hooks
+
+      # Instal krew plugins
+      - kubectl krew install {{.KREW}}
 
   write-talos-arm64-to-usb:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4

@@ -47,7 +47,9 @@ tasks:
     cmds:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
+      - kubectl cnpg maintenance set --reusePVC --all-namespaces
       - talhelper gencommand upgrade -n {{.node}} --extra-flags=preserve=true | bash
+      - kubectl cnpg maintenance unset --reusePVC --all-namespaces
     requires:
       vars: ["node"]
 
@@ -69,7 +71,7 @@ tasks:
       # Ensure CephCluster is healthy
       - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
       # Ensure CloudNative-PG cluster has 3 ready instances
-      - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
+      - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres16
 
   bootstrap-apply-config:
     desc: Apply Talos config on all nodes
