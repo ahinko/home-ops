@@ -31,6 +31,10 @@ spec:
       max_connections: "300"
       shared_buffers: 512MB
 
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+
   # bootstrap:
   #  initdb:
   #    import:
