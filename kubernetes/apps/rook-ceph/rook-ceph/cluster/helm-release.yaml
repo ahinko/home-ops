@@ -73,6 +73,9 @@ spec:
 
       network:
         provider: host
+        # addressRanges:
+        #   cluster:
+        #     - 10.244.0.0/16
         # connections:
         #   requireMsgr2: true
 
