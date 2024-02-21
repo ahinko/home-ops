@@ -1,44 +1,11 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "versioning": "regex:^(?<major>\\d{2}).(?<minor>\\d{1,2})-(?<compatibility>.*)$",
-      "matchPackageNames": [
-        "postgres"
-      ]
+      description: "Use custom versioning for Minio",
+      matchDatasources: ["docker"],
+      versioning: "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
+      matchPackageNames: ["quay.io/minio/minio"],
     },
-    {
-      "matchDatasources": [
-        "helm"
-      ],
-      "versioning": "regex:^[\\w-]*(?<major>\\d{1,2}).(?<minor>\\d{1,2}).(?<patch>\\d{1,2})$",
-      "matchPackageNames": [
-        "cloudnative-pg/cloudnative-pg"
-      ]
-    },
-    {
-      "matchDatasources": [
-        "docker",
-        "github-releases"
-      ],
-      "versioning": "loose",
-      "matchPackageNames": [
-        "plexinc/pms-docker",
-        "raspberrypi/rpi-eeprom",
-      ]
-    },
-    {
-      "description": "Use custom versioning for Minio",
-      "matchDatasources": [
-        "docker"
-      ],
-      "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
-      "matchPackageNames": [
-        "quay.io/minio/minio"
-      ]
-    }
-  ]
+  ],
 }
