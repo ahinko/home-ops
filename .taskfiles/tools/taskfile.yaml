@@ -32,7 +32,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.6.4/metal-rpi_generic-arm64.raw.xz && xz -d metal-rpi_generic-arm64.raw.xz"
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.6.5/metal-rpi_generic-arm64.raw.xz && xz -d metal-rpi_generic-arm64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
@@ -47,7 +47,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.6.4/metal-amd64.iso"
+      - "curl -LO https://github.com/siderolabs/talos/releases/download/v1.6.5/metal-amd64.iso"
       - "diskutil list"
       - |
         echo "Path to USB drive:"

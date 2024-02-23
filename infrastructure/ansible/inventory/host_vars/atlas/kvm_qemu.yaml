@@ -12,7 +12,7 @@ virtual_machines:
     bridge: br0
     mac: 52:54:00:cd:2a:c3
     image:
-      url: "https://github.com/siderolabs/talos/releases/download/v1.6.4/metal-amd64.iso"
+      url: "https://github.com/siderolabs/talos/releases/download/v1.6.5/metal-amd64.iso"
       name: metal-amd64.iso
     graphics: none
     console: pty,target_type=serial
