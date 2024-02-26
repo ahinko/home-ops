@@ -55,7 +55,7 @@ jobs:
           token: "${{ steps.generate-token.outputs.token }}"
 
       - name: Renovate
-        uses: renovatebot/github-action@v40.1.1
+        uses: renovatebot/github-action@v40.1.2
         with:
           configurationFile: .github/renovate.json5
           token: "${{ steps.generate-token.outputs.token }}"
