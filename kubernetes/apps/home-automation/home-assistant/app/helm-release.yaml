@@ -44,7 +44,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: 2024.2.3
+              tag: 2024.2.4
             env:
               SECRET_RECORDER_DB_URL:
                 valueFrom:
