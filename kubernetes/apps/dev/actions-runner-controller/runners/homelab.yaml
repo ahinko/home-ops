@@ -40,7 +40,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/ahinko/github-actions-runner:2.313.0
+            image: ghcr.io/ahinko/github-actions-runner:2.314.0
             command: ["/home/runner/run.sh"]
 
   valuesFrom:
