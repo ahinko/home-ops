@@ -37,7 +37,7 @@ tasks:
     cmds:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
-      - talhelper gencommand upgrade -n {{.node}} --extra-flags=preserve=true | bash
+      - talhelper gencommand upgrade -n {{.node}} --extra-flags=--preserve=true | bash
     requires:
       vars: ["node"]
 
@@ -48,7 +48,7 @@ tasks:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
       - kubectl cnpg maintenance set --reusePVC --all-namespaces
-      - talhelper gencommand upgrade -n {{.node}} --extra-flags=preserve=true | bash
+      - talhelper gencommand upgrade -n {{.node}} --extra-flags=--preserve=true | bash
       - kubectl cnpg maintenance unset --reusePVC --all-namespaces
     requires:
       vars: ["node"]

@@ -141,10 +141,6 @@ spec:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
 
-        cloudnative-pg:
-          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
-          datasource: Prometheus
-
         speedtest-exporter-hub:
           gnetId: 13665
           revision: 4
@@ -378,6 +374,10 @@ spec:
       requests:
         cpu: 23m
         memory: 127M
+
+    serviceAccount:
+      create: true
+      autoMount: true
 
     serviceMonitor:
       enabled: true

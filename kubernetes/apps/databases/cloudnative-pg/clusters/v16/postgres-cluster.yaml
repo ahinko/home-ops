@@ -32,7 +32,6 @@ spec:
       shared_buffers: 512MB
 
   nodeMaintenanceWindow:
-    inProgress: false
     reusePVC: true
 
   # bootstrap:

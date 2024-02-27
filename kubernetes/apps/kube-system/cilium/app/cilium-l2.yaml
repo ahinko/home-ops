@@ -14,7 +14,6 @@ spec:
           - "atlas"
           - "eos"
           - "hades"
-          - "poseidon"
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2alpha1.json

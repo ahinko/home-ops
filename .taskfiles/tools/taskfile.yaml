@@ -6,7 +6,7 @@ env:
   BREW: |-
     coreutils ansible fluxcd/tap/flux kubernetes-cli terraform pre-commit shellcheck yamllint sops age libpq tfsec yq gh zx talhelper siderolabs/tap/talosctl helmfile krew
   KREW: |-
-    cpng rook-ceph
+    cnpg rook-ceph
 
 tasks:
   install:
