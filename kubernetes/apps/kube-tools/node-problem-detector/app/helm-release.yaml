@@ -31,7 +31,7 @@ spec:
       nameOverride: *app
     image:
       repository: registry.k8s.io/node-problem-detector/node-problem-detector
-      tag: v0.8.15
+      tag: v0.8.16
 
     # arm64 is not supported
     nodeSelector:
