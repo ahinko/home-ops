@@ -36,7 +36,7 @@ spec:
           main:
             image:
               repository: ghcr.io/atuinsh/atuin
-              tag: 18.0.1
+              tag: v18.1.0
             args:
               - server
               - start
