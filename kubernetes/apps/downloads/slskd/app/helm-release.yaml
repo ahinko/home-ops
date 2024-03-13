@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/slskd/slskd
-              tag: 0.20.0
+              tag: 0.20.1
             env:
               TZ: Europe/Stockholm
               SLSKD_HTTP_PORT: &port 80
