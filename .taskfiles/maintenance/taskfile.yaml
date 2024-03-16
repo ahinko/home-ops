@@ -74,10 +74,12 @@ tasks:
       - flux suspend hr -n selfhosted nextcloud
       - flux suspend hr -n selfhosted linkding
       - flux suspend hr -n selfhosted miniflux
-      - flux suspend hr -n selfhosted elements
+      #- flux suspend hr -n selfhosted elements
       - flux suspend hr -n selfhosted kitchenowl
       - flux suspend hr -n selfhosted mastodon
       - flux suspend hr -n home-automation home-assistant
+      - flux suspend hr -n monitoring gatus
+      - flux suspend hr -n selfhosted atuin
 
       - kubectl scale -n selfhosted deploy/immich-machine-learning --replicas 0
       - kubectl scale -n selfhosted deploy/immich-microservices --replicas 0
@@ -85,10 +87,14 @@ tasks:
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 0
       - kubectl scale -n selfhosted deploy/linkding --replicas 0
       - kubectl scale -n selfhosted deploy/miniflux --replicas 0
-      - kubectl scale -n selfhosted deploy/elements --replicas 0
+      #- kubectl scale -n selfhosted deploy/elements --replicas 0
       - kubectl scale -n selfhosted deploy/kitchenowl --replicas 0
-      - kubectl scale -n selfhosted deploy/mastodon --replicas 0
+      - kubectl scale -n selfhosted deploy/mastodon-sidekiq --replicas 0
+      - kubectl scale -n selfhosted deploy/mastodon-streaming --replicas 0
+      - kubectl scale -n selfhosted deploy/mastodon-web --replicas 0
       - kubectl scale -n home-automation deploy/home-assistant --replicas 0
+      - kubectl scale -n monitoring deploy/gatus --replicas 0
+      - kubectl scale -n selfhosted deploy/atuin --replicas 0
 
   db:resume:
     desc: Resume all Helm releases depending on Postgres
@@ -100,10 +106,14 @@ tasks:
       - kubectl scale -n selfhosted deploy/nextcloud --replicas 1
       - kubectl scale -n selfhosted deploy/linkding --replicas 1
       - kubectl scale -n selfhosted deploy/miniflux --replicas 1
-      - kubectl scale -n selfhosted deploy/elements --replicas 1
+      #- kubectl scale -n selfhosted deploy/elements --replicas 1
       - kubectl scale -n selfhosted deploy/kitchenowl --replicas 1
-      - kubectl scale -n selfhosted deploy/mastodon --replicas 1
+      - kubectl scale -n selfhosted deploy/mastodon-sidekiq --replicas 1
+      - kubectl scale -n selfhosted deploy/mastodon-streaming --replicas 1
+      - kubectl scale -n selfhosted deploy/mastodon-web --replicas 1
       - kubectl scale -n home-automation deploy/home-assistant --replicas 1
+      - kubectl scale -n monitoring deploy/gatus --replicas 1
+      - kubectl scale -n selfhosted deploy/atuin --replicas 1
 
       - flux resume hr -n selfhosted immich-machine-learning
       - flux resume hr -n selfhosted immich-microservices
@@ -111,7 +121,10 @@ tasks:
       - flux resume hr -n selfhosted nextcloud
       - flux resume hr -n selfhosted linkding
       - flux resume hr -n selfhosted miniflux
-      - flux resume hr -n selfhosted elements
+      #- flux resume hr -n selfhosted elements
       - flux resume hr -n selfhosted kitchenowl
+      - flux resume hr -n selfhosted kitchenowl-web
       - flux resume hr -n selfhosted mastodon
       - flux resume hr -n home-automation home-assistant
+      - flux resume hr -n monitoring gatus
+      - flux resume hr -n selfhosted atuin

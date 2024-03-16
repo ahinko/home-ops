@@ -20,7 +20,7 @@ includes:
   bootstrap: .taskfiles/bootstrap/taskfile.yaml
   flux: .taskfiles/flux/taskfile.yaml
   k8s: .taskfiles/kubernetes/taskfile.yaml
-  #maintenance: .taskfiles/maintenance/taskfile.yaml
+  maintenance: .taskfiles/maintenance/taskfile.yaml
   rook: .taskfiles/rook/taskfile.yaml
   talos: .taskfiles/talos/taskfile.yaml
   tools: .taskfiles/tools/taskfile.yaml

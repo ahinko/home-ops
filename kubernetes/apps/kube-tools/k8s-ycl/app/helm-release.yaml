@@ -28,9 +28,3 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *releaseName
-
-        containers:
-          main:
-            image:
-              repository: ghcr.io/bjw-s/k8s-ycl
-              tag: v0.2.0

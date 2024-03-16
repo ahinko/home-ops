@@ -19,7 +19,7 @@ tasks:
       vars: ["controlplane"]
 
   generate:
-    desc: Generate Talos machine configurations (task talos:generate)
+    desc: Generate Talos machine configurations
     dir: "{{.TALOS_DIR}}"
     cmds:
       - talhelper genconfig
@@ -37,7 +37,7 @@ tasks:
     cmds:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
-      - talhelper gencommand upgrade -n {{.node}} --extra-flags=--preserve=true | bash
+      - talhelper gencommand apply -n {{.node}} --extra-flags=--preserve=true | bash
     requires:
       vars: ["node"]
 

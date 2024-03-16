@@ -20,3 +20,4 @@ talosconfig*
 .history
 *.dmg
 *.iso
+.task/checksum

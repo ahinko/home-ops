@@ -9,10 +9,10 @@ There is a [Github action](../../.github/workflows/scan-supported-k8s-version.ya
 
 ## Upgrade Talos
 
-Talos does not have a built in way of doing a rolling upgrade of the nodes. So I created a script that does just that. The script also makes sure that `rook/ceph` has the time to recover when a `rook/ceph` node is upgraded (and rebooted).
+I perfer to upgrade Talos on nodes one node at the time to minimize issues with for example Postgres and Rook/Ceph clusters. There is a task that checks status of Postgres and Rook/Ceph and sets Postgres in maintenance mode before upgrading Talos on the node. It uses the `talhelper gencommand` to generate the correct upgrade command for the specified node. The main benifit is that we get the correct installation image for the node.
 
 ```shell
-task talos:upgrade-nodes
+task talos:upgrade-talos node=<name>
 ```
 
 ## Upgrade Kubernetes
