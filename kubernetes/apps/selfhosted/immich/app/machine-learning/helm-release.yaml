@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -8,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 60m
       sourceRef:
         kind: HelmRepository
@@ -32,7 +33,7 @@ spec:
 
   values:
     controllers:
-      main:
+      immich-machine-learning:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -48,7 +49,7 @@ spec:
                   app.kubernetes.io/name: *app
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.98.2
@@ -69,7 +70,8 @@ spec:
                 memory: 3949M
 
     service:
-      main:
+      app:
+        controller: immich-machine-learning
         ports:
           http:
             port: *port

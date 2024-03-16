@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -8,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      recyclarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -40,7 +41,7 @@ spec:
               - 65539
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
@@ -51,6 +52,17 @@ spec:
               - secretRef:
                   name: radarr
 
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
             resources:
               requests:
                 cpu: 10m
@@ -59,12 +71,12 @@ spec:
                 memory: 200Mi
 
     service:
-      main:
+      app:
+        controller: recyclarr
         enabled: false
 
     persistence:
       config:
-        enabled: true
         existingClaim: recyclarr-config
 
       config-file:

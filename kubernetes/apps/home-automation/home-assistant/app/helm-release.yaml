@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -8,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      home-assistant:
         pod:
           affinity:
             nodeAffinity:
@@ -41,7 +42,7 @@ spec:
                           - "zeus"
                           - "poseidon"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2024.3.1
@@ -52,6 +53,14 @@ spec:
                     name: database-homeassistant-user
                     key: POSTGRES_URL
 
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+
             resources:
               requests:
                 cpu: 100m
@@ -60,10 +69,11 @@ spec:
                 memory: 1000M
 
     service:
-      main:
+      app:
+        controller: home-assistant
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${LB_HASS}
+          io.cilium/lb-ipam-ips: "192.168.20.201"
         externalTrafficPolicy: Cluster
         ports:
           sonos:
@@ -77,8 +87,7 @@ spec:
             protocol: UDP
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: "nginx"
         annotations:
           nginx.org/websocket-services: home-assistant
@@ -88,7 +97,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -96,7 +105,8 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
-        globalMounts:
-          - path: /config
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /config

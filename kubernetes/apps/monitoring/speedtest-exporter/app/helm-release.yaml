@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -8,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 60m
       sourceRef:
         kind: HelmRepository
@@ -27,9 +28,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      speedtest:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/miguelndecarvalho/speedtest-exporter
               tag: v3.5.4
@@ -42,14 +43,15 @@ spec:
                 memory: 64M
 
     service:
-      main:
+      app:
+        controller: speedtest
         ports:
           http:
             port: 9798
 
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: speedtest
         endpoints:
           - port: http
             scheme: http

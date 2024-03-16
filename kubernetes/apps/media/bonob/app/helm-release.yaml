@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -8,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 60m
       sourceRef:
         kind: HelmRepository
@@ -27,9 +28,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      bonob:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/simojenki/bonob
               tag: v0.8.0
@@ -44,6 +45,17 @@ spec:
               BNB_SUBSONIC_URL: https://navidrome.${SECRET_DOMAIN}
               BNB_URL: https://bonob.${SECRET_DOMAIN}
 
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
             resources:
               requests:
                 cpu: 5m
@@ -52,21 +64,21 @@ spec:
                 memory: 128M
 
     service:
-      main:
+      app:
+        controller: bonob
         ports:
           http:
             port: 4534
 
     ingress:
       main:
-        enabled: true
         className: nginx
         hosts:
           - host: &host bonob.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:

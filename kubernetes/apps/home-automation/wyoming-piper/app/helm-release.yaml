@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -8,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      piper:
         pod:
           securityContext:
             runAsUser: 568
@@ -35,7 +36,7 @@ spec:
             fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
-          main:
+          app:
             image:
               repository: rhasspy/wyoming-piper
               tag: 1.5.0
@@ -43,6 +44,17 @@ spec:
             args:
               - --voice
               - sv_SE-nst-medium
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
 
             resources:
               limits:
@@ -52,7 +64,8 @@ spec:
                 memory: 500Mi
 
     service:
-      main:
+      app:
+        controller: piper
         ports:
           http:
             port: 10200
@@ -60,7 +73,6 @@ spec:
 
     persistence:
       data:
-        enabled: true
         existingClaim: "wyoming-piper"
         globalMounts:
           - path: /data

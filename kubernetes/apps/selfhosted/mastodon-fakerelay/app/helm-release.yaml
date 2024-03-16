@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,14 +28,14 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      fakerelay:
         strategy: RollingUpdate
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/g3rv4/fakerelay
               tag: 1.0.49
@@ -55,14 +56,14 @@ spec:
                 memory: 200Mi
 
     service:
-      main:
+      app:
+        controller: fakerelay
         ports:
           http:
             port: 5000
 
     ingress:
       main:
-        enabled: true
         className: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
@@ -81,7 +82,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
