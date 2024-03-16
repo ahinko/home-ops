@@ -109,6 +109,7 @@ spec:
         custom.config.php: |-
           <?php
           $CONFIG = array (
+            'maintenance' => false,
             'overwriteprotocol' => 'https',
             'overwrite.cli.url' => 'https://drive.${SECRET_DOMAIN}',
             'filelocking.enabled' => 'true',
@@ -138,7 +139,7 @@ spec:
             'memcache.distributed' => '\OC\Memcache\Redis',
             'memcache.locking' => '\OC\Memcache\Redis',
             'redis' => array(
-              'host' => 'nextcloud-redis',
+              'host' => 'redis-proxy-haproxy.databases.svc.cluster.local',
               'port' => 6379
             )
           );

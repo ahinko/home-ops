@@ -7,3 +7,5 @@ resources:
   - ./ext-postgres-operator/install.yaml
   - ./influxdb/install.yaml
   - ./postgres-backup/install.yaml
+  - ./redis/install.yaml
+  - ./redis-proxy/install.yaml

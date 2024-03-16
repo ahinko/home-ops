@@ -15,6 +15,7 @@ resources:
   - ./ext-postgres-operator-charts.yaml
   - ./external-dns-charts.yaml
   - ./grafana-charts.yaml
+  - ./haproxy-charts.yaml
   - ./influxdata-charts.yaml
   - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
