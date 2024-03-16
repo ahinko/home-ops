@@ -5,3 +5,4 @@ resources:
   - ./nfs-pvc.yaml
   - ./sops.secrets.yaml
   - ./helm-release.yaml
+  - ../../../../tmpl/gatus/internal

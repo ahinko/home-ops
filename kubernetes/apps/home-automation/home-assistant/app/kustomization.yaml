@@ -5,3 +5,4 @@ resources:
   - ../../../../tmpl/volsync
   - ./database.yaml
   - ./helm-release.yaml
+  - ../../../../tmpl/gatus/external

@@ -8,3 +8,4 @@ resources:
   - ./data-pvc.yaml
   - ./helm-release.yaml
   #- ./backup.yaml
+  - ../../../../tmpl/gatus/external

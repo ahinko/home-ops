@@ -23,3 +23,7 @@ spec:
     - name: emqx-cluster
     - name: intel-device-plugins-gpu
     - name: node-feature-discovery
+  postBuild:
+    substitute:
+      APP: *appname
+      GATUS_SUBDOMAIN: frigate

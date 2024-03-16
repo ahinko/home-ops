@@ -5,6 +5,7 @@ resources:
   - ../../../../tmpl/volsync
   - ./sops.secrets.yaml
   - ./helm-release.yaml
+  - ../../../../tmpl/gatus/external
 commonLabels:
   app.kubernetes.io/name: radicale
   app.kubernetes.io/instance: radicale

@@ -28,6 +28,7 @@ spec:
       APP_GID: "0"
       VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 2Gi
+      GATUS_SUBDOMAIN: hass
   prune: true
   wait: true
   interval: 30m

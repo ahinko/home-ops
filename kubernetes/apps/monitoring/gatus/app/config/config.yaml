@@ -1,0 +1,29 @@
+---
+alerting:
+  pushover:
+    application-token: $${GATUS_PUSHOVER_APP_TOKEN}
+    user-key: $${GATUS_PUSHOVER_USER_KEY}
+    default-alert:
+      description: healthcheck failed
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 5
+
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+
+metrics: true
+
+storage:
+  type: postgres
+  path: $${POSTGRES_URL}
+  caching: true
+
+ui:
+  title: Status | Gatus
+  header: Status
+
+web:
+  port: $${CUSTOM_WEB_PORT}

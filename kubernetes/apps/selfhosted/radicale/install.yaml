@@ -25,6 +25,7 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: radicale-data
       VOLSYNC_CAPACITY: 1Gi
+      GATUS_SUBDOMAIN: radicale
   prune: true
   wait: true
   interval: 30m

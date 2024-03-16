@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: gatus-db
+spec:
+  database: gatus
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: gatus-user
+spec:
+  role: gatus
+  database: gatus-db
+  secretName: database
+  privileges: OWNER
