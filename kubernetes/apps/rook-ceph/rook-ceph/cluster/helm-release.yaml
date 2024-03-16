@@ -33,7 +33,7 @@ spec:
   # Values link: https://github.com/rook/rook/blob/release-1.13/deploy/charts/rook-ceph-cluster/values.yaml
   values:
     toolbox:
-      enabled: true
+      enabled: false
 
     monitoring:
       enabled: true
@@ -73,9 +73,6 @@ spec:
 
       network:
         provider: host
-        # addressRanges:
-        #   cluster:
-        #     - 10.244.0.0/16
         # connections:
         #   requireMsgr2: true
 
