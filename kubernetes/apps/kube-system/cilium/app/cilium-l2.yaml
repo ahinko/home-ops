@@ -6,14 +6,12 @@ metadata:
   name: policy
 spec:
   loadBalancerIPs: true
-  nodeSelector:
-    matchExpressions:
-      - key: kubernetes.io/hostname
-        operator: In
-        values:
-          - "atlas"
-          - "eos"
-          - "hades"
+  # nodeSelector:
+  #   matchExpressions:
+  #     - key: kubernetes.io/hostname
+  #       operator: NotIn
+  #       values:
+  #         - "helios"
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2alpha1.json

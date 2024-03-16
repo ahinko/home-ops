@@ -63,26 +63,6 @@ nodes:
             extraKernelArgs:
               - talos.board=rpi_generic
 
-  - hostname: poseidon
-    ipAddress: 192.168.20.24
-    controlPlane: true
-    installDisk: /dev/nvme0n1
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 192.168.20.24/24
-        dhcp: true
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-
   - hostname: atlas
     ipAddress: 192.168.20.22
     controlPlane: false
@@ -93,35 +73,74 @@ nodes:
           - 192.168.20.22/24
         dhcp: true
 
-  - hostname: zeus
-    ipAddress: 192.168.20.25
-    controlPlane: false
-    installDisk: /dev/nvme0n1
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 192.168.20.25/24
-        dhcp: true
-
   - hostname: helios
     ipAddress: 192.168.20.21
     controlPlane: false
     installDisk: /dev/nvme0n1
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:c3:*
         addresses:
           - 192.168.20.21/24
         dhcp: true
+    schematic: &nuc-schematic
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/usb-modem-drivers
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+    patches:
+      - &nuc-patches |-
+        machine:
+          kernel:
+            modules:
+              - name: usbserial
+              - name: ax88179_178a
+
+  - hostname: poseidon
+    ipAddress: 192.168.20.24
+    controlPlane: true
+    installDisk: /dev/nvme0n1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:aa:*
+        addresses:
+          - 192.168.20.24/24
+        dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
+
+  - hostname: zeus
+    ipAddress: 192.168.20.25
+    controlPlane: false
+    installDisk: /dev/nvme0n1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:b1:*
+        addresses:
+          - 192.168.20.25/24
+        dhcp: true
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
 
   - hostname: iris
     ipAddress: 192.168.20.26
     controlPlane: false
     installDisk: /dev/nvme0n1
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:ae:*
         addresses:
           - 192.168.20.26/24
         dhcp: true
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
 
 controlPlane:
   patches:
@@ -201,6 +220,9 @@ controlPlane:
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
+          nodeIP:
+            validSubnets:
+                - 192.168.20.0/24
 
     # Custom sysctls
     - &sysctlsPatch |-
