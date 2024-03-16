@@ -84,6 +84,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
+        prometheusEndpoint: http://thanos-query.monitoring.svc.cluster.local:9090
 
       storage: # cluster level storage configuration and selection
         useAllNodes: false
