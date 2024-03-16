@@ -31,40 +31,17 @@ spec:
       max_connections: "300"
       shared_buffers: 512MB
 
-  nodeMaintenanceWindow:
-    reusePVC: true
-
-  # bootstrap:
-  #  initdb:
-  #    import:
-  #      type: monolith
-  #      databases:
-  #        - "*"
-  #      roles:
-  #        - "*"
-  #      source:
-  #        externalCluster: postgres
-
-  #  externalClusters:
-  #    - name: postgres
-  #      connectionParameters:
-  #        # Use the correct IP or host name for the source database
-  #        host: postgres-ro.databases
-  #        user: postgres
-  #        dbname: postgres
-  #      password:
-  #        name: postgres-superuser
-  #        key: password
-
   backup:
     retentionPolicy: 14d
-    barmanObjectStore:
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
       wal:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://postgres/
       endpointURL: http://minio.storage:9000
-      serverName: postgres16-003
+      serverName: &currentCluster postgres16-001
       s3Credentials:
         accessKeyId:
           name: cnpg-backup-secrets
@@ -72,3 +49,17 @@ spec:
         secretAccessKey:
           name: cnpg-backup-secrets
           key: S3_SECRET_KEY
+
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    initdb:
+
+  #  recovery:
+  #    source: &previousCluster postgres16-003
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  #externalClusters:
+  #  - name: *previousCluster
+  #    barmanObjectStore:
+  #      <<: *barmanObjectStore
+  #      serverName: *previousCluster

@@ -145,7 +145,7 @@ spec:
     externalDatabase:
       host: "postgres16-rw.databases"
       port: 5432
-      user: mastodon-V8Rejs
+      user: mastodon-fUVuS0
       database: *app
       existingSecret: "database-mastodon-user"
       existingSecretPasswordKey: "PASSWORD"
