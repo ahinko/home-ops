@@ -110,7 +110,7 @@ spec:
         reloader.stakater.com/auto: "true"
       alertmanagers:
         - http://kube-prometheus-stack-alertmanager.monitoring:9093
-      clusterName: ${CLUSTER_NAME}
+      clusterName: "metal"
       config: |-
         groups:
           - name: "PrometheusWatcher"

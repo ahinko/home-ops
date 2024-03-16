@@ -7,7 +7,7 @@ metadata:
     apps.emqx.io/db-role: core
     apps.emqx.io/instance: emqx
   annotations:
-    io.cilium/lb-ipam-ips: ${LB_MQTT}
+    io.cilium/lb-ipam-ips: "192.168.20.203"
 spec:
   type: LoadBalancer
   ports:

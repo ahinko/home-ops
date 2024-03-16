@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: ${NFS_SERVER_ADDR}
+    server: "192.168.20.2"
     path: /tank/minio
   mountOptions:
     - nfsvers=4

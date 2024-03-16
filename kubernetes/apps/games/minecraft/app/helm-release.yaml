@@ -146,7 +146,7 @@ spec:
       serviceType: LoadBalancer
       ## Set the port used if the serviceType is NodePort
       # nodePort:
-      # loadBalancerIP: ${LB_MINECRAFT}
+      # loadBalancerIP:
       # loadBalancerSourceRanges: []
       ## Set the externalTrafficPolicy in the Service to either Cluster or Local
       # externalTrafficPolicy: Cluster
@@ -187,4 +187,4 @@ spec:
     deploymentAnnotations: {}
 
     serviceAnnotations:
-      io.cilium/lb-ipam-ips: ${LB_MINECRAFT}
+      io.cilium/lb-ipam-ips: "192.168.20.206"

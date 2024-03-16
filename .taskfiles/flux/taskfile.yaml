@@ -21,13 +21,11 @@ tasks:
       - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml | kubectl apply --server-side --filename -
       - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml | kubectl apply --server-side --filename -
       - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/vars/sops.cluster-secrets.yaml | kubectl apply --server-side --filename -
-      - kubectl apply --server-side --filename {{.KUBERNETES_DIR}}/flux/vars/cluster-settings.yaml
       - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/flux/config
     preconditions:
       - test -f {{.ROOT_DIR}}/homelab.agekey
       - test -f {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml
       - test -f {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml
-      - test -f {{.KUBERNETES_DIR}}/flux/vars/cluster-settings.yaml
       - test -f {{.KUBERNETES_DIR}}/flux/vars/sops.cluster-secrets.yaml
       - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml
       - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml

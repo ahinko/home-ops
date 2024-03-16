@@ -38,7 +38,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          io.cilium/lb-ipam-ips: ${LB_INGRESS}
+          io.cilium/lb-ipam-ips: "192.168.20.205"
       publishService:
         enabled: true
 

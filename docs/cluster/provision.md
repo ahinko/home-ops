@@ -55,7 +55,6 @@ After that I attach the USB stick to the NUC, boot it from the USB drive and Tal
 I use the excellent tool [Talhelper](https://github.com/budimanjojo/talhelper) to handle Talos config files. We start by modifying [talconfig.yaml](../../infrastructure/talos/clusterconfig/talosconfig) to match our needs.
 It's quite straight forward and we can use the [Talos documentation](https://www.talos.dev/latest/reference/configuration/) as a reference.
 
-Make sure your [cluster-settings](../../kubernetes/flux/config/cluster.yaml) file matches your Talos configuration (mainly IP address for the cluster endpoint).
 
 While you are at it you can also take a look at the [cluster secrets file as well](../../kubernetes/flux/config/sops.cluster-secrets.yaml).
 

@@ -35,4 +35,4 @@ spec:
       type: LoadBalancer
       port: 53
       annotations:
-        io.cilium/lb-ipam-ips: ${LB_K8S_GATEWAY_HOMELAB}
+        io.cilium/lb-ipam-ips: "192.168.20.208"

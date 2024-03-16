@@ -150,7 +150,7 @@ spec:
       prometheusSpec:
         enableAdminAPI: true
         externalLabels:
-          cluster: ${CLUSTER_NAME}
+          cluster: "metal"
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         replicas: 1

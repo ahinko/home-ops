@@ -10,7 +10,7 @@ spec:
   accessModes: ["ReadWriteMany"]
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: ${NFS_SERVER_ADDR}
+    server: "192.168.20.2"
     path: /tank/immich
   # Note: The first two options are strictly for NFSv4.2
   mountOptions:
