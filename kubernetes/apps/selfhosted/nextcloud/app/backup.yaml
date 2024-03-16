@@ -30,8 +30,6 @@ spec:
                   value: nextcloud-config
                 - name: DELETE_OLDER_THAN
                   value: "14d"
-                - name: HEALTHCHECK_URL
-                  value: "http://uptime-kuma.monitoring:3001/api/push/COkeiqSMlS?status=up&msg=OK&ping="
               volumeMounts:
                 - name: backup-persistent-storage
                   mountPath: /nextcloud-config
@@ -84,8 +82,6 @@ spec:
                   value: nextcloud-data
                 - name: DELETE_OLDER_THAN
                   value: "14d"
-                - name: HEALTHCHECK_URL
-                  value: "http://uptime-kuma.monitoring:3001/api/push/COkeiqSMlS?status=up&msg=OK&ping="
               volumeMounts:
                 - name: backup-persistent-storage
                   mountPath: /nextcloud-data
