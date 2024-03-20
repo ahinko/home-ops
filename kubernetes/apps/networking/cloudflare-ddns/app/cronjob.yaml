@@ -22,8 +22,6 @@ spec:
               envFrom:
                 - secretRef:
                     name: cloudflare-ddns
-                - secretRef:
-                    name: cloudflare-ddns-healthcheck
               command:
                 - "/bin/sh"
                 - "-ec"
@@ -48,7 +46,6 @@ spec:
 
                   if [ "$ipv4" = "$old_ipv4" ]; then
                     printf "%s - Success - IP Address '%s' has not changed" "$(date -u)" "$ipv4"
-                    curl -fsS -m 10 --retry 5 -o /dev/null $HEALTHCHECK_URL
                     exit 0
                   fi
 
@@ -65,6 +62,5 @@ spec:
                     exit 1
                   else
                     printf "%s - Success - IP Address '%s' has been updated" "$(date -u)" "$ipv4"
-                    curl -fsS -m 10 --retry 5 -o /dev/null $HEALTHCHECK_URL
                     exit 0
                   fi
