@@ -9,4 +9,3 @@ resources:
   - ./smartctl-exporter/install.yaml
   - ./speedtest-exporter/install.yaml
   - ./thanos/install.yaml
-  - ./uptime-kuma/install.yaml
