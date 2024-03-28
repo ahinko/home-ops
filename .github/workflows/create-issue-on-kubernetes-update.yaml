@@ -7,7 +7,6 @@ on:
       - main
     paths:
       - "infrastructure/talos/talconfig.yaml"
-      - "infrastructure/talos/upgrade-k8s.sh"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

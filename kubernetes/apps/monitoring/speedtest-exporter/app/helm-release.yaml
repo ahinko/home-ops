@@ -28,7 +28,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      speedtest:
+      speedtest-exporter:
         containers:
           app:
             image:
@@ -44,14 +44,14 @@ spec:
 
     service:
       app:
-        controller: speedtest
+        controller: speedtest-exporter
         ports:
           http:
             port: 9798
 
     serviceMonitor:
       app:
-        serviceName: speedtest
+        serviceName: speedtest-exporter
         endpoints:
           - port: http
             scheme: http

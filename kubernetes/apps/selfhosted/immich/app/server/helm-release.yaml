@@ -80,7 +80,7 @@ spec:
                   secretKeyRef:
                     name: database-immich-user
                     key: DATABASE_NAME
-              DB_PORT: 5432¨
+              DB_PORT: 5432
 
             envFrom:
               - configMapRef:

@@ -7,7 +7,6 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "infrastructure/talos/upgrade-talos.sh"
       - "infrastructure/talos/talconfig.yaml"
 
 concurrency:
@@ -21,15 +20,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.2
+
       - name: Generate Token
         uses: actions/create-github-app-token@v1.9.1
         id: generate-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
           private-key: "${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}"
+
       - name: Scan files
         run: |
           .github/scripts/kubernetes-version.sh
+
       - uses: gr2m/create-or-update-pull-request-action@v1
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}

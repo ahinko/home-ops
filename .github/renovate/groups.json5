@@ -1,6 +1,6 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
       description: "Flux Group",
       groupName: "Flux",
@@ -13,89 +13,54 @@
       separateMinorPatch: true,
     },
     {
-      "description": "Cert manager chart and CRDs",
-      "matchDatasources": [
-        "helm",
-        "github-releases",
-      "docker",
-      ],
-      "matchPackageNames": [
+      description: "Cert manager chart and CRDs",
+      matchDatasources: ["helm", "github-releases", "docker"],
+      matchPackageNames: [
         "cert-manager",
         "cert-manager/cert-manager",
         "quay.io/jetstack/cert-manager-controller",
       ],
-      "groupName": "cert-manager",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
+      groupName: "cert-manager",
+      additionalBranchPrefix: "",
+      separateMinorPatch: true,
     },
     {
-      "description": "Redis chart & images",
-      "matchDatasources": [
-        "helm",
-        "docker"
-      ],
-      "matchPackageNames": [
-        "redis",
-        "bitnami/redis",
-        "bitnami/redis-sentinel"
-      ],
-      "groupName": "redis/redis",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
+      description: "Rook/Ceph chart & images",
+      matchDatasources: ["helm", "docker", "github-releases"],
+      matchPackagePatterns: ["^rook"],
+      groupName: "rook-ceph-suite",
+      additionalBranchPrefix: "",
+      separateMinorPatch: true,
     },
     {
-      "description": "Rook/Ceph chart & images",
-      "matchDatasources": [
-        "helm",
-        "docker",
-        "github-releases"
-      ],
-      "matchPackagePatterns": [
-        "^rook",
-      ],
-      "groupName": "rook-ceph-suite",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
+      description: "Talos releases",
+      matchDatasources: ["docker", "github-releases"],
+      matchPackageNames: ["ghcr.io/siderolabs/installer", "siderolabs/talos"],
+      groupName: "siderolabs/talos",
+      additionalBranchPrefix: "",
+      separateMinorPatch: true,
     },
     {
-      description: 'Talos releases',
-      matchDatasources: [
-        'docker',
-        'github-releases'
-      ],
+      description: "Node feature discovery docker, chart and CRDs",
+      matchDatasources: ["helm", "kustomization", "docker"],
       matchPackageNames: [
-        'ghcr.io/siderolabs/installer',
-        'siderolabs/talos'
-      ],
-      groupName: 'siderolabs/talos',
-      additionalBranchPrefix: '',
-      separateMinorPatch: true
-    },
-    {
-      "description": "Node feature discovery docker, chart and CRDs",
-      "matchDatasources": [
-        "helm",
-        "kustomization",
-        "docker",
-      ],
-      "matchPackageNames": [
         "node-feature-discovery",
         "kubernetes-sigs/node-feature-discovery",
         "k8s.gcr.io/nfd/node-feature-discovery",
       ],
-      "groupName": "node-feature-discovery",
-      "additionalBranchPrefix": "",
-      "separateMinorPatch": true
+      groupName: "node-feature-discovery",
+      additionalBranchPrefix: "",
+      separateMinorPatch: true,
     },
     {
-      "description": "Immich Group",
-      "groupName": "Immich",
-      "matchPackagePatterns": ["immich"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
+      description: "Immich Group",
+      groupName: "Immich",
+      matchPackagePatterns: ["immich"],
+      matchDatasources: ["docker"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      "separateMinorPatch": true
+      separateMinorPatch: true,
     },
-  ]
+  ],
 }

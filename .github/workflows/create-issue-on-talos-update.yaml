@@ -6,7 +6,6 @@ on:
     branches:
       - main
     paths:
-      - "infrastructure/talos/upgrade-talos.sh"
       - "infrastructure/talos/talconfig.yaml"
 
 concurrency:

@@ -34,6 +34,7 @@ jobs:
               exit 0
           fi
           npx zx ./.github/scripts/cloudflareNetworks.mjs > ${{ env.DEFAULT_CLOUDFLARE_NETWORKS_FILE }}
+
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6.0.2
         with:
