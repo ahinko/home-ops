@@ -32,4 +32,5 @@ resources:
   - ./prometheus-community-charts.yaml
   - ./rook-ceph-charts.yaml
   - ./stakater-charts.yaml
+  - ./stevehipwell-charts.yaml
   - ./xenitab-charts.yaml

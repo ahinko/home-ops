@@ -3,9 +3,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: kubernetes-sigs-metrics-server-charts
+  name: stevehipwell-charts
   namespace: flux-system
 spec:
-  interval: 1h
-  url: https://kubernetes-sigs.github.io/metrics-server/
-  timeout: 5m
+  type: oci
+  interval: 5m
+  url: oci://ghcr.io/stevehipwell/helm-charts
+  timeout: 3m

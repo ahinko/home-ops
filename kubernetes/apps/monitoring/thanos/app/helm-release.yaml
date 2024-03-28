@@ -5,132 +5,95 @@ metadata:
   name: thanos
 spec:
   interval: 60m
+  timeout: 15m
   chart:
     spec:
       chart: thanos
-      version: 14.0.2
+      version: 1.16.1
       sourceRef:
         kind: HelmRepository
-        name: bitnami-charts
+        name: stevehipwell-charts
         namespace: flux-system
       interval: 60m
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
-    existingObjstoreSecret: thanos-objstore-secret
-
-    query:
+    objstoreConfig:
+      create: false
+      name: thanos-objstore-secret
+      key: objstore.yml
+    additionalEndpoints:
+      - dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local
+    additionalReplicaLabels: ["__replica__"]
+    serviceMonitor:
       enabled: true
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
-      dnsDiscovery:
-        sidecarsService: kube-prometheus-stack-thanos-discovery
-        sidecarsNamespace: monitoring
+    compact:
+      enabled: true
+      extraArgs:
+        - --compact.concurrency=4
+        - --delete-delay=30m
+        - --retention.resolution-raw=14d
+        - --retention.resolution-5m=30d
+        - --retention.resolution-1h=60d
+      persistence: &persistence
+        enabled: true
+        storageClass: rook-cephfs
+        size: 10Gi
+    query:
+      replicas: 2
+      extraArgs: ["--alert.query-url=https://thanos.${SECRET_DOMAIN}"]
+    queryFrontend:
+      enabled: true
+      replicas: 2
+      extraEnv: &extraEnv
+        - name: THANOS_CACHE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: &configMap thanos-cache-configmap
+              key: cache.yaml
+      extraArgs: ["--query-range.response-cache-config=$(THANOS_CACHE_CONFIG)"]
       ingress:
         enabled: true
-        hostname: "thanos.${SECRET_DOMAIN}"
-        ingressClassName: "nginx"
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-        tls: true
-      replicaLabels:
-        - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
-      resources:
-        requests:
-          cpu: 15m
-          memory: 64M
-        limits:
-          memory: 512M
-
-    queryFrontend:
-      enabled: false
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
-
-    bucketweb:
+        ingressClassName: internal
+        hosts:
+          - &host thanos.${SECRET_DOMAIN}
+        tls:
+          - hosts: [*host]
+      podAnnotations: &podAnnotations
+        configmap.reloader.stakater.com/reload: *configMap
+    rule:
       enabled: true
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
-      resources:
-        requests:
-          cpu: 15m
-          memory: 64M
-        limits:
-          memory: 64M
-
-    compactor:
-      enabled: true
-      extraFlags:
-        - "--compact.concurrency"
-        - "4"
-      retentionResolutionRaw: 14d
-      retentionResolution5m: 14d
-      retentionResolution1h: 30d
-      resources:
-        requests:
-          cpu: 15m
-          memory: 204M
-        # limits:
-        #   memory: 270M
-      persistence:
-        enabled: true
-        storageClass: "rook-cephfs"
-        size: 15Gi
-
-    storegateway:
-      enabled: true
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
-      resources:
-        requests:
-          cpu: 23m
-          memory: 204M
-        limits:
-          memory: 226M
-      persistence:
-        enabled: true
-        storageClass: "rook-cephfs"
-        size: 512Mi
-
-    ruler:
-      enabled: true
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
-      alertmanagers:
-        - http://kube-prometheus-stack-alertmanager.monitoring:9093
-      clusterName: "metal"
-      config: |-
-        groups:
-          - name: "PrometheusWatcher"
-            rules:
-              - alert: "PrometheusDown"
-                expr: absent(up{job="kube-prometheus-stack-prometheus"})
-      dnsDiscovery:
-        enabled: true
-      persistence:
-        enabled: true
-        storageClass: "rook-cephfs"
-        size: 512Mi
-      resources:
-        requests:
-          cpu: 23m
-          memory: 94M
-        limits:
-          memory: 113M
-
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
+      replicas: 2
+      extraArgs: ["--web.prefix-header=X-Forwarded-Prefix"]
+      alertmanagersConfig:
+        value: |-
+          alertmanagers:
+            - api_version: v2
+              static_configs:
+                - dnssrv+_http-web._tcp.alertmanager-operated.monitoring.svc.cluster.local
+      rules:
+        value: |-
+          groups:
+            - name: PrometheusWatcher
+              rules:
+                - alert: PrometheusDown
+                  annotations:
+                    summary: A Prometheus has disappeared from Prometheus target discovery
+                  expr: absent(up{job="kube-prometheus-stack-prometheus"})
+                  for: 5m
+                  labels:
+                    severity: critical
+      persistence: *persistence
+    storeGateway:
+      replicas: 2
+      extraEnv: *extraEnv
+      extraArgs: ["--index-cache.config=$(THANOS_CACHE_CONFIG)"]
+      persistence: *persistence
+      podAnnotations: *podAnnotations
