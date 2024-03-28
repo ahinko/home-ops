@@ -13,7 +13,7 @@ on: # yamllint disable-line rule:truthy
         default: "debug"
         required: false
   schedule:
-    - cron: "0 9,12,17 * * *"
+    - cron: "0 * * * *" # Run every hour
   push:
     branches:
       - main
@@ -40,7 +40,7 @@ env:
 jobs:
   renovate:
     name: Renovate
-    runs-on: ubuntu-latest
+    runs-on: ["arc-runner-set-homelab"]
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1.9.1
