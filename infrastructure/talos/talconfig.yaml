@@ -39,33 +39,9 @@ nodes:
             extraKernelArgs:
               - talos.board=rpi_generic
 
-  - hostname: eos
-    ipAddress: 192.168.20.27
-    controlPlane: true
-    installDisk: /dev/sda
-    nameservers:
-      - 192.168.20.1
-    networkInterfaces:
-      - interface: eth0
-        addresses:
-          - 192.168.20.27/24
-        dhcp: true
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-    patches:
-      - |-
-        machine:
-          install:
-            extraKernelArgs:
-              - talos.board=rpi_generic
-
   - hostname: atlas
     ipAddress: 192.168.20.22
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
       - interface: vnet1

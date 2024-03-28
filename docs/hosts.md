@@ -2,7 +2,7 @@
 
 A large part of my homelab consists of my Kubernetes cluster that runs on 6 nodes:
 * 4 Intel NUCs running Talos.
-* 2 RPi4 running Talos.
+* 1 RPi4 running Talos.
 * 1 whitebox that mainly works as a NAS but also has K8s installed. This box runs Ubuntu 23.04.
 
 Besides these nodes I also have a few smaller hosts that handles simpler tasks:

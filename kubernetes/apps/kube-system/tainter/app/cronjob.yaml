@@ -35,3 +35,12 @@ spec:
                   else
                     echo "Poseidon doesn't have a taint, nothing to do"
                   fi
+
+                  CURRENT_ATLAS=$(kubectl describe node atlas | grep Taints)
+
+                  if echo "$CURRENT_ATLAS" | grep -q 'NoSchedule'; then
+                    echo "Lets remove NoSchedule taint for Atlas!"
+                    /usr/local/bin/kubectl taint node atlas node-role.kubernetes.io/control-plane:NoSchedule-
+                  else
+                    echo "Atlas doesn't have a taint, nothing to do"
+                  fi
