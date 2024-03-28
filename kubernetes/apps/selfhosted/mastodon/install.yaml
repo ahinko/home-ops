@@ -21,6 +21,6 @@ spec:
   timeout: 15m
   dependsOn:
     - name: postgres-cluster
-    - name: redis-proxy
+    - name: dragonfly-cluster
     - name: rook-ceph-cluster
     - name: cloudflared

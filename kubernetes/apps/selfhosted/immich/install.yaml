@@ -21,4 +21,4 @@ spec:
   dependsOn:
     - name: postgres-cluster
     - name: rook-ceph-cluster
-    - name: redis-proxy
+    - name: dragonfly-cluster

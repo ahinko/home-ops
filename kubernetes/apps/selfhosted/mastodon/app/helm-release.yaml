@@ -151,7 +151,7 @@ spec:
       existingSecretPasswordKey: "PASSWORD"
 
     externalRedis:
-      host: "redis-proxy-haproxy.databases.svc.cluster.local"
+      host: "dragonfly.databases.svc.cluster.local"
       port: 6379
       password: ""
 

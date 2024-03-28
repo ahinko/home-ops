@@ -139,8 +139,9 @@ spec:
             'memcache.distributed' => '\OC\Memcache\Redis',
             'memcache.locking' => '\OC\Memcache\Redis',
             'redis' => array(
-              'host' => 'redis-proxy-haproxy.databases.svc.cluster.local',
-              'port' => 6379
+              'host' => 'dragonfly.databases.svc.cluster.local',
+              'port' => 6379,
+              'dbindex' => 0
             )
           );
 

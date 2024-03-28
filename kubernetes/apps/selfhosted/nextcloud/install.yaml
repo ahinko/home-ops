@@ -20,7 +20,7 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph-cluster
-    - name: redis-proxy
+    - name: dragonfly-cluster
     - name: postgres-cluster
   postBuild:
     substitute:
