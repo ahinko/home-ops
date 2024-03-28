@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./actions-runner-controller/install.yaml
+  - ./it-tools/install.yaml
