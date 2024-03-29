@@ -62,5 +62,28 @@
       },
       separateMinorPatch: true,
     },
+    {
+      description: ["Actions Runner Controller Group"],
+      groupName: "Actions Runner Controller",
+      matchPackagePatterns: [
+        "gha-runner-scale-set-controller",
+        "gha-runner-scale-set",
+      ],
+      matchDatasources: ["docker", "helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: ["Elements Group"],
+      groupName: "Elements",
+      matchPackagePatterns: ["element-operator", "element-updater"],
+      matchDatasources: ["docker", "helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
   ],
 }
