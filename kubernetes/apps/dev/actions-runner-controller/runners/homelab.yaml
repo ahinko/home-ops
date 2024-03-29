@@ -40,8 +40,12 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/ahinko/github-actions-runner:2.315.0
+            image: ghcr.io/ahinko/github-actions-runner:2.315.0@sha256:8e9c613054e258b48bea528246d7b00c08cde48486cc78a7a29233fe576b6872
             command: ["/home/runner/run.sh"]
+
+    controllerServiceAccount:
+      name: gha-runner-scale-set-controller
+      namespace: dev
 
   valuesFrom:
     - kind: Secret
