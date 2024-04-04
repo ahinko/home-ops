@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4.1.2
 
       - name: Generate Token
-        uses: actions/create-github-app-token@v1.9.2
+        uses: actions/create-github-app-token@v1.9.3
         id: generate-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
