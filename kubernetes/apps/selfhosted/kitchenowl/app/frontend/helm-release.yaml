@@ -48,7 +48,7 @@ spec:
           app:
             image:
               repository: tombursch/kitchenowl-web
-              tag: v0.4.21
+              tag: v0.5.0
 
             env:
               BACK_URL: "kitchenowl.selfhosted:5000"
