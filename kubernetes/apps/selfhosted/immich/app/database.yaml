@@ -5,13 +5,3 @@ metadata:
   name: immich-db
 spec:
   database: immich
----
-apiVersion: db.movetokube.com/v1alpha1
-kind: PostgresUser
-metadata:
-  name: immich-user
-spec:
-  role: immich
-  database: immich-db
-  secretName: database
-  privileges: OWNER
