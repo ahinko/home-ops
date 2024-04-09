@@ -54,7 +54,7 @@ spec:
           app:
             image:
               repository: sissbruecker/linkding
-              tag: 1.26.0
+              tag: 1.27.1
 
             env:
               LD_DB_ENGINE: "postgres"
