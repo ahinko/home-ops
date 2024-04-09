@@ -41,7 +41,7 @@ nodes:
 
   - hostname: atlas
     ipAddress: 192.168.20.22
-    controlPlane: true
+    controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
       - interface: vnet1
@@ -92,7 +92,7 @@ nodes:
 
   - hostname: zeus
     ipAddress: 192.168.20.25
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/nvme0n1
     networkInterfaces:
       - deviceSelector:
@@ -204,8 +204,11 @@ controlPlane:
     - &sysctlsPatch |-
       machine:
         sysctls:
-          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_queued_events: "65536"
           fs.inotify.max_user_instances: "8192"
+          fs.inotify.max_user_watches: "524288"
+          net.core.rmem_max: "2500000"
+          net.core.wmem_max: "2500000"
 
 worker:
   schematic:
