@@ -10,14 +10,24 @@ releases:
     namespace: kube-system
     chart: cilium/cilium
     version: 1.15.3
+    values: ["../../../kubernetes/apps/kube-system/cilium/app/values.yaml"]
     wait: true
-    values:
-      - ../../../kubernetes/apps/kube-system/cilium/app/values.yaml
 
   - name: kubelet-csr-approver
     namespace: kube-system
     chart: postfinance/kubelet-csr-approver
     version: 1.1.0
-    wait: true
     values:
-      - ../../../kubernetes/apps/kube-system/kubelet-csr-approver/app/values.yaml
+      [
+        "../../../kubernetes/apps/kube-system/kubelet-csr-approver/app/values.yaml",
+      ]
+    needs: ["cilium"]
+    wait: true
+
+  - name: spegel
+    namespace: kube-system
+    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
+    version: v0.0.20
+    values: ["../../../kubernetes/apps/kube-system/spegel/app/helm-values.yaml"]
+    needs: ["cilium", "kubelet-csr-approver"]
+    wait: true
