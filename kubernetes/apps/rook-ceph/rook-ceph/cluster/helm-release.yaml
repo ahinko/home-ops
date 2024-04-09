@@ -30,7 +30,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/rook/rook/blob/release-1.13/deploy/charts/rook-ceph-cluster/values.yaml
+  # Values link: https://github.com/rook/rook/blob/release-1.14/deploy/charts/rook-ceph-cluster/values.yaml
   values:
     toolbox:
       enabled: false
@@ -77,9 +77,14 @@ spec:
         #   requireMsgr2: true
 
       dataDirHostPath: /var/lib/rook
+
       mon:
         count: 3
         allowMultiplePerNode: false
+
+      crashCollector:
+        disable: false
+
       dashboard:
         enabled: true
         urlPrefix: /
@@ -168,6 +173,9 @@ spec:
           isDefault: false
           name: rook-cephfs
           reclaimPolicy: Delete
+          allowVolumeExpansion: true
+          mountOptions: []
+          volumeBindingMode: Immediate
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
