@@ -8,7 +8,6 @@ resources:
   - ./immich/install.yaml
   - ./kitchenowl/install.yaml
   - ./linkding/install.yaml
-  - ./mailrise/install.yaml
   - ./mastodon/install.yaml
   - ./mastodon-fakerelay/install.yaml
   - ./mastodon-getmoarfediverse/install.yaml
