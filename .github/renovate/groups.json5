@@ -85,5 +85,15 @@
       },
       separateMinorPatch: true,
     },
+    {
+      description: ["EMQX Operator Group"],
+      groupName: "EMQX Operator",
+      matchPackagePatterns: ["ghcr.io/emqx/emqx-operator", "emqx-operator"],
+      matchDatasources: ["docker", "helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
   ],
 }
