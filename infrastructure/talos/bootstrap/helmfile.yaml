@@ -1,4 +1,13 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/helmfile.json
+
+helmDefaults:
+  wait: true
+  waitForJobs: true
+  timeout: 600
+  recreatePods: true
+  force: true
+
 repositories:
   - name: cilium
     url: https://helm.cilium.io
@@ -11,7 +20,6 @@ releases:
     chart: cilium/cilium
     version: 1.15.4
     values: ["../../../kubernetes/apps/kube-system/cilium/app/values.yaml"]
-    wait: true
 
   - name: kubelet-csr-approver
     namespace: kube-system
@@ -22,7 +30,6 @@ releases:
         "../../../kubernetes/apps/kube-system/kubelet-csr-approver/app/values.yaml",
       ]
     needs: ["cilium"]
-    wait: true
 
   - name: spegel
     namespace: kube-system
@@ -30,4 +37,3 @@ releases:
     version: v0.0.21
     values: ["../../../kubernetes/apps/kube-system/spegel/app/helm-values.yaml"]
     needs: ["cilium", "kubelet-csr-approver"]
-    wait: true
