@@ -5,4 +5,4 @@ resources:
   - ./emqx-init-script-configmap.yaml
   - ./cluster.yaml
   - ./ingress.yaml
-  - ./loadbalancer.yaml
+  - ./podmonitor.yaml
