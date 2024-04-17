@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 2.2.20
+      version: 2.2.21
       sourceRef:
         kind: HelmRepository
         name: emqx-charts
@@ -31,7 +31,7 @@ spec:
 
     image:
       repository: ghcr.io/emqx/emqx-operator
-      tag: 2.2.20
+      tag: 2.2.21
 
     resources:
       limits:
