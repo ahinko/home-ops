@@ -7,6 +7,7 @@ resources:
   - ./gatus/install.yaml
   - ./grafana/install.yaml
   - ./kube-prometheus-stack/install.yaml
+  - ./node-exporter/install.yaml
   - ./smartctl-exporter/install.yaml
   - ./speedtest-exporter/install.yaml
   - ./thanos/install.yaml

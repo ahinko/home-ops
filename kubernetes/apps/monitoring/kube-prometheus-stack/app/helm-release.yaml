@@ -84,6 +84,9 @@ spec:
         limits:
           memory: 153M
 
+    nodeExporter:
+      enabled: false
+
     grafana:
       enabled: false
       forceDeployDashboards: true
