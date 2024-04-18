@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app radarr
+  name: radarr
 spec:
   interval: 60m
   chart:
@@ -57,7 +57,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: *app
+                  name: radarr-secret
 
             probes:
               liveness:

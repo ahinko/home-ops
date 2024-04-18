@@ -49,7 +49,7 @@ spec:
       user: "admin"
       retention_policy: "0s"
       bucket: "default"
-      existingSecret: "influxdb-auth"
+      existingSecret: "influxdb-secret"
 
     persistence:
       enabled: true

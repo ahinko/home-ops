@@ -22,3 +22,4 @@ spec:
     - name: postgres-cluster
     - name: rook-ceph-cluster
     - name: dragonfly-cluster
+    - name: external-secrets

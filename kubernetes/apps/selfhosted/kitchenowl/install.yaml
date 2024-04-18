@@ -19,6 +19,7 @@ spec:
     - name: postgres-cluster
     - name: rook-ceph-cluster
     - name: volsync
+    - name: external-secrets
   postBuild:
     substitute:
       APP: *appname

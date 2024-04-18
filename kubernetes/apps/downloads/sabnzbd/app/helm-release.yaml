@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app sabnzbd
+  name: sabnzbd
 spec:
   interval: 60m
   chart:
@@ -60,7 +60,7 @@ spec:
                 sabnzbd.${SECRET_DOMAIN}
             envFrom:
               - secretRef:
-                  name: *app
+                  name: sabnzbd-secret
 
             probes:
               liveness:

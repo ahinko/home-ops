@@ -28,7 +28,7 @@ spec:
           volumes:
             - name: config
               secret:
-                secretName: mastodon-getmoarfediverse-config
+                secretName: mastodon-getmoarfediverse-secret
             - name: data
               persistentVolumeClaim:
                 claimName: *app

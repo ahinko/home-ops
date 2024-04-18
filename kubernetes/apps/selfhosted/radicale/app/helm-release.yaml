@@ -98,7 +98,7 @@ spec:
 
       auth:
         type: secret
-        name: radicale-auth
+        name: radicale-secret
         globalMounts:
           - path: /config/users
             subPath: users

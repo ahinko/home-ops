@@ -32,7 +32,7 @@ spec:
       pspEnabled: false
 
     admin:
-      existingSecret: grafana-secrets
+      existingSecret: grafana-secret
       passwordKey: adminPass
       userKey: adminUser
 

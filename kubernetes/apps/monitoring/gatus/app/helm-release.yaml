@@ -67,7 +67,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: gatus-secrets
+                  name: gatus-secret
               - secretRef:
                   name: database-gatus-user
 

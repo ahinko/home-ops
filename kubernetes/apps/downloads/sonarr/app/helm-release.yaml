@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app sonarr-v4
+  name: sonarr-v4
 spec:
   interval: 60m
   chart:
@@ -51,7 +51,7 @@ spec:
               SONARR__LOG_LEVEL: warning
             envFrom:
               - secretRef:
-                  name: *app
+                  name: sonarr-secret
 
             probes:
               liveness:

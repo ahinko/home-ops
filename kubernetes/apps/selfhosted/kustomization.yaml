@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./atuin/install.yaml
-  #- ./element/install.yaml
+  - ./element/install.yaml
   - ./immich/install.yaml
   - ./kitchenowl/install.yaml
   - ./mastodon/install.yaml

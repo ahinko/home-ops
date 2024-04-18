@@ -12,7 +12,7 @@ spec:
     storageClass: rook-cephfs
   enableSuperuserAccess: true
   superuserSecret:
-    name: postgres16-superuser
+    name: cloudnative-pg-secret
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
@@ -44,10 +44,10 @@ spec:
       serverName: &currentCluster postgres16-001
       s3Credentials:
         accessKeyId:
-          name: cnpg-backup-secrets
+          name: cloudnative-pg-secret
           key: S3_ACCESS_KEY
         secretAccessKey:
-          name: cnpg-backup-secrets
+          name: cloudnative-pg-secret
           key: S3_SECRET_KEY
 
   # Note: previousCluster needs to be set to the name of the previous

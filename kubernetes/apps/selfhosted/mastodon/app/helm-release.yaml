@@ -39,7 +39,7 @@ spec:
     adminUser: "peter"
     adminEmail: "peter@${SECRET_SOCIAL_DOMAIN}"
 
-    existingSecret: "mastodon-secrets"
+    existingSecret: "mastodon-secret"
 
     enableSearches: true
     enableS3: false
@@ -58,7 +58,7 @@ spec:
       enable_starttls_auto: true
       tls: false
       auth_method: plain
-      existingSecret: "mastodon-secrets"
+      existingSecret: "mastodon-secret"
       existingSecretLoginKey: "SMTP_LOGIN"
       existingSecretPasswordKey: "SMTP_PASSWORD"
       existingSecretServerKey: "SMTP_SERVER"

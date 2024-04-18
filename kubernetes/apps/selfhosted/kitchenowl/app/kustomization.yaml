@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - ../../../../tmpl/volsync
   - ./database.yaml
-  - ./sops.secrets.yaml
+  - ./externalsecret.yaml
   - ./helm-release.yaml

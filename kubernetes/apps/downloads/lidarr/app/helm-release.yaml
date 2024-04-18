@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app lidarr
+  name: lidarr
 spec:
   interval: 60m
   chart:
@@ -55,7 +55,7 @@ spec:
               LIDARR__LOG_LEVEL: info
             envFrom:
               - secretRef:
-                  name: *app
+                  name: lidarr-secret
 
             probes:
               liveness:

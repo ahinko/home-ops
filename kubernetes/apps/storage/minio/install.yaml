@@ -22,3 +22,5 @@ spec:
     substitute:
       APP: *appname
       GATUS_SUBDOMAIN: minio
+  dependsOn:
+    - name: external-secrets

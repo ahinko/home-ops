@@ -60,7 +60,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: kitchenowl-secrets
+                  name: kitchenowl-secret
 
             env:
               FRONT_URL: kitchenowl.${SECRET_DOMAIN}

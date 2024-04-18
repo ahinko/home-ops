@@ -48,9 +48,9 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: sonarr-v4
+                  name: sonarr-secret
               - secretRef:
-                  name: radarr
+                  name: radarr-secret
 
             probes:
               liveness:

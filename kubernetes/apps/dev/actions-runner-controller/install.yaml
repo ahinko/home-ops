@@ -20,6 +20,7 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph-cluster
+    - name: external-secrets
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

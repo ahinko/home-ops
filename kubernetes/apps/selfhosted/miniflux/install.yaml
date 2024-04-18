@@ -20,3 +20,4 @@ spec:
   wait: true
   dependsOn:
     - name: postgres-cluster
+    - name: external-secrets
