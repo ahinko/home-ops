@@ -40,7 +40,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/ahinko/github-actions-runner:2.315.0@sha256:8e9c613054e258b48bea528246d7b00c08cde48486cc78a7a29233fe576b6872
+            image: ghcr.io/ahinko/github-actions-runner:2.316.0@sha256:172d7fbb14c361c63ef7a75c4eb47a66fc198e2c05cef2a7c363adb0541408be
             command: ["/home/runner/run.sh"]
 
     controllerServiceAccount:
