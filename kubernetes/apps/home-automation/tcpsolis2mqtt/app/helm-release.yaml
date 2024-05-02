@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/tcpsolis2mqtt
-              tag: main@sha256:6452b41b0dcd63a8b38f7966d76917cf57ed277dbc8151c4eed6136905e3bdc5
+              tag: main@sha256:85acc52864e3bf4546dd731df8baa5f97292bab4aa22babf0526297e39499674
 
             probes:
               liveness:
