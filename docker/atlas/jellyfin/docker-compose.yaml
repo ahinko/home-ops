@@ -3,7 +3,7 @@ version: "3.8"
 
 services:
   jellyfin:
-    image: jellyfin/jellyfin:10.9.0
+    image: jellyfin/jellyfin:10.9.2
     container_name: jellyfin
     ports:
       - 8096:8096/tcp
