@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: element-updater
-      version: 2.17.17
+      version: 2.17.18
       sourceRef:
         kind: HelmRepository
         name: element-charts
