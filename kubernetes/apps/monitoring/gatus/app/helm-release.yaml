@@ -99,7 +99,7 @@ spec:
           config-sync:
             image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.26.2
+              tag: 1.27.2
             env:
               FOLDER: /config
               LABEL: gatus.io/enabled
