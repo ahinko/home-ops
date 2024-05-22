@@ -1,0 +1,13 @@
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: smartdeviceinterfaceslow
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceInterfaceSlow
+      isRegex: false
+    - name: device
+      value: sda
+      isRegex: false

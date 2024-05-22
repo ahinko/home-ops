@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: home-assistant
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      home-assistant:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2024.5.4
+            env:
+              SECRET_RECORDER_DB_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-homeassistant-user
+                    key: POSTGRES_URL
+
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 500M
+              limits:
+                memory: 1000M
+
+    service:
+      app:
+        controller: home-assistant
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.20.201"
+        externalTrafficPolicy: Cluster
+        ports:
+          sonos:
+            enabled: true
+            port: 1400
+          http:
+            port: 8123
+          govee:
+            enabled: true
+            port: 4003
+            protocol: UDP
+
+    ingress:
+      app:
+        className: "nginx"
+        annotations:
+          nginx.org/websocket-services: home-assistant
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+        hosts:
+          - host: &host "hass.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /config

@@ -1,0 +1,372 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+spec:
+  chart:
+    spec:
+      chart: grafana
+      interval: 60m
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      version: 7.3.11
+  interval: 60m
+  timeout: 20m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    replicas: 1
+    rbac:
+      pspEnabled: false
+
+    admin:
+      existingSecret: grafana-secret
+      passwordKey: adminPass
+      userKey: adminUser
+
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            disableDeletion: false
+            editable: true
+            folder: ""
+            options:
+              path: /var/lib/grafana/dashboards/default
+            orgId: 1
+            type: file
+          - name: ceph
+            orgId: 1
+            folder: Ceph
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/ceph
+          - name: flux
+            orgId: 1
+            folder: Flux
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/flux
+          - name: nginx
+            orgId: 1
+            folder: Nginx
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/nginx
+          - name: kubernetes
+            disableDeletion: false
+            editable: true
+            folder: "Kubernetes"
+            options:
+              path: /var/lib/grafana/dashboards/kubernetes
+            orgId: 1
+            type: file
+          - name: victoriametrics
+            disableDeletion: false
+            editable: true
+            folder: "VictoriaMetrics"
+            options:
+              path: /var/lib/grafana/dashboards/victoria-metrics
+            orgId: 1
+            type: file
+
+    dashboards:
+      default:
+        spegel:
+          # renovate: depName="Spegel"
+          gnetId: 18089
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+        cert-manager:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          datasource: Prometheus
+
+        dragonfly:
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+          datasource: Prometheus
+
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
+
+        minio:
+          # renovate: depName="MinIO Dashboard"
+          gnetId: 13502
+          revision: 26
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+
+        cloudflared:
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+
+        node-exporter-full:
+          # renovate: depName="Node Exporter Full"
+          gnetId: 1860
+          revision: 36
+          datasource: Prometheus
+
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: Prometheus
+
+        speedtest-exporter-hub:
+          gnetId: 13665
+          revision: 4
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+
+        smart:
+          # renovate: depName="Dashboard for smartctl_exporter"
+          gnetId: 20204
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+        zfs:
+          # renovate: depName="ZFS"
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
+
+      ceph:
+        ceph-cluster:
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
+          revision: 17
+          datasource: Prometheus
+        ceph-osd:
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        ceph-pools:
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
+          datasource: Prometheus
+
+      kubernetes:
+        kubernetes-api-server:
+          # renovate: depName="Kubernetes / System / API Server"
+          gnetId: 15761
+          revision: 16
+          datasource: Prometheus
+        kubernetes-coredns:
+          # renovate: depName="Kubernetes / System / CoreDNS"
+          gnetId: 15762
+          revision: 18
+          datasource: Prometheus
+        kubernetes-global:
+          # renovate: depName="Kubernetes / Views / Global"
+          gnetId: 15757
+          revision: 37
+          datasource: Prometheus
+        kubernetes-namespaces:
+          # renovate: depName="Kubernetes / Views / Namespaces"
+          gnetId: 15758
+          revision: 34
+          datasource: Prometheus
+        kubernetes-nodes:
+          # renovate: depName="Kubernetes / Views / Nodes"
+          gnetId: 15759
+          revision: 29
+          datasource: Prometheus
+        kubernetes-pods:
+          # renovate: depName="Kubernetes / Views / Pods"
+          gNetId: 15760
+          revision: 21
+          datasource: Prometheus
+        kubernetes-volumes:
+          # renovate: depName="K8s / Storage / Volumes / Cluster"
+          gnetId: 11454
+          revision: 14
+          datasource: Prometheus
+
+      flux:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+          datasource: Prometheus
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+          datasource: Prometheus
+
+      nginx:
+        nginx:
+          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+          datasource: Prometheus
+        nginx-request-handling-performance:
+          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+          datasource: Prometheus
+
+      victoriametrics:
+        vm-cluster:
+          # renovate: dashboardName="VictoriaMetrics - cluster"
+          gnetId: 11176
+          revision: 37
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+        vm-operator:
+          # renovate: dashboardName="VictoriaMetrics - operator"
+          gnetId: 17869
+          revision: 2
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+        vm-vmalert:
+          # renovate: dashboardName="VictoriaMetrics - vmalert"
+          gnetId: 14950
+          revision: 11
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+        vm-vmagent:
+          # renovate: dashboardName="VictoriaMetrics - vmagent"
+          gnetId: 12683
+          revision: 18
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: Prometheus
+
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - name: Alertmanager
+            orgId: 1
+        datasources:
+          - access: proxy
+            name: Prometheus
+            type: prometheus
+            url: http://vmselect-victoria-metrics.observability.svc.cluster.local:8481/select/0/prometheus
+            isDefault: true
+            jsonData:
+              prometheusType: Prometheus
+          - name: Alertmanager
+            type: alertmanager
+            access: proxy
+            url: http://alertmanager.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
+
+    deploymentStrategy:
+      type: Recreate
+
+    env:
+      GF_ANALYTICS_CHECK_FOR_UPDATES: false
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_EXPLORE_ENABLED: true
+      GF_GRAFANA_NET_URL: https://grafana.net
+      GF_LOG_FILTERS: rendering:debug
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_SECURITY_COOKIE_SAMESITE: grafana
+      GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
+      GF_FEATURE_TOGGLES_ENABLE: publicDashboards
+      GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
+
+    grafana.ini:
+      analytics:
+        check_for_updates: false
+        reporting_enabled: false
+      grafana_net:
+        url: https://grafana.net
+      log:
+        mode: console
+      news:
+        news_feed_enabled: false
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+
+    imageRenderer:
+      enabled: true
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - &host grafana.${SECRET_DOMAIN}
+      tls:
+        - hosts:
+            - *host
+
+    persistence:
+      enabled: false
+
+    plugins:
+      - grafana-clock-panel
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
+      - natel-discrete-panel
+      - pr0ps-trackmap-panel
+      - vonage-status-panel
+
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    resources:
+      limits:
+        memory: 219M
+      requests:
+        cpu: 23m
+        memory: 127M
+
+    serviceAccount:
+      create: true
+      autoMount: true
+
+    serviceMonitor:
+      enabled: true
+
+    sidecar:
+      dashboards:
+        enabled: true
+        labelValue: ""
+        searchNamespace: ALL
+      datasources:
+        enabled: true
+        labelValue: ""
+        searchNamespace: ALL
+      logLevel: INFO
+
+    testFramework:
+      enabled: false

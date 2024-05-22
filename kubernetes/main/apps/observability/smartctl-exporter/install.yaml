@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname smartctl-exporter
+  namespace: flux-system
+spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/main/apps/observability/smartctl-exporter/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true

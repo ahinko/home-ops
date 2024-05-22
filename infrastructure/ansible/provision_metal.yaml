@@ -26,4 +26,4 @@
     - role: homelab
     - role: backup
     - role: znapzend
-    - role: kvm_qemu
+    - role: k3s

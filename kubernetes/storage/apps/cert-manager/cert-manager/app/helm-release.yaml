@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app cert-manager
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: *app
+      version: v1.14.5
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack-charts
+        namespace: flux-system
+      interval: 60m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+    crds: CreateReplace
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+    crds: CreateReplace
+  uninstall:
+    keepHistory: false
+
+  # Values link: https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
+  values:
+    installCRDs: true
+
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    webhook:
+      enabled: true
+
+    extraArgs:
+      - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
+      - --dns01-recursive-nameservers-only
+
+    podDnsPolicy: "None"
+    podDnsConfig:
+      nameservers:
+        - "1.1.1.1"
+        - "9.9.9.9"
+
+    prometheus:
+      enabled: true
+      servicemonitor:
+        enabled: true

@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: atuin
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+
+  values:
+    controllers:
+      atuin:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/atuinsh/atuin
+              tag: v18.2.0
+            args:
+              - server
+              - start
+            env:
+              ATUIN_DB_URI:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-atuin-user
+                    key: POSTGRES_URL
+              ATUIN_HOST: 0.0.0.0
+              ATUIN_PORT: &port 8888
+              ATUIN_OPEN_REGISTRATION: false
+              ATUIN_TLS__ENABLE: false
+              ATUIN_TLS__CERT_PATH: ""
+              ATUIN_TLS__PKEY_PATH: ""
+              RUST_LOG: info
+              ATUIN_METRICS__ENABLE: "true"
+              ATUIN_METRICS__HOST: 0.0.0.0
+              ATUIN_METRICS__PORT: &metricsPort 8080
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+    service:
+      app:
+        controller: atuin
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: *metricsPort
+
+    serviceMonitor:
+      app:
+        serviceName: atuin
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+    ingress:
+      app:
+        className: nginx
+        hosts:
+          - host: &host sh.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        type: emptyDir

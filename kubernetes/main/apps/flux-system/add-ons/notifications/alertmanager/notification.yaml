@@ -1,0 +1,34 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: alert-manager
+  namespace: flux-system
+spec:
+  type: alertmanager
+  address: http://kube-prometheus-stack-alertmanager.observability:9093/api/v2/alerts/
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: alert-manager
+  namespace: flux-system
+spec:
+  providerRef:
+    name: alert-manager
+  eventSeverity: error
+  eventSources:
+    - kind: GitRepository
+      name: "*"
+    - kind: HelmRelease
+      name: "*"
+    - kind: HelmRepository
+      name: "*"
+    - kind: Kustomization
+      name: "*"
+  exclusionList:
+    - "error.*lookup github\\.com"
+    - "error.*lookup raw\\.githubusercontent\\.com"
+    - "dial.*tcp.*timeout"
+    - "waiting.*socket"
+  suspend: false

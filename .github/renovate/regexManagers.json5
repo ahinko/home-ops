@@ -23,11 +23,11 @@
       description: "Process Talos versions",
       fileMatch: [
         "infrastructure/talos/talconfig.yaml",
-        "infrastructure/ansible/inventory/host_vars/atlas/kvm_qemu.yaml",
+        ".taskfiles/tools/taskfile.yaml",
       ],
       matchStrings: [
         "talosVersion: (?<currentValue>.*)",
-        "download/(?<currentValue>.*)/metal-amd64",
+        "factory.talos.dev/image/[a-z0-9]*/(?<currentValue>.*)/metal",
       ],
       depNameTemplate: "ghcr.io/siderolabs/installer",
       datasourceTemplate: "docker",

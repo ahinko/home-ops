@@ -1,9 +1,9 @@
 ---
-clusterName: metal
+clusterName: main
 endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 
 talosVersion: v1.7.2
-kubernetesVersion: v1.30.0
+kubernetesVersion: v1.30.1
 
 additionalApiServerCertSans: &sans
   - ${CLUSTER_ENDPOINT_IP}
@@ -15,8 +15,8 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: hades
-    ipAddress: 192.168.20.23
+  - hostname: cp01
+    ipAddress: 192.168.20.31
     controlPlane: true
     installDisk: /dev/sda
     nameservers:
@@ -24,43 +24,50 @@ nodes:
     networkInterfaces:
       - interface: eth0
         addresses:
-          - 192.168.20.23/24
+          - 192.168.20.31/24
         dhcp: true
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-    schematic:
+    schematic: &rpi-schematic
+      overlay:
+        image: siderolabs/sbc-raspberrypi
+        name: rpi_generic
       customization:
         extraKernelArgs:
-          - net.ifnames=0
-    patches:
-      - |-
-        machine:
-          install:
-            extraKernelArgs:
-              - talos.board=rpi_generic
+          - net.ifnames=1
 
-  - hostname: atlas
-    ipAddress: 192.168.20.22
-    controlPlane: false
+  - hostname: cp02
+    ipAddress: 192.168.20.32
+    controlPlane: true
     installDisk: /dev/sda
+    nameservers:
+      - 192.168.20.1
     networkInterfaces:
-      - interface: vnet1
+      - interface: eth0
         addresses:
-          - 192.168.20.22/24
+          - 192.168.20.32/24
         dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+    schematic: *rpi-schematic
 
-  - hostname: helios
-    ipAddress: 192.168.20.21
-    controlPlane: false
-    installDisk: /dev/nvme0n1
+  - hostname: cp03 # poseidon
+    ipAddress: 192.168.20.33
+    controlPlane: true
+    installDiskSelector:
+      type: ssd
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 20:7b:d2:c3:*
+          hardwareAddr: 20:7b:d2:aa:f2:bd
         addresses:
-          - 192.168.20.21/24
+          - 192.168.20.33/24
         dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
     schematic: &nuc-schematic
       customization:
+        extraKernelArgs:
+          - net.ifnames=1
         systemExtensions:
           officialExtensions:
             - siderolabs/usb-modem-drivers
@@ -73,46 +80,56 @@ nodes:
             modules:
               - name: usbserial
               - name: ax88179_178a
+          kubelet:
+            extraMounts:
+              - destination: /var/openebs/local
+                type: bind
+                source: /var/openebs/local
+                options:
+                  - bind
+                  - rshared
+                  - rw
 
-  - hostname: poseidon
-    ipAddress: 192.168.20.24
-    controlPlane: true
-    installDisk: /dev/nvme0n1
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 20:7b:d2:aa:*
-        addresses:
-          - 192.168.20.24/24
-        dhcp: true
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-    schematic: *nuc-schematic
-    patches:
-      - *nuc-patches
-
-  - hostname: zeus
-    ipAddress: 192.168.20.25
-    controlPlane: true
-    installDisk: /dev/nvme0n1
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 20:7b:d2:b1:*
-        addresses:
-          - 192.168.20.25/24
-        dhcp: true
-    schematic: *nuc-schematic
-    patches:
-      - *nuc-patches
-
-  - hostname: iris
-    ipAddress: 192.168.20.26
+  - hostname: w01 # helios
+    ipAddress: 192.168.20.34
     controlPlane: false
-    installDisk: /dev/nvme0n1
+    installDiskSelector:
+      type: ssd
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:c3:1f:34
+        addresses:
+          - 192.168.20.34/24
+        dhcp: true
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
+
+  - hostname: w02 # zeus
+    ipAddress: 192.168.20.35
+    controlPlane: false
+    installDiskSelector:
+      type: ssd
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:b1:b8:7c
+        addresses:
+          - 192.168.20.35/24
+        dhcp: true
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
+
+  - hostname: w03 # iris
+    ipAddress: 192.168.20.36
+    controlPlane: false
+    installDiskSelector:
+      type: ssd
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: 20:7b:d2:ae:*
         addresses:
-          - 192.168.20.26/24
+          - 192.168.20.36/24
         dhcp: true
     schematic: *nuc-schematic
     patches:
@@ -167,6 +184,13 @@ controlPlane:
         allowSchedulingOnMasters: false
         proxy:
           disabled: true
+
+    - &hostDns |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
 
     # Configure containerd
     - &containerdConfigPatch |-
@@ -225,6 +249,7 @@ worker:
     - *nameServersPatch
     - *timeServersPatch
     - *kubePrismPatch
+    - *hostDns
     - *containerdConfigPatch
     - *kubeletPatch
     - *sysctlsPatch

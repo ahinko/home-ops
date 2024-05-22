@@ -4,32 +4,32 @@ version: "3"
 
 vars:
   # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
-  PROMETHEUS_OPERATOR_VERSION: v0.71.2
+  PROMETHEUS_OPERATOR_VERSION: v0.73.2
 
 tasks:
   bootstrap:
     desc: Bootstrap Flux into a Kubernetes cluster
-    prompt: Bootstrap Flux into the cluster... continue?
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+    prompt: Bootstrap Flux into the '{{.cluster}}' cluster ... continue?
     cmds:
-      # Install essential Prometheus Operator CRDs
-      - kubectl apply --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
-      - kubectl apply --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
-      - kubectl apply --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
-      - kubectl apply --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
       # Install Flux
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/bootstrap
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml | kubectl apply --server-side --filename -
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml | kubectl apply --server-side --filename -
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/vars/sops.cluster-secrets.yaml | kubectl apply --server-side --filename -
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/flux/config
+      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/sops.agekey.yaml | kubectl apply --server-side --filename -
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/sops.github-deploy-token.yaml | kubectl apply --server-side --filename -
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/sops.cluster-secrets.yaml | kubectl apply --server-side --filename -
+      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/flux/config
+    requires:
+      vars: ["cluster"]
     preconditions:
       - test -f {{.ROOT_DIR}}/homelab.agekey
-      - test -f {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml
-      - test -f {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml
-      - test -f {{.KUBERNETES_DIR}}/flux/vars/sops.cluster-secrets.yaml
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.agekey.yaml
-      - sops --decrypt {{.KUBERNETES_DIR}}/bootstrap/flux/sops.github-deploy-token.yaml
-      - sops --decrypt {{.KUBERNETES_DIR}}/flux/vars/sops.cluster-secrets.yaml
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/sops.agekey.yaml
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/sops.github-deploy-token.yaml
+      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/sops.cluster-secrets.yaml
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/sops.agekey.yaml
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/sops.github-deploy-token.yaml
+      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/flux/vars/sops.cluster-secrets.yaml
 
   hr:
     desc: List all Helm Releases
@@ -60,9 +60,3 @@ tasks:
     silent: true
     cmds:
       - viddy 'flux get kustomizations -A | grep -v Applied'
-
-  hr-restart:
-    desc: Restart all failed Helm Releases
-    cmds:
-      - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
-      - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'

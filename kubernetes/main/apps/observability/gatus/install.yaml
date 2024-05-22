@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname gatus
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: "./kubernetes/main/apps/observability/gatus/app"
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  dependsOn:
+    - name: postgres-cluster
+    - name: external-secrets
+  prune: true
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

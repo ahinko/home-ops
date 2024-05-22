@@ -7,8 +7,11 @@ on:
     - cron: "0 0 * * *"
 
 env:
-  DEFAULT_CLOUDFLARE_NETWORKS_FILE: |-
-    kubernetes/apps/networking/ingress-nginx/app/cloudflare-ip-ranges.txt
+  MAIN_CLOUDFLARE_NETWORKS_FILE: |-
+    kubernetes/main/apps/networking/ingress-nginx/app/cloudflare-ip-ranges.txt
+  STORAGE_CLOUDFLARE_NETWORKS_FILE: |-
+    kubernetes/storage/apps/networking/ingress-nginx/app/cloudflare-ip-ranges.txt
+
 jobs:
   cloudflare-networks:
     name: Cloudflare Networks
@@ -33,7 +36,8 @@ jobs:
               npx zx ./.github/scripts/cloudflareNetworks.mjs > "${cloudflare_networks_file}"
               exit 0
           fi
-          npx zx ./.github/scripts/cloudflareNetworks.mjs > ${{ env.DEFAULT_CLOUDFLARE_NETWORKS_FILE }}
+          npx zx ./.github/scripts/cloudflareNetworks.mjs > ${{ env.MAIN_CLOUDFLARE_NETWORKS_FILE }}
+          npx zx ./.github/scripts/cloudflareNetworks.mjs > ${{ env.STORAGE_CLOUDFLARE_NETWORKS_FILE }}
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6.0.5

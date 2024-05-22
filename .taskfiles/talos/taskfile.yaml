@@ -37,7 +37,7 @@ tasks:
     cmds:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
-      - talhelper gencommand apply -n {{.node}} --extra-flags=--preserve=true | bash
+      - talhelper gencommand apply -n {{.node}} | bash
     requires:
       vars: ["node"]
 
@@ -96,7 +96,7 @@ tasks:
   kubeconfig:
     desc: Get an updated version of kubeconfig with updated/rotated certificates
     cmds:
-      - talosctl kubeconfig ~/.kube/configs/metal -n {{.controlplane}}
-      - kubectl config rename-context admin@metal metal
+      - talosctl kubeconfig ~/.kube/configs/main -n {{.controlplane}}
+      - kubectl config rename-context admin@main main
     requires:
       vars: ["controlplane"]

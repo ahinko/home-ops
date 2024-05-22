@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app immich-machine-learning
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  dependsOn:
+    - name: immich-server
+
+  values:
+    controllers:
+      immich-machine-learning:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.105.1
+            env:
+              # General
+              IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
+              # Ports
+              MACHINE_LEARNING_HOST: 0.0.0.0
+              MACHINE_LEARNING_PORT: &port 3003
+              # Machine learning
+              MACHINE_LEARNING_CACHE_FOLDER: /cache
+              TRANSFORMERS_CACHE: /cache
+            resources:
+              requests:
+                cpu: 100m
+                memory: 274M
+              limits:
+                memory: 3949M
+
+    service:
+      app:
+        controller: immich-machine-learning
+        ports:
+          http:
+            port: *port
+
+    persistence:
+      library:
+        type: persistentVolumeClaim
+        existingClaim: immich-nfs
+        globalMounts:
+          - path: *mediaLocation
+      cache:
+        type: persistentVolumeClaim
+        existingClaim: immich-machine-learning-cache
+        globalMounts:
+          - path: /cache

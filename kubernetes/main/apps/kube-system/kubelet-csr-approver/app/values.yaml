@@ -1,0 +1,5 @@
+---
+providerRegex: |
+  ^(cp01|cp02|cp03|w01|w02|w03)$
+
+bypassDnsResolution: true

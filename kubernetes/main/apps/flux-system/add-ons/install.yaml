@@ -1,0 +1,50 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-webhooks
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  interval: 10m
+  path: ./kubernetes/main/apps/flux-system/add-ons/webhooks
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+  dependsOn:
+    - name: external-secrets
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-monitoring
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  interval: 10m
+  path: ./kubernetes/main/apps/flux-system/add-ons/monitoring
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-notifications
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  interval: 10m
+  path: ./kubernetes/main/apps/flux-system/add-ons/notifications
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true

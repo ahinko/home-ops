@@ -1,0 +1,13 @@
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: kubepersistentvolumefillingup
+spec:
+  matchers:
+    - name: alertname
+      value: KubePersistentVolumeFillingUp
+      isRegex: false
+    - name: persistentvolumeclaim
+      value: data-thanos-compact-0
+      isRegex: false

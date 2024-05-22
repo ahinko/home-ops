@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./namespace.yaml
+  - ./cilium/install.yaml
+  - ./descheduler/install.yaml
+  - ./intel-device-plugins/install.yaml
+  - ./k8tz/install.yaml
+  - ./kubelet-csr-approver/install.yaml
+  - ./node-feature-discovery/install.yaml
+  - ./metrics-server/install.yaml
+  - ./reloader/install.yaml
+  - ./tainter/install.yaml

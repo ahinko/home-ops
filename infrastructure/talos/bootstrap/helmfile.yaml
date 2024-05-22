@@ -1,6 +1,5 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/helmfile.json
-
 helmDefaults:
   wait: true
   waitForJobs: true
@@ -9,6 +8,8 @@ helmDefaults:
   force: true
 
 repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
   - name: cilium
     url: https://helm.cilium.io
   - name: postfinance
@@ -19,7 +20,7 @@ releases:
     namespace: kube-system
     chart: cilium/cilium
     version: 1.15.5
-    values: ["../../../kubernetes/apps/kube-system/cilium/app/values.yaml"]
+    values: ["../../../kubernetes/main/apps/kube-system/cilium/app/values.yaml"]
 
   - name: kubelet-csr-approver
     namespace: kube-system
@@ -27,13 +28,12 @@ releases:
     version: 1.2.1
     values:
       [
-        "../../../kubernetes/apps/kube-system/kubelet-csr-approver/app/values.yaml",
+        "../../../kubernetes/main/apps/kube-system/kubelet-csr-approver/app/values.yaml",
       ]
     needs: ["cilium"]
 
-  - name: spegel
-    namespace: kube-system
-    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: v0.0.22
-    values: ["../../../kubernetes/apps/kube-system/spegel/app/helm-values.yaml"]
-    needs: ["cilium", "kubelet-csr-approver"]
+  - name: prometheus-operator-crds
+    namespace: monitoring
+    chart: prometheus-community/prometheus-operator-crds
+    version: 11.0.0
+    wait: true

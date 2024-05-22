@@ -25,14 +25,14 @@ jobs:
 
       - name: Parse semver string
         id: semver_parser
-        if: contains(github.event.head_commit.message, 'update siderolabs/talos')
+        if: contains(github.event.head_commit.message, 'update ghcr.io/siderolabs/installer')
         uses: booxmedialtd/ws-action-parse-semver@v1.4.7
         with:
           input_string: "${{ github.event.head_commit.message }}"
           version_extractor_regex: "→ v([0-9.]*)"
 
       - name: Create issue if new version of Talos is available
-        if: contains(github.event.head_commit.message, 'update siderolabs/talos')
+        if: contains(github.event.head_commit.message, 'update ghcr.io/siderolabs/installer')
         uses: dacbd/create-issue-action@v2.0.0
         with:
           token: "${{ steps.generate-token.outputs.token }}"

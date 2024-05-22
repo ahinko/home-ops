@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tcpsolis2mqtt
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      tcpsolis2mqtt:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/ahinko/tcpsolis2mqtt
+              tag: main@sha256:f5f07f4341d2566be7606e1b19ca0fc7bb090dee8f74ae4fd1fc118e3bdc97c6
+
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+
+            resources:
+              limits:
+                memory: 256Mi
+              requests:
+                cpu: 100m
+                memory: 64Mi
+
+    service:
+      app:
+        controller: tcpsolis2mqtt
+        enabled: false
+
+    persistence:
+      config-file:
+        type: configMap
+        name: tcpsolis2mqtt-configmap
+        globalMounts:
+          - path: /usr/app/src/config.yaml
+            subPath: config.yaml
