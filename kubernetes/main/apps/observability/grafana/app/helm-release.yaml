@@ -113,13 +113,6 @@ spec:
           revision: 3
           datasource: Prometheus
 
-        minio:
-          # renovate: depName="MinIO Dashboard"
-          gnetId: 13502
-          revision: 26
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
@@ -218,9 +211,6 @@ spec:
           datasource: Prometheus
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
-          datasource: Prometheus
-        flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
           datasource: Prometheus
 
       nginx:

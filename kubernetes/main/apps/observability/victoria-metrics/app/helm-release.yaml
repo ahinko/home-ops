@@ -118,7 +118,7 @@ spec:
             cpu: 50m
             memory: 128Mi
           limits:
-            cpu: 150m
+            cpu: 300m
             memory: 256Mi
         topologySpreadConstraints:
           - maxSkew: 1
@@ -149,6 +149,8 @@ spec:
         scrapeInterval: 30s
         externalLabels:
           cluster: main
+        extraArgs:
+          promscrape.streamParse: "false"
         resources:
           requests:
             cpu: 50m
@@ -163,9 +165,9 @@ spec:
             labelSelector:
               matchLabels:
                 app.kubernetes.io/name: vmagent
-        additionalScrapeConfigs:
-          name: vm-additional-scrape-configs
-          key: prometheus-additional.yaml
+        # additionalScrapeConfigs:
+        # name: vm-additional-scrape-configs
+        # key: prometheus-additional.yaml
       ingress:
         enabled: true
         ingressClassName: nginx
