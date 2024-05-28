@@ -24,4 +24,4 @@ spec:
     - name: dragonfly-cluster
     - name: rook-ceph-cluster
     - name: cloudflared
-    - name: external-secrets
+    - name: external-secrets-stores

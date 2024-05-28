@@ -21,5 +21,4 @@ spec:
   dependsOn:
     - name: postgres-cluster
     - name: rook-ceph-cluster
-    - name: dragonfly-cluster
-    - name: external-secrets
+    - name: external-secrets-stores

@@ -15,7 +15,7 @@ spec:
     name: homelab-k8s
   wait: true
   dependsOn:
-    - name: external-secrets
+    - name: external-secrets-stores
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

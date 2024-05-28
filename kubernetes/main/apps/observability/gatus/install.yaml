@@ -17,7 +17,7 @@ spec:
     name: homelab-k8s
   dependsOn:
     - name: postgres-cluster
-    - name: external-secrets
+    - name: external-secrets-stores
   prune: true
   wait: true
   interval: 30m
