@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -13,41 +14,18 @@ spec:
         kind: HelmRepository
         name: jetstack-charts
         namespace: flux-system
-      interval: 30m
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
-    crds: CreateReplace
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-    crds: CreateReplace
-  uninstall:
-    keepHistory: false
-
-  # Values link: https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
   values:
     installCRDs: true
-
-    podAnnotations:
-      reloader.stakater.com/auto: "true"
-
-    webhook:
-      enabled: true
-
-    extraArgs:
-      - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
-      - --dns01-recursive-nameservers-only
-
-    podDnsPolicy: "None"
-    podDnsConfig:
-      nameservers:
-        - "1.1.1.1"
-        - "9.9.9.9"
-
+    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
+    dns01RecursiveNameserversOnly: true
     prometheus:
       enabled: true
       servicemonitor:
