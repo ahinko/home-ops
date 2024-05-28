@@ -24,7 +24,11 @@ spec:
                 - name: POSTGRES_HOST
                   value: "postgres16-ro.databases"
                 - name: POSTGRES_EXTRA_OPTS
-                  value: "-b -C -c -Z6 --inserts"
+                  value: "-b -C -c --inserts"
+                - name: COMPRESS
+                  value: "true"
+                - name: VERIFY_COMPRESSION
+                  value: "true"
                 - name: BACKUP_NAME
                   value: "postgres"
                 - name: MINIO_BUCKET
