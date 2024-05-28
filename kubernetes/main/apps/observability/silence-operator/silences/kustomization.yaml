@@ -6,4 +6,4 @@ resources:
   #- ./cephnodediskspacewarning.yaml
   #- ./kubepersistentvolumefillingup.yaml
   - ./smartctldinterfaceslow.yaml
-  #- ./smartdeviceinterfaceslow.yaml
+  - ./smartdeviceinterfaceslow.yaml

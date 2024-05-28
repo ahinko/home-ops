@@ -2,10 +2,6 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
-  PROMETHEUS_OPERATOR_VERSION: v0.73.2
-
 tasks:
   bootstrap:
     desc: Bootstrap Flux into a Kubernetes cluster

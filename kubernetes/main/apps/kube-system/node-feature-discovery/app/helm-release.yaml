@@ -29,6 +29,14 @@ spec:
     keepHistory: false
   # Values link: https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
   values:
+    master:
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64M
+        limits:
+          memory: 64M
+
     worker:
       config:
         core:
