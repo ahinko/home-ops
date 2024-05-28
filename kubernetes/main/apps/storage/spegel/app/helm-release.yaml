@@ -14,12 +14,6 @@ spec:
         name: spegel-charts
         namespace: flux-system
       interval: 30m
-  values:
-    spegel:
-      containerdSock: /run/containerd/containerd.sock
-      containerdRegistryConfigPath: /etc/cri/conf.d/hosts
-    service:
-      registry:
-        hostPort: 29999
-    serviceMonitor:
-      enabled: true
+  valuesFrom:
+    - kind: ConfigMap
+      name: spegel-helm-values
