@@ -1,20 +1,12 @@
 ---
-# yaml-language-server: $schema=https://lds-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
   name: dragonfly
 spec:
-  labels:
-    dragonflydb.io/cluster: dragonfly
-  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.18.1
+  image: ghcr.io/dragonflydb/dragonfly:v1.18.1
   replicas: 3
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      memory: 512Mi
   env:
     - name: MAX_MEMORY
       valueFrom:
@@ -22,7 +14,19 @@ spec:
           resource: limits.memory
           divisor: 1Mi
   args:
-    - "--maxmemory=$(MAX_MEMORY)Mi"
-    - "--proactor_threads=2"
-    - "--cluster_mode=emulated"
-    - "--lock_on_hashtags"
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=2
+    - --cluster_mode=emulated
+    - --lock_on_hashtags
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/part-of: dragonfly
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      memory: 512Mi
