@@ -35,5 +35,5 @@ releases:
   - name: prometheus-operator-crds
     namespace: observability
     chart: prometheus-community/prometheus-operator-crds
-    version: 11.0.0
+    version: 12.0.0
     wait: true
