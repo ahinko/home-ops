@@ -5,5 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./cilium/install.yaml
+  - ./intel-device-plugins/install.yaml
   - ./metrics-server/install.yaml
+  - ./node-feature-discovery/install.yaml
   - ./reloader/install.yaml

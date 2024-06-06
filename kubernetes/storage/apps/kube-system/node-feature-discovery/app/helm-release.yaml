@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app node-feature-discovery
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: *app
+      version: 0.16.0
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-sigs-node-feature-discovery-charts
+        namespace: flux-system
+      interval: 30m
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  # Values link: https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
+  values:
+    master:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 128M
+        limits:
+          cpu: 800m
+          memory: 128M
+
+    worker:
+      config:
+        core:
+          sources: ["custom", "pci", "usb"]
+        sources:
+          usb:
+            deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
+            deviceLabelFields: ["class", "vendor", "device"]
+
+      resources:
+        requests:
+          cpu: 20m
+          memory: 128M
+        limits:
+          cpu: 800m
+          memory: 128M
+
+    gc:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 128M
+        limits:
+          cpu: 400m
+          memory: 128M
+
+    prometheus:
+      enable: true
+      scrapeInterval: 60s
