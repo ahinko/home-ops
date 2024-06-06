@@ -32,10 +32,11 @@ spec:
     master:
       resources:
         requests:
-          cpu: 15m
-          memory: 64M
+          cpu: 20m
+          memory: 128M
         limits:
-          memory: 64M
+          cpu: 800m
+          memory: 128M
 
     worker:
       config:
@@ -46,13 +47,23 @@ spec:
             deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
             deviceLabelFields: ["class", "vendor", "device"]
 
-      prometheus:
-        enable: true
-        scrapeInterval: 60s
-
       resources:
         requests:
-          cpu: 15m
-          memory: 64M
+          cpu: 20m
+          memory: 128M
         limits:
-          memory: 64M
+          cpu: 800m
+          memory: 128M
+
+    gc:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 128M
+        limits:
+          cpu: 400m
+          memory: 128M
+
+    prometheus:
+      enable: true
+      scrapeInterval: 60s
