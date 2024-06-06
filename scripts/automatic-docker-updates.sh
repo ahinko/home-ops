@@ -18,7 +18,7 @@ for d in "$DOCKER_PATH"/*/ ; do
     cd "$d" || exit
 
     if [ -e ./docker-compose.yaml ]; then
-      /usr/bin/docker-compose -f docker-compose.yaml pull
-      /usr/bin/docker-compose -f docker-compose.yaml up -d --build
+      /usr/bin/docker compose -f docker-compose.yaml pull
+      /usr/bin/docker compose -f docker-compose.yaml up -d --build
     fi
 done
