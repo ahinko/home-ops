@@ -45,7 +45,10 @@ spec:
 
     extraArgs:
       - --cloudflare-proxied
+      - --cloudflare-dns-records-per-page=1000
       - --annotation-filter=external-dns.alpha.kubernetes.io/target
+      - --events
+      - --ignore-ingress-tls-spec
 
     policy: sync
 
