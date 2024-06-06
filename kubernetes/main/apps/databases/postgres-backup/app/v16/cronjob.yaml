@@ -7,7 +7,7 @@ spec:
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
@@ -20,7 +20,7 @@ spec:
                 - /run.sh
               env:
                 - name: POSTGRES_DB
-                  value: "nextcloud,miniflux,immich,homeassistant,mastodon,kitchenowl,atuin,gatus"
+                  value: "miniflux,kitchenowl,atuin,gatus,immich,homeassistant,mastodon"
                 - name: POSTGRES_HOST
                   value: "postgres16-ro.databases"
                 - name: POSTGRES_EXTRA_OPTS
