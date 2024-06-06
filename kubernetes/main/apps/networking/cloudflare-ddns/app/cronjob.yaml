@@ -40,8 +40,8 @@ spec:
                   old_ipv4=$(echo "$record4" | sed -n 's/.*"content":"\([^"]*\).*/\1/p')
 
                   if [ -z "$old_ipv4" ]; then
-                      printf "%s - Unable to get old IP from Cloudflare" "$(date -u)"
-                      exit 1
+                    printf "%s - Unable to get old IP from Cloudflare" "$(date -u)"
+                    exit 1
                   fi
 
                   if [ "$ipv4" = "$old_ipv4" ]; then
