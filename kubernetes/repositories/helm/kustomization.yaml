@@ -21,7 +21,6 @@ resources:
   - ./intel-charts.yaml
   - ./itzg-minecraft-server-charts.yaml
   - ./jetstack-charts.yaml
-  - ./k8s-gateway-charts.yaml
   - ./k8tz-charts.yaml
   - ./kubernetes-sigs-descheduler-charts.yaml
   - ./kubernetes-sigs-metrics-server-charts.yaml
