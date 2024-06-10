@@ -58,8 +58,6 @@ operator:
 autoDirectNodeRoutes: true
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 routingMode: native
-containerRuntime:
-  integration: containerd
 
 hubble:
   enabled: true
