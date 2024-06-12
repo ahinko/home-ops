@@ -63,7 +63,6 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: "192.168.20.201"
-        externalTrafficPolicy: Cluster
         ports:
           sonos:
             enabled: true

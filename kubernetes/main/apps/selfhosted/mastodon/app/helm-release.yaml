@@ -79,7 +79,6 @@ spec:
         type: ClusterIP
         ports:
           http: 80
-        externalTrafficPolicy: Cluster
 
     sidekiq:
       replicaCount: 1
