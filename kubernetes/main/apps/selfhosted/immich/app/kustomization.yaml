@@ -13,5 +13,4 @@ resources:
   - ./configmap.yaml
   - ./redis
   - ./server
-  - ./microservices
   - ./machine-learning
