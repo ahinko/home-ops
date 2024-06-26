@@ -2,7 +2,7 @@
 clusterName: main
 endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
 
-talosVersion: v1.7.4
+talosVersion: v1.7.5
 kubernetesVersion: v1.30.2
 
 additionalApiServerCertSans: &sans
