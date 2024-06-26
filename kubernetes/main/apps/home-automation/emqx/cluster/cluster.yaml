@@ -44,7 +44,7 @@ spec:
       extraContainers:
         # init container for our EMQX broker
         - name: mqtt-emqx-init
-          image: ghcr.io/ahinko/alpine:3.19.1
+          image: ghcr.io/ahinko/alpine:3.19.2
           volumeMounts:
             - name: emqx-init-script
               mountPath: /emqx_init.sh
