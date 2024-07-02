@@ -150,7 +150,7 @@ spec:
       existingSecretPasswordKey: "PASSWORD"
 
     externalRedis:
-      host: "dragonfly.databases.svc.cluster.local"
+      host: "mastodon-redis.selfhosted.svc.cluster.local"
       port: 6379
       password: ""
 

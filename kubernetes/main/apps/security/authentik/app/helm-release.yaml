@@ -52,8 +52,7 @@ spec:
 
     authentik:
       redis:
-        host: dragonfly.databases.svc.cluster.local
-        db: 2
+        host: authentik-redis.security.svc.cluster.local
     server:
       metrics:
         enabled: true
@@ -62,8 +61,8 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
         hosts:
           - &host auth.${SECRET_DOMAIN}
         tls:

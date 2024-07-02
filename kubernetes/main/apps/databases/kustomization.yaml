@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./cloudnative-pg/install.yaml
-  - ./dragonfly/install.yaml
   - ./ext-postgres-operator/install.yaml
   - ./influxdb/install.yaml
   - ./postgres-backup/install.yaml
