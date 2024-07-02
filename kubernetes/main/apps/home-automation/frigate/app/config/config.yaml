@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://frigate.hemma.dev/api/config/schema.json
 ---
 mqtt:
   host: emqx-listeners
@@ -18,7 +17,7 @@ detectors:
 
 ffmpeg:
   global_args: ["-hide_banner", "-loglevel", "warning"]
-  hwaccel_args: preset-intel-qsv-h264
+  hwaccel_args: preset-vaapi
   output_args:
     record: preset-record-ubiquiti
 
@@ -70,30 +69,46 @@ detect:
 
 go2rtc:
   streams:
-    frontyard_terrace_hq: rtspx://192.168.0.1:7441/e6iNOj6HFIiZeMU3
-    frontyard_terrace_lq: rtspx://192.168.0.1:7441/osXyFUEV6IvGXwD3
-    backyard_livingroom_hq: rtspx://192.168.0.1:7441/k8xv9uFTcVuVz4Pi
-    backyard_livingroom_lq: rtspx://192.168.0.1:7441/O4PuPXWlf5ZQmpr7
-    backyard_terrace_hq: rtspx://192.168.0.1:7441/UCfkcmaIYCQanbjj
-    backyard_terrace_lq: rtspx://192.168.0.1:7441/MeQnTvehpe9mNOy0
-    east_side_hq: rtspx://192.168.0.1:7441/bD35LvIY0mVXDGAV
-    east_side_lq: rtspx://192.168.0.1:7441/7Cmt7IGfBgRFnY6y
-    utility_entrance_hq: rtspx://192.168.0.1:7441/3nL73LfCRXy44j8o
-    utility_entrance_lq: rtspx://192.168.0.1:7441/fZve7zjsUYPNcmoR
-    frontyard_garage_hq: rtspx://192.168.0.1:7441/cVT8xcvPAE1o0Rt4
-    frontyard_garage_lq: rtspx://192.168.0.1:7441/TJSnSTiDZ6AjqPvt
-    drive_way_hq: rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h265Preview_01_main
-    drive_way_lq: rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h264Preview_01_sub
+    frontyard_terrace_hq:
+      - rtspx://192.168.0.1:7441/e6iNOj6HFIiZeMU3
+    frontyard_terrace_lq:
+      - rtspx://192.168.0.1:7441/osXyFUEV6IvGXwD3
+    backyard_livingroom_hq:
+      - rtspx://192.168.0.1:7441/k8xv9uFTcVuVz4Pi
+    backyard_livingroom_lq:
+      - rtspx://192.168.0.1:7441/O4PuPXWlf5ZQmpr7
+    backyard_terrace_hq:
+      - rtspx://192.168.0.1:7441/UCfkcmaIYCQanbjj
+    backyard_terrace_lq:
+      - rtspx://192.168.0.1:7441/MeQnTvehpe9mNOy0
+    east_side_hq:
+      - rtspx://192.168.0.1:7441/bD35LvIY0mVXDGAV
+    east_side_lq:
+      - rtspx://192.168.0.1:7441/7Cmt7IGfBgRFnY6y
+    utility_entrance_hq:
+      - rtspx://192.168.0.1:7441/3nL73LfCRXy44j8o
+    utility_entrance_lq:
+      - rtspx://192.168.0.1:7441/fZve7zjsUYPNcmoR
+    frontyard_garage_hq:
+      - rtspx://192.168.0.1:7441/cVT8xcvPAE1o0Rt4
+    frontyard_garage_lq:
+      - rtspx://192.168.0.1:7441/TJSnSTiDZ6AjqPvt
+    drive_way_hq:
+      - rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h265Preview_01_main
+    drive_way_lq:
+      - rtsp://admin:${SECRET_REOLINK_PW}@192.168.70.62:554/h264Preview_01_sub
 
 cameras:
   drive_way:
     ffmpeg:
       inputs:
         - path: rtsp://localhost:8554/drive_way_hq
+          input_args: preset-rtsp-restream
           roles:
             - record
 
         - path: rtsp://localhost:8554/drive_way_lq
+          input_args: preset-rtsp-restream
           roles:
             - detect
 
@@ -125,11 +140,6 @@ cameras:
 
     best_image_timeout: 10
 
-    motion:
-      threshold: 15
-      mask:
-        - 210,360,164,268,79,293,63,360
-
     mqtt:
       enabled: true
       timestamp: false
@@ -142,8 +152,6 @@ cameras:
         - car
       filters:
         person:
-          mask:
-            - 210,360,164,268,79,293,63,360
           min_area: 4000
           min_score: 0.4
           threshold: 0.7
@@ -172,8 +180,8 @@ cameras:
       threshold: 15
       mask:
         - 0,29,0,0,403,0,408,26
-        - 960,720,1202,720,1280,490,1280,86,1019,38,1111,416
-        - 0,467,172,430,250,525,0,611
+        - 849,720,1202,720,1280,490,1280,86,1091,47,1039,289,798,235,681,339,1046,437,983,534
+        - 0,411,82,398,141,383,183,448,273,597,0,663
 
     mqtt:
       enabled: true
@@ -187,9 +195,9 @@ cameras:
       filters:
         person:
           mask:
-            - 957,720,1196,720,1280,517,1051,479
-            - 0,467,172,430,250,525,0,611
-          min_area: 3000
+            - 849,720,1202,720,1280,490,1280,86,1091,47,1039,289,798,235,681,339,1046,437,983,534
+            - 0,411,82,398,141,383,183,448,273,597,0,663
+          min_area: 4000
           max_area: 1000000
           min_score: 0.4
           threshold: 0.7
@@ -215,8 +223,8 @@ cameras:
     motion:
       mask:
         - 0,29,0,0,403,0,408,26
-        - 430,0,421,54,28,125,61,0
-        - 476,151,376,266,298,295,270,201,258,154,431,100
+        - 413,0,355,57,28,117,61,0
+        - 358,191,376,266,298,295,270,201,258,154,336,131
 
     objects:
       track:
@@ -224,7 +232,7 @@ cameras:
       filters:
         person:
           mask:
-            - 476,151,376,266,298,295,270,201,258,154,431,100
+            - 358,191,376,266,298,295,270,201,258,154,336,131
 
   backyard_terrace:
     ffmpeg:
@@ -249,7 +257,6 @@ cameras:
         - 0,29,0,0,403,0,408,26
         - 198,498,286,445,222,352,147,389
         - 314,432,388,385,330,304,250,342
-        - 426,92,656,133,667,210,600,247,384,181
 
     objects:
       filters:
@@ -257,7 +264,6 @@ cameras:
           mask:
             - 198,498,286,445,222,352,147,389
             - 314,432,388,385,330,304,250,342
-            - 426,92,656,133,667,210,600,247,384,181
 
   east_side:
     ffmpeg:
@@ -311,6 +317,16 @@ cameras:
       mask:
         - 0,29,0,0,403,0,408,26
         - 1095,185,1208,447,1280,446,1280,0,939,0
+        - 660,284,869,403,848,487,681,473,570,536,484,480,499,331
+        - 1054,495,1074,653,977,670,973,474
+
+    objects:
+      filters:
+        person:
+          mask:
+            - 1095,185,1208,447,1280,446,1280,0,939,0
+            - 660,284,869,403,848,487,681,473,570,536,484,480,499,331
+            - 1054,495,1074,653,977,670,973,474
 
     mqtt:
       enabled: true
