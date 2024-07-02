@@ -76,10 +76,10 @@
       separateMinorPatch: true,
     },
     {
-      description: ["Elements Group"],
-      groupName: "Elements",
-      matchPackagePatterns: ["element-operator", "element-updater"],
-      matchDatasources: ["docker", "helm"],
+      description: ["1Password Connect Group"],
+      groupName: "1Password Connnect",
+      matchPackagePatterns: ["1password/connect"],
+      matchDatasources: ["docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
