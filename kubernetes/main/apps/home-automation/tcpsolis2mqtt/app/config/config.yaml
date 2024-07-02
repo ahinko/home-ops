@@ -6,6 +6,8 @@ datalogger:
   slave_id: 1
   poll_interval: 60
   poll_interval_if_off: 600
+  poll_retries: 10
+  register_chunks: 80
   http:
     enabled: True
 inverter:
