@@ -5,7 +5,7 @@
       customType: "regex",
       description: "Cloudnative Postgres container",
       fileMatch: [
-        "kubernetes/apps/databases/cloudnative-pg/clusters/.+\\.yaml$",
+        "kubernetes/main/apps/databases/cloudnative-pg/clusters/.+\\.yaml$",
       ],
       matchStrings: ["imageName: (?<depName>.*?):(?<currentValue>.*)"],
       datasourceTemplate: "docker",
