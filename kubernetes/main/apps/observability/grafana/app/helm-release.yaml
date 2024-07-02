@@ -88,14 +88,6 @@ spec:
               path: /var/lib/grafana/dashboards/kubernetes
             orgId: 1
             type: file
-          - name: victoriametrics
-            disableDeletion: false
-            editable: true
-            folder: "VictoriaMetrics"
-            options:
-              path: /var/lib/grafana/dashboards/victoria-metrics
-            orgId: 1
-            type: file
 
     dashboards:
       default:
@@ -111,15 +103,21 @@ spec:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
 
-        dragonfly:
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
-          datasource: Prometheus
-
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
           revision: 3
           datasource: Prometheus
+
+        volsync:
+          # removate: dashboardName="VolSync Dashboard"
+          gnetId: 21356
+          revision: 2
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+            - name: VAR_REPLICATIONDESTNAME
+              value: ".*-bootstrap"
 
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
@@ -252,36 +250,6 @@ spec:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
 
-      victoriametrics:
-        vm-cluster:
-          # renovate: dashboardName="VictoriaMetrics - cluster"
-          gnetId: 11176
-          revision: 37
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        vm-operator:
-          # renovate: dashboardName="VictoriaMetrics - operator"
-          gnetId: 17869
-          revision: 2
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        vm-vmalert:
-          # renovate: dashboardName="VictoriaMetrics - vmalert"
-          gnetId: 14950
-          revision: 11
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        vm-vmagent:
-          # renovate: dashboardName="VictoriaMetrics - vmagent"
-          gnetId: 12683
-          revision: 18
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -292,7 +260,7 @@ spec:
           - access: proxy
             name: Prometheus
             type: prometheus
-            url: http://vmselect-victoria-metrics.observability.svc.cluster.local:8481/select/0/prometheus
+            url: http://prometheus-operated.observability.svc.cluster.local:9090
             isDefault: true
             jsonData:
               prometheusType: Prometheus
