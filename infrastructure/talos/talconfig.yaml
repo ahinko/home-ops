@@ -22,7 +22,8 @@ nodes:
     nameservers:
       - 192.168.20.1
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: d8:3a:dd:b1:68:3e
         addresses:
           - 192.168.20.31/24
         dhcp: true
@@ -43,7 +44,8 @@ nodes:
     nameservers:
       - 192.168.20.1
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: e4:5f:01:86:fc:a0
         addresses:
           - 192.168.20.32/24
         dhcp: true
