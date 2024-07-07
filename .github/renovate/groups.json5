@@ -95,5 +95,15 @@
       },
       separateMinorPatch: true,
     },
+    {
+      description: ["Mastodon Group"],
+      groupName: "Mastodon",
+      matchPackagePatterns: ["docker.io/bitnami/mastodon", "mastodon"],
+      matchDatasources: ["docker", "helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
   ],
 }
