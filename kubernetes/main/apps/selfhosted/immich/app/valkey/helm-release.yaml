@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: authentik-redis
+  name: immich-valkey
 spec:
   interval: 30m
   chart:
@@ -27,18 +27,15 @@ spec:
     keepHistory: false
   values:
     controllers:
-      authentik-redis:
+      immich-valkey:
         containers:
           app:
             image:
-              repository: public.ecr.aws/docker/library/redis
+              repository: docker.io/valkey/valkey
               tag: 7.2.5
-            env:
-              REDIS_REPLICATION_MODE: master
-            command: ["redis-server"]
     service:
       app:
-        controller: authentik-redis
+        controller: immich-valkey
         ports:
           http:
             port: 6379

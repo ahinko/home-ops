@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: mastodon-redis
+  name: mastodon-valkey
 spec:
   interval: 30m
   chart:
@@ -27,18 +27,15 @@ spec:
     keepHistory: false
   values:
     controllers:
-      mastodon-redis:
+      mastodon-valkey:
         containers:
           app:
             image:
-              repository: public.ecr.aws/docker/library/redis
+              repository: docker.io/valkey/valkey
               tag: 7.2.5
-            env:
-              REDIS_REPLICATION_MODE: master
-            command: ["redis-server"]
     service:
       app:
-        controller: mastodon-redis
+        controller: mastodon-valkey
         ports:
           http:
             port: 6379

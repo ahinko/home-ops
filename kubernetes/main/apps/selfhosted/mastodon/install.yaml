@@ -21,7 +21,7 @@ spec:
   timeout: 15m
   dependsOn:
     - name: postgres-cluster
-    - name: mastodon-redis
+    - name: mastodon-valkey
     - name: rook-ceph-cluster
     - name: cloudflared
     - name: external-secrets-stores
@@ -29,7 +29,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname mastodon-redis
+  name: &appname mastodon-valkey
   namespace: flux-system
 spec:
   targetNamespace: selfhosted
@@ -37,7 +37,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: ./kubernetes/main/apps/selfhosted/mastodon/redis
+  path: ./kubernetes/main/apps/selfhosted/mastodon/valkey
   prune: true
   sourceRef:
     kind: GitRepository

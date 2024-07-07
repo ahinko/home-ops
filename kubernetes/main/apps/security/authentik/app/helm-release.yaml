@@ -52,7 +52,7 @@ spec:
 
     authentik:
       redis:
-        host: authentik-redis.security.svc.cluster.local
+        host: authentik-valkey.security.svc.cluster.local
     server:
       metrics:
         enabled: true
