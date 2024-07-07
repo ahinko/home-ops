@@ -87,7 +87,7 @@ spec:
 
       config:
         type: hostPath
-        hostPath: /tank/volumes/jellyfin/config
+        hostPath: /tank/jellyfin/config
         hostPathType: Directory
         globalMounts:
           - path: /config
