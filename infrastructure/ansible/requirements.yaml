@@ -3,7 +3,7 @@ collections:
   - name: community.general
     version: 9.1.0
   - name: community.sops
-    version: 1.7.0
+    version: 1.8.0
   - name: community.libvirt
     version: 1.3.0
 roles:
