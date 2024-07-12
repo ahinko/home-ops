@@ -48,7 +48,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.107.2
+              tag: v1.108.0
 
             env:
               # General
