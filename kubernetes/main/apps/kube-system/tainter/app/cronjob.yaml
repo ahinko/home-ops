@@ -22,7 +22,7 @@ spec:
             # on those control plane is a lot more powerfull than the thrid  control planes. So I want to be able to
             # use that extra horse power and run more workloads on the control planes
             - name: tainter
-              image: ghcr.io/ahinko/kubernetes-kubectl:1.30.2
+              image: ghcr.io/ahinko/kubernetes-kubectl:1.30.3
               command:
                 - "/bin/sh"
                 - "-c"
