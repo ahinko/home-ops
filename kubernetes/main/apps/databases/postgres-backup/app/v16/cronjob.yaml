@@ -22,7 +22,7 @@ spec:
                 - name: POSTGRES_DB
                   value: "miniflux,kitchenowl,atuin,gatus,immich,homeassistant,mastodon"
                 - name: POSTGRES_HOST
-                  value: "postgres16-ro.databases"
+                  value: "postgres16-rw.databases"
                 - name: POSTGRES_EXTRA_OPTS
                   value: "-b -C -c --inserts"
                 - name: COMPRESS
