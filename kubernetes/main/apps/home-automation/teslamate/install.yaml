@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname teslamate
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/main/apps/home-automation/teslamate/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  wait: true
+  dependsOn:
+    - name: postgres-cluster
+    - name: emqx-cluster

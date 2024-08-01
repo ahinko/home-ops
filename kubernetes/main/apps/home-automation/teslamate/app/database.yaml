@@ -1,0 +1,7 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: teslamate-db
+spec:
+  database: teslamate

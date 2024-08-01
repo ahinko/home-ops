@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app teslamate
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.3.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+
+  values:
+    controllers:
+      teslamate:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+
+        containers:
+          app:
+            image:
+              repository: teslamate/teslamate
+              tag: "1.30.1"
+
+            envFrom:
+              - secretRef:
+                  name: teslamate-secret
+
+            env:
+              TZ: "Europe/Stockholm"
+              DISABLE_MQTT: "false"
+              MQTT_HOST: "emqx-listeners"
+              MQTT_USERNAME: "${SECRET_MQTT_USERNAME}"
+              MQTT_PASSWORD: "${SECRET_MQTT_PASSWORD}"
+              DATABASE_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-teslamate-user
+                    key: DATABASE_NAME
+              DATABASE_HOST: "postgres16-rw.databases.svc.cluster.local"
+
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 50m
+              limits:
+                memory: 500Mi
+
+    service:
+      app:
+        controller: teslamate
+        ports:
+          http:
+            port: 4000
+
+    ingress:
+      app:
+        className: nginx
+        hosts:
+          - host: &host teslamate.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host

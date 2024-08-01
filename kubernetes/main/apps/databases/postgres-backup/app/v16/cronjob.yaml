@@ -20,7 +20,7 @@ spec:
                 - /run.sh
               env:
                 - name: POSTGRES_DB
-                  value: "miniflux,kitchenowl,atuin,gatus,immich,homeassistant,mastodon"
+                  value: "miniflux,kitchenowl,atuin,gatus,teslamate,immich,mastodon,homeassistant"
                 - name: POSTGRES_HOST
                   value: "postgres16-rw.databases"
                 - name: POSTGRES_EXTRA_OPTS
