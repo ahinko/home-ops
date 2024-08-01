@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: samba-smb-conf
+  labels:
+    app.kubernetes.io/instance: samba
+data:
+  smb.conf: |
+    [global]
+      access based share enum = yes
+      hide unreadable = no
+      inherit permissions = no
+      load printers = no
+      log file = /var/log/samba/log.%m
+      logging = file
+      max log size = 1000
+      security = user
+      server role = standalone server
+      smb ports = 445
+      workgroup = WORKGROUP
+      #usershare path = /var/lib/samba/usershare
+      vfs objects = acl_xattr fruit streams_xattr
+      fruit:aapl = yes
+      fruit:nfs_aces = yes
+      #fruit:model = TimeCapsule8,119
+      fruit:model = MacSamba
+      fruit:metadata = stream
+      fruit:veto_appledouble = no
+      fruit:posix_rename = yes
+      fruit:wipe_intentionally_left_blank_rfork = yes
+      fruit:delete_empty_adfiles = yes
+      bind interfaces only = no
+      netbios name = cluster
+
+    [ellens timemachine]
+      path = /opt/ellen
+      inherit permissions = no
+      read only = no
+      browseable = yes
+      valid users = ellen
+      vfs objects = acl_xattr fruit streams_xattr
+      fruit:time machine = yes
+      fruit:time machine max size = 400 G
+
+    [peters share]
+      path = /shares/peter
+      inherit permissions = no
+      read only = no
+      browseable = yes
+      valid users = peter
+      vfs objects = acl_xattr fruit streams_xattr
+
+    [ellens share]
+      path = /shares/ellen
+      inherit permissions = no
+      read only = no
+      browseable = yes
+      valid users = ellen
+      vfs objects = acl_xattr fruit streams_xattr

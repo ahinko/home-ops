@@ -3,7 +3,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./jellyfin/install.yaml
-  - ./minio/install.yaml
-  - ./samba/install.yaml
-  - ./whoami/install.yaml
+  - ./configs
+  - ./helm-release.yaml

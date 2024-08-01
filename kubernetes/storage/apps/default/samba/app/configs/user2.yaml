@@ -1,0 +1,30 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: samba-user2-conf
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: samba-user2-conf
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        user2.conf: |-
+          TM_USERNAME=ellen
+          TM_GROUPNAME=backup
+          PASSWORD={{ index . "samba_users_ellen" }}
+          SHARE_NAME="ellens timemachine"
+          VOLUME_SIZE_LIMIT="400 G"
+          TM_UID=1001
+          TM_GID=1001
+  dataFrom:
+    - extract:
+        key: samba_users
+      rewrite:
+        - regexp:
+            source: "(.*)"
+            target: "samba_users_$1"

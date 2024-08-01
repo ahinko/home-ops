@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name zfs-backup
+  labels:
+    app: *name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - name: *name
+          image: ghcr.io/ahinko/alpine:rolling
+
+          command: ["/bin/bash", "-c", "--"]
+          args: ["while true; do sleep 30; done;"]
+
+          volumeMounts:
+            - mountPath: /backup
+              name: zfs-backup
+              readOnly: true
+
+      volumes:
+        - name: zfs-backup
+          hostPath:
+            path: /tank
+            type: Directory

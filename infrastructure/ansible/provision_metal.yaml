@@ -22,8 +22,5 @@
   become: true
   become_method: ansible.builtin.sudo
   roles:
-    - role: docker
-    - role: homelab
-    - role: backup
     - role: znapzend
     - role: k3s

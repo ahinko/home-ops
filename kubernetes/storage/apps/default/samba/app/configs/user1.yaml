@@ -1,0 +1,30 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: samba-user1-conf
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: samba-user1-conf
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        user1.conf: |-
+          TM_USERNAME=peter
+          TM_GROUPNAME=backup
+          PASSWORD={{ index . "samba_users_peter" }}
+          SHARE_NAME="peters share"
+          VOLUME_SIZE_LIMIT=""
+          TM_UID=1000
+          TM_GID=1001
+  dataFrom:
+    - extract:
+        key: samba_users
+      rewrite:
+        - regexp:
+            source: "(.*)"
+            target: "samba_users_$1"
