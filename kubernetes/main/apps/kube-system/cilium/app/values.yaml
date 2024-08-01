@@ -24,6 +24,9 @@ l2announcements:
 rollOutCiliumPods: true
 localRedirectPolicy: true
 
+envoy:
+  enabled: false
+
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
