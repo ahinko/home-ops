@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: influxdb
-      tag: 2.7.8-alpine
+      tag: 2.7.9-alpine
 
     pdb:
       create: false
