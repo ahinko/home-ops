@@ -17,6 +17,7 @@ spec:
     name: homelab-k8s
   dependsOn:
     - name: rook-ceph-cluster
+    - name: openebs
     - name: volsync
     - name: external-secrets-stores
   postBuild:
