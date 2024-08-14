@@ -125,11 +125,15 @@ chargers:
   - name: amina
     type: custom
     status: # charger status A..F
-      source: mqtt
-      topic: evcc-amina-bridge/charger/status
+      #source: mqtt
+      #topic: evcc-amina-bridge/charger/status
+      source: const
+      value: B
     enabled: # charger enabled state (true/false or 0/1)
-      source: mqtt
-      topic: evcc-amina-bridge/charger/enabled
+      #source: mqtt
+      #topic: evcc-amina-bridge/charger/enabled
+      source: const
+      value: 1
     enable: # set charger enabled state (true/false or 0/1)
       source: mqtt
       topic: evcc-amina-bridge/charger/enable
@@ -148,14 +152,10 @@ chargers:
 vehicles:
   - name: tesla
     type: template
-    template: offline # teslamate
-    title: "Tesla Model Y" # Will be displayed in the user interface (optional)
+    template: teslamate
+    title: "Cherry" # Will be displayed in the user interface (optional)
+    icon: car
     capacity: 60 # Battery capacity in kWh (optional)
-  - name: volvo_xc30
-    type: template
-    template: offline # volvo_xc30
-    title: "Volvo XC60" # Will be displayed in the user interface (optional)
-    capacity: 11 # Battery capacity in kWh (optional)
 
 # site describes the EVU connection, PV and home battery
 site:
@@ -174,10 +174,10 @@ loadpoints:
     # meter: charge # charge meter
     vehicle: tesla
     mode: "off" # default charge mode to apply when vehicle is disconnected; use "off" to disable by default if charger is publicly available
-    enable:
-      delay: 1m
-    disable:
-      delay: 1m
+    # enable:
+    #   delay: 1m
+    # disable:
+    #   delay: 1m
 
 network:
   # schema is the HTTP schema
