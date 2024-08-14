@@ -8,7 +8,6 @@ resources:
   - ./evcc/install.yaml
   - ./frigate/install.yaml
   - ./home-assistant/install.yaml
-  - ./home-assistant-code/install.yaml
   - ./tcpsolis2mqtt/install.yaml
   - ./teslamate/install.yaml
   - ./wyoming-piper/install.yaml

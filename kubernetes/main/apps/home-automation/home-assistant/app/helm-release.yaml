@@ -30,6 +30,15 @@ spec:
       home-assistant:
         annotations:
           reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 0 # Change when starting from scratch
+            runAsGroup: 568
+            runAsNonRoot: false # Change when starting from scratch
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+
         containers:
           app:
             image:
@@ -57,6 +66,39 @@ spec:
               limits:
                 memory: 1000M
 
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.91.1
+            args:
+              - --auth
+              - none
+              - --user-data-dir
+              - "/config/.vscode"
+              - --extensions-dir
+              - "/config/.vscode"
+              - --port
+              - "8080"
+              - "/config"
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100M
+              limits:
+                memory: 500M
+
     service:
       app:
         controller: home-assistant
@@ -73,6 +115,8 @@ spec:
             enabled: true
             port: 4003
             protocol: UDP
+          code-server:
+            port: 8080
 
     ingress:
       app:
@@ -91,10 +135,26 @@ spec:
           - hosts:
               - *host
 
+      code-server:
+        enabled: true
+        className: nginx
+        hosts:
+          - host: &code-host "code.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: code-server
+        tls:
+          - hosts:
+              - *code-host
+
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
           home-assistant:
             app:
+              - path: /config
+            code-server:
               - path: /config
