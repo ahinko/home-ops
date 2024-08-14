@@ -1,4 +1,7 @@
 ---
+auth:
+  enabled: false
+
 mqtt:
   host: emqx-listeners
   user: ${SECRET_MQTT_USERNAME}
@@ -8,7 +11,7 @@ logger:
   default: error
 
 database:
-  path: /data/frigate.db
+  path: /config/frigate.db
 
 detectors:
   coral:
@@ -112,15 +115,20 @@ cameras:
           roles:
             - detect
 
-    record:
-      events:
+    review:
+      alerts:
+        labels:
+          - car
+          - person
+        required_zones:
+          - entire_yard
+      detections:
+        labels:
+          - car
+          - person
         required_zones:
           - entire_yard
           - front_yard_street
-    snapshots:
-      required_zones:
-        - entire_yard
-        - front_yard_street
 
     zones:
       entire_yard:

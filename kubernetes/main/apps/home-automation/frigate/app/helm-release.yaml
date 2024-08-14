@@ -121,7 +121,7 @@ spec:
       config:
         existingClaim: frigate-config
         globalMounts:
-          - path: /data
+          - path: /config
 
       cache:
         type: emptyDir
