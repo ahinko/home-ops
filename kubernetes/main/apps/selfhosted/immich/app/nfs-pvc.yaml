@@ -14,7 +14,7 @@ spec:
     path: /tank/immich
   # Note: The first two options are strictly for NFSv4.2
   mountOptions:
-    - nfsvers=4
+    - nfsvers=4.2
     - tcp
     - hard
     - noatime

@@ -3,6 +3,9 @@
 kubectl config use-context storage
 kubectl apply -f ./deployment.yaml
 
+echo "Waiting for pod..."
+sleep 15
+
 POD=$(kubectl get pod -l app=zfs-backup -o jsonpath="{.items[0].metadata.name}")
 
 DATASETS=( minio samba immich/library )
