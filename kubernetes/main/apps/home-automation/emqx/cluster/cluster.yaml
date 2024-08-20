@@ -16,6 +16,8 @@ spec:
             name = "bcrypt",
         }
         user_id_type = "username"
+        bootstrap_file = "/opt/init-user.json"
+        bootstrap_type = "plain"
       }
       authorization {
         sources = [
@@ -27,13 +29,6 @@ spec:
 
         no_match: "deny"
       }
-      dashboard {
-        listeners.http {
-            bind: 18083
-        }
-        default_username: "admin"
-        default_password: "${SECRET_EMQX_ADMIN_PASSWORD}"
-      }
 
   coreTemplate:
     metadata:
@@ -41,31 +36,18 @@ spec:
         reloader.stakater.com/auto: "true"
     spec:
       replicas: 3
-      extraContainers:
-        # init container for our EMQX broker
-        - name: mqtt-emqx-init
-          image: ghcr.io/ahinko/alpine:3.19.3
-          volumeMounts:
-            - name: emqx-init-script
-              mountPath: /emqx_init.sh
-              subPath: emqx_init.sh
-          env:
-            - name: HOST
-              value: emqx-dashboard:18083
-            - name: EMQX_DASHBOARD_ADMIN_USER
-              value: "admin"
-            - name: EMQX_DASHBOARD_ADMIN_PASSWORD
-              value: "${SECRET_EMQX_ADMIN_PASSWORD}"
-            - name: USER_1
-              value: "${SECRET_MQTT_USERNAME}:${SECRET_MQTT_PASSWORD}"
-          command:
-            - sh
-            - /emqx_init.sh
-
+      envFrom:
+        - secretRef:
+            name: emqx-secret
+      extraVolumeMounts:
+        - name: init-user
+          mountPath: /opt/init-user.json
+          subPath: init-user.json
+          readOnly: true
       extraVolumes:
-        - name: emqx-init-script
-          configMap:
-            name: emqx-init-script-configmap
+        - name: init-user
+          secret:
+            secretName: emqx-init-user-secret
 
   listenersServiceTemplate:
     metadata:
