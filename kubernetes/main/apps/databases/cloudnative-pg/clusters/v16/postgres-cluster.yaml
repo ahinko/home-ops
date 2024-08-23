@@ -5,7 +5,7 @@ metadata:
   name: postgres16
 spec:
   instances: 3
-  imageName: ghcr.io/ahinko/postgres-extended:16.4.4
+  imageName: ghcr.io/ahinko/postgres-extended:16.4.5
   primaryUpdateStrategy: unsupervised
   storage:
     size: 50Gi
