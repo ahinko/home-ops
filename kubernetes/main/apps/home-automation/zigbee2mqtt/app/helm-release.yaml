@@ -38,6 +38,10 @@ spec:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 1.40.1
 
+            envFrom:
+              - secretRef:
+                  name: zigbee2mqtt-secret
+
             env:
               Z2M_WATCHDOG: 0.5,2,5
               ZIGBEE2MQTT_DATA: /data
@@ -51,8 +55,6 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
               ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://emqx-listeners"
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
-              ZIGBEE2MQTT_CONFIG_MQTT_USER: "${SECRET_MQTT_USERNAME}"
-              ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD: "${SECRET_MQTT_PASSWORD}"
               ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
               ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: 8080
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: warn

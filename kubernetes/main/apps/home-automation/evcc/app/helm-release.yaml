@@ -36,6 +36,10 @@ spec:
               repository: evcc/evcc
               tag: 0.130.8
 
+            envFrom:
+              - secretRef:
+                  name: evcc-secret
+
             probes:
               liveness:
                 enabled: false

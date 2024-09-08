@@ -45,8 +45,6 @@ spec:
             env:
               TZ: "Europe/Stockholm"
               MQTT_HOST: "emqx-listeners"
-              MQTT_USERNAME: "${SECRET_MQTT_USERNAME}"
-              MQTT_PASSWORD: "${SECRET_MQTT_PASSWORD}"
               DATABASE_NAME: "teslamate"
               DATABASE_HOST: "postgres16-rw.databases.svc.cluster.local"
 

@@ -36,16 +36,6 @@ spec:
             google.feature.node.kubernetes.io/coral: "true"
             intel.feature.node.kubernetes.io/gpu: "true"
 
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: NotIn
-                        values:
-                          - "poseidon"
-
         containers:
           app:
             image:
@@ -54,6 +44,10 @@ spec:
 
             env:
               LIBVA_DRIVER_NAME: "i965"
+
+            envFrom:
+              - secretRef:
+                  name: frigate-secret
 
             resources:
               requests:

@@ -44,6 +44,10 @@ spec:
               repository: ghcr.io/ahinko/tcpsolis2mqtt
               tag: main@sha256:a2f72ecec3b013fa2032ba6ade1c29a7ca9895ecd4b9c7f952abd38ee9cc9406
 
+            envFrom:
+              - secretRef:
+                  name: tcpsolis2mqtt-secret
+
             probes:
               liveness:
                 enabled: false

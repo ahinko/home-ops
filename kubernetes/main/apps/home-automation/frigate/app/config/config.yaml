@@ -4,8 +4,8 @@ auth:
 
 mqtt:
   host: emqx-listeners
-  user: ${SECRET_MQTT_USERNAME}
-  password: ${SECRET_MQTT_PASSWORD}
+  user: "{FRIGATE_MQTT_USER}"
+  password: "{FRIGATE_MQTT_PASSWORD}"
 
 logger:
   default: error

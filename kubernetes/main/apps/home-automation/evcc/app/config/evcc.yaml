@@ -210,8 +210,6 @@ levels:
 mqtt:
   broker: emqx-listeners
   topic: evcc
-  user: ${SECRET_MQTT_USERNAME}
-  password: ${SECRET_MQTT_PASSWORD}
 # messaging:
 #   events:
 #     start: # charge start event

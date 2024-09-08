@@ -20,7 +20,5 @@ mqtt:
   port: 1883
   topic_prefix: tcpsolis2mqtt
   client_id: tcpsolis2mqtt
-  user: ${SECRET_MQTT_USERNAME}
-  password: ${SECRET_MQTT_PASSWORD}
   use_ssl: False
   validate_cert: False
