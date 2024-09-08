@@ -7,3 +7,4 @@ resources:
   - ./cloudflared/install.yaml
   - ./external-dns/install.yaml
   - ./ingress-nginx/install.yaml
+  - ./mailpit/install.yaml
