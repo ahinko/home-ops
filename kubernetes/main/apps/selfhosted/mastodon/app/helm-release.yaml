@@ -57,7 +57,7 @@ spec:
       openssl_verify_mode: none
       enable_starttls_auto: true
       tls: false
-      auth_method: plain
+      auth_method: none
       existingSecret: "mastodon-secret"
       existingSecretLoginKey: "SMTP_LOGIN"
       existingSecretPasswordKey: "SMTP_PASSWORD"

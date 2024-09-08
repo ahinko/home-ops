@@ -40,8 +40,6 @@ spec:
             image:
               repository: ghcr.io/corentinth/it-tools
               tag: 2023.12.21-5ed3693
-            env:
-              TZ: "${TIMEZONE}"
             probes:
               liveness:
                 enabled: false
