@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository: mbentley/timemachine
-              tag: smb@sha256:deb2151b297055ab6dbb4b365f86f31f86a3d721243f07c1b0379048cc6645f8
+              tag: smb@sha256:7f1e6b5e8b80ada8fa3e8ad65a9d144d5374ff3398fb2646d447691cf1926ca4
             env:
               CUSTOM_SMB_CONF: "true"
               EXTERNAL_CONF: "/etc/timemachine/conf"
