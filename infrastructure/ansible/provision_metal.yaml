@@ -22,5 +22,4 @@
   become: true
   become_method: ansible.builtin.sudo
   roles:
-    - role: znapzend
     - role: k3s
