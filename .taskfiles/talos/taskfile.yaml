@@ -45,6 +45,7 @@ tasks:
     desc: Upgrade Talos on a node
     dir: "{{.TALOS_DIR}}"
     cmds:
+      - task: generate
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
       - kubectl cnpg maintenance set --reusePVC --all-namespaces
@@ -57,6 +58,7 @@ tasks:
     desc: Upgrade Kubernetes
     dir: "{{.TALOS_DIR}}"
     cmds:
+      - task: generate
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
       - talosctl -n {{.controlplane}} etcd snapshot etcd.backup
