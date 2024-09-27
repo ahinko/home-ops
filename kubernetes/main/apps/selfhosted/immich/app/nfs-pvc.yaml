@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: "192.168.20.2"
-    path: /tank/immich
+    path: /var/mnt/tank/immich
   # Note: The first two options are strictly for NFSv4.2
   mountOptions:
     - nfsvers=4.2

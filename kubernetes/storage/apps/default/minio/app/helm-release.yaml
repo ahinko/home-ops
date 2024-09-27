@@ -138,7 +138,7 @@ spec:
     persistence:
       config:
         type: hostPath
-        hostPath: /tank/minio
+        hostPath: /var/mnt/tank/minio
         hostPathType: Directory
         globalMounts:
           - path: /data
