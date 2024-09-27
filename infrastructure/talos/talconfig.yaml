@@ -19,8 +19,6 @@ nodes:
     ipAddress: 192.168.20.31
     controlPlane: true
     installDisk: /dev/sda
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: d8:3a:dd:b1:68:3e
@@ -41,8 +39,6 @@ nodes:
     ipAddress: 192.168.20.32
     controlPlane: true
     installDisk: /dev/sda
-    nameservers:
-      - 192.168.20.1
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: e4:5f:01:86:fc:a0
@@ -237,15 +233,6 @@ controlPlane:
           net.core.wmem_max: "2500000"
 
 worker:
-  schematic:
-    customization:
-      extraKernelArgs:
-        - net.ifnames=0
-      systemExtensions:
-        officialExtensions:
-          - siderolabs/i915-ucode
-          - siderolabs/intel-ucode
-
   patches:
     - *disableSearchDomainPatch
     - *nameServersPatch
