@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: "192.168.20.2"
-    path: /pool/media
+    path: /var/mnt/pool/media
   mountOptions:
     - nfsvers=4
     - tcp
