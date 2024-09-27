@@ -100,13 +100,6 @@ spec:
             port: 5000
 
     persistence:
-      config-file:
-        type: configMap
-        name: frigate-configmap
-        globalMounts:
-          - path: /config/config.yml
-            subPath: config.yaml
-
       media:
         existingClaim: frigate-media
         globalMounts:

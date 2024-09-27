@@ -7,9 +7,3 @@ resources:
   - ./media-pvc.yaml
   - ./helm-release.yaml
   - ../../../../tmpl/gatus/internal
-configMapGenerator:
-  - name: frigate-configmap
-    files:
-      - config.yaml=./config/config.yaml
-generatorOptions:
-  disableNameSuffixHash: true
