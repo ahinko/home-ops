@@ -1,7 +1,6 @@
 ---
 - name: Metal basic setup
   hosts:
-    - atlas
     - kronos
   remote_user: peter
   become: true
@@ -14,12 +13,3 @@
     - role: sshkeys
     - role: sudoers
     - role: fish
-
-- name: NAS specific setup
-  hosts:
-    - atlas
-  remote_user: peter
-  become: true
-  become_method: ansible.builtin.sudo
-  roles:
-    - role: k3s

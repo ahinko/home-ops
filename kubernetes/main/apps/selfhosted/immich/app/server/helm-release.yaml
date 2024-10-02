@@ -44,6 +44,9 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: immich-server
 
+          nodeSelector:
+            kubernetes.io/hostname: s01
+
         containers:
           app:
             image:
@@ -135,7 +138,8 @@ spec:
 
     persistence:
       library:
-        type: persistentVolumeClaim
-        existingClaim: immich-nfs
+        type: hostPath
+        hostPath: /var/mnt/tank/immich
+        hostPathType: Directory
         globalMounts:
           - path: *mediaLocation

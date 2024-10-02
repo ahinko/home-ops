@@ -30,6 +30,9 @@ spec:
     controllers:
       navidrome:
         pod:
+          nodeSelector:
+            kubernetes.io/hostname: s01
+
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -99,7 +102,10 @@ spec:
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
+
       media:
-        existingClaim: media-nfs
+        type: hostPath
+        hostPath: /var/mnt/pool/media
+        hostPathType: Directory
         globalMounts:
           - path: /media

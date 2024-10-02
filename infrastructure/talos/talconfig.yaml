@@ -133,6 +133,46 @@ nodes:
     patches:
       - *nuc-patches
 
+  - hostname: s01 # atlas
+    ipAddress: 192.168.20.2 # .37
+    controlPlane: false
+    installDiskSelector:
+      serial: "S4EVNM0R816141L"
+    #networkInterfaces:
+    #  - deviceSelector:
+    #      hardwareAddr: 70:85:c2:a7:*
+    #    addresses:
+    #      - 192.168.20.2/24
+    #    dhcp: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=1
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/zfs
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt
+                type: bind
+                source: /var/mnt
+                options:
+                  - bind
+                  - rshared
+                  - rw
+              - destination: /var/openebs/local
+                type: bind
+                source: /var/openebs/local
+                options:
+                  - bind
+                  - rshared
+                  - rw
+
 controlPlane:
   patches:
     # Disable search domain everywhere
@@ -189,21 +229,7 @@ controlPlane:
           hostDNS:
             enabled: true
             resolveMemberNames: true
-
-    # Configure containerd
-    - &containerdConfigPatch |-
-      machine:
-        files:
-          - op: create
-            path: /etc/cri/conf.d/20-customization.part
-            content: |
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-              [plugins."io.containerd.grpc.v1.cri".containerd]
-                discard_unpacked_layers = false
-              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                discard_unpacked_layers = false
+            forwardKubeDNSToHost: false
 
     # Disable default API server admission plugins.
     - |-
@@ -232,6 +258,18 @@ controlPlane:
           net.core.rmem_max: "2500000"
           net.core.wmem_max: "2500000"
 
+    # Configure containerd
+    - &containerdPatch |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+
 worker:
   patches:
     - *disableSearchDomainPatch
@@ -239,6 +277,6 @@ worker:
     - *timeServersPatch
     - *kubePrismPatch
     - *hostDns
-    - *containerdConfigPatch
     - *kubeletPatch
     - *sysctlsPatch
+    - *containerdPatch

@@ -3,7 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./nfs-pvc.yaml
   - ./bazarr/install.yaml
   - ./lidarr/install.yaml
   - ./radarr/install.yaml

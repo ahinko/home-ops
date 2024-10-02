@@ -34,7 +34,7 @@ spec:
                 - name: MINIO_BUCKET
                   value: "backups"
                 - name: MINIO_HOST
-                  value: "https://s3.${SECRET_STORAGE_DOMAIN}"
+                  value: "https://s3.${SECRET_DOMAIN}"
               envFrom:
                 - secretRef:
                     name: postgres16-backup-secret

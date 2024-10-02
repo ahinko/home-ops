@@ -44,6 +44,9 @@ spec:
             supplementalGroups:
               - 65539
 
+          nodeSelector:
+            kubernetes.io/hostname: s01
+
         containers:
           app:
             image:
@@ -101,7 +104,10 @@ spec:
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
+
       media:
-        existingClaim: downloads-nfs
+        type: hostPath
+        hostPath: /var/mnt/pool/media
+        hostPathType: Directory
         globalMounts:
           - path: /media

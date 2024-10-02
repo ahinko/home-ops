@@ -9,7 +9,6 @@ labels:
 resources:
   - ./external-secret.yaml
   - ./database.yaml
-  - ./nfs-pvc.yaml
   - ./configmap.yaml
   - ./valkey
   - ./server
