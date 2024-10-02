@@ -1,13 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      allowedVersions: '<=1.31', // Talos dependency
-      matchDatasources: ['docker'],
+      allowedVersions: "<=1.31", // Talos dependency
+      matchDatasources: ["docker"],
       matchPackageNames: [
-        'ghcr.io/siderolabs/kubelet',
-        'ghcr.io/k8s-at-home/kubectl'
-      ]
-    }
-  ]
+        "ghcr.io/siderolabs/kubelet",
+        "registry.k8s.io/kubectl",
+      ],
+    },
+  ],
 }
