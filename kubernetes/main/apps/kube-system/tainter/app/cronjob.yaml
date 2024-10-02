@@ -18,8 +18,8 @@ spec:
           restartPolicy: Never
           serviceAccountName: tainter-role
           containers:
-            # Tainter is a simple job that removes the NoSchedule taint on two of my control planes since the hardware
-            # on those control plane is a lot more powerfull than the thrid  control planes. So I want to be able to
+            # Tainter is a simple job that removes the NoSchedule taint on one of my control planes since the hardware
+            # on those control plane is a lot more powerfull than the third control planes. So I want to be able to
             # use that extra horse power and run more workloads on the control planes
             - name: tainter
               image: ghcr.io/ahinko/kubernetes-kubectl:1.31.1
