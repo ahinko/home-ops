@@ -23,6 +23,11 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    defaultPodOptions:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+
     controllers:
       fstrim:
         type: cronjob
@@ -34,10 +39,22 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/kubanetics
-              tag: 2024.10.3@sha256:9e8e70ac686e9256686e372b27d9a39ab92d6d4c651e67aacedc8ec077a71a66
-            env:
-              SCRIPT_NAME: fstrim.sh
+              repository: public.ecr.aws/docker/library/alpine
+              tag: 3.20.3
+            command:
+              - "/bin/sh"
+              - "-c"
+            args:
+              - |
+                nsenter --mount=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/mnt --net=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/net -- sh -c "cat /proc/self/mountinfo | grep -v kubelet | grep -v tmpfs | grep -v overlay > /tmp/fs.txt"
+                nsenter --mount=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/mnt --net=/host/proc/$(pidof /usr/local/bin/kubelet)/ns/net -- sh -c "fstrim -v --quiet-unsupported -I /tmp/fs.txt"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
             resources:
               requests:
                 cpu: 25m
@@ -45,16 +62,18 @@ spec:
                 memory: 128Mi
             securityContext:
               privileged: true
-    defaultPodOptions:
-      hostNetwork: true
-      hostPID: true
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
+
+        pod:
+          hostNetwork: true
+          hostPID: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: fstrim
+
     persistence:
       procfs:
         type: hostPath
@@ -63,6 +82,7 @@ spec:
         globalMounts:
           - path: /host/proc
             readOnly: true
+
       netfs:
         type: hostPath
         hostPath: /sys
