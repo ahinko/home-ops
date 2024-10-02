@@ -8,7 +8,7 @@ on:
     paths: ["kubernetes/**"]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
@@ -19,21 +19,21 @@ jobs:
       matrix: ${{ steps.changed-clusters.outputs.all_changed_and_modified_files }}
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1
         id: app-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
           private-key: "${{ secrets.HOMEOPS_BOT_PRIVATE_KEY }}"
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
           fetch-depth: 0
 
       - name: Get Changed Clusters
         id: changed-clusters
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@48d8f15b2aaa3d255ca5af3eba4870f807ce6b3c # v45
         with:
           files: kubernetes/**
           dir_names: true
@@ -58,7 +58,7 @@ jobs:
       matrix: ${{ steps.extract-images.outputs.images }}
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1
         id: app-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
@@ -72,20 +72,20 @@ jobs:
         run: brew install jo yq
 
       - name: Checkout Default Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
       - name: Checkout Pull Request Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
           path: pull
 
       - name: Gather Images in Default Branch
-        uses: docker://ghcr.io/allenporter/flux-local:v5.3.1
+        uses: docker://ghcr.io/allenporter/flux-local:v5.5.1@sha256:86405ff852ffe4675d6029def7579f4b66fb4e2c0dbff3ca0f98166b76f17798
         with:
           args: >-
             get cluster
@@ -95,7 +95,7 @@ jobs:
             --output-file default.yaml
 
       - name: Gather Images in Pull Request Branch
-        uses: docker://ghcr.io/allenporter/flux-local:v5.3.1
+        uses: docker://ghcr.io/allenporter/flux-local:v5.5.1@sha256:86405ff852ffe4675d6029def7579f4b66fb4e2c0dbff3ca0f98166b76f17798
         with:
           args: >-
             get cluster
@@ -120,11 +120,12 @@ jobs:
         id: extract-images
         shell: bash
         run: |
-          images=$(jo -a $(grep -vf default.txt pull.txt))
-          echo "images=${images}" >> $GITHUB_OUTPUT
+          # shellcheck disable=SC2046
+          images="$(jo -a $(grep -vf default.txt pull.txt))"
+          echo "images=${images}" >> "$GITHUB_OUTPUT"
           echo "${images}"
-          echo "### Images" >> $GITHUB_STEP_SUMMARY
-          echo "${images}" | jq -r 'to_entries[] | "* \(.value)"' >> $GITHUB_STEP_SUMMARY
+          echo "### Images" >> "$GITHUB_STEP_SUMMARY"
+          echo "${images}" | jq -r 'to_entries[] | "* \(.value)"' >> "$GITHUB_STEP_SUMMARY"
 
   test-images:
     if: ${{ needs.extract-images.outputs.matrix != '[]' }}
