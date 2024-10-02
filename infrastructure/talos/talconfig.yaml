@@ -223,6 +223,16 @@ controlPlane:
         proxy:
           disabled: true
 
+    - &clusterDiscovery |-
+      cluster:
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: false
+            service:
+              disabled: true
+
     - &hostDns |-
       machine:
         features:
@@ -276,6 +286,7 @@ worker:
     - *nameServersPatch
     - *timeServersPatch
     - *kubePrismPatch
+    - *clusterDiscovery
     - *hostDns
     - *kubeletPatch
     - *sysctlsPatch
