@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: docker.io/valkey/valkey
-              tag: 8.0.0
+              tag: 8.0.1
     service:
       app:
         controller: authentik-valkey
