@@ -3,11 +3,8 @@
 version: "3"
 
 vars:
-  ANSIBLE_DIR: "{{.ROOT_DIR}}/infrastructure/ansible"
   TALOS_DIR: "{{.ROOT_DIR}}/infrastructure/talos"
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
-  # PROJECT_ROOT:
-  # sh: git rev-parse --show-toplevel
 
 tasks:
   default:
@@ -16,11 +13,9 @@ tasks:
       - task --list
 
 includes:
-  #ansible: .taskfiles/ansible/taskfile.yaml
   bootstrap: .taskfiles/bootstrap/taskfile.yaml
   flux: .taskfiles/flux/taskfile.yaml
   k8s: .taskfiles/kubernetes/taskfile.yaml
-  maintenance: .taskfiles/maintenance/taskfile.yaml
   rook: .taskfiles/rook/taskfile.yaml
   talos: .taskfiles/talos/taskfile.yaml
   tools: .taskfiles/tools/taskfile.yaml
