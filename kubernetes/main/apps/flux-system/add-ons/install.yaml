@@ -7,7 +7,8 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./kubernetes/main/apps/flux-system/add-ons/webhooks
   prune: true
   sourceRef:
@@ -25,7 +26,8 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./kubernetes/main/apps/flux-system/add-ons/monitoring
   prune: true
   sourceRef:
@@ -41,7 +43,8 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./kubernetes/main/apps/flux-system/add-ons/notifications
   prune: true
   sourceRef:

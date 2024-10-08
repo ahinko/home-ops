@@ -5,7 +5,8 @@ metadata:
   name: flux-manifests
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   url: oci://ghcr.io/fluxcd/flux-manifests
   ref:
     tag: v2.4.0
@@ -16,7 +17,8 @@ metadata:
   name: flux
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./
   prune: true
   wait: true

@@ -9,7 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/kube-system/intel-device-plugins/app"
   prune: true
   sourceRef:
@@ -27,7 +28,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname-gpu
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/kube-system/intel-device-plugins/gpu"
   prune: true
   sourceRef:

@@ -18,7 +18,6 @@ spec:
     name: homelab-k8s
   wait: true
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
@@ -39,11 +38,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./kubernetes/main/apps/security/authentik/valkey
   prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
   wait: true
-  timeout: 15m

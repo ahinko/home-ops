@@ -11,14 +11,14 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./kubernetes/main/apps/selfhosted/mastodon/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
   wait: true
-  timeout: 15m
   dependsOn:
     - name: postgres-cluster
     - name: mastodon-valkey
@@ -36,11 +36,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: ./kubernetes/main/apps/selfhosted/mastodon/valkey
   prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
   wait: true
-  timeout: 15m

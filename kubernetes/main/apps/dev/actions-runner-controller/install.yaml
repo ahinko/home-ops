@@ -11,7 +11,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/dev/actions-runner-controller/operator"
   prune: true
   sourceRef:
@@ -34,7 +35,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname-runner
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/dev/actions-runner-controller/runners"
   prune: true
   sourceRef:

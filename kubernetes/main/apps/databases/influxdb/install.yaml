@@ -11,6 +11,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/databases/influxdb/app"
   sourceRef:
     kind: GitRepository
@@ -26,6 +28,3 @@ spec:
       VOLSYNC_CAPACITY: 10Gi
   prune: true
   wait: true
-  interval: 60m
-  retryInterval: 1m
-  timeout: 5m
