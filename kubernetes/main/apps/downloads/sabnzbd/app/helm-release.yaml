@@ -118,6 +118,9 @@ spec:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
 
+      tmp:
+        type: emptyDir
+
       media:
         type: hostPath
         hostPath: /var/mnt/pool/media
@@ -129,32 +132,8 @@ spec:
         type: emptyDir
         globalMounts:
           - path: "/downloads"
-      temp:
-        type: emptyDir
-        advancedMounts:
-          sabnzbd:
-            app:
-              - path: /tmp
-      #incomplete:
-      #  type: emptyDir
-      #  globalMounts:
-      #    - path: "/incomplete"
 
-      ephemeral:
-        type: custom
-        volumeSpec:
-          name: scratch-volume
-          ephemeral:
-            volumeClaimTemplate:
-              spec:
-                accessModes:
-                  - ReadWriteOnce
-                storageClassName: "openebs-hostpath"
-                resources:
-                  requests:
-                    storage: 100Gi
-        advancedMounts:
-          sabnzbd:
-            app:
-              - path: /incomplete
-                subPath: incomplete
+      incomplete:
+        type: emptyDir
+        globalMounts:
+          - path: /incomplete

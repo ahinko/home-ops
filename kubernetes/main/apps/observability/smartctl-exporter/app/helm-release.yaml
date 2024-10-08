@@ -28,8 +28,7 @@ spec:
     fullnameOverride: *app
     config:
       devices:
-        - /dev/nvme0n1
-        - /dev/sda
+        - /dev/sd*
     serviceMonitor:
       enabled: true
     prometheusRules:
