@@ -7,7 +7,7 @@ metadata:
   labels:
     cnpg.io/cluster: postgres16
   annotations:
-    io.cilium/lb-ipam-ips: "192.168.20.204"
+    lbipam.cilium.io/ips: 192.168.20.204
 spec:
   ports:
     - protocol: TCP

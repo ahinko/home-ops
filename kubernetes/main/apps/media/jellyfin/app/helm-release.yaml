@@ -53,7 +53,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "192.168.20.222"
+          lbipam.cilium.io/ips: 192.168.20.222
         controller: main
         ports:
           http:

@@ -58,9 +58,6 @@ spec:
     service:
       app:
         controller: evcc
-        # type: LoadBalancer
-        # annotations:
-        #   io.cilium/lb-ipam-ips: "192.168.20.201"
         ports:
           http:
             port: 7070

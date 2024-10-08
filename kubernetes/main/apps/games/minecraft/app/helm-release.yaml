@@ -182,4 +182,4 @@ spec:
     deploymentAnnotations: {}
 
     serviceAnnotations:
-      io.cilium/lb-ipam-ips: "192.168.20.206"
+      lbipam.cilium.io/ips: 192.168.20.206
