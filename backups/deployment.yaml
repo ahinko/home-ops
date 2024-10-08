@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: *name
-          image: ghcr.io/ahinko/alpine:rolling
+          image: ghcr.io/ahinko/buoy:1.0.3
 
           command: ["/bin/bash", "-c", "--"]
           args: ["while true; do sleep 30; done;"]
