@@ -6,7 +6,7 @@ tasks:
   cluster:
     desc: Bootstrap Talos and K8s cluster
     vars: &vars
-      controlplane: 192.168.20.23
+      controlplane: 192.168.20.33
 
     cmds:
       - task: :tools:install

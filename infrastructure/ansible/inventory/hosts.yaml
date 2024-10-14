@@ -1,9 +1,6 @@
 ---
 metal:
   hosts:
-    atlas:
-      ansible_host: 192.168.20.2
-      mac: 70:85:c2:a7:61:bf
     kronos:
       ansible_host: 192.168.20.4
       mac: d0:50:99:c0:15:b1

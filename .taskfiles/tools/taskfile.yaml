@@ -27,6 +27,8 @@ tasks:
 
       # Instal krew plugins
       - kubectl krew install {{.KREW}}
+      - kubectl krew update
+      - kubectl krew upgrade
 
   write-talos-arm64-to-usb:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
