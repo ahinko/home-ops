@@ -125,7 +125,7 @@ nodes:
       type: ssd
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 20:7b:d2:ae:*
+          hardwareAddr: 20:7b:d2:ae:a5:09
         addresses:
           - 192.168.20.36/24
         dhcp: true
@@ -134,7 +134,7 @@ nodes:
       - *nuc-patches
 
   - hostname: s01 # atlas
-    ipAddress: 192.168.20.2 # .37
+    ipAddress: 192.168.20.37
     controlPlane: false
     installDiskSelector:
       serial: "S4EVNM0R816141L"

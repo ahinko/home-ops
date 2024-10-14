@@ -8,3 +8,8 @@ tasks:
     cmds:
       - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
       - kubectl delete pods --field-selector status.phase=Succeeded -A --ignore-not-found=true
+
+  buoy-shell:
+    desc: Starts buoy shell
+    cmds:
+      - kubectl run --privileged -n kube-system --rm -it buoy --image ghcr.io/ahinko/buoy:1.0.3 -- bash
