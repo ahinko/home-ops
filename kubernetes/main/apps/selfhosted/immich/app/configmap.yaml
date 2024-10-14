@@ -10,5 +10,6 @@ data:
   PUBLIC_IMMICH_SERVER_URL: https://photos.${SECRET_DOMAIN}
 
   # REDIS
-  REDIS_HOSTNAME: "immich-valkey.selfhosted"
+  REDIS_HOSTNAME: "dragonfly.databases.svc.cluster.local"
   REDIS_PORT: "6379"
+  REDIS_DBINDEX: "2"

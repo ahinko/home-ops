@@ -21,28 +21,9 @@ spec:
   timeout: 5m
   dependsOn:
     - name: external-secrets-stores
-    - name: authentik-valkey
     - name: postgres-cluster
+    - name: dragonfly-cluster
   postBuild:
     substitute:
       APP: *appname
       GATUS_SUBDOMAIN: auth
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &appname authentik-valkey
-  namespace: flux-system
-spec:
-  targetNamespace: security
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  interval: 30m
-  timeout: 5m
-  path: ./kubernetes/main/apps/security/authentik/valkey
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: homelab-k8s
-  wait: true

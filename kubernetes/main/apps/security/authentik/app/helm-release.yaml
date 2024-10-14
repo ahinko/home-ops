@@ -52,7 +52,7 @@ spec:
 
     authentik:
       redis:
-        host: authentik-valkey.security.svc.cluster.local
+        host: dragonfly.databases.svc.cluster.local
     server:
       metrics:
         enabled: true
