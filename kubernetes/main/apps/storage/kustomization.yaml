@@ -8,4 +8,5 @@ resources:
   - ./samba/install.yaml
   - ./snapshot-controller/install.yaml
   - ./volsync/install.yaml
+  - ./zfs-scrub/install.yaml
   - ./znapzend/install.yaml
