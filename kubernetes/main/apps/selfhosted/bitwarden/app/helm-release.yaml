@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: bitwarden/self-host
-              tag: 2024.10.0-beta
+              tag: 2024.10.1-beta
 
             envFrom:
               - secretRef:
