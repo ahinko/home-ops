@@ -18,7 +18,10 @@ spec:
     accessModes:
       - "${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"
     capacity: "${VOLSYNC_CAPACITY:-1Gi}"
-    # moverSecurityContext:
+    # enableFileDeletion: true # Uncomment on next Volsync release
+    # cleanupCachePVC: true # Uncomment on next Volsync release
+    # cleanupTempPVC: true # Uncomment on next Volsync release
+    # moverSecurityContext: # Not needed due to privileged movers
     #   runAsUser: ${APP_UID:-568}
     #   runAsGroup: ${APP_GID:-568}
     #   fsGroup: ${APP_GID:-568}

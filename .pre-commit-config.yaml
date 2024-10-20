@@ -32,23 +32,10 @@ repos:
     hooks:
       - id: fix-smartquotes
 
-  - repo: https://github.com/onedr0p/sops-pre-commit
-    rev: v2.1.1
-    hooks:
-      - id: forbid-secrets
-
   - repo: https://github.com/zricethezav/gitleaks
     rev: v8.18.2
     hooks:
       - id: gitleaks
-
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.87.1
-    hooks:
-      - id: terraform_fmt
-      - id: terraform_tfsec
-        files: ^infrastructure/terraform/cloudflare/
-      - id: terraform_validate
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 3.0.0

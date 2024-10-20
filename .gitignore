@@ -21,3 +21,4 @@ talosconfig*
 *.dmg
 *.iso
 .task/checksum
+**/Brewfile.lock.json
