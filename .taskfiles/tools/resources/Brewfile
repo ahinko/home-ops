@@ -1,0 +1,68 @@
+# Tap
+tap "fluxcd/tap"
+tap "go-task/tap"
+tap "siderolabs/tap"
+
+# Terminal
+brew "fish"
+brew "viddy"
+
+# Command line tools
+brew "bash"
+brew "ansible"
+brew "pre-commit"
+brew "go-task/tap/go-task"
+brew "git"
+brew "nano"
+brew "atuin"
+brew "git"
+brew "sops"
+brew "age"
+brew "ssh-copy-id"
+brew "coreutils"
+brew "shellcheck"
+brew "yamllint"
+brew "libpq"
+brew "yq"
+brew "zx"
+
+# Kubernetes
+brew "fluxcd/tap/flux"
+brew "kubernetes-cli"
+brew "kustomize"
+brew "talhelper"
+brew "siderolabs/tap/talosctl"
+brew "helmfile"
+brew "krew"
+
+# git signed commit
+brew "gpg2"
+brew "gnupg"
+brew "pinentry-mac"
+
+# Cask
+cask "firefox"
+cask "iterm2"
+cask "visual-studio-code"
+cask "sublime-text"
+cask "raycast"
+cask "spotify"
+cask "arq"
+cask "exifrenamer"
+cask "fork"
+cask "rectangle"
+cask "orbstack"
+cask "tableplus"
+cask "hiddenbar"
+cask "stats"
+cask "1password"
+cask "1password-cli"
+
+# Brew
+brew "mas"
+
+# App store
+#mas "1password", id: 1333542190
+mas "Amphetamine", id: 937984704
+mas "MQTT Explorer", id: 1455214828
+mas "Unsplash Wallpapers", id: 1284863847

@@ -5,8 +5,6 @@
     "**/infrastructure/ansible/**/*.yaml": "ansible",
     "**/infrastructure/**/*.sops.yaml": "yaml",
     "**/infrastructure/**/inventory/**/*.yaml": "yaml",
-    "**/infrastructure/**/*.tf": "terraform",
-    "**/kubernetes/**/*.sops.toml": "plaintext"
   },
   "material-icon-theme.folders.associations": {
     ".taskfiles": "utils",

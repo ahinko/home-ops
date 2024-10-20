@@ -1,15 +1,16 @@
 ---
 clusterName: main
-endpoint: https://${CLUSTER_ENDPOINT_IP}:6443
+endpoint: https://192.168.20.30:6443
 
 talosVersion: v1.8.1
 kubernetesVersion: v1.31.1
 
-additionalApiServerCertSans: &sans
-  - ${CLUSTER_ENDPOINT_IP}
+additionalApiServerCertSans:
   - 127.0.0.1 # KubePrism
 
-additionalMachineCertSans: *sans
+additionalMachineCertSans:
+  - &clusterEndpointIp 192.168.20.30
+  - 127.0.0.1 # KubePrism
 
 cniConfig:
   name: none
@@ -26,7 +27,7 @@ nodes:
           - 192.168.20.31/24
         dhcp: true
         vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
+          ip: *clusterEndpointIp
     schematic: &rpi-schematic
       overlay:
         image: siderolabs/sbc-raspberrypi
@@ -46,7 +47,7 @@ nodes:
           - 192.168.20.32/24
         dhcp: true
         vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
+          ip: *clusterEndpointIp
     schematic: *rpi-schematic
 
   - hostname: cp03 # poseidon
@@ -61,7 +62,7 @@ nodes:
           - 192.168.20.33/24
         dhcp: true
         vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
+          ip: *clusterEndpointIp
     schematic: &nuc-schematic
       customization:
         extraKernelArgs:

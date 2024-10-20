@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - ./clustersecretstore.yaml
   - ./helm-release.yaml
-  - ./sops.secrets.yaml

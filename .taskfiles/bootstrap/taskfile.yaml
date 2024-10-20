@@ -5,12 +5,9 @@ version: "3"
 tasks:
   cluster:
     desc: Bootstrap Talos and K8s cluster
-    vars: &vars
-      controlplane: 192.168.20.33
-
     cmds:
-      - task: :tools:install
+      - task: :tools:brew
+      - task: :tools:krew
       - task: :talos:bootstrap
-        vars: *vars
       - task: :rook:wipe
       - task: :flux:bootstrap

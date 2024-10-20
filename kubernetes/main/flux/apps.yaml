@@ -12,10 +12,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   postBuild:
     substituteFrom:
       - kind: Secret
@@ -27,10 +23,6 @@ spec:
         metadata:
           name: not-used
         spec:
-          decryption:
-            provider: sops
-            secretRef:
-              name: sops-age
           postBuild:
             substituteFrom:
               - kind: Secret

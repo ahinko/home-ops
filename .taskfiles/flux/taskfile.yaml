@@ -5,28 +5,33 @@ version: "3"
 tasks:
   bootstrap:
     desc: Bootstrap Flux into a Kubernetes cluster
-    summary: |
+    summary: |-
       Args:
-        cluster: Cluster to run command against (required)
+        CLUSTER: Cluster to run command against (required)
     prompt: Bootstrap Flux into the '{{.CLUSTER}}' cluster ... continue?
+    vars:
+      BOOTSTRAP_TEMPLATES:
+        sh: ls {{.CLUSTER_DIR}}/bootstrap/secrets/*.j2
+    env:
+      VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
+      CLUSTER: '{{.CLUSTER | default "main"}}'
     cmds:
-      # Install Flux
-      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap
-      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/sops.agekey.yaml | kubectl apply --server-side --filename -
-      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/sops.github-deploy-token.yaml | kubectl apply --server-side --filename -
-      - sops --decrypt {{.CLUSTER_DIR}}/flux/vars/sops.cluster-secrets.yaml | kubectl apply --server-side --filename -
+      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/flux
+      - for: { var: BOOTSTRAP_TEMPLATES }
+        cmd: >
+          op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
+          minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.ITEM}}
+          | kubectl --context {{.CLUSTER}} apply --server-side --filename -
       - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/config
-    requires:
-      vars: ["cluster"]
-    preconditions:
-      - test -f {{.ROOT_DIR}}/homelab.agekey
-      - test -f {{.CLUSTER_DIR}}/bootstrap/sops.agekey.yaml
-      - test -f {{.CLUSTER_DIR}}/bootstrap/sops.github-deploy-token.yaml
-      - test -f {{.CLUSTER_DIR}}/flux/vars/sops.cluster-secrets.yaml
-      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/sops.agekey.yaml
-      - sops --decrypt {{.CLUSTER_DIR}}/bootstrap/sops.github-deploy-token.yaml
-      - sops --decrypt {{.CLUSTER_DIR}}/flux/vars/sops.cluster-secrets.yaml
 
+  update:cluster:secrets:
+    desc: Update cluster secrets
+    env:
+      VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
+    cmd: >
+      op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
+      minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.CLUSTER_DIR}}/bootstrap/secrets/cluster-secrets.yaml.j2
+      | kubectl --context {{.CLUSTER}} apply --server-side --filename -
   hr:
     desc: List all Helm Releases
     silent: true

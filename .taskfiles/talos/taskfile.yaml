@@ -2,6 +2,10 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  TALOS_CONTROLLER:
+    sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+
 tasks:
   bootstrap:
     desc: Bootstrap Talos
@@ -10,13 +14,8 @@ tasks:
       - task: :talos:generate
       - task: :talos:bootstrap-apply-config
       - task: :talos:bootstrap-etcd
-        vars: &vars
-          controlplane: "{{.controlplane}}"
       - task: :talos:kubeconfig
-        vars: *vars
       - task: :talos:bootstrap-core-apps
-    requires:
-      vars: ["controlplane"]
 
   generate:
     desc: Generate Talos machine configurations
@@ -25,7 +24,6 @@ tasks:
       - talhelper genconfig
     sources:
       - talconfig.yaml
-      - talenv.yaml
       - talsecret.yaml
     generates:
       - clusterconfig/*.yaml
@@ -61,10 +59,8 @@ tasks:
       - task: generate
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
-      - talosctl -n {{.controlplane}} etcd snapshot etcd.backup
+      - talosctl -n {{.TALOS_CONTROLLER}} etcd snapshot etcd.backup
       - talhelper gencommand upgrade-k8s | bash
-    requires:
-      vars: ["controlplane"]
 
   wait_for_health:
     internal: True
@@ -84,21 +80,47 @@ tasks:
   bootstrap-etcd:
     desc: Bootstrap etcd
     cmds:
-      - until talosctl --nodes {{.controller}} bootstrap; do sleep 10; done
-    requires:
-      vars: ["controlplane"]
+      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 10; done
 
   bootstrap-core-apps:
     desc: Bootstrap core helm apps
     cmds:
       - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --file {{.TALOS_DIR}}/bootstrap/helmfile.yaml apply
+      - helmfile --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply
       - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
 
   kubeconfig:
     desc: Get an updated version of kubeconfig with updated/rotated certificates
     cmds:
-      - talosctl kubeconfig ~/.kube/configs/main -n {{.controlplane}}
+      - talosctl kubeconfig ~/.kube/configs/main -n {{.TALOS_CONTROLLER}}
       - kubectl config rename-context admin@main main
-    requires:
-      vars: ["controlplane"]
+
+  write-talos-arm64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://factory.talos.dev/image/1302eca2c7075b3419d4a7421915a760f254ca339a827d3cb65b2d37208d4e54/v1.8.1/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
+      - "diskutil list"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=metal-arm64.raw of=${path} conv=fsync bs=4M
+      - "rm metal-arm64.raw"
+
+  write-talos-amd64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LOC - https://factory.talos.dev/image/a1ca1b8a34c5beae83a548c7c26904b04fd451983240c1c85c050a94e3ec2ffe/v1.8.1/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
+      - "diskutil list"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=metal-amd64.raw of=${path} bs=4m && sync
+      - "rm metal-amd64.raw"
