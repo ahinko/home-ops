@@ -36,10 +36,6 @@ spec:
               repository: evcc/evcc
               tag: 0.130.13
 
-            envFrom:
-              - secretRef:
-                  name: evcc-secret
-
             probes:
               liveness:
                 enabled: false
@@ -89,8 +85,8 @@ spec:
 
     persistence:
       config-file:
-        type: configMap
-        name: evcc-configmap
+        type: secret
+        name: evcc-config
         globalMounts:
           - path: /etc/evcc.yaml
             subPath: evcc.yaml

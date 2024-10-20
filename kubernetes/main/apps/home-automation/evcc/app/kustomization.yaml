@@ -6,9 +6,3 @@ resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ../../../../tmpl/gatus/internal
-configMapGenerator:
-  - name: evcc-configmap
-    files:
-      - evcc.yaml=./config/evcc.yaml
-generatorOptions:
-  disableNameSuffixHash: true
