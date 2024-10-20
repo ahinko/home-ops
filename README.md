@@ -7,9 +7,9 @@ I have a Kubernetes cluster that runs most of the services in my homelab but I a
 This allows me to:
 
 * Version control my changes, allowing easy rollback of breaking patches/tinkering/etc
-* Allow for easy reinstall/disaster recovery of a cluster, as everything except persistent data is defined here.
+* Allow for easy reinstall/disaster recovery of a cluster.
 * Version control and declare hardware provisioning, ensuring repeatable and robust hardware configuration.
-* This can be achieved with tools such as Terraform and Ansible for those wanting to use a more standard OS & deployment.
+* This can be achieved with tools like Ansible for those wanting to use a more standard OS & deployment.
 * With Talos and a few scripts that I have written, I can define and provision a cluster easily with as few manual steps as possible.
 * Renovate and a few scripts makes it easy to handle Talos and Kubernetes updates. Renovate will create pull requests when new updates are available.
   When the pull requests are merged to the main branch I only need to run a commands to upgrade the cluster.
@@ -32,7 +32,7 @@ If you want to set up your own cluster and use my repo as a guide I suggest that
 * [x] Automatically update apps (with approval)
 * [x] Modular architecture, easy to add or remove features/components
 * [x] Automated certificate management
-* [x] [Automatically update DNS records for exposed services](docs/cluster/expose-services.md)
+* [x] Automatically update DNS records for exposed services
 * [x] Distributed storage
 * [x] Monitoring and alerting
 * [ ] Automated offsite backups
@@ -45,24 +45,13 @@ Why do things manually when you can automate it? I try to automate as many aspec
 * [Renovate](https://www.mend.io/free-developer-tools/renovate/) keeps track of dependencies and creates a pull request when there is something to update.
 * I then merge those pull requests in to the main branch
 * [Flux](https://fluxcd.io) will then update the main cluster.
-* Tell Talos to automatically update and reboot Kubernetes nodes if needed by running [one script](infrastructure/talos/upgrade-talos.sh).
-* Tell Talos to automatically update Kubernetes by running [one script](infrastructure/talos/upgrade-k8s.sh).
+* Tell Talos to automatically update and reboot Kubernetes nodes if needed by running [one script](.taskfiles/talos/taskfile.yaml).
+* Tell Talos to automatically update Kubernetes by running [Task](.taskfiles/talos/taskfile.yaml).
 * Services will automatically be updated (and restarted if needed).
 
-Updates to the Docker containers running on my NAS are handled in a similar way.
-
-* There is a clone of the repository on the NAS
-* A [cronjob](scripts/automatic-docker-updates.sh) pulls the updates and does a `docker-compose up -d --build` to update the Docker containers.
-
-I use [Ansible](https://ansible.com) to provision and configure other hardware in my homelab like my NAS, backup server and pikvm.
+I use [Ansible](https://ansible.com) to provision and configure other hardware in my homelab like my backup server and pikvm.
 
 As a last resort I use [Taskfile](http://taskfile.dev) and write bash scripts to run repetitive tasks.
-
-## 🐳 Docker
-
-I have services that I've choosen to host outside of the Kubernetes cluster. I host a [Plex](https://plex.tv) server that I wan't to run on the more powerfull NAS so there is no point in running Plex in the cluster and pin it to a node.
-
-There is also a NFS and a Samba server running in Docker on the NAS for easier access to file shares, backups and media.
 
 ## 📓 Snippets & notes
 

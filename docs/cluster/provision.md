@@ -1,6 +1,6 @@
 # Provision bare metal nodes & Kubernetes
 
-> **This document is out of date, an updated version will be available shortly**
+> **This document is out of date, an updated version will be available sometime**
 
 ## 1. Install needed tools
 

@@ -2,8 +2,8 @@
 
 A large part of my homelab consists of my Kubernetes cluster that runs on 6 nodes:
 * 4 Intel NUCs running Talos.
-* 1 RPi4 running Talos.
-* 1 whitebox that mainly works as a NAS but also has K8s installed. This box runs Ubuntu 23.04.
+* 2 RPi4 running Talos.
+* 1 whitebox that mainly works as a NAS but is also part of the K8s cluster and runs Talos.
 
 Besides these nodes I also have a few smaller hosts that handles simpler tasks:
 * PiKVM is a RPi4 with a POE hat and a HDMI to CSI-2 bridge. It's running PiKVM-OS and it's connected to a TESmart 8 Port KVM Switch.

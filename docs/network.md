@@ -17,11 +17,6 @@ We have four configurations on NextDNS:
 
 The NextDNS cli will pick up all requests sent to `192.168.*.1` and redirect them to NextDNS.
 
-#### k8s-gateway
-
-We have k8s-gateway running in the cluster. We have configured NextDNS to use split horizon to forward everything regarding our internal domain to k8s-domain.
-This fixes issues with accessing internal services when the internet connection is down.
-
 #### Install NextDNS cli
 
 SSH to the router and run `sh -c 'sh -c "$(curl -sL https://nextdns.io/install)"'`
