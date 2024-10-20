@@ -86,13 +86,11 @@ spec:
       media:
         type: hostPath
         hostPath: /var/mnt/pool/media
-        hostPathType: Directory
         globalMounts:
           - path: /media
 
       config:
         type: hostPath
         hostPath: /var/mnt/tank/jellyfin/config
-        hostPathType: Directory
         globalMounts:
           - path: /config

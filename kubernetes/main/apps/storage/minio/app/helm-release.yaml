@@ -142,6 +142,5 @@ spec:
       config:
         type: hostPath
         hostPath: /var/mnt/tank/minio
-        hostPathType: Directory
         globalMounts:
           - path: /data

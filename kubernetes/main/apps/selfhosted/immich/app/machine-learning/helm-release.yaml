@@ -82,7 +82,6 @@ spec:
       library:
         type: hostPath
         hostPath: /var/mnt/tank/immich
-        hostPathType: Directory
         globalMounts:
           - path: *mediaLocation
 

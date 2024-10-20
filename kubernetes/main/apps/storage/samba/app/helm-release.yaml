@@ -72,14 +72,12 @@ spec:
       timemachine:
         type: hostPath
         hostPath: /var/mnt/tank/samba/timemachine
-        hostPathType: Directory
         globalMounts:
           - path: /opt
 
       shares:
         type: hostPath
         hostPath: /var/mnt/tank/samba/shares
-        hostPathType: Directory
         globalMounts:
           - path: /shares
 

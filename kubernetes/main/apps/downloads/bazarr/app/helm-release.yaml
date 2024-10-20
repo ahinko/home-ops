@@ -99,6 +99,5 @@ spec:
       media:
         type: hostPath
         hostPath: /var/mnt/pool/media
-        hostPathType: Directory
         globalMounts:
           - path: /media
