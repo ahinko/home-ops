@@ -139,12 +139,12 @@ nodes:
     controlPlane: false
     installDiskSelector:
       serial: "S4EVNM0R816141L"
-    #networkInterfaces:
-    #  - deviceSelector:
-    #      hardwareAddr: 70:85:c2:a7:*
-    #    addresses:
-    #      - 192.168.20.2/24
-    #    dhcp: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 70:85:c2:a7:61:bf
+        addresses:
+          - 192.168.20.37/24
+        dhcp: true
     schematic:
       customization:
         extraKernelArgs:
