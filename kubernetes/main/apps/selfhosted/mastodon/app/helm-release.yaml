@@ -33,7 +33,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/mastodon
-      tag: 4.2.13
+      tag: 4.3.1
 
     environment: production
     adminUser: "peter"
