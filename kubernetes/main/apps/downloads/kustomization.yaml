@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./bazarr/install.yaml
+  - ./deemix/install.yaml
   - ./lidarr/install.yaml
   - ./radarr/install.yaml
   - ./recyclarr/install.yaml
