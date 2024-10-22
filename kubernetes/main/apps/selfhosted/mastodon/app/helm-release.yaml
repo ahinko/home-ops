@@ -126,20 +126,14 @@ spec:
       successfulJobsHistoryLimit: 1
       concurrencyPolicy: Allow
 
-    initJob:
-      precompileAssets: true
-      migrateDB: true
-      migrateElasticsearch: true
-      createAdmin: false
-      backoffLimit: 10
-
     persistence:
       enabled: true
       existingClaim: *app
       mountPath: /opt/bitnami/mastodon/public/system
 
-    volumePermissions:
-      enabled: false
+    initJob:
+      migrateAndCreateAdmin:
+        createAdmin: false
 
     externalDatabase:
       host: "postgres16-rw.databases"
