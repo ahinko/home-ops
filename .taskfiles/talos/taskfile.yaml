@@ -46,9 +46,7 @@ tasks:
       - task: generate
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
-      - kubectl cnpg maintenance set --reusePVC --all-namespaces
       - talhelper gencommand upgrade -n {{.node}} | bash
-      - kubectl cnpg maintenance unset --reusePVC --all-namespaces
     requires:
       vars: ["node"]
 
