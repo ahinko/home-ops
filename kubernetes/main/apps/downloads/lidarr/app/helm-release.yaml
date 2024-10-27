@@ -51,7 +51,7 @@ spec:
           app:
             image:
               repository: ghcr.io/drag0n141/lidarr
-              tag: 2.6.4.4402
+              tag: 2.7.1.4417
             env:
               LIDARR__INSTANCE_NAME: Lidarr
               LIDARR__PORT: &port 8686
