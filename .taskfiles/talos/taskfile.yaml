@@ -20,8 +20,10 @@ tasks:
   generate:
     desc: Generate Talos machine configurations
     dir: "{{.TALOS_DIR}}"
+    env:
+      VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
     cmds:
-      - talhelper genconfig
+      - op run --env-file="./op.env" -- talhelper genconfig
     sources:
       - talconfig.yaml
       - talsecret.yaml
