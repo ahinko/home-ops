@@ -36,6 +36,7 @@ jobs:
         uses: tj-actions/changed-files@c3a1bb2c992d77180ae65be6ae6c166cf40f857c # v45
         with:
           files: kubernetes/**
+          files_ignore: kubernetes/repositories/**
           dir_names: true
           dir_names_max_depth: 2
           matrix: true
