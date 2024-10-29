@@ -2,9 +2,6 @@
 ignore: |
   .github/
   crds.yaml
-  **/*sops*.yaml
-  infrastructure/integrations/cilium-quick-install/quick-install.yaml
-  infrastructure/ansible/inventory/host_vars/udmpro/udmpro.yaml
   infrastructure/talos/
 
 extends: default

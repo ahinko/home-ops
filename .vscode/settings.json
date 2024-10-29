@@ -3,7 +3,6 @@
   "files.associations": {
     "*.json5": "json5",
     "**/infrastructure/ansible/**/*.yaml": "ansible",
-    "**/infrastructure/**/*.sops.yaml": "yaml",
     "**/infrastructure/**/inventory/**/*.yaml": "yaml",
   },
   "material-icon-theme.folders.associations": {

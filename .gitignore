@@ -1,10 +1,6 @@
 # Trash
 .DS_Store
 Thumbs.db
-# Sops
-**/raw.*secrets.yaml
-.decrypted~*
-*.agekey
 # Kubernetes
 **/clusterconfig
 kubeconfig*
