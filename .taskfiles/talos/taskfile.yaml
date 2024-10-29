@@ -49,6 +49,7 @@ tasks:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
       - talhelper gencommand upgrade -n {{.node}} | bash
+      - echo "A trick for upgrading nodes with zfs, just before the reboot, power cycle the node"
     requires:
       vars: ["node"]
 
