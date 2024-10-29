@@ -21,23 +21,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-monitoring
-  namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
-spec:
-  interval: 30m
-  timeout: 5m
-  path: ./kubernetes/main/apps/flux-system/add-ons/monitoring
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: homelab-k8s
-  wait: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: flux-notifications
   namespace: flux-system
   labels:

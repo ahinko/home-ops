@@ -11,6 +11,7 @@ resources:
   - ./bjw-s-charts.yaml
   - ./cilium-charts.yaml
   - ./cloudnative-pg-charts.yaml
+  - ./controlplaneio-charts.yaml
   - ./emqx-charts.yaml
   - ./ext-postgres-operator-charts.yaml
   - ./external-dns-charts.yaml

@@ -1,0 +1,20 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flux-operator
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: flux-operator
+      version: 0.10.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: controlplaneio-charts
+        namespace: flux-system
+  values:
+    serviceMonitor:
+      create: true

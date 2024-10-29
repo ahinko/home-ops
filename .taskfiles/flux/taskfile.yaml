@@ -16,7 +16,6 @@ tasks:
       VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
       CLUSTER: '{{.CLUSTER | default "main"}}'
     cmds:
-      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap/flux
       - for: { var: BOOTSTRAP_TEMPLATES }
         cmd: >
           op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
