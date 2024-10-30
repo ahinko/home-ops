@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bambanah/deemix
-              tag: v4.2.8
+              tag: v4.2.10
 
             probes:
               liveness:
