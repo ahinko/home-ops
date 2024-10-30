@@ -10,6 +10,7 @@ resources:
   - ./mastodon/install.yaml
   - ./mastodon-fakerelay/install.yaml
   - ./mastodon-getmoarfediverse/install.yaml
+  - ./maybe/install.yaml
   - ./miniflux/install.yaml
   - ./ocis/install.yaml
   - ./radicale/install.yaml

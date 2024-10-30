@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: maybe-db
+spec:
+  database: maybe
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: maybe-user
+spec:
+  role: maybe
+  database: maybe-db
+  secretName: database
+  privileges: OWNER
