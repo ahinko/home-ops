@@ -34,8 +34,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: homelab-k8s
-  dependsOn:
-    - name: flux
   postBuild:
     substituteFrom:
       - kind: Secret

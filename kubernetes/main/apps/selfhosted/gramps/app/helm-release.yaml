@@ -123,20 +123,3 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
-# grampsweb: &grampsweb
-#   image: grampsweb-no-app-secret  # Locally built, uses https://github.com/gramps-project/gramps-web-api/pull/538
-#   user: '1000'
-#   restart: always
-#   ports:
-#     - "80:5000"  # host:docker
-#   environment:
-
-#   volumes:
-#     - /home/user/grampsweb/data:/data
-#     - /home/user/grampsweb/tmp:/tmp
-
-# grampsweb_celery:
-#   <<: *grampsweb  # YAML merge key copying the entire grampsweb service config
-#   ports: []
-#   container_name: grampsweb_celery
-#   command: celery -A gramps_webapi.celery worker --loglevel=INFO
