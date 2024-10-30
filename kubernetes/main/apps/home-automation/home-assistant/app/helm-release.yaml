@@ -71,15 +71,25 @@ spec:
               repository: ghcr.io/coder/code-server
               tag: 4.93.1
             args:
-              - --auth
-              - none
-              - --user-data-dir
-              - "/config/.vscode"
-              - --extensions-dir
-              - "/config/.vscode"
-              - --port
-              - "8080"
-              - "/config"
+              [
+                "--auth",
+                "none",
+                "--user-data-dir",
+                "/config/.vscode",
+                "--extensions-dir",
+                "/config/.vscode",
+                "--port",
+                "8080",
+                "/config",
+              ]
+
+            env:
+              HASS_SERVER: http://localhost:8123
+              HASS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-secret
+                    key: VSCODE_TOKEN
 
             resources:
               requests:

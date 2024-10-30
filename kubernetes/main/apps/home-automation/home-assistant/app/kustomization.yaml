@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - ../../../../tmpl/volsync
   - ./database.yaml
+  - ./external-secret.yaml
   - ./helm-release.yaml
   - ../../../../tmpl/gatus/external
