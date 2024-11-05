@@ -30,7 +30,7 @@ spec:
     # ref: https://hub.docker.com/r/itzg/minecraft-server/
     image:
       repository: itzg/minecraft-bedrock-server
-      tag: 2024.10.0
+      tag: 2024.11.0
 
     ## Configure resource requests and limits
     ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
