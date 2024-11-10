@@ -24,7 +24,7 @@ Checklist:
 - [ ] Create new manifests for a new cluster in `kubernetes/main/apps/databases/cloudnative-pg/clusters`. Don't forget to add version to names.
   - [ ] DO NOT add a new loadbalancer just yet.
   - [ ] See https://cloudnative-pg.io/documentation/1.20/database_import/ for more information.
-- [ ] Scale down services that uses postgres: `task maintenance:db:pause`
+- [ ] Scale down services that uses postgres
 - [ ] Create a new database backup: `kubectl create job --from=cronjob/postgres-backup -n databases major-upgrade-pg-backup`
 - [ ] Deploy the new cluster.
 - [ ] Update `ext-postgres-operator` config to start using the new cluster

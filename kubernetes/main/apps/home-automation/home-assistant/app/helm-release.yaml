@@ -74,6 +74,8 @@ spec:
               [
                 "--auth",
                 "none",
+                "--disable-telemetry",
+                "--disable-update-check",
                 "--user-data-dir",
                 "/config/.vscode",
                 "--extensions-dir",

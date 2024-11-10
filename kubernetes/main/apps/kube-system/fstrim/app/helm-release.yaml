@@ -72,7 +72,7 @@ spec:
               whenUnsatisfiable: DoNotSchedule
               labelSelector:
                 matchLabels:
-                  app.kubernetes.io/name: fstrim
+                  app.kubernetes.io/name: *app
 
     persistence:
       procfs:
