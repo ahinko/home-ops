@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ./actions-runner-controller-charts.yaml
-  - ./angelnu-charts.yaml
   - ./authentik-charts.yaml
   - ./backube-charts.yaml
   - ./bitnami-charts.yaml
@@ -17,7 +16,6 @@ resources:
   - ./external-dns-charts.yaml
   - ./external-secrets-charts.yaml
   - ./grafana-charts.yaml
-  - ./haproxy-charts.yaml
   - ./influxdata-charts.yaml
   - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
@@ -35,4 +33,3 @@ resources:
   - ./rook-ceph-charts.yaml
   - ./spegel-charts.yaml
   - ./stakater-charts.yaml
-  - ./stevehipwell-charts.yaml
