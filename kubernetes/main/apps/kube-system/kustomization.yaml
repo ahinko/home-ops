@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
   - ./cilium/install.yaml
   - ./descheduler/install.yaml
+  - ./etcd-backup/install.yaml
   - ./fstrim/install.yaml
   - ./intel-device-plugins/install.yaml
   - ./k8tz/install.yaml
