@@ -7,6 +7,7 @@ resources:
   - ./descheduler/install.yaml
   - ./etcd-backup/install.yaml
   - ./fstrim/install.yaml
+  - ./generic-device-plugin/install.yaml
   - ./intel-device-plugins/install.yaml
   - ./k8tz/install.yaml
   - ./kubelet-csr-approver/install.yaml
