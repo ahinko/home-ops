@@ -6,6 +6,7 @@ resources:
   - ./bazarr/install.yaml
   - ./deemix/install.yaml
   - ./lidarr/install.yaml
+  - ./qbittorrent/install.yaml
   - ./radarr/install.yaml
   - ./recyclarr/install.yaml
   - ./sabnzbd/install.yaml
