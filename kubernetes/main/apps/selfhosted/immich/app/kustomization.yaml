@@ -10,5 +10,6 @@ resources:
   - ./external-secret.yaml
   - ./database.yaml
   - ./configmap.yaml
+  - ./valkey
   - ./server
   - ./machine-learning
