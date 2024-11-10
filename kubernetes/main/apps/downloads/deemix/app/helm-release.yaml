@@ -73,6 +73,12 @@ spec:
     ingress:
       app:
         className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Download music from Deezer
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-deemix.svg
+          gethomepage.dev/name: Deemix
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

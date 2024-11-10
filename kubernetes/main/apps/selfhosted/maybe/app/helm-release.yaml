@@ -77,6 +77,12 @@ spec:
     ingress:
       app:
         className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Maybe finance
+          gethomepage.dev/group: Household
+          gethomepage.dev/icon: sh-maybe.svg
+          gethomepage.dev/name: Maybe
         hosts:
           - host: &host maybe.${SECRET_DOMAIN}
             paths:

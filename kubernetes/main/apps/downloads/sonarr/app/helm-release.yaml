@@ -86,6 +86,16 @@ spec:
         className: "nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Automatic TV series downloads
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-sonarr.svg
+          gethomepage.dev/name: Sonarr
+          #gethomepage.dev/widget.type: "sonarr"
+          #gethomepage.dev/widget.url: "http://sonarr-v4.downloads.svc.cluster.local:8989"
+          #gethomepage.dev/widget.key: "${SONARR__API_KEY}"
+          #gethomepage.dev/widget.enableQueue: "true"
+
         hosts:
           - host: &host sonarr.${SECRET_DOMAIN}
             paths:

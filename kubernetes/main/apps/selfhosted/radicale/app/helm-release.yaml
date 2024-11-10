@@ -68,6 +68,11 @@ spec:
           nginx.org/proxy-connect-timeout: 600s
           nginx.org/proxy-read-timeout: 600s
           nginx.org/proxy-send-timeout: 600s
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Calendars
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-radicale.svg
+          gethomepage.dev/name: Radicale
         hosts:
           - host: &host "radicale.${SECRET_DOMAIN}"
             paths:

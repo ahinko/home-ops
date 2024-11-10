@@ -72,6 +72,12 @@ spec:
     ingress:
       app:
         className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: EV Charging
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-evcc.svg
+          gethomepage.dev/name: EVCC
         hosts:
           - host: &host "evcc.${SECRET_DOMAIN}"
             paths:

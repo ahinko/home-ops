@@ -103,6 +103,11 @@ spec:
         className: "nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Usenet downloads
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-sabnzbd.svg
+          gethomepage.dev/name: Sabnzbd
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

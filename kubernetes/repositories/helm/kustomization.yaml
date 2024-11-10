@@ -22,6 +22,7 @@ resources:
   - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
   - ./itzg-minecraft-server-charts.yaml
+  - ./jameswynn-charts.yaml
   - ./jetstack-charts.yaml
   - ./k8tz-charts.yaml
   - ./kubernetes-sigs-descheduler-charts.yaml

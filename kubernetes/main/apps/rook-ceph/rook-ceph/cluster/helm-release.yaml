@@ -48,6 +48,12 @@ spec:
     ingress:
       dashboard:
         ingressClassName: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Manage Rook-Ceph
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: sh-rook.svg
+          gethomepage.dev/name: Rook/Ceph
         host:
           name: &host rook.${SECRET_DOMAIN}
           path: "/"

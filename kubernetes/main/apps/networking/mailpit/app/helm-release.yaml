@@ -53,6 +53,12 @@ spec:
     ingress:
       app:
         className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Catch all mail from the cluster
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: sh-mail-in-a-box.svg
+          gethomepage.dev/name: Mailpit
         hosts:
           - host: &host "mailpit.${SECRET_DOMAIN}"
             paths:

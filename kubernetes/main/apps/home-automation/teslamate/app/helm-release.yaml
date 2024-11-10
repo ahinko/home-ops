@@ -65,6 +65,12 @@ spec:
     ingress:
       app:
         className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Tesla analtyics
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-teslamate.svg
+          gethomepage.dev/name: Teslamate
         hosts:
           - host: &host teslamate.${SECRET_DOMAIN}
             paths:

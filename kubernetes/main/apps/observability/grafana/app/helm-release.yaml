@@ -377,6 +377,12 @@ spec:
     ingress:
       enabled: true
       ingressClassName: nginx
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/description: Metrics and charts
+        gethomepage.dev/group: Observability
+        gethomepage.dev/icon: sh-grafana.svg
+        gethomepage.dev/name: Grafana
       hosts:
         - &host grafana.${SECRET_DOMAIN}
       tls:

@@ -125,6 +125,11 @@ spec:
           nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
           nginx.ingress.kubernetes.io/upstream-hash-by: "$client_ip"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Photo management and backup
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-immich.svg
+          gethomepage.dev/name: Immich
         hosts:
           - host: &host photos.${SECRET_DOMAIN}
             paths:

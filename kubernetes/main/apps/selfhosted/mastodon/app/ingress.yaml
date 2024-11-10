@@ -26,6 +26,11 @@ metadata:
 
         tcp_nodelay on;
       }
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: Micro blogging
+    gethomepage.dev/group: Social
+    gethomepage.dev/icon: sh-mastodon.svg
+    gethomepage.dev/name: Mastodon
 
 spec:
   ingressClassName: "nginx"

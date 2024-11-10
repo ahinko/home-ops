@@ -66,6 +66,12 @@ spec:
     ingress:
       app:
         className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Alerts and warnings
+          gethomepage.dev/group: Observability
+          gethomepage.dev/icon: sh-alertmanager.svg
+          gethomepage.dev/name: Alertmanager
         hosts:
           - host: &host alertmanager.${SECRET_DOMAIN}
             paths:

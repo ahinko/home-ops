@@ -66,6 +66,12 @@ spec:
       main:
         enabled: true
         className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Watch TV Series and Movies
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-jellyfin.png
+          gethomepage.dev/name: Jellyfin
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

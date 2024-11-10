@@ -64,6 +64,12 @@ spec:
     ingress:
       app:
         className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Tools and services for IT
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: sh-it-tools.svg
+          gethomepage.dev/name: IT Tools
         hosts:
           - host: &host "it-tools.${SECRET_DOMAIN}"
             paths:

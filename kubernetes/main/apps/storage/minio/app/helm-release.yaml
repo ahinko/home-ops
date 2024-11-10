@@ -107,7 +107,12 @@ spec:
       app:
         className: nginx
         annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: S3 storage
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: sh-minio.svg
+          gethomepage.dev/name: Minio
+          gethomepage.dev/app: minio
         hosts:
           - host: &console-host minio.${SECRET_DOMAIN}
             paths:

@@ -5,6 +5,12 @@ metadata:
   name: emqx-dashboard
 spec:
   ingressClassName: "nginx"
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: MQTT Broker
+    gethomepage.dev/group: Home Automation
+    gethomepage.dev/icon: sh-mqtt.svg
+    gethomepage.dev/name: EMQX
   rules:
     - host: &host emqx.${SECRET_DOMAIN}
       http:

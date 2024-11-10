@@ -81,6 +81,12 @@ spec:
     ingress:
       app:
         className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Automatic subtitle downloads
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-bazarr.png
+          gethomepage.dev/name: Bazarr
         hosts:
           - host: "bazarr.${SECRET_DOMAIN}"
             paths:

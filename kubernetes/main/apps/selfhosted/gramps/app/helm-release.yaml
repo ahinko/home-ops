@@ -99,8 +99,13 @@ spec:
     ingress:
       app:
         className: nginx
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+        annotations:
+          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Genealogy
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-gramps.svg
+          gethomepage.dev/name: Gramps
         hosts:
           - host: &host "gramps.${SECRET_DOMAIN}"
             paths:

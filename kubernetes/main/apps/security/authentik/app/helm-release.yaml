@@ -63,6 +63,12 @@ spec:
         ingressClassName: nginx
         annotations:
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: SSO and authentication
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: sh-authentik.svg
+          gethomepage.dev/name: Authentik
+          gethomepage.dev/app: authentik
         hosts:
           - &host auth.${SECRET_DOMAIN}
         tls:

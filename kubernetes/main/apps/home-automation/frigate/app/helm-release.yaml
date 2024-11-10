@@ -80,7 +80,11 @@ spec:
       app:
         className: "nginx"
         annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: CCTV Smart object detection
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-frigate.svg
+          gethomepage.dev/name: Frigate
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

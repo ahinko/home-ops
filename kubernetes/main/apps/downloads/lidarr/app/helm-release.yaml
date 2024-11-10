@@ -90,6 +90,11 @@ spec:
         className: "nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Automatic music downloads
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-lidarr.svg
+          gethomepage.dev/name: Lidarr
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

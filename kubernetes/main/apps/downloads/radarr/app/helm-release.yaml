@@ -93,6 +93,11 @@ spec:
         className: "nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Automatic movie downloads
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-radarr.svg
+          gethomepage.dev/name: Radarr
         hosts:
           - host: &host radarr.${SECRET_DOMAIN}
             paths:

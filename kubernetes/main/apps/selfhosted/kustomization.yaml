@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
   - ./atuin/install.yaml
   - ./gramps/install.yaml
+  - ./homepage/install.yaml
   - ./immich/install.yaml
   - ./kitchenowl/install.yaml
   - ./mastodon/install.yaml
