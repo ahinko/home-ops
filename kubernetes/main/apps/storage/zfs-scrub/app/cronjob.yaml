@@ -57,7 +57,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - zpool status tank
+                - zpool scrub tank
               securityContext:
                 privileged: true
                 runAsUser: 0
