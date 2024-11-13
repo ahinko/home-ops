@@ -6,3 +6,4 @@ resources:
   - ./bonob/install.yaml
   - ./jellyfin/install.yaml
   - ./navidrome/install.yaml
+  - ./plex/install.yaml

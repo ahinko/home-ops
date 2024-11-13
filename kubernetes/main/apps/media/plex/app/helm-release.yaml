@@ -1,0 +1,129 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: plex
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      plex:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: s01
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/plex
+              tag: 1.41.1.9057-af5eaea7a@sha256:5926b77196bb7c9f75b52f431d0483abea0fef1f576b7201592b385449201456
+            env:
+              PLEX_ADVERTISE_URL: https://192.168.20.202:32400,https://{{ .Release.Name }}.${SECRET_DOMAIN}:443
+              PLEX_NO_AUTH_NETWORKS: 192.168.0.0/16
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 100m
+                gpu.intel.com/i915: 1
+                memory: 9248M
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 9248M
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 10000]
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      app:
+        controller: plex
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.20.202
+        ports:
+          http:
+            port: 32400
+
+    ingress:
+      app:
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Watch TV Series and Movies
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-plex.png
+          gethomepage.dev/name: Plex
+        className: nginx
+        hosts:
+          - host: &host plex.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        existingClaim: plex-config
+        advancedMounts:
+          plex:
+            app:
+              - path: /config
+
+      plex-cache:
+        existingClaim: plex-cache
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Cache
+
+      logs:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
+
+      media:
+        type: hostPath
+        hostPath: /var/mnt/pool/media
+        globalMounts:
+          - path: /data/media
+
+      transcode:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /transcode
