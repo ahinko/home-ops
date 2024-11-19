@@ -59,4 +59,4 @@ tasks:
     desc: List reconciling or failed kustomizations
     silent: true
     cmds:
-      - viddy 'flux get kustomizations -A | grep -v Applied'
+      - viddy --disable_auto_save 'flux get kustomizations -A | grep -v Applied'

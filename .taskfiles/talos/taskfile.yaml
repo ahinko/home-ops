@@ -38,7 +38,7 @@ tasks:
       - task: generate
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
-      - talhelper gencommand upgrade -n {{.node}} | bash
+      - talhelper gencommand upgrade -n {{.node}} --extra-flags=--stage | bash
       - echo "A trick for upgrading nodes with zfs, just before the reboot, power cycle the node"
     requires:
       vars: ["node"]
@@ -100,7 +100,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LO https://factory.talos.dev/image/1302eca2c7075b3419d4a7421915a760f254ca339a827d3cb65b2d37208d4e54/v1.8.2/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
+      - "curl -LO https://factory.talos.dev/image/1302eca2c7075b3419d4a7421915a760f254ca339a827d3cb65b2d37208d4e54/v1.8.3/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
@@ -115,7 +115,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LOC - https://factory.talos.dev/image/a1ca1b8a34c5beae83a548c7c26904b04fd451983240c1c85c050a94e3ec2ffe/v1.8.2/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
+      - "curl -LOC - https://factory.talos.dev/image/a1ca1b8a34c5beae83a548c7c26904b04fd451983240c1c85c050a94e3ec2ffe/v1.8.3/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
