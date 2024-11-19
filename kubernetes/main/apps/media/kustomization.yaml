@@ -6,5 +6,6 @@ resources:
   - ./bonob/install.yaml
   - ./jellyfin/install.yaml
   - ./maloja/install.yaml
+  - ./multiscrobbler/install.yaml
   - ./navidrome/install.yaml
   - ./plex/install.yaml

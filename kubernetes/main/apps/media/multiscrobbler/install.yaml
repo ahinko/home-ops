@@ -1,0 +1,29 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname multi-scrobbler
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: "./kubernetes/main/apps/media/multiscrobbler/app"
+  sourceRef:
+    kind: GitRepository
+    name: homelab-k8s
+  prune: true
+  wait: true
+  interval: 30m
+  timeout: 5m
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: multi-scrobbler-config
+      VOLSYNC_CAPACITY: 2Gi
