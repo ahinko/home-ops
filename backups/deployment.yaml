@@ -15,9 +15,11 @@ spec:
       labels:
         app: *name
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: s01
       containers:
         - name: *name
-          image: ghcr.io/ahinko/buoy:1.0.3
+          image: ghcr.io/ahinko/buoy:1.0.5
 
           command: ["/bin/bash", "-c", "--"]
           args: ["while true; do sleep 30; done;"]
@@ -30,5 +32,5 @@ spec:
       volumes:
         - name: zfs-backup
           hostPath:
-            path: /tank
+            path: /var/mnt/tank
             type: Directory
