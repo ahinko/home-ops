@@ -19,34 +19,44 @@ spec:
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       profiles:
-        - name: Default
+        - name: default
           pluginConfig:
             - name: DefaultEvictor
               args:
                 evictFailedBarePods: true
                 evictLocalStoragePods: true
                 evictSystemCriticalPods: true
-                nodeFit: true
-            - name: RemovePodsViolatingInterPodAntiAffinity
+            - name: RemoveFailedPods
+              args:
+                reasons:
+                  - "NodeAffinity"
+                  - "Terminated"
+                includingInitContainers: true
+                excludeOwnerKinds:
+                  - "Job"
+                minPodLifetimeSeconds: 3600
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 100
+                includingInitContainers: true
             - name: RemovePodsViolatingNodeAffinity
               args:
                 nodeAffinityType:
                   - requiredDuringSchedulingIgnoredDuringExecution
             #- name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingTopologySpreadConstraint
-              args:
-                constraints:
-                  - DoNotSchedule
-                  - ScheduleAnyway
           plugins:
             balance:
               enabled:
                 - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:
-                - RemovePodsViolatingInterPodAntiAffinity
-                - RemovePodsViolatingNodeAffinity
+                - RemoveFailedPods
+                - RemovePodsHavingTooManyRestarts
                 #- RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingInterPodAntiAffinity
     service:
       enabled: true
     serviceMonitor:
