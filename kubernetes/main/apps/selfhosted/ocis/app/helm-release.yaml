@@ -94,7 +94,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: File sync
           gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-owncload.svg
+          gethomepage.dev/icon: sh-owncloud.svg
           gethomepage.dev/name: ownCloud
         hosts:
           - host: &hostName files.${SECRET_DOMAIN}

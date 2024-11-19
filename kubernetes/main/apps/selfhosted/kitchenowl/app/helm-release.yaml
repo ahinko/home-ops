@@ -112,7 +112,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Shopping list
           gethomepage.dev/group: Household
-          gethomepage.dev/icon: sh-kitchenowl.svg
+          gethomepage.dev/icon: sh-kitchenowl.png
           gethomepage.dev/name: Kitchen Owl
         hosts:
           - host: &host "kitchenowl.${SECRET_DOMAIN}"
