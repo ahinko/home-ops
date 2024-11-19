@@ -23,7 +23,7 @@
       description: "Process Talos versions",
       fileMatch: [
         "infrastructure/talos/talconfig.yaml",
-        ".taskfiles/tools/taskfile.yaml",
+        ".taskfiles/talos/taskfile.yaml",
       ],
       matchStrings: [
         "talosVersion: (?<currentValue>.*)",
