@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
-              tag: 9.27.3
+              tag: 9.27.4
 
             resources:
               requests:
