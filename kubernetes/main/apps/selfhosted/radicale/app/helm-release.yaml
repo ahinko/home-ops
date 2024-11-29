@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/docker-radicale
-              tag: 3.2.3
+              tag: 3.3.1
 
             resources:
               requests:
