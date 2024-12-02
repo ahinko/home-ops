@@ -38,6 +38,6 @@
     fileMatch: ["kubernetes/.+\\.yaml$"],
   },
   kubernetes: {
-    fileMatch: ["kubernetes/.+\\.yaml$"],
+    fileMatch: ["kubernetes/.+\\.yaml$", "backups/.+\\.yaml$"],
   },
 }
