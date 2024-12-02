@@ -1,6 +1,9 @@
 ---
 replicas: 2
 providerRegex: |
-  ^(cp01|cp02|cp03|w01|w02|w03|s01)$
-
+  ^(cp|w|s)\d{2}$
 bypassDnsResolution: true
+metrics:
+  enable: true
+  serviceMonitor:
+    enabled: true
