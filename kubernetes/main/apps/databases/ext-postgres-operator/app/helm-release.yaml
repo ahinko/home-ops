@@ -32,7 +32,7 @@ spec:
     existingSecret: ext-postgres-operator-secret
 
     env:
-      POSTGRES_HOST: "postgres16-rw.databases.svc.cluster.local"
+      POSTGRES_HOST: "postgres17-rw.databases.svc.cluster.local"
       POSTGRES_DEFAULT_DATABASE: "postgres"
       POSTGRES_URI_ARGS: ""
       POSTGRES_CLOUD_PROVIDER: ""

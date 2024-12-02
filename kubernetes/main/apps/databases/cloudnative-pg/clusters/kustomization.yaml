@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./v16
   #- ./prometheus-rule.yaml
+  - ./v17

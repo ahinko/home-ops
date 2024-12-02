@@ -136,9 +136,9 @@ spec:
         createAdmin: false
 
     externalDatabase:
-      host: "postgres16-rw.databases"
+      host: "postgres17-rw.databases"
       port: 5432
-      user: mastodon-9ctecw
+      user: mastodon-hfUVuS
       database: *app
       existingSecret: "database-mastodon-user"
       existingSecretPasswordKey: "PASSWORD"

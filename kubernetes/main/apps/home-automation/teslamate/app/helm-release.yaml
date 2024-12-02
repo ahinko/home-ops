@@ -46,7 +46,7 @@ spec:
               TZ: "Europe/Stockholm"
               MQTT_HOST: "emqx-listeners"
               DATABASE_NAME: "teslamate"
-              DATABASE_HOST: "postgres16-rw.databases.svc.cluster.local"
+              DATABASE_HOST: "postgres17-rw.databases.svc.cluster.local"
 
             resources:
               requests:

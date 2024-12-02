@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-gatus-ep
+  name: postgres17-gatus-ep
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: postgres16
+      - name: postgres17
         group: infrastructure
-        url: tcp://postgres16-rw.databases.svc.cluster.local:5432
+        url: tcp://postgres17-rw.databases.svc.cluster.local:5432
         interval: 1m
         ui:
           hide-url: true

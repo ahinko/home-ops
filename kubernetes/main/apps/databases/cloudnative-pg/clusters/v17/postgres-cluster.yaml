@@ -1,0 +1,67 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres17
+spec:
+  instances: 3
+  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2-7
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 50Gi
+    storageClass: openebs-hostpath
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cloudnative-pg-secret
+  monitoring:
+    enablePodMonitor: true
+
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      memory: 4Gi
+
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 512MB
+
+  backup:
+    retentionPolicy: 14d
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://postgres/
+      endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+      serverName: &currentCluster postgres17-001
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: S3_ACCESS_KEY
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: S3_SECRET_KEY
+
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    initdb:
+
+  #  recovery:
+  #    source: &previousCluster postgres16-003
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  #externalClusters:
+  #  - name: *previousCluster
+  #    barmanObjectStore:
+  #      <<: *barmanObjectStore
+  #      serverName: *previousCluster
