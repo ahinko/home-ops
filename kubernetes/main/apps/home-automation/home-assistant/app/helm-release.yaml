@@ -50,6 +50,7 @@ spec:
                   secretKeyRef:
                     name: database-homeassistant-user
                     key: POSTGRES_URL
+              PYTHONPATH: "/config/deps"
 
             probes:
               liveness:
