@@ -29,10 +29,12 @@ spec:
     config:
       devices:
         - /dev/sd*
+
     serviceMonitor:
       enabled: true
+
     prometheusRules:
-      enabled: true
-    tolerations: {}
+      enabled: false
+
     nodeSelector:
       kubernetes.io/arch: amd64

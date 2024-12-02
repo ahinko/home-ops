@@ -159,8 +159,7 @@ spec:
           gnetId: 20204
           revision: 1
           datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         zfs:
           # renovate: depName="ZFS"
@@ -326,7 +325,7 @@ spec:
           - name: TeslaMate
             type: postgres
             access: proxy
-            url: postgres16-rw.databases
+            url: postgres17-rw.databases
             user: postgres
             secureJsonData:
               password: $TESLAMATE_DB_PASSWORD
