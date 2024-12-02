@@ -29,6 +29,8 @@ spec:
   values:
     skipCRDs: false
 
+    replicaCount: 2
+
     image:
       repository: ghcr.io/emqx/emqx-operator
       tag: 2.2.25

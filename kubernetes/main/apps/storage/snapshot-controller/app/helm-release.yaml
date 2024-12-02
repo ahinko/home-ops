@@ -26,6 +26,7 @@ spec:
     keepHistory: false
   values:
     controller:
+      replicaCount: 2
       serviceMonitor:
         create: true
     webhook:

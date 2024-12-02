@@ -18,3 +18,4 @@ spec:
     manageCRDs: true
     metrics:
       disableAuth: true
+    replicaCount: 2

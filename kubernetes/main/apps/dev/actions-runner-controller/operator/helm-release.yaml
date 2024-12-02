@@ -29,6 +29,7 @@ spec:
     keepHistory: false
   values:
     fullnameOverride: gha-runner-scale-set-controller
+    replicaCount: 2
     resources:
       requests:
         memory: 64Mi

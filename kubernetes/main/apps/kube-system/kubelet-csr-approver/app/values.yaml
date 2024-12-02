@@ -1,4 +1,5 @@
 ---
+replicas: 2
 providerRegex: |
   ^(cp01|cp02|cp03|w01|w02|w03|s01)$
 

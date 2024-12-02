@@ -30,6 +30,7 @@ spec:
   # Values link: https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
   values:
     master:
+      replicaCount: 2
       resources:
         requests:
           cpu: 20m
@@ -41,7 +42,7 @@ spec:
     worker:
       config:
         core:
-          sources: ["custom", "pci", "usb"]
+          labelSources: ["custom", "pci", "usb"]
         sources:
           usb:
             deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
