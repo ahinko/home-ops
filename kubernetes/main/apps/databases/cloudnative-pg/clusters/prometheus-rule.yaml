@@ -34,15 +34,15 @@ spec:
           for: 1m
           labels:
             severity: warning
-        #- alert: PGReplication
-        #  annotations:
-        #    description: Standby is lagging behind by over 300 seconds (5 minutes)
-        #    summary: The standby is lagging behind the primary
-        #  expr: |-
-        #    cnpg_pg_replication_lag > 300
-        #  for: 1m
-        #  labels:
-        #    severity: warning
+        - alert: PGReplication
+          annotations:
+            description: Standby is lagging behind by over 300 seconds (5 minutes)
+            summary: The standby is lagging behind the primary
+          expr: |-
+            cnpg_pg_replication_lag > 300
+          for: 1m
+          labels:
+            severity: warning
         - alert: LastFailedArchiveTime
           annotations:
             description: Archiving failed for {{ $labels.pod }}
