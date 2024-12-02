@@ -46,6 +46,8 @@ spec:
               BASE_URL: https://multiscrobbler.${SECRET_DOMAIN}
               SUBSONIC_URL: http://navidrome:4533
               MALOJA_URL: http://maloja:42010
+              LASTFM_REDIRECT_URI: https://multiscrobbler.${SECRET_DOMAIN}/lastfm/callback
+              SPOTIFY_REDIRECT_URI: https://multiscrobbler.${SECRET_DOMAIN}/callback
 
             probes:
               liveness:

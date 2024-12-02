@@ -57,6 +57,7 @@ spec:
               ND_MUSICFOLDER: /media/music/cd
               ND_PORT: &port 4533
               ND_SCANSCHEDULE: 30m
+              ND_BASEURL: https://navidrome.${SECRET_DOMAIN}
 
             probes:
               liveness:
