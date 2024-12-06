@@ -3,7 +3,7 @@ apiVersion: v1
 spec:
   containers:
     - name: buoy
-      image: ghcr.io/ahinko/buoy:1.0.6
+      image: ghcr.io/ahinko/buoy:1.0.7
       command: ["/bin/sh"]
       stdin: true
       stdinOnce: true
