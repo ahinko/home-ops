@@ -22,7 +22,7 @@ spec:
             # on those control plane is a lot more powerfull than the third control planes. So I want to be able to
             # use that extra horse power and run more workloads on the control planes
             - name: tainter
-              image: ghcr.io/ahinko/buoy:1.0.7
+              image: ghcr.io/ahinko/buoy:1.0.8
               command:
                 - "/bin/sh"
                 - "-c"
