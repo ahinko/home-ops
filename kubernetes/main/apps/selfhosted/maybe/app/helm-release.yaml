@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/maybe-finance/maybe
-              tag: 0.1.0
+              tag: 0.2.0
 
             env:
               SELF_HOSTED: "true"
