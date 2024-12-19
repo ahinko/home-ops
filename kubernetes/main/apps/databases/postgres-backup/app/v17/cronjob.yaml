@@ -14,13 +14,13 @@ spec:
         spec:
           containers:
             - name: postgres-backup
-              image: ghcr.io/ahinko/simple-pg-backup:v4.0.0
+              image: ghcr.io/ahinko/simple-pg-backup:v4.0.1
               imagePullPolicy: IfNotPresent
               args:
                 - /run.sh
               env:
                 - name: POSTGRES_DB
-                  value: "miniflux,kitchenowl,gatus,teslamate,maybe,mastodon,homeassistant"
+                  value: "atuin,miniflux,kitchenowl,gatus,teslamate,maybe,mastodon,homeassistant"
                 - name: POSTGRES_HOST
                   value: "postgres17-rw.databases"
                 - name: POSTGRES_EXTRA_OPTS
