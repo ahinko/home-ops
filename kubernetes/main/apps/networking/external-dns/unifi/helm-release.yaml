@@ -58,7 +58,7 @@ spec:
           timeoutSeconds: 5
     extraArgs:
       - --ignore-ingress-tls-spec
-      - --ingress-class=nginx
+    triggerLoopOnEvent: true
     policy: sync
     sources: ["ingress", "service"]
     txtOwnerId: main
