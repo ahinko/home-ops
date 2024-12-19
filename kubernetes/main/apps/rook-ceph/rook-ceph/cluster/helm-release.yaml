@@ -78,6 +78,10 @@ spec:
         modules:
           - name: pg_autoscaler
             enabled: true
+          - name: insights
+            enabled: true
+          - name: rook
+            enabled: true
 
       network:
         provider: host
