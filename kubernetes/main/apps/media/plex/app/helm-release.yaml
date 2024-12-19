@@ -34,15 +34,23 @@ spec:
               PLEX_ADVERTISE_URL: https://192.168.20.202:32400,https://{{ .Release.Name }}.${SECRET_DOMAIN}:443
               PLEX_NO_AUTH_NETWORKS: 192.168.0.0/16
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
               startup:
                 enabled: true
                 spec:
                   failureThreshold: 30
-                  periodSeconds: 5
+                  periodSeconds: 10
             resources:
               requests:
                 cpu: 100m
