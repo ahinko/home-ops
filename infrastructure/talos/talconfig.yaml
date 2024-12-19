@@ -70,7 +70,7 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/usb-modem-drivers
-            - siderolabs/i915-ucode
+            - siderolabs/i915
             - siderolabs/intel-ucode
     patches:
       - &nuc-patches |-
@@ -145,13 +145,21 @@ nodes:
         addresses:
           - 192.168.20.37/24
         dhcp: true
+    kernelModules:
+      - name: zfs
     schematic:
       customization:
         extraKernelArgs:
           - net.ifnames=1
+          - lsm=landlock,lockdown,yama,apparmor,bpf
+          - lsm.debug
+          - amd_pstate=active
+          - spec_rstack_overflow=microcode
+          - zfs.zfs_arc_max=6871947674
+          - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
-            - siderolabs/i915-ucode
+            - siderolabs/i915
             - siderolabs/intel-ucode
             - siderolabs/zfs
     patches:
@@ -173,6 +181,10 @@ nodes:
                   - bind
                   - rshared
                   - rw
+          udev:
+            rules:
+              # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
+              - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
 
 controlPlane:
   patches:
@@ -230,9 +242,9 @@ controlPlane:
           enabled: true
           registries:
             kubernetes:
-              disabled: false
-            service:
               disabled: true
+            service:
+              disabled: false
 
     - &hostDns |-
       machine:
@@ -263,11 +275,10 @@ controlPlane:
     - &sysctlsPatch |-
       machine:
         sysctls:
-          fs.inotify.max_queued_events: "65536"
-          fs.inotify.max_user_instances: "8192"
-          fs.inotify.max_user_watches: "524288"
-          net.core.rmem_max: "2500000"
-          net.core.wmem_max: "2500000"
+          fs.inotify.max_user_instances: 8192    # Watchdog
+          fs.inotify.max_user_watches: 1048576   # Watchdog
+          net.core.rmem_max: 67108864            # Cloudflared / QUIC
+          net.core.wmem_max: 67108864            # Cloudflared / QUIC
 
     # Configure containerd
     - &containerdPatch |-
@@ -277,9 +288,8 @@ controlPlane:
             path: /etc/cri/conf.d/20-customization.part
             content: |
               [plugins]
-                [plugins."io.containerd.grpc.v1.cri"]
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
+                [plugins."io.containerd.cri.v1.images"]
+                  discard_unpacked_layers = false
 
 worker:
   patches:
