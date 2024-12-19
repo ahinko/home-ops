@@ -13,5 +13,11 @@
       versioning: "regex:^(?<major>\\d+).(?<minor>\\d+)-(?<patch>\\d+)$",
       matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
     },
+    {
+      description: ["Loose versioning for non-semver containers"],
+      matchDatasources: ["docker"],
+      matchPackagePatterns: ["plex"],
+      versioning: "loose",
+    },
   ],
 }
