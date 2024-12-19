@@ -50,7 +50,6 @@ spec:
                   secretKeyRef:
                     name: database-homeassistant-user
                     key: POSTGRES_URL
-              PYTHONPATH: "/config/deps"
 
             probes:
               liveness:
@@ -173,3 +172,12 @@ spec:
               - path: /config
             code-server:
               - path: /config
+
+      # https://community.home-assistant.io/t/wth-is-going-on-with-docker-container-installs-and-third-party-integrations-that-need-python-modules/806430/6
+      hack:
+        type: emptyDir
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /.dockerenv
+                subPath: .dockerenv
