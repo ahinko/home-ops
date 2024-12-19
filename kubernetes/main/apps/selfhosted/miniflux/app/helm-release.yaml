@@ -108,7 +108,6 @@ spec:
       app:
         className: nginx
         annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: RSS Reader
           gethomepage.dev/group: Selfhosted

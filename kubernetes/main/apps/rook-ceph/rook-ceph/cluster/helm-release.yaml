@@ -17,8 +17,6 @@ spec:
   dependsOn:
     - name: rook-ceph-operator
       namespace: rook-ceph
-    - name: snapshot-controller
-      namespace: storage
   maxHistory: 2
   install:
     createNamespace: true

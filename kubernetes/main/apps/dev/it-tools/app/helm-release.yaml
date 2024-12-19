@@ -15,9 +15,6 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
       interval: 30m
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   maxHistory: 2
   install:
     createNamespace: true

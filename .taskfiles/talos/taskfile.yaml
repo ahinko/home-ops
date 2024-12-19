@@ -25,6 +25,7 @@ tasks:
     desc: Apply Talos config on a node
     dir: "{{.TALOS_DIR}}"
     cmds:
+      - task: generate
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
       - talhelper gencommand apply -n {{.node}} | bash
@@ -39,7 +40,6 @@ tasks:
       - task: wait_for_health
         vars: { TIMEOUT: 30s }
       - talhelper gencommand upgrade -n {{.node}} --extra-flags=--stage | bash
-      - echo "A trick for upgrading nodes with zfs, just before the reboot, power cycle the node"
     requires:
       vars: ["node"]
 

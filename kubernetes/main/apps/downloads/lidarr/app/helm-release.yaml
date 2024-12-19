@@ -89,7 +89,6 @@ spec:
       app:
         className: "nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Automatic music downloads
           gethomepage.dev/group: Downloads

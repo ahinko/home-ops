@@ -27,7 +27,6 @@ spec:
       remediateLastFailure: true # remediate the last failure, when no retries remain
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/rook/rook/blob/release-1.14/deploy/charts/rook-ceph/values.yaml
   values:
     crds:
       enabled: true

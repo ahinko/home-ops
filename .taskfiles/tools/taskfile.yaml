@@ -11,8 +11,6 @@ tasks:
   brew:
     desc: Set up Homebrew tools
     cmd: brew bundle --file {{.BREWFILE}}
-    sources:
-      - "{{.BREWFILE}}"
     generates:
       - "{{.BREWFILE}}.lock.json"
     preconditions:
