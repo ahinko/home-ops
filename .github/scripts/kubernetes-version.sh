@@ -13,4 +13,4 @@ TALOS_K8S_VERSION=$(expr "$SOURCE_CONSTANTS" : '.*DefaultKubernetesVersion = "\(
 ALLOWED_VERSION=$(expr "$TALOS_K8S_VERSION" : '\([0-9.]\{4\}\)')
 
 # Update renovate config
-sed -i "s/[0-9.]*\(', \/\/ Talos dependency\)/${ALLOWED_VERSION}\1/" .github/renovate/allowedVersions.json5
+sed -i "s/[0-9.]*\(\", \/\/ Talos dependency\)/${ALLOWED_VERSION}\1/" .github/renovate/allowedVersions.json5

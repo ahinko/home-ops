@@ -36,10 +36,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
         with:
-          title: "feat(container): update allowed Kubernetes version"
+          title: "feat(k8s): update allowed Kubernetes version"
           body: "Talos supports a new Kubernetes version. The allowedVersions file has been updated with this new minor version."
           branch: "update-allowed-kubernetes-version"
-          path: ".github/renovate"
+          path: ".github/renovate/allowedVersions.json5"
           commit-message: "Update allowedVersions.json5 with new minor version of Kubernetes."
           labels: size/XS, area/kubernetes, type/minor
           update-pull-request-title-and-body: true
