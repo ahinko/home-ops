@@ -2,7 +2,7 @@
 clusterName: main
 endpoint: https://192.168.20.30:6443
 
-talosVersion: v1.8.4
+talosVersion: v1.9.0
 kubernetesVersion: v1.31.4
 
 additionalApiServerCertSans:
