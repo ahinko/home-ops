@@ -33,6 +33,7 @@ spec:
 
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
+      enableVolumeGroupSnapshot: false # TODO: enable this when v1beta1 CRDs are available
 
       enableLiveness: true
       serviceMonitor:
