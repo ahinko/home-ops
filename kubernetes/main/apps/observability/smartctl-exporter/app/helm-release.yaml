@@ -28,7 +28,18 @@ spec:
     fullnameOverride: *app
     config:
       devices:
-        - /dev/sd*
+        - /dev/sda
+        - /dev/sdb
+        - /dev/sdc
+        - /dev/sdd
+        - /dev/sde
+        - /dev/sdf
+        - /dev/sdg
+        - /dev/sdh
+        - /dev/sdi
+        - /dev/sdj
+        - /dev/sdk
+        - /dev/sdl
 
     serviceMonitor:
       enabled: true
