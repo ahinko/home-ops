@@ -210,14 +210,6 @@ controlPlane:
             - gbg2.ntp.se
             - sth1.ntp.se
 
-    # Enable KubePrism
-    - &kubePrismPatch |-
-      machine:
-        features:
-          kubePrism:
-            enabled: true
-            port: 7445
-
     # Enable K8s Talos API Access
     - |-
       machine:
@@ -235,16 +227,6 @@ controlPlane:
         allowSchedulingOnMasters: false
         proxy:
           disabled: true
-
-    - &clusterDiscovery |-
-      cluster:
-        discovery:
-          enabled: true
-          registries:
-            kubernetes:
-              disabled: true
-            service:
-              disabled: false
 
     - &hostDns |-
       machine:
@@ -296,8 +278,6 @@ worker:
     - *disableSearchDomainPatch
     - *nameServersPatch
     - *timeServersPatch
-    - *kubePrismPatch
-    - *clusterDiscovery
     - *hostDns
     - *kubeletPatch
     - *sysctlsPatch
