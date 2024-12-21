@@ -151,12 +151,6 @@ nodes:
       customization:
         extraKernelArgs:
           - net.ifnames=1
-          - lsm=landlock,lockdown,yama,apparmor,bpf
-          - lsm.debug
-          - amd_pstate=active
-          - spec_rstack_overflow=microcode
-          - zfs.zfs_arc_max=6871947674
-          - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
             - siderolabs/i915
