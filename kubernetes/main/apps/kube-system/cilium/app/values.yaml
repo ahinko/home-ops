@@ -10,7 +10,6 @@ cni:
   exclusive: false
 
 bgp:
-  datapathMode: netkit
   enabled: false
   announce:
     loadbalancerIP: true
@@ -32,7 +31,6 @@ kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
 loadBalancer:
-  acceleration: best-effort
   algorithm: maglev
   mode: dsr
 
