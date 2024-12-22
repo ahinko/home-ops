@@ -21,7 +21,9 @@ tasks:
           op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
           minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.ITEM}}
           | kubectl --context {{.CLUSTER}} apply --server-side --filename -
-      - kubectl --context {{.CLUSTER}} apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/instance
+      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/instance
+      - until kubectl wait fluxinstance --for=condition=Ready --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
+      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/config
 
   update:cluster:secrets:
     desc: Update cluster secrets
