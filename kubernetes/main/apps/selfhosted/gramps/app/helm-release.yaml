@@ -47,7 +47,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/gramps-project/grampsweb
-              tag: v24.12.1
+              tag: v24.12.2
 
             envFrom:
               - secretRef:
