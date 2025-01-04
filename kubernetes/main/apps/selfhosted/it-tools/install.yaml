@@ -7,11 +7,11 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  targetNamespace: dev
+  targetNamespace: selfhosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: "./kubernetes/main/apps/dev/it-tools/app"
+  path: "./kubernetes/main/apps/selfhosted/it-tools/app"
   sourceRef:
     kind: GitRepository
     name: homelab-k8s

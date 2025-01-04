@@ -64,7 +64,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Tools and services for IT
-          gethomepage.dev/group: Tools
+          gethomepage.dev/group: Selfhosted
           gethomepage.dev/icon: sh-it-tools.svg
           gethomepage.dev/name: IT Tools
         hosts:

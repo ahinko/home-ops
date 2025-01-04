@@ -6,6 +6,7 @@ resources:
   - ./atuin/install.yaml
   - ./homepage/install.yaml
   - ./immich/install.yaml
+  - ./it-tools/install.yaml
   - ./kitchenowl/install.yaml
   - ./mastodon/install.yaml
   - ./mastodon-fakerelay/install.yaml
