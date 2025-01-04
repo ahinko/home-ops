@@ -54,8 +54,6 @@ spec:
             envFrom:
               - secretRef:
                   name: gatus-secret
-              - secretRef:
-                  name: database-gatus-user
 
             probes:
               liveness: &probes
@@ -72,7 +70,7 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -138,7 +136,7 @@ spec:
 
     persistence:
       config:
-        type: emptyDir
+        existingClaim: gatus
 
       config-file:
         type: configMap

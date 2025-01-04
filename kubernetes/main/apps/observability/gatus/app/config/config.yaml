@@ -20,8 +20,8 @@ connectivity:
 metrics: true
 
 storage:
-  type: postgres
-  path: $${POSTGRES_URL}
+  type: sqlite
+  path: /config/sqlite.db
   caching: true
 
 ui:

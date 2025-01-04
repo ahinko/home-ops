@@ -16,8 +16,8 @@ spec:
     kind: GitRepository
     name: homelab-k8s
   dependsOn:
-    - name: postgres-cluster
     - name: external-secrets-stores
+    - name: rook-ceph-cluster
   prune: true
   wait: true
   interval: 30m
