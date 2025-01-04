@@ -34,7 +34,14 @@ nodes:
         name: rpi_generic
       customization:
         extraKernelArgs:
-          - net.ifnames=1
+          - apparmor=0 # Less security, more speed
+          - init_on_alloc=0 # Less security, more speed
+          - init_on_free=0 # Less security, more speed
+          - intel_iommu=on # PCI Passthrough
+          - iommu=pt # PCI Passthrough
+          - mitigations=off # Less security, more speed
+          - security=none # Less security, more speed
+          - net.ifnames=1 # Enable predictable NIC naming
 
   - hostname: cp02
     ipAddress: 192.168.20.32
@@ -50,7 +57,7 @@ nodes:
           ip: *clusterEndpointIp
     schematic: *rpi-schematic
 
-  - hostname: cp03 # poseidon
+  - hostname: cp03
     ipAddress: 192.168.20.33
     controlPlane: true
     installDiskSelector:
@@ -66,7 +73,14 @@ nodes:
     schematic: &nuc-schematic
       customization:
         extraKernelArgs:
-          - net.ifnames=1
+          - apparmor=0 # Less security, more speed
+          - init_on_alloc=0 # Less security, more speed
+          - init_on_free=0 # Less security, more speed
+          - intel_iommu=on # PCI Passthrough
+          - iommu=pt # PCI Passthrough
+          - mitigations=off # Less security, more speed
+          - security=none # Less security, more speed
+          - net.ifnames=1 # Enable predictable NIC naming
         systemExtensions:
           officialExtensions:
             - siderolabs/usb-modem-drivers
@@ -89,7 +103,7 @@ nodes:
                   - rshared
                   - rw
 
-  - hostname: w01 # helios
+  - hostname: w01
     ipAddress: 192.168.20.34
     controlPlane: false
     installDiskSelector:
@@ -104,7 +118,7 @@ nodes:
     patches:
       - *nuc-patches
 
-  - hostname: w02 # zeus
+  - hostname: w02
     ipAddress: 192.168.20.35
     controlPlane: false
     installDiskSelector:
@@ -119,7 +133,7 @@ nodes:
     patches:
       - *nuc-patches
 
-  - hostname: w03 # iris
+  - hostname: w03
     ipAddress: 192.168.20.36
     controlPlane: false
     installDiskSelector:
@@ -134,7 +148,7 @@ nodes:
     patches:
       - *nuc-patches
 
-  - hostname: s01 # atlas
+  - hostname: s01
     ipAddress: 192.168.20.37
     controlPlane: false
     installDiskSelector:
@@ -150,7 +164,14 @@ nodes:
     schematic:
       customization:
         extraKernelArgs:
-          - net.ifnames=1
+          - apparmor=0 # Less security, more speed
+          - init_on_alloc=0 # Less security, more speed
+          - init_on_free=0 # Less security, more speed
+          - intel_iommu=on # PCI Passthrough
+          - iommu=pt # PCI Passthrough
+          - mitigations=off # Less security, more speed
+          - security=none # Less security, more speed
+          - net.ifnames=1 # Enable predictable NIC naming
         systemExtensions:
           officialExtensions:
             - siderolabs/i915
@@ -221,6 +242,24 @@ controlPlane:
         allowSchedulingOnMasters: false
         proxy:
           disabled: true
+        apiServer:
+          extraArgs:
+            enable-aggregator-routing: true
+            feature-gates: AuthorizeNodeWithSelectors=false
+
+    # Use discovery-service.
+    # The previous Kubernetes discovery service is deprecated due to security changes in Kubernetes.
+    # https://www.talos.dev/v1.10/talos-guides/discovery/#registries
+    # https://github.com/siderolabs/talos/issues/9980
+    - &clusterDiscovery |-
+      cluster:
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: true
+            service:
+              disabled: false
 
     - &hostDns |-
       machine:
@@ -272,6 +311,7 @@ worker:
     - *disableSearchDomainPatch
     - *nameServersPatch
     - *timeServersPatch
+    - *clusterDiscovery
     - *hostDns
     - *kubeletPatch
     - *sysctlsPatch
