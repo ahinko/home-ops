@@ -10,6 +10,5 @@ resources:
   - ./home-assistant/install.yaml
   - ./tcpsolis2mqtt/install.yaml
   - ./teslamate/install.yaml
-  - ./wyoming-piper/install.yaml
   - ./zigbee2mqtt/install.yaml
   - ./zwave-js-ui/install.yaml
