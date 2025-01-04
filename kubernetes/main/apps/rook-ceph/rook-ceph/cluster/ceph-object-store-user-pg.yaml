@@ -5,6 +5,5 @@ kind: CephObjectStoreUser
 metadata:
   name: postgres-user
 spec:
-  # Ref: https://rook.io/docs/rook/v1.14/Storage-Configuration/Object-Storage-RGW/object-storage/
   store: ceph-objectstore
   displayName: Postgres User

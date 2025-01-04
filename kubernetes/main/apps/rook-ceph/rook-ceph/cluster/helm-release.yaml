@@ -28,7 +28,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/rook/rook/blob/release-1.14/deploy/charts/rook-ceph-cluster/values.yaml
   values:
     toolbox:
       enabled: false
