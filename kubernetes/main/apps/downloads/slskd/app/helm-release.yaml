@@ -58,8 +58,6 @@ spec:
               SLSKD_REMOTE_CONFIGURATION: true
               SLSKD_SHARED_DIR: /media/downloads/slskd/shared
               SLSKD_NO_AUTH: true
-              SLSKD_METRICS: true
-              SLSKD_METRICS_NO_AUTH: true
               SLSKD_DOWNLOADS_DIR: /media/downloads/slskd/complete
               SLSKD_INCOMPLETE_DIR: /media/downloads/slskd/incomplete
               SLSKD_SHARE_FILTER: Thumbs.db$;\.DS_Store$
@@ -102,16 +100,6 @@ spec:
             port: *soulseekPort
             protocol: TCP
             targetPort: *soulseekPort
-
-    serviceMonitor:
-      app:
-        serviceName: slskd
-        endpoints:
-          - port: http
-            scheme: http
-            path: /api/v0/metrics
-            interval: 1m
-            scrapeTimeout: 10s
 
     ingress:
       app:
