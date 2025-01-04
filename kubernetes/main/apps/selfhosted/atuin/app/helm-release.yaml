@@ -48,13 +48,9 @@ spec:
               ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 8888
               ATUIN_OPEN_REGISTRATION: false
-              ATUIN_TLS__ENABLE: false
               ATUIN_TLS__CERT_PATH: ""
               ATUIN_TLS__PKEY_PATH: ""
               RUST_LOG: info
-              ATUIN_METRICS__ENABLE: "true"
-              ATUIN_METRICS__HOST: 0.0.0.0
-              ATUIN_METRICS__PORT: &metricsPort 8080
             resources:
               requests:
                 cpu: 10m
@@ -68,18 +64,7 @@ spec:
         ports:
           http:
             port: *port
-          metrics:
-            port: *metricsPort
 
-    serviceMonitor:
-      app:
-        serviceName: atuin
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
     ingress:
       app:
         className: nginx
