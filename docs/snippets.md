@@ -78,3 +78,25 @@ cd cc2538-bsl
 
 python3 ./cc2538-bsl.py -p socket://192.168.70.56:6638 -evw ../CC1352P2_CC2652P_launchpad_coordinator_20210708.hex
 ```
+
+## Postgres, pgvecto.rs and Immich
+
+If we get the `pg_basebackup: error: backup failed: ERROR:  file name too long for tar format` error then we need to:
+
+```SQL
+DROP INDEX clip_index;
+DROP INDEX face_index;
+```
+
+Get all replicas up and running and then:
+
+```SQL
+SET vectors.pgvector_compatibility=on;
+CREATE INDEX IF NOT EXISTS clip_index ON smart_search
+USING hnsw (embedding vector_cosine_ops)
+WITH (ef_construction = 300, m = 16);
+
+CREATE INDEX IF NOT EXISTS face_index ON face_search
+USING hnsw (embedding vector_cosine_ops)
+WITH (ef_construction = 300, m = 16);
+```
