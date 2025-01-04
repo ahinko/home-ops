@@ -89,9 +89,10 @@ spec:
         controller: minio
         ports:
           http:
-            port: 9001
+            port: &port-console 9001
           api:
-            port: 9000
+            enabled: true
+            port: &port-api 9000
 
     serviceMonitor:
       app:
@@ -114,33 +115,37 @@ spec:
           gethomepage.dev/name: Minio
           gethomepage.dev/app: minio
         hosts:
-          - host: &console-host minio.${SECRET_DOMAIN}
+          - host: &host-console minio.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
-                  port: http
+                  port: *port-console
         tls:
           - hosts:
-              - *console-host
+              - *host-console
+
       s3:
+        enabled: true
         className: nginx
         annotations:
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
           nginx.ingress.kubernetes.io/proxy-body-size: 1024m
           nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             chunked_transfer_encoding off;
         hosts:
-          - host: &api-host s3.${SECRET_DOMAIN}
+          - host: &host-api s3.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
-                  port: api
+                  port: *port-api
         tls:
           - hosts:
-              - *api-host
+              - *host-api
 
     persistence:
       config:
