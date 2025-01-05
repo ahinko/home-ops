@@ -8,4 +8,3 @@ resources:
   - ./k8tz/install.yaml
   - ./kubelet-csr-approver/install.yaml
   - ./metrics-server/install.yaml
-  - ./tainter/install.yaml

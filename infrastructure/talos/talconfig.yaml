@@ -17,59 +17,16 @@ cniConfig:
 
 nodes:
   - hostname: cp01
-    ipAddress: 192.168.20.31
-    controlPlane: true
-    installDisk: /dev/sda
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: d8:3a:dd:b1:68:3e
-        addresses:
-          - 192.168.20.31/24
-        dhcp: true
-        vip:
-          ip: *clusterEndpointIp
-    schematic: &rpi-schematic
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-      customization:
-        extraKernelArgs:
-          - apparmor=0 # Less security, more speed
-          - init_on_alloc=0 # Less security, more speed
-          - init_on_free=0 # Less security, more speed
-          - intel_iommu=on # PCI Passthrough
-          - iommu=pt # PCI Passthrough
-          - mitigations=off # Less security, more speed
-          - security=none # Less security, more speed
-          - net.ifnames=1 # Enable predictable NIC naming
-
-  - hostname: cp02
-    ipAddress: 192.168.20.32
-    controlPlane: true
-    installDisk: /dev/sda
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: e4:5f:01:86:fc:a0
-        addresses:
-          - 192.168.20.32/24
-        dhcp: true
-        vip:
-          ip: *clusterEndpointIp
-    schematic: *rpi-schematic
-
-  - hostname: cp03
-    ipAddress: 192.168.20.33
+    ipAddress: 192.168.20.35
     controlPlane: true
     installDiskSelector:
       type: ssd
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 20:7b:d2:aa:f2:bd
+          hardwareAddr: 20:7b:d2:b1:b8:7c
         addresses:
-          - 192.168.20.33/24
+          - 192.168.20.35/24
         dhcp: true
-        vip:
-          ip: *clusterEndpointIp
     schematic: &nuc-schematic
       customization:
         extraKernelArgs:
@@ -103,6 +60,38 @@ nodes:
                   - rshared
                   - rw
 
+  - hostname: cp02
+    ipAddress: 192.168.20.36
+    controlPlane: true
+    installDiskSelector:
+      type: ssd
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:ae:a5:09
+        addresses:
+          - 192.168.20.36/24
+        dhcp: true
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
+
+  - hostname: cp03
+    ipAddress: 192.168.20.33
+    controlPlane: true
+    installDiskSelector:
+      type: ssd
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 20:7b:d2:aa:f2:bd
+        addresses:
+          - 192.168.20.33/24
+        dhcp: true
+        vip:
+          ip: *clusterEndpointIp
+    schematic: *nuc-schematic
+    patches:
+      - *nuc-patches
+
   - hostname: w01
     ipAddress: 192.168.20.34
     controlPlane: false
@@ -113,36 +102,6 @@ nodes:
           hardwareAddr: 20:7b:d2:c3:1f:34
         addresses:
           - 192.168.20.34/24
-        dhcp: true
-    schematic: *nuc-schematic
-    patches:
-      - *nuc-patches
-
-  - hostname: w02
-    ipAddress: 192.168.20.35
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 20:7b:d2:b1:b8:7c
-        addresses:
-          - 192.168.20.35/24
-        dhcp: true
-    schematic: *nuc-schematic
-    patches:
-      - *nuc-patches
-
-  - hostname: w03
-    ipAddress: 192.168.20.36
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 20:7b:d2:ae:a5:09
-        addresses:
-          - 192.168.20.36/24
         dhcp: true
     schematic: *nuc-schematic
     patches:
@@ -239,7 +198,7 @@ controlPlane:
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: false
+        allowSchedulingOnMasters: true
         proxy:
           disabled: true
         apiServer:

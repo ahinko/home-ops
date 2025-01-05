@@ -46,6 +46,3 @@ spec:
 
     prometheusRules:
       enabled: false
-
-    nodeSelector:
-      kubernetes.io/arch: amd64

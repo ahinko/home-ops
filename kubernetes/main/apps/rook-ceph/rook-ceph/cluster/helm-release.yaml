@@ -59,20 +59,6 @@ spec:
               - *host
 
     cephClusterSpec:
-      placement:
-        all:
-          tolerations:
-            - effect: NoSchedule
-              key: node-role.kubernetes.io/control-plane
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: kubernetes.io/arch
-                      operator: In
-                      values:
-                        - amd64
-
       mgr:
         modules:
           - name: pg_autoscaler
@@ -105,18 +91,18 @@ spec:
           osdsPerDevice: "1"
 
         nodes:
+          - name: cp01
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596620V"
+          - name: cp02
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596610A"
           - name: cp03
             devices:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596594W"
           - name: w01
             devices:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596621H"
-          - name: w02
-            devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596620V"
-          - name: w03
-            devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596610A"
 
       resources:
         mgr:

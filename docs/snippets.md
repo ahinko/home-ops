@@ -100,3 +100,9 @@ CREATE INDEX IF NOT EXISTS face_index ON face_search
 USING hnsw (embedding vector_cosine_ops)
 WITH (ef_construction = 300, m = 16);
 ```
+
+## Rook/ceph mds behind on trimming
+
+Fixed this by changeing: `k rook-ceph ceph config set mds mds_log_max_segments 256`
+
+Use `k rook-ceph ceph health detail` to get how far behind it is.

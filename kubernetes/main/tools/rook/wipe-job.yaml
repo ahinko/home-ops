@@ -2,98 +2,20 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-wipe-cp03
+  name: disk-wipe-w100
   namespace: kube-system # run in kube-system ns since we need a privileged pod
 spec:
   restartPolicy: Never
-  nodeName: cp03
+  nodeName: w100
   containers:
-    - name: disk-wipe-cp03
+    - name: disk-wipe-w100
       image: public.ecr.aws/docker/library/alpine:3.21.0
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
       args:
         [
-          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
-        ]
-      resources:
-        requests:
-          cpu: 100m
-          memory: 400M
-        limits:
-          memory: 2500M
-
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-wipe-w01
-  namespace: kube-system # run in kube-system ns since we need a privileged pod
-spec:
-  restartPolicy: Never
-  nodeName: w01
-  containers:
-    - name: disk-wipe-w01
-      image: public.ecr.aws/docker/library/alpine:3.21.0
-      securityContext:
-        privileged: true
-      command: ["/bin/sh", "-c"]
-      args:
-        [
-          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
-        ]
-      resources:
-        requests:
-          cpu: 100m
-          memory: 400M
-        limits:
-          memory: 2500M
-
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-wipe-w02
-  namespace: kube-system # run in kube-system ns since we need a privileged pod
-spec:
-  restartPolicy: Never
-  nodeName: w02
-  containers:
-    - name: disk-wipe-w02
-      image: public.ecr.aws/docker/library/alpine:3.21.0
-      securityContext:
-        privileged: true
-      command: ["/bin/sh", "-c"]
-      args:
-        [
-          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
-        ]
-      resources:
-        requests:
-          cpu: 100m
-          memory: 400M
-        limits:
-          memory: 2500M
-
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-wipe-w03
-  namespace: kube-system # run in kube-system ns since we need a privileged pod
-spec:
-  restartPolicy: Never
-  nodeName: w03
-  containers:
-    - name: disk-wipe-w03
-      image: public.ecr.aws/docker/library/alpine:3.21.0
-      securityContext:
-        privileged: true
-      command: ["/bin/sh", "-c"]
-      args:
-        [
-          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/sda; dd if=/dev/zero bs=1M count=100 of=/dev/sda; wipefs -af /dev/sda; blkdiscard /dev/sda; partprobe /dev/sda; lsblk /dev/sda --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
+          "apk update && apk add sgdisk util-linux parted bash device-mapper; lsblk /dev/nvme0n1 --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE; sgdisk --zap-all /dev/nvme0n1; dd if=/dev/zero bs=1M count=100 of=/dev/nvme0n1; wipefs -af /dev/nvme0n1; blkdiscard /dev/nvme0n1; partprobe /dev/nvme0n1; lsblk /dev/nvme0n1 --bytes --nodeps --pairs --paths --output SIZE,ROTA,RO,TYPE,PKNAME,NAME,KNAME,MOUNTPOINT,FSTYPE",
         ]
       resources:
         requests:
