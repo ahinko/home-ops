@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/plex
-              tag: 1.41.3.9314-a0bfb8370@sha256:38fcbef239341db591f8ff87f20777d9a783b79f757fc42e360041d7ba78eada
+              tag: 1.41.3.9314-a0bfb8370@sha256:4e004defdf450e5d86ce8c29f2dc62fa95fa12dfaae52fd36c948427eb186952
             env:
               PLEX_ADVERTISE_URL: https://192.168.20.202:32400,https://{{ .Release.Name }}.${SECRET_DOMAIN}:443
               PLEX_NO_AUTH_NETWORKS: 192.168.0.0/16
