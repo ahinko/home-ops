@@ -9,7 +9,7 @@ spec:
   nodeName: w100
   containers:
     - name: disk-wipe-w100
-      image: public.ecr.aws/docker/library/alpine:3.21.0
+      image: public.ecr.aws/docker/library/alpine:3.21.1
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
