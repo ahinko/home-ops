@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/valkey/valkey
-              tag: 8.0.1
+              tag: 8.0.2
     service:
       app:
         controller: immich-valkey
