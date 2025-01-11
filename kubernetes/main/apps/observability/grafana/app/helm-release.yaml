@@ -154,9 +154,12 @@ spec:
             - name: "DS_PROMETHEUS"
               value: Prometheus
 
-        smart:
-          url: https://raw.githubusercontent.com/blesswinsamuel/grafana-dashboards/refs/heads/main/dashboards/dist/dashboards/smartctl.json
-          datasource: Prometheus
+        smartctl-exporter:
+          # renovate: depName="SMARTctl Exporter Dashboard"
+          gnetId: 22604
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         zfs:
           # renovate: depName="ZFS"
