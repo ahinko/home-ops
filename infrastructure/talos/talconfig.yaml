@@ -198,7 +198,7 @@ controlPlane:
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: true
+        allowSchedulingOnControlPlanes: true
         proxy:
           disabled: true
         apiServer:
@@ -237,8 +237,6 @@ controlPlane:
     - &kubeletPatch |-
       machine:
         kubelet:
-          extraArgs:
-            rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
           nodeIP:

@@ -1,9 +1,0 @@
----
-replicas: 2
-providerRegex: |
-  ^(cp|w|s)\d{2}$
-bypassDnsResolution: true
-metrics:
-  enable: true
-  serviceMonitor:
-    enabled: true

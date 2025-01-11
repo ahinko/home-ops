@@ -25,8 +25,13 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/kubernetes-sigs/metrics-server/blob/master/charts/metrics-server/values.yaml
   values:
+    args:
+      - --kubelet-insecure-tls
+      - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+      - --kubelet-use-node-status-port
+      - --metric-resolution=10s
+      - --kubelet-request-timeout=2s
     metrics:
       enabled: true
     serviceMonitor:

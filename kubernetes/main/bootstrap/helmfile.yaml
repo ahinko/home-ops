@@ -1,5 +1,9 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
+
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubeVersion: v1.32.0
+
 helmDefaults:
   wait: true
   waitForJobs: true
@@ -12,8 +16,6 @@ repositories:
     url: https://prometheus-community.github.io/helm-charts
   - name: cilium
     url: https://helm.cilium.io
-  - name: postfinance
-    url: https://postfinance.github.io/kubelet-csr-approver
 
 releases:
   - name: prometheus-operator-crds
@@ -22,25 +24,16 @@ releases:
     version: 17.0.2
     wait: true
 
-  - name: cilium
-    namespace: kube-system
+  - name: &name cilium
+    namespace: &namespace kube-system
     chart: cilium/cilium
     version: 1.16.5
-    values: ["../../../kubernetes/main/apps/kube-system/cilium/app/values.yaml"]
-    needs:
-      - observability/prometheus-operator-crds
-
-  - name: kubelet-csr-approver
-    namespace: kube-system
-    chart: postfinance/kubelet-csr-approver
-    version: 1.2.5
     values:
-      [
-        "../../../kubernetes/main/apps/kube-system/kubelet-csr-approver/app/values.yaml",
-      ]
-    needs:
-      - kube-system/cilium
-      - observability/prometheus-operator-crds
+      - "../../../kubernetes/main/apps/kube-system/cilium/app/values.yaml"
+      - commonLabels:
+          helm.toolkit.fluxcd.io/name: *name
+          helm.toolkit.fluxcd.io/namespace: *namespace
+    needs: ["observability/prometheus-operator-crds"]
 
   - name: spegel
     namespace: system
@@ -49,13 +42,10 @@ releases:
     values: ["../../../apps/system/spegel/app/values.yaml"]
     needs:
       - kube-system/cilium
-      - kube-system/kubelet-csr-approver
       - observability/prometheus-operator-crds
 
   - name: flux-operator
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
     version: 0.13.0
-    needs:
-      - kube-system/cilium
-      - kube-system/kubelet-csr-approver
+    needs: ["kube-system/cilium"]
