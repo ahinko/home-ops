@@ -17,3 +17,7 @@ iot:
       ansible_host: 192.168.71.160
       ansible_user: zwave
       mac: 00:e0:4c:36:01:13
+
+    carkey:
+      ansible_host: 192.168.71.8
+      ansible_user: peter

@@ -14,3 +14,4 @@ talosconfig*
 *.iso
 .task/checksum
 **/Brewfile.lock.json
+docker/**/*.env

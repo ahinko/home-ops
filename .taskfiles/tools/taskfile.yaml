@@ -25,7 +25,14 @@ tasks:
     desc: Install/update all required dependencies
     silent: true
     cmds:
-      # Instal krew plugins
+      # Install krew plugins
       - kubectl krew install {{.KREW}}
       - kubectl krew update
       - kubectl krew upgrade
+
+  ansible:
+    desc: Intall/update Ansible roles
+    silent: true
+    cmds:
+      - ansible-galaxy install -r {{.ROOT_DIR}}/infrastructure/ansible/requirements.yaml --force
+      - ansible-galaxy collection install -r {{.ROOT_DIR}}/infrastructure/ansible/requirements.yaml --force

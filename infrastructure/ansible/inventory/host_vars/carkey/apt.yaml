@@ -1,0 +1,6 @@
+---
+apt_disable_recommends: "enabled"
+apt_unattended_upgrades: "disabled"
+
+apt_install_packages:
+  - git

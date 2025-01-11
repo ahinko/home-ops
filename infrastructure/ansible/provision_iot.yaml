@@ -1,5 +1,4 @@
 ---
-
 - name: IOT provision Zwave Coordinator
   hosts:
     - zwave-coordinator
@@ -10,3 +9,14 @@
     - role: apt
     - role: ser2net
     - role: readonly
+
+- name: IOT provision car key
+  hosts:
+    - carkey
+  remote_user: peter
+  become: true
+  become_method: ansible.builtin.sudo
+  roles:
+    - role: apt
+    - role: geerlingguy.docker
+    - role: homelab

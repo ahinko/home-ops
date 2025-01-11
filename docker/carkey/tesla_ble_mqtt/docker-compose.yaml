@@ -1,0 +1,22 @@
+---
+services:
+  tesla_ble_mqtt:
+    container_name: tesla_ble_mqtt
+    image: "iainbullock/tesla_ble_mqtt:v0.3.0"
+
+    # Configuration Settings have been moved to the "stack.env" file
+    env_file: stack.env
+
+    # Needed to open the Bluetooth dongle to send commands to the car
+    network_mode: host
+    privileged: true
+
+    volumes:
+      - tesla_ble_mqtt:/share/tesla_ble_mqtt
+      - /run/dbus:/run/dbus
+
+    restart: always
+
+volumes:
+  tesla_ble_mqtt:
+    external: true
