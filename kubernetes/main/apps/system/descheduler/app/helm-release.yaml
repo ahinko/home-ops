@@ -16,6 +16,10 @@ spec:
   values:
     replicas: 2
     kind: Deployment
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       profiles:
