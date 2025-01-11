@@ -2,7 +2,7 @@
 services:
   tesla_ble_mqtt:
     container_name: tesla_ble_mqtt
-    image: "iainbullock/tesla_ble_mqtt:v0.3.0"
+    image: "iainbullock/tesla_ble_mqtt:v1.0.0"
 
     # Configuration Settings have been moved to the "stack.env" file
     env_file: stack.env
