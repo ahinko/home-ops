@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: krateng/maloja
-              tag: 3.2.2
+              tag: 3.2.3
 
             envFrom:
               - secretRef:
