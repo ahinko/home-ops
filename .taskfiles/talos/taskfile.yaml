@@ -101,7 +101,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.9.1/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
+      - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.9.2/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
