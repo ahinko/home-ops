@@ -38,7 +38,7 @@ spec:
           main:
             image:
               repository: jellyfin/jellyfin
-              tag: 10.10.3
+              tag: 10.10.5
 
             resources:
               requests:
