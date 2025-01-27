@@ -27,7 +27,7 @@ releases:
   - name: &name cilium
     namespace: &namespace kube-system
     chart: cilium/cilium
-    version: 1.16.5
+    version: 1.16.6
     values:
       - "../../../kubernetes/main/apps/kube-system/cilium/app/values.yaml"
       - commonLabels:
