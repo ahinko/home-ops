@@ -1,0 +1,41 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres17-backup
+spec:
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: postgres-backup
+              image: ghcr.io/ahinko/simple-pg-backup:v4.1.0
+              imagePullPolicy: IfNotPresent
+              args:
+                - /run.sh
+              env:
+                - name: POSTGRES_DB
+                  value: "atuin,miniflux,kitchenowl,teslamate,mastodon,homeassistant"
+                - name: POSTGRES_HOST
+                  value: "postgres17-rw.databases"
+                - name: POSTGRES_EXTRA_OPTS
+                  value: "-b -C -c --inserts"
+                - name: COMPRESS
+                  value: "true"
+                - name: VERIFY_COMPRESSION
+                  value: "true"
+                - name: BACKUP_NAME
+                  value: "postgres17"
+                - name: MINIO_BUCKET
+                  value: "backups"
+                - name: MINIO_HOST
+                  value: "https://s3.hemma.dev"
+              envFrom:
+                - secretRef:
+                    name: postgres17-backup-secret
+          restartPolicy: OnFailure

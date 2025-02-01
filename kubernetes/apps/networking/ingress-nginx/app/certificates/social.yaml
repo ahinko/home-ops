@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "selfy-social-social"
+spec:
+  secretName: "selfy-social-tls"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "selfy.social"
+  dnsNames:
+    - "selfy.social"
+    - "*.selfy.social"

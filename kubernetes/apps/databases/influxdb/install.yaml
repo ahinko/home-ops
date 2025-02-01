@@ -1,0 +1,34 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname influxdb
+  namespace: &namespace databases
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: storage
+    - name: external-secrets
+      namespace: security
+  interval: 30m
+  path: "./kubernetes/apps/databases/influxdb/app"
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CLAIM: influxdb-data
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true

@@ -1,0 +1,15 @@
+---
+originRequest:
+  http2Origin: true
+  noTLSVerify: true
+
+ingress:
+  - hostname: selfy.social
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress.selfy.social
+  - hostname: "*.selfy.social"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress.selfy.social
+  - service: http_status:404

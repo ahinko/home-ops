@@ -3,36 +3,6 @@
 version: "3"
 
 tasks:
-  bootstrap:
-    desc: Bootstrap Flux into a Kubernetes cluster
-    summary: |-
-      Args:
-        CLUSTER: Cluster to run command against (required)
-    prompt: Bootstrap Flux into the '{{.CLUSTER}}' cluster ... continue?
-    vars:
-      BOOTSTRAP_TEMPLATES:
-        sh: ls {{.CLUSTER_DIR}}/bootstrap/secrets/*.j2
-    env:
-      VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
-      CLUSTER: '{{.CLUSTER | default "main"}}'
-    cmds:
-      - for: { var: BOOTSTRAP_TEMPLATES }
-        cmd: >
-          op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
-          minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.ITEM}}
-          | kubectl --context {{.CLUSTER}} apply --server-side --filename -
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/instance
-      - until kubectl wait fluxinstance --for=condition=Ready --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/config
-
-  update:cluster:secrets:
-    desc: Update cluster secrets
-    env:
-      VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
-    cmd: >
-      op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
-      minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.CLUSTER_DIR}}/bootstrap/secrets/cluster-secrets.yaml.j2
-      | kubectl --context {{.CLUSTER}} apply --server-side --filename -
   hr:
     desc: List all Helm Releases
     silent: true

@@ -1,0 +1,38 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname evcc
+  namespace: &namespace home-automation
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/gatus/internal
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: emqx-cluster
+      namespace: home-automation
+    - name: volsync
+      namespace: storage
+  interval: 30m
+  path: "./kubernetes/apps/home-automation/evcc/app"
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_GID: "0"
+      APP_UID: "0"
+      GATUS_SUBDOMAIN: *appname
+      VOLSYNC_CAPACITY: 20Gi
+      VOLSYNC_CLAIM: evcc
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true

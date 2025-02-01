@@ -1,0 +1,169 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: homepage
+      version: 2.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: jameswynn-charts
+        namespace: flux-system
+      interval: 30m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      repository: ghcr.io/gethomepage/homepage
+      tag: v0.10.9
+
+    # Enable RBAC. RBAC is necessary to use Kubernetes integration
+    enableRbac: true
+
+    extraClusterRoles:
+      # - apiGroups:
+      #   - some-group
+      #   resources:
+      #   - some-resource
+      #   verbs:
+      #   - get
+
+    serviceAccount:
+      # Specify a different service account name. When blank it will default to the release
+      # name if *create* is enabled, otherwise it will refer to the default service account.
+      name: ""
+      # Create service account. Needed when RBAC is enabled.
+      create: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: 3000
+
+    controller:
+      strategy: RollingUpdate
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+
+    # Enable the ingress to expose Homepage to the network.
+    ingress:
+      main:
+        enabled: true
+        # labels:
+        #   # This label will enable discover of this deployment in Homepage
+        #   gethomepage.dev/enabled: "true"
+        # annotations:
+        #   # These annotations will configure how this deployment is shown in Homepage
+        #   gethomepage.dev/name: "Homepage"
+        #   gethomepage.dev/description: "A modern, secure, highly customizable application dashboard."
+        #   gethomepage.dev/group: "A New Group"
+        #   gethomepage.dev/icon: "homepage.png"
+        ingressClassName: "nginx"
+        hosts:
+          - host: &host "start.hemma.dev"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    # All the config files for Homepage can be specified under their relevant config block.
+    config:
+      # To use an existing ConfigMap uncomment this line and specify the name
+      # useExistingConfigMap: existing-homepage-configmap
+      bookmarks:
+      services:
+      widgets:
+        # Uncomment to enable Kubernetes integration
+        - kubernetes:
+            cluster:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+              label: "cluster"
+            nodes:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+      kubernetes:
+        # change mode to 'cluster' to use RBAC service account
+        mode: cluster
+      docker:
+      settings:
+        title: Services
+        headerStyle: boxedWidgets
+        cardBlur: sm
+        hideVersion: true
+        disableCollapse: false
+
+        layout:
+          - Home Automation:
+          - Selfhosted:
+          - Media:
+          - Household:
+          - Observability:
+          - Tools:
+          - Downloads:
+          - Social:
+
+    # -- Main environment variables. Template enabled.
+    # Syntax options:
+    # A) TZ: UTC
+    # B) PASSWD: '{{ .Release.Name }}'
+    # C) PASSWD:
+    #      configMapKeyRef:
+    #        name: config-map-name
+    #        key: key-name
+    # D) PASSWD:
+    #      valueFrom:
+    #        secretKeyRef:
+    #          name: secret-name
+    #          key: key-name
+    #      ...
+    # E) - name: TZ
+    #      value: UTC
+    # F) - name: TZ
+    #      value: '{{ .Release.Name }}'
+    env:
+
+    # To include environment variables from other configs or other secrets for use in
+    # Homepage's variable substitutions. Refer to them here.
+    # envFrom:
+    #   - secretRef:
+    #       name: my-secret
+    #   - configMapRef:
+    #       name: my-configmap
+
+    persistence:
+      logs:
+        enabled: true
+        type: emptyDir
+        mountPath: /app/config/logs
+
+    resources:
+      requests:
+        memory: 10Mi
+        cpu: 10m
+      limits:
+        memory: 200Mi
+        cpu: 500m
+
+    # -- Add more resources here

@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mailpit
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+
+  values:
+    controllers:
+      mailpit:
+        strategy: RollingUpdate
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/axllent/mailpit
+              tag: v1.22.0
+
+            env:
+              MP_SMTP_AUTH_ACCEPT_ANY: "true"
+              MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            resources:
+              requests:
+                cpu: 6m
+                memory: 128Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      app:
+        controller: mailpit
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.20.208
+        ports:
+          http:
+            port: 8025
+          smtp:
+            port: 1025
+
+    ingress:
+      app:
+        className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Catch all mail from the cluster
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: sh-mail-in-a-box.svg
+          gethomepage.dev/name: Mailpit
+        hosts:
+          - host: &host "mailpit.hemma.dev"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host

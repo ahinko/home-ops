@@ -5,7 +5,7 @@ version: 3
 env:
   BREWFILE: "{{.ROOT_DIR}}/.taskfiles/tools/resources/Brewfile"
   KREW: |-
-    cnpg rook-ceph browse-pvc view-secret
+    cnpg rook-ceph browse-pvc view-secret node-shell
 
 tasks:
   brew:

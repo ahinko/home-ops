@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: system
+resources:
+  - ./namespace.yaml
+  - ./descheduler/install.yaml
+  - ./fstrim/install.yaml
+  - ./generic-device-plugin/install.yaml
+  - ./intel-device-plugins/install.yaml
+  - ./node-feature-discovery/install.yaml
+  - ./reloader/install.yaml
+  - ./spegel/install.yaml
+components:
+  - ../../components/alerts

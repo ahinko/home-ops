@@ -14,7 +14,7 @@
 # Pull the repo to /homelab
 - name: Read-write git checkout from github
   ansible.builtin.git:
-    repo: git@github.com:ahinko/homelab.git
+    repo: git@github.com:ahinko/home-ops.git
     dest: "{{ homelab_repo_path }}"
 
 # run the shell script scripts/automatic-docker-updates.sh

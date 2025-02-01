@@ -12,4 +12,4 @@ tasks:
     desc: Wipe rook disks
     prompt: This will wipe all disks used by Rook/Ceph... continue?
     cmds:
-      - kubectl apply -f kubernetes/main/tools/rook/wipe-job.yaml
+      - kubectl apply -f kubernetes/tools/rook/wipe-job.yaml

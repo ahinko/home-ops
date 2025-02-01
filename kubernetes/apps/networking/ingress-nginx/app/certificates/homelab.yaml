@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "hemma-dev-homelab"
+spec:
+  secretName: "hemma-dev-tls"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "hemma.dev"
+  dnsNames:
+    - "hemma.dev"
+    - "*.hemma.dev"

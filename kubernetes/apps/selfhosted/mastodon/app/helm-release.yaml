@@ -1,0 +1,180 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mastodon
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: *app
+      version: 9.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+      interval: 30m
+  maxHistory: 2
+  timeout: 30m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      storageClass: "ceph-block"
+
+    image:
+      registry: docker.io
+      repository: bitnami/mastodon
+      tag: 4.3.3
+
+    environment: production
+    adminUser: "peter"
+    adminEmail: "peter@selfy.social"
+
+    existingSecret: "mastodon-secret"
+
+    enableSearches: true
+    enableS3: false
+    useSecureWebSocket: true
+    local_https: true
+    localDomain: "toot.selfy.social"
+    webDomain: "toot.selfy.social"
+    defaultLocale: en
+
+    smtp:
+      port: 8025
+      from_address: "notifications@selfy.social"
+      domain: "selfy.social"
+      delivery_method: smtp
+      openssl_verify_mode: none
+      enable_starttls_auto: true
+      tls: false
+      auth_method: none
+      existingSecret: "mastodon-secret"
+      existingSecretLoginKey: "SMTP_LOGIN"
+      existingSecretPasswordKey: "SMTP_PASSWORD"
+      existingSecretServerKey: "SMTP_SERVER"
+
+    web:
+      replicaCount: 1
+      containerPorts:
+        http: 3000
+      resources:
+        limits:
+          memory: 2048Mi
+        requests:
+          memory: 500Mi
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+
+      service:
+        type: ClusterIP
+        ports:
+          http: 80
+
+    sidekiq:
+      replicaCount: 1
+      resources:
+        limits:
+          memory: 2048Mi
+        requests:
+          memory: 500Mi
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+
+    streaming:
+      replicaCount: 1
+      containerPorts:
+        http: 8080
+      resources:
+        limits:
+          memory: 1024Mi
+        requests:
+          memory: 500Mi
+
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+
+      service:
+        type: ClusterIP
+        ports:
+          http: 80
+
+    tootctlMediaManagement:
+      enabled: true
+      removeAttachments: true
+      removeAttachmentsDays: 7
+      removeCustomEmoji: false
+      removePreviewCards: true
+      removePreviewCardsDays: 30
+      removeAvatars: true
+      removeAvatarsDays: 30
+      removeHeaders: true
+      removeHeadersDays: 30
+      removeOrphans: true
+      includeFollows: false
+      cronSchedule: "14 3 * * *"
+      failedJobsHistoryLimit: 3
+      successfulJobsHistoryLimit: 1
+      concurrencyPolicy: Allow
+
+    persistence:
+      enabled: true
+      existingClaim: *app
+      mountPath: /opt/bitnami/mastodon/public/system
+
+    initJob:
+      migrateAndCreateAdmin:
+        createAdmin: false
+
+    externalDatabase:
+      host: "postgres17-rw.databases"
+      port: 5432
+      user: mastodon-E0fQbz
+      database: *app
+      existingSecret: "database-mastodon-user"
+      existingSecretPasswordKey: "PASSWORD"
+
+    externalRedis:
+      host: "dragonfly.databases.svc.cluster.local"
+      port: 6379
+      password: ""
+
+    elasticsearch:
+      enabled: true
+      sysctlImage:
+        enabled: true
+      security:
+        enabled: false
+        existingSecret: ""
+        tls:
+          restEncryption: false
+      master:
+        replicaCount: 1
+      coordinating:
+        replicaCount: 1
+      data:
+        replicaCount: 1
+      ingest:
+        replicaCount: 1
+      service:
+        ports:
+          restAPI: 9200
+
+    redis:
+      enabled: false
+    postgresql:
+      enabled: false
+    minio:
+      enabled: false
+
+    apache:
+      enabled: false

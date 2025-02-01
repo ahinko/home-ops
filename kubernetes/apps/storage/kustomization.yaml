@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: storage
+resources:
+  - ./namespace.yaml
+  - ./minio/install.yaml
+  - ./openebs/install.yaml
+  - ./samba/install.yaml
+  - ./snapshot-controller/install.yaml
+  - ./volsync/install.yaml
+  - ./zfs-scrub/install.yaml
+  - ./znapzend/install.yaml
+components:
+  - ../../components/alerts

@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/helmfile
+
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubeVersion: v1.32.0
+
+helmDefaults:
+  wait: true
+  waitForJobs: true
+  timeout: 600
+  recreatePods: true
+  force: true
+
+repositories:
+  - name: cilium
+    url: https://helm.cilium.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+
+releases:
+  - name: prometheus-operator-crds
+    namespace: observability
+    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
+    version: 17.0.2
+
+  - name: cilium
+    namespace: kube-system
+    chart: cilium/cilium
+    version: 1.16.6
+    values:
+      - "../apps/kube-system/cilium/app/values.yaml"
+    needs:
+      - "observability/prometheus-operator-crds"
+
+  - name: coredns
+    namespace: kube-system
+    chart: oci://ghcr.io/coredns/charts/coredns
+    version: 1.39.0
+    values:
+      - ../apps/kube-system/coredns/app/helm-values.yaml
+    needs:
+      - kube-system/cilium
+
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    version: v1.16.3
+    values:
+      - ../apps/cert-manager/cert-manager/app/helm-values.yaml
+    needs:
+      - kube-system/coredns
+
+  - name: external-secrets
+    namespace: security
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    version: 0.13.0
+    values:
+      - ../apps/security/external-secrets/app/helm-values.yaml
+    needs:
+      - cert-manager/cert-manager
+
+  - name: flux-operator
+    namespace: flux-system
+    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+    version: 0.13.0
+    values:
+      - ../apps/flux-system/operator/app/helm-values.yaml
+    needs:
+      - "security/external-secrets"
+
+  - name: flux-instance
+    namespace: flux-system
+    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
+    version: 0.13.0
+    wait: false
+    values:
+      - ../apps/flux-system/operator/instance/helm-values.yaml
+    needs:
+      - flux-system/flux-operator

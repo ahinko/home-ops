@@ -21,7 +21,7 @@ psql -h 192.168.20.204 -U nextcloud -W -d nextcloud < ./nextcloud_backup.sql
 There is no easy way of doing this, Cloudnative-PG does not support upgrading major versions.
 
 Checklist:
-- [ ] Create new manifests for a new cluster in `kubernetes/main/apps/databases/cloudnative-pg/clusters`. Don't forget to add version to names.
+- [ ] Create new manifests for a new cluster in `kubernetes/apps/databases/cloudnative-pg/clusters`. Don't forget to add version to names.
   - [ ] DO NOT add a new loadbalancer just yet.
   - [ ] See https://cloudnative-pg.io/documentation/1.20/database_import/ for more information.
 - [ ] Scale down services that uses postgres
@@ -30,7 +30,7 @@ Checklist:
 - [ ] Update `ext-postgres-operator` config to start using the new cluster
 - [ ] Add a new cronjob for `simple-pg-backup` with matching version.
 - [ ] Migrate each service to the new cluster and don't forget to move backups from old version to new version.
-- [ ] Delete the old postgres cluster by removing the manifests in `kubernetes/main/apps/databases/cloudnative-pg/clusters`.
+- [ ] Delete the old postgres cluster by removing the manifests in `kubernetes/apps/databases/cloudnative-pg/clusters`.
 - [ ] Deploy new loadbalancer
 
 ## Reset Rook Ceph cluster

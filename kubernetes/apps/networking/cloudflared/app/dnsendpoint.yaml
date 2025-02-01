@@ -1,0 +1,10 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloudflared
+spec:
+  endpoints:
+    - dnsName: ingress.selfy.social
+      recordType: CNAME
+      targets: ["1a2e0f0b-8fc8-4036-828c-b4a62f1bb2cd.cfargotunnel.com"]

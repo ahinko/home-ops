@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app external-dns-unifi
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.15.1
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: *app
+    podAnnotations:
+      secret.reloader.stakater.com/reload: &secret external-dns-unifi-secret
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/kashalls/external-dns-unifi-webhook
+          tag: v0.4.1
+        env:
+          - name: UNIFI_HOST
+            value: https://192.168.20.1
+          - name: UNIFI_USER
+            valueFrom:
+              secretKeyRef:
+                name: *secret
+                key: EXTERNAL_DNS_UNIFI_USER
+          - name: UNIFI_PASS
+            valueFrom:
+              secretKeyRef:
+                name: *secret
+                key: EXTERNAL_DNS_UNIFI_PASS
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+    extraArgs:
+      - --ignore-ingress-tls-spec
+    triggerLoopOnEvent: true
+    policy: sync
+    sources: ["ingress", "service"]
+    txtOwnerId: mainframe
+    txtPrefix: k8s.mainframe.
+    domainFilters:
+      - "hemma.dev"
+    serviceMonitor:
+      enabled: true

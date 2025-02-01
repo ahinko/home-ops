@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: radicale
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      radicale:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/ahinko/docker-radicale
+              tag: 3.4.1
+
+            resources:
+              requests:
+                cpu: 600m
+                memory: 100M
+              limits:
+                memory: 512M
+
+    service:
+      app:
+        controller: radicale
+        ports:
+          http:
+            port: 5232
+
+    ingress:
+      app:
+        className: "nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
+          nginx.org/proxy-connect-timeout: 600s
+          nginx.org/proxy-read-timeout: 600s
+          nginx.org/proxy-send-timeout: 600s
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Calendars
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-radicale.svg
+          gethomepage.dev/name: Radicale
+        hosts:
+          - host: &host "radicale.hemma.dev"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        type: configMap
+        name: radicale-config
+        globalMounts:
+          - path: /config/config
+            subPath: config.cfg
+            readOnly: true
+
+      data:
+        type: persistentVolumeClaim
+        existingClaim: "${VOLSYNC_CLAIM}"
+        globalMounts:
+          - path: /data
+
+      auth:
+        type: secret
+        name: radicale-secret
+        globalMounts:
+          - path: /config/users
+            subPath: users
+            readOnly: true

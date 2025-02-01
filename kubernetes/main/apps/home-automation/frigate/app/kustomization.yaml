@@ -1,9 +1,0 @@
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./external-secret.yaml
-  - ./config-pvc.yaml
-  - ./media-pvc.yaml
-  - ./helm-release.yaml
-  - ../../../../tmpl/gatus/internal

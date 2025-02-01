@@ -1,0 +1,33 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app pocket-id
+  namespace: &namespace security
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/internal
+    - ../../../../components/volsync
+  dependsOn:
+    - name: volsync
+      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  interval: 30m
+  path: ./kubernetes/apps/security/pocket-id/app
+  postBuild:
+    substitute:
+      APP: *app
+      APP_GID: "568"
+      APP_UID: "568"
+      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CLAIM: pocket-id-config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  wait: false

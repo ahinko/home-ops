@@ -4,8 +4,7 @@ version: "3"
 
 vars:
   TALOS_DIR: "{{.ROOT_DIR}}/infrastructure/talos"
-  CLUSTER: '{{.CLUSTER | default "main"}}'
-  CLUSTER_DIR: "{{.ROOT_DIR}}/kubernetes/{{.CLUSTER}}"
+  CLUSTER_DIR: "{{.ROOT_DIR}}/kubernetes"
 
 tasks:
   default:

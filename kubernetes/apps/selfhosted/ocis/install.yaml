@@ -1,0 +1,34 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname ocis
+  namespace: &namespace selfhosted
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: onepassword-store
+      namespace: security
+    - name: volsync
+      namespace: storage
+  interval: 30m
+  path: "./kubernetes/apps/selfhosted/ocis/app"
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CAPACITY: 100Gi
+      VOLSYNC_CLAIM: ocis-data
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true

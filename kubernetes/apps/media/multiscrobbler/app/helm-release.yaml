@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: multi-scrobbler
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  interval: 30m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      multiscrobbler:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/foxxmd/multi-scrobbler
+              tag: 0.9.1
+
+            envFrom:
+              - secretRef:
+                  name: multi-scrobbler-secret
+
+            env:
+              BASE_URL: https://multiscrobbler.hemma.dev
+              SUBSONIC_URL: http://navidrome:4533
+              MALOJA_URL: http://maloja:42010
+              LASTFM_REDIRECT_URI: https://multiscrobbler.hemma.dev/lastfm/callback
+              SPOTIFY_REDIRECT_URI: https://multiscrobbler.hemma.dev/callback
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+            resources:
+              requests:
+                cpu: 5m
+                memory: 500M
+              limits:
+                memory: 1024M
+
+    service:
+      app:
+        controller: multiscrobbler
+        ports:
+          http:
+            port: 9078
+
+    ingress:
+      app:
+        className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Scrobble music
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-multi-scrobbler.png
+          gethomepage.dev/name: Multi-scrobbler
+        hosts:
+          - host: &host multiscrobbler.hemma.dev
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        existingClaim: "${VOLSYNC_CLAIM}"

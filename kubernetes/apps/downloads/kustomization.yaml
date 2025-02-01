@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: downloads
+resources:
+  - ./namespace.yaml
+  - ./bazarr/install.yaml
+  - ./lidarr/install.yaml
+  - ./qbittorrent/install.yaml
+  - ./radarr/install.yaml
+  - ./recyclarr/install.yaml
+  - ./sabnzbd/install.yaml
+  - ./slskd/install.yaml
+  - ./sonarr/install.yaml
+components:
+  - ../../components/alerts

@@ -1,0 +1,136 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: romm
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      romm:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: s01
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/rommapp/romm
+              tag: 3.7.3
+
+            env:
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-romm-user
+                    key: HOST
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-romm-user
+                    key: DATABASE_NAME
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-romm-user
+                    key: LOGIN
+              DB_PASSWD:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-romm-user
+                    key: PASSWORD
+
+              DB_PORT: "5432"
+              ROMM_DB_DRIVER: "postgresql"
+              REDIS_HOST: "dragonfly.databases.svc.cluster.local"
+              REDIS_PORT: "6379"
+
+              OIDC_ENABLED: true
+              OIDC_PROVIDER: pocket-id
+              OIDC_REDIRECT_URI: "https://romm.hemma.dev/api/oauth/openid"
+              OIDC_SERVER_APPLICATION_URL: "https://pid.hemma.dev"
+
+            envFrom:
+              - secretRef:
+                  name: romm-secret
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+            resources:
+              requests:
+                memory: 512M
+                cpu: 10m
+              limits:
+                memory: 1024M
+
+    service:
+      app:
+        controller: romm
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      app:
+        className: "nginx"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Rom emulator
+          gethomepage.dev/group: Games
+          gethomepage.dev/icon: Romm
+        hosts:
+          - host: "romm.hemma.dev"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - "romm.hemma.dev"
+
+    persistence:
+      config:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          romm:
+            app:
+              - path: /romm
+
+      media:
+        type: hostPath
+        hostPath: /var/mnt/tank/games
+        globalMounts:
+          - path: /romm/library

@@ -11,7 +11,7 @@ tasks:
     desc: Generate Talos machine configurations
     dir: "{{.TALOS_DIR}}"
     env:
-      VAULT: '{{if eq .CLUSTER "main"}}Homelab{{else}}{{.CLUSTER}}{{end}}'
+      VAULT: 'Homelab'
     cmds:
       - op run --env-file="./op.env" -- talhelper genconfig
     sources:
@@ -58,7 +58,7 @@ tasks:
     desc: Wait for services in cluster to be healthy
     cmds:
       # Ensure CephCluster is healthy
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
+      # - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
       # Ensure CloudNative-PG cluster has 3 ready instances
       - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres16
       - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres17
@@ -84,17 +84,32 @@ tasks:
     cmds:
       - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 10; done
 
+  talosconfig:
+    desc: Get an updated version of talosconfig
+    cmds:
+      - cp infrastructure/talos/clusterconfig/talosconfig ~/.talos/config
+
   kubeconfig:
     desc: Get an updated version of kubeconfig with updated/rotated certificates
     cmds:
-      - talosctl kubeconfig ~/.kube/configs/main -n {{.TALOS_CONTROLLER}}
-      - kubectl config rename-context admin@main main
+      - talosctl kubeconfig ~/.kube/configs/mainframe -n {{.TALOS_CONTROLLER}}
+      - kubectl config rename-context admin@mainframe mainframe
 
   bootstrap-core-apps:
     desc: Bootstrap core helm apps
+    vars:
+      BOOTSTRAP_TEMPLATES:
+        sh: ls {{.CLUSTER_DIR}}/bootstrap/secrets/*.j2
+    env:
+      VAULT: 'Homelab'
     cmds:
       - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply
+      - for: { var: BOOTSTRAP_TEMPLATES }
+        cmd: >
+          op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
+          minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.ITEM}}
+          | kubectl apply --server-side --filename -
+      - helmfile --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
 
   write-talos-amd64-to-usb:

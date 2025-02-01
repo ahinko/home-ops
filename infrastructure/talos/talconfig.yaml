@@ -1,5 +1,5 @@
 ---
-clusterName: main
+clusterName: mainframe
 endpoint: https://192.168.20.30:6443
 
 talosVersion: v1.9.3
@@ -195,16 +195,36 @@ controlPlane:
             allowedKubernetesNamespaces:
               - kube-system
 
+    # Enable MutatingAdmissionPolicy
+    - |-
+      cluster:
+        apiServer:
+          extraArgs:
+            runtime-config: admissionregistration.k8s.io/v1alpha1=true
+            feature-gates: MutatingAdmissionPolicy=true
+
     # Cluster configuration
     - |-
       cluster:
         allowSchedulingOnControlPlanes: true
+        coreDNS:
+          disabled: true
         proxy:
           disabled: true
-        apiServer:
-          extraArgs:
-            enable-aggregator-routing: true
-            feature-gates: AuthorizeNodeWithSelectors=false
+        scheduler:
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
 
     # Use discovery-service.
     # The previous Kubernetes discovery service is deprecated due to security changes in Kubernetes.
