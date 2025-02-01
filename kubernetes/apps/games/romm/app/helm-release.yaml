@@ -109,7 +109,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Rom emulator
           gethomepage.dev/group: Games
-          gethomepage.dev/icon: Romm
+          gethomepage.dev/icon: sh-romm.png
+          gethomepage.dev/name: Romm
         hosts:
           - host: "romm.hemma.dev"
             paths:

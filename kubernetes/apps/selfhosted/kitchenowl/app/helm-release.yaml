@@ -111,7 +111,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Shopping list
-          gethomepage.dev/group: Household
+          gethomepage.dev/group: Selfhosted
           gethomepage.dev/icon: sh-kitchenowl.png
           gethomepage.dev/name: Kitchen Owl
         hosts:
