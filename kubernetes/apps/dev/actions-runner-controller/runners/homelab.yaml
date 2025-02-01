@@ -30,18 +30,42 @@ spec:
 
     githubConfigUrl: https://github.com/ahinko/home-ops
 
-    minRunners: 1
+    minRunners: 0
     maxRunners: 3
 
     containerMode:
-      type: "dind"
+      type: kubernetes
+      kubernetesModeWorkVolumeClaim:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: openebs-hostpath
+        resources:
+          requests:
+            storage: 5Gi
 
     template:
       spec:
         containers:
           - name: runner
             image: ghcr.io/onedr0p/actions-runner:2.322.0
-            command: ["/home/runner/run.sh"]
+            command:
+              - /home/runner/run.sh
+            env:
+              - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+                value: "false"
+              - name: NODE_IP
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
+            volumeMounts:
+              - mountPath: /var/run/secrets/talos.dev
+                name: talos
+                readOnly: true
+        serviceAccountName: actions-runner
+        volumes:
+          - name: talos
+            secret:
+              secretName: actions-runner
 
     controllerServiceAccount:
       name: gha-runner-scale-set-controller
