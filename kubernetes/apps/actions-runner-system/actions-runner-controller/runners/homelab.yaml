@@ -28,13 +28,13 @@ spec:
   values:
     runnerScaleSetName: arc-runner-set-homelab
 
-    githubConfigUrl: https://github.com/ahinko/home-ops
+    githubConfigUrl: https://github.com/ahinko/homelab
 
-    minRunners: 0
+    minRunners: 1
     maxRunners: 3
 
     containerMode:
-      type: kubernetes
+      type: dind
       kubernetesModeWorkVolumeClaim:
         accessModes:
           - ReadWriteOnce
@@ -69,7 +69,7 @@ spec:
 
     controllerServiceAccount:
       name: gha-runner-scale-set-controller
-      namespace: dev
+      namespace: actions-runner-system
 
   valuesFrom:
     - kind: Secret

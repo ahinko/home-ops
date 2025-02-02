@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname actions-runner-controller
-  namespace: &namespace dev
+  namespace: &namespace actions-runner-system
 spec:
   commonMetadata:
     labels:
@@ -12,7 +12,7 @@ spec:
     - name: onepassword-store
       namespace: security
   interval: 30m
-  path: "./kubernetes/apps/dev/actions-runner-controller/operator"
+  path: "./kubernetes/apps/actions-runner-system/actions-runner-controller/operator"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -27,18 +27,18 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname-runner actions-runner-controller-runners
-  namespace: &namespace dev
+  namespace: &namespace actions-runner-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname-runner
   dependsOn:
     - name: actions-runner-controller
-      namespace: dev
+      namespace: actions-runner-system
     - name: openebs
       namespace: storage
   interval: 30m
-  path: "./kubernetes/apps/dev/actions-runner-controller/runners"
+  path: "./kubernetes/apps/actions-runner-system/actions-runner-controller/runners"
   prune: true
   sourceRef:
     kind: GitRepository

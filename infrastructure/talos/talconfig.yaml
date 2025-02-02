@@ -194,6 +194,7 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - kube-system
+              - actions-runner-system
 
     # Enable MutatingAdmissionPolicy
     - |-
