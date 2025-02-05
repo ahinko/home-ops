@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stonith404/pocket-id
-              tag: v0.27.2
+              tag: v0.28.1
 
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
 
