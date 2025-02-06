@@ -5,6 +5,7 @@ namespace: selfhosted
 resources:
   - ./namespace.yaml
   - ./atuin/install.yaml
+  - ./hoarder/install.yaml
   - ./homepage/install.yaml
   - ./immich/install.yaml
   - ./it-tools/install.yaml
