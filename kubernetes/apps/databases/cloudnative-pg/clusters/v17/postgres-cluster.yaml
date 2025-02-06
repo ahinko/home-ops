@@ -5,8 +5,7 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.2-32
+  imageName: ghcr.io/ahinko/postgres-extended:17.2.0
   primaryUpdateStrategy: unsupervised
   storage:
     size: 50Gi
