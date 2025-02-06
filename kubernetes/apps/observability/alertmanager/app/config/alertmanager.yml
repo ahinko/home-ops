@@ -7,6 +7,7 @@ receivers:
         token_file: /etc/secrets/pushover_api_token
         user_key_file: /etc/secrets/pushover_api_userkey
         send_resolved: true
+        url: https://alertmanager.hemma.dev
         priority: |-
           {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
         url_title: View in Alert Manager

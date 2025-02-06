@@ -31,39 +31,14 @@ spec:
   values:
     master:
       replicaCount: 2
-      resources:
-        requests:
-          cpu: 20m
-          memory: 128M
-        limits:
-          cpu: 800m
-          memory: 256M
 
     worker:
       config:
         core:
-          labelSources: ["custom", "pci", "usb"]
-        sources:
-          usb:
-            deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
-            deviceLabelFields: ["class", "vendor", "device"]
-
-      resources:
-        requests:
-          cpu: 20m
-          memory: 128M
-        limits:
-          cpu: 800m
-          memory: 128M
-
-    gc:
-      resources:
-        requests:
-          cpu: 20m
-          memory: 128M
-        limits:
-          cpu: 400m
-          memory: 128M
+          sources:
+            - pci
+            - system
+            - usb
 
     prometheus:
       enable: true

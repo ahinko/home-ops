@@ -123,6 +123,7 @@ spec:
           - Tools:
           - Downloads:
           - Social:
+          - Games:
 
     # -- Main environment variables. Template enabled.
     # Syntax options:
