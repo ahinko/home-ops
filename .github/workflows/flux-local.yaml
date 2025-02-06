@@ -16,7 +16,7 @@
   jobs:
     test:
       name: Flux Local Test
-      runs-on: ["arc-runner-set-homelab"]
+      runs-on: ubuntu-latest
       steps:
         - name: Generate Token
           uses: actions/create-github-app-token@v1
@@ -37,7 +37,7 @@
 
     diff:
       name: Flux Local Diff
-      runs-on: ["arc-runner-set-homelab"]
+      runs-on: ubuntu-latest
       permissions:
         pull-requests: write
       strategy:
@@ -112,7 +112,7 @@
       needs: ["test", "diff"]
       if: ${{ always() }}
       name: Flux Local successful
-      runs-on: ["arc-runner-set-homelab"]
+      runs-on: ubuntu-latest
       steps:
         - name: Check flux-local status
           if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
