@@ -53,7 +53,7 @@ releases:
   - name: external-secrets
     namespace: security
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.14.0
+    version: 0.14.1
     values:
       - ../apps/security/external-secrets/app/helm-values.yaml
     needs:
