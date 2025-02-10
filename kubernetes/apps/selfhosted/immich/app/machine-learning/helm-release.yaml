@@ -53,7 +53,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.125.7
+              tag: v1.126.0
             env:
               # General
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
