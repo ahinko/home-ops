@@ -9,7 +9,7 @@ spec:
   nodeName: cp01
   containers:
     - name: disk-wipe-cp01
-      image: public.ecr.aws/docker/library/alpine:3.21.2
+      image: public.ecr.aws/docker/library/alpine:3.21.3
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
@@ -35,7 +35,7 @@ spec:
   nodeName: cp02
   containers:
     - name: disk-wipe-cp02
-      image: public.ecr.aws/docker/library/alpine:3.21.2
+      image: public.ecr.aws/docker/library/alpine:3.21.3
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
@@ -61,7 +61,7 @@ spec:
   nodeName: cp03
   containers:
     - name: disk-wipe-cp03
-      image: public.ecr.aws/docker/library/alpine:3.21.2
+      image: public.ecr.aws/docker/library/alpine:3.21.3
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
@@ -87,7 +87,7 @@ spec:
   nodeName: w01
   containers:
     - name: disk-wipe-w01
-      image: public.ecr.aws/docker/library/alpine:3.21.2
+      image: public.ecr.aws/docker/library/alpine:3.21.3
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
