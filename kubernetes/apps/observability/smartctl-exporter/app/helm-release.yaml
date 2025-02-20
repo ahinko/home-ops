@@ -26,6 +26,11 @@ spec:
     keepHistory: false
   values:
     fullnameOverride: *app
+
+    image:
+      repository: ghcr.io/joryirving/smartctl_exporter
+      tag: 0.13.0
+
     config:
       devices:
         - /dev/sda
