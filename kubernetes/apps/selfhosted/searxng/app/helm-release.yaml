@@ -32,8 +32,7 @@ spec:
               SEARXNG_BASE_URL: https://search.hemma.dev
               SEARXNG_URL: https://search.hemma.dev
               SEARXNG_PORT: &httpPort 8080
-              # SEARXNG_REDIS_URL: redis://searxng-redis.selfhosted.svc.cluster.local:6379/0
-              SEARXNG_REDIS_URL: redis://dragonfly.databases.svc.cluster.local:6379/4
+              SEARXNG_REDIS_URL: redis://dragonfly.databases.svc.cluster.local:6379/5
             envFrom:
               - secretRef:
                   name: searxng-secret
