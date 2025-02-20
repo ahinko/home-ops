@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: selfhosted
 resources:
   - ./atuin/install.yaml
+  - ./birdnet/install.yaml
   - ./hoarder/install.yaml
   - ./homepage/install.yaml
   - ./immich/install.yaml

@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app birdnet
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  values:
+    controllers:
+      birdnet:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/tphakala/birdnet-go
+              tag: 0.6.1@sha256:4f440d630ecb9980b5d3ef485e6b6490fbc30e397591155956f7fee83c2360c6
+            env:
+              TZ: "Europe/Stockholm"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              privileged: true
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 8080
+          metrics:
+            port: 8090
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+
+    ingress:
+      app:
+        className: nginx
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Birdnet analyzer
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-birdnet-analyzer.webp
+          gethomepage.dev/name: Birdnet
+        hosts:
+          - host: birdnet.hemma.dev
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+      config:
+        type: secret
+        name: birdnet-secret
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
