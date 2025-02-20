@@ -51,10 +51,6 @@ spec:
               GATUS_CONFIG_PATH: /config
               CUSTOM_WEB_PORT: &port 80
 
-            envFrom:
-              - secretRef:
-                  name: gatus-secret
-
             probes:
               liveness: &probes
                 enabled: true
@@ -105,10 +101,6 @@ spec:
         serviceName: gatus
         endpoints:
           - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
 
     ingress:
       main:

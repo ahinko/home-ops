@@ -20,8 +20,6 @@ data:
           query-type: A
         conditions:
           - "len([BODY]) == 0"
-        alerts:
-          - type: pushover
 
       - name: "${APP}"
         group: internal
@@ -31,5 +29,3 @@ data:
           dns-resolver: tcp://192.168.20.1:53
         conditions:
           - "[STATUS] == ${GATUS_STATUS:-200}"
-        alerts:
-          - type: pushover
