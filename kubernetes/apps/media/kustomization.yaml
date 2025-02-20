@@ -3,7 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media
 resources:
-  - ./namespace.yaml
   - ./jellyfin/install.yaml
   - ./maloja/install.yaml
   - ./multiscrobbler/install.yaml
@@ -11,4 +10,5 @@ resources:
   - ./piped/install.yaml
   - ./plex/install.yaml
 components:
+  - ../../components/namespace
   - ../../components/alerts
