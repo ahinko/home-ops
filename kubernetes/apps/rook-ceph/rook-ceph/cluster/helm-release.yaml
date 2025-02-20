@@ -88,18 +88,18 @@ spec:
           osdsPerDevice: "1"
 
         nodes:
-          - name: cp01
-            devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596620V"
-          - name: cp02
-            devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596610A"
-          - name: cp03
-            devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596594W"
           - name: w01
             devices:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596621H"
+          - name: w02
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596620V"
+          - name: w03
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596610A"
+          - name: w04
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S4EWNX0W596594W"
 
       resources:
         mgr:

@@ -113,7 +113,7 @@ tasks:
       - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
 
   write-talos-amd64-to-usb:
-    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    desc: Write Talos image to USB drive to be used with amd64 machines
     silent: true
     cmds:
       - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.9.4/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
@@ -126,3 +126,18 @@ tasks:
         echo "Writing image to: ${path}";
         sudo dd if=metal-amd64.raw of=${path} bs=4m && sync
       - "rm metal-amd64.raw"
+
+  write-talos-arm64-to-usb:
+    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
+    silent: true
+    cmds:
+      - "curl -LO https://factory.talos.dev/image/1f4ca7d6d118680158e6e1ae5101242fdf37c81b555960afe17f18a0ecf8ecca/v1.9.4/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
+      - "diskutil list"
+      - |
+        echo "Path to USB drive:"
+        read path;
+        diskutil unmount ${path} || true
+        diskutil unmountDisk ${path} || true
+        echo "Writing image to: ${path}";
+        sudo dd if=metal-arm64.raw of=${path} conv=fsync bs=4M
+      - "rm metal-arm64.raw"
