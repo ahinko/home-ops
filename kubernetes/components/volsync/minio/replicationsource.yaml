@@ -5,23 +5,25 @@ kind: ReplicationSource
 metadata:
   name: ${APP}
 spec:
+  restic:
+    accessModes:
+      - "${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"
+    cacheAccessModes:
+      - "${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
+    copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
+    moverSecurityContext:
+      fsGroup: ${APP_GID:-2000}
+      runAsGroup: ${APP_GID:-2000}
+      runAsUser: ${APP_UID:-2000}
+    pruneIntervalDays: 7
+    repository: ${APP}-volsync-minio
+    retain:
+      daily: 7
+      hourly: 24
+    storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
     schedule: "0 * * * *"
-  restic:
-    copyMethod: Snapshot
-    repository: ${APP}-volsync-minio
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
-    storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
-    moverSecurityContext:
-      runAsUser: ${APP_UID:-568}
-      runAsGroup: ${APP_GID:-568}
-      fsGroup: ${APP_GID:-568}
-    pruneIntervalDays: 7
-    retain:
-      hourly: 24
-      daily: 7
-      weekly: 5

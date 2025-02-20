@@ -5,23 +5,24 @@ kind: ReplicationDestination
 metadata:
   name: "${APP}-bootstrap"
 spec:
-  trigger:
-    manual: restore-once
   restic:
-    copyMethod: Snapshot
-    repository: "${APP}-volsync-minio"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
-    storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
     accessModes:
       - "${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"
+    cacheAccessModes:
+      - "${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
+    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
     capacity: "${VOLSYNC_CAPACITY:-1Gi}"
-    # enableFileDeletion: true # Uncomment on next Volsync release
-    # cleanupCachePVC: true # Uncomment on next Volsync release
-    # cleanupTempPVC: true # Uncomment on next Volsync release
-    # moverSecurityContext: # Not needed due to privileged movers
-    #   runAsUser: ${APP_UID:-568}
-    #   runAsGroup: ${APP_GID:-568}
-    #   fsGroup: ${APP_GID:-568}
+    cleanupCachePVC: true
+    cleanupTempPVC: true
+    copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
+    enableFileDeletion: true
+    moverSecurityContext:
+      runAsUser: ${APP_UID:-2000}
+      runAsGroup: ${APP_GID:-2000}
+      fsGroup: ${APP_GID:-2000}
+    repository: "${APP}-volsync-minio"
+    storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
+  trigger:
+    manual: restore-once
