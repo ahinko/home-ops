@@ -5,6 +5,7 @@ namespace: selfhosted
 resources:
   - ./atuin/install.yaml
   - ./birdnet/install.yaml
+  - ./gramps/install.yaml
   - ./hoarder/install.yaml
   - ./homepage/install.yaml
   - ./immich/install.yaml
