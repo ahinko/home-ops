@@ -48,6 +48,7 @@ spec:
               tag: 0.54.4
 
             env:
+              ND_ENABLEINSIGHTSCOLLECTOR: "false"
               ND_DATAFOLDER: /data
               ND_ENABLEDOWNLOADS: "true"
               ND_ENABLEEXTERNALSERVICES: "false"
