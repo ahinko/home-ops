@@ -2,7 +2,3 @@
 collections:
   - name: community.general
     version: 10.3.1
-
-roles:
-  - name: geerlingguy.docker
-    version: 7.4.5
