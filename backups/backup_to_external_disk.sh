@@ -10,7 +10,7 @@ POD=$(kubectl get pod -l app=zfs-backup -o jsonpath="{.items[0].metadata.name}")
 
 kubectl wait --for=condition=Ready pod/${POD}
 
-DATASETS=( minio samba immich/library )
+DATASETS=( minio samba immich/library games )
 TARGET_PATH=/Volumes/Backup
 
 # Loop through datasets
