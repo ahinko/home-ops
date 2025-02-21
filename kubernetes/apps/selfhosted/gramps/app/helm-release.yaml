@@ -53,7 +53,7 @@ spec:
               GRAMPSWEB_CELERY_CONFIG__broker_url: "redis://dragonfly.databases.svc.cluster.local:6379/3"
               GRAMPSWEB_CELERY_CONFIG__result_backend: "redis://dragonfly.databases.svc.cluster.local:6379/3"
               GRAMPSWEB_RATELIMIT_STORAGE_URI: "redis://dragonfly.databases.svc.cluster.local:6379/4"
-              GRAMPSWEB_USER_DB_URI: sqlite:////app/users.sqlite
+              GRAMPSWEB_USER_DB_URI: sqlite:////app/users/users.sqlite
             resources:
               requests:
                 cpu: 10m
