@@ -5,7 +5,7 @@ namespace: kube-system
 resources:
   - ./cilium/install.yaml
   - ./coredns/install.yaml
-  - ./etcd-backup/install.yaml
+  #- ./etcd-backup/install.yaml
   - ./k8tz/install.yaml
   - ./metrics-server/install.yaml
 components:
