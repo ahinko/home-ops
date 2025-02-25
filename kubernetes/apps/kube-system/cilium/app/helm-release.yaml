@@ -32,31 +32,5 @@ spec:
       name: cilium-values
 
   values:
-    hubble:
-      metrics:
-        serviceMonitor:
-          enabled: true
-
-      relay:
-        prometheus:
-          serviceMonitor:
-            enabled: true
-
-      ui:
-        ingress:
-          enabled: true
-          className: "nginx"
-          hosts:
-            - "hubble.hemma.dev"
-          tls:
-            - hosts:
-                - "hubble.hemma.dev"
-
-    prometheus:
-      serviceMonitor:
-        enabled: true
-
     operator:
-      prometheus:
-        serviceMonitor:
-          enabled: true
+      tolerations: []
