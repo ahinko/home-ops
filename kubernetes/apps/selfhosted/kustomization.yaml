@@ -16,7 +16,6 @@ resources:
   - ./miniflux/install.yaml
   - ./ocis/install.yaml
   - ./radicale/install.yaml
-  - ./searxng/install.yaml
 components:
   - ../../components/namespace
   - ../../components/alerts

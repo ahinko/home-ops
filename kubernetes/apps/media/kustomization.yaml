@@ -7,7 +7,6 @@ resources:
   - ./maloja/install.yaml
   - ./multiscrobbler/install.yaml
   - ./navidrome/install.yaml
-  - ./piped/install.yaml
   - ./plex/install.yaml
 components:
   - ../../components/namespace
