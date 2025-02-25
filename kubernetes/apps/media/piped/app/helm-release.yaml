@@ -60,7 +60,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/piped-frontend
-              tag: 2025.2.17@sha256:b7b4e6cca0dc6f71d677c2d2f73e4ea54abf27adda7d1322f992ea265e120f03
+              tag: 2025.2.24@sha256:d9c334d886a4b0d38e4d7bab884d39c1a45c138fbfec5ad99446ee2aa0fac160
             env:
               BACKEND_HOSTNAME: piped-api.hemma.dev
             probes:
