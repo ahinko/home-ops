@@ -35,7 +35,7 @@ releases:
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.39.0
+    version: 1.39.1
     values:
       - ../apps/kube-system/coredns/app/helm-values.yaml
     needs:
