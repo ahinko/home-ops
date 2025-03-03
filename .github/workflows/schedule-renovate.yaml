@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@v1.11.5
+        uses: actions/create-github-app-token@v1.11.6
         id: generate-token
         with:
           app-id: "${{ secrets.HOMEOPS_BOT_APP_ID }}"
