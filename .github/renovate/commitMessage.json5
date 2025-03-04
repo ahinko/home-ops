@@ -9,6 +9,10 @@
       "commitMessageTopic": "chart {{depName}}"
     },
     {
+      "matchDatasources": ["oci"],
+      "commitMessageTopic": "chart {{depName}}"
+    },
+    {
       "matchDatasources": ["docker"],
       "commitMessageTopic": "image {{depName}}"
     }
