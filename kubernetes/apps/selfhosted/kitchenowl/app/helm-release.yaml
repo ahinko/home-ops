@@ -50,7 +50,7 @@ spec:
           app:
             image:
               repository: tombursch/kitchenowl
-              tag: v0.6.10
+              tag: v0.6.11
 
             envFrom:
               - secretRef:
