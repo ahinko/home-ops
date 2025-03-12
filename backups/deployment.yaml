@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: s01
       containers:
         - name: *name
-          image: ghcr.io/ahinko/buoy:1.2.9
+          image: ghcr.io/ahinko/buoy:1.2.11
 
           command: ["/bin/bash", "-c", "--"]
           args: ["while true; do sleep 30; done;"]
