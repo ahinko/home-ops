@@ -116,7 +116,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with amd64 machines
     silent: true
     cmds:
-      - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.9.4/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
+      - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.9.5/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
@@ -131,7 +131,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LO https://factory.talos.dev/image/1f4ca7d6d118680158e6e1ae5101242fdf37c81b555960afe17f18a0ecf8ecca/v1.9.4/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
+      - "curl -LO https://factory.talos.dev/image/1f4ca7d6d118680158e6e1ae5101242fdf37c81b555960afe17f18a0ecf8ecca/v1.9.5/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
