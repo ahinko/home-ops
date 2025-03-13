@@ -9,7 +9,6 @@ resources:
   - ./kube-prometheus-stack/install.yaml
   - ./kube-state-metrics/install.yaml
   - ./node-exporter/install.yaml
-  - ./prometheus-operator/install.yaml
   - ./silence-operator/install.yaml
   - ./smartctl-exporter/install.yaml
   - ./speedtest-exporter/install.yaml

@@ -18,19 +18,12 @@ repositories:
     url: https://charts.jetstack.io
 
 releases:
-  - name: prometheus-operator-crds
-    namespace: observability
-    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-    version: 18.0.1
-
   - name: cilium
     namespace: kube-system
     chart: cilium/cilium
     version: 1.17.1
     values:
       - "../apps/kube-system/cilium/app/values.yaml"
-    needs:
-      - "observability/prometheus-operator-crds"
 
   - name: coredns
     namespace: kube-system

@@ -255,6 +255,13 @@ controlPlane:
             runtime-config: admissionregistration.k8s.io/v1alpha1=true
             feature-gates: MutatingAdmissionPolicy=true
 
+    # Bootstrap manifests
+    - |-
+      cluster:
+        extraManifests:
+          - # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
+            https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.81.0/stripped-down-crds.yaml
+
     # Cluster configuration
     - |-
       cluster:
