@@ -24,13 +24,6 @@
   dependencyDashboardTitle: "🤖 Renovate Dashboard",
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
   commitBodyTable: true,
-  "docker-compose": {
-    fileMatch: [
-      "(^|/)docker-compose.*\\.yaml$",
-      ".taskfiles/.+\\.yaml$",
-      "infrastructure/talos/.+\\.sh$",
-    ],
-  },
   flux: {
     fileMatch: ["kubernetes/.+\\.yaml$"],
   },
@@ -38,6 +31,9 @@
     fileMatch: ["kubernetes/.+\\.yaml$"],
   },
   kubernetes: {
-    fileMatch: ["kubernetes/.+\\.yaml$", "backups/.+\\.yaml$"],
+    fileMatch: [
+      "kubernetes/.+\\.yaml$",
+      "backups/.+\\.yaml$",
+    ],
   },
 }

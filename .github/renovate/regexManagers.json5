@@ -35,7 +35,7 @@
     {
       customType: "regex",
       description: "Process CLI versions",
-      fileMatch: [".taskfiles/.+\\.yaml$"],
+      fileMatch: [".taskfiles/.+\\.yaml$", "infrastructure/.+\\.yaml$"],
       matchStrings: [
         "github.com/(?<depName>.*?)/releases/download/(?<currentValue>[a-z0-9.]*)",
       ],
