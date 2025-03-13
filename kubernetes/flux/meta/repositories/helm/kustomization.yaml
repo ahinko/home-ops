@@ -13,7 +13,6 @@ resources:
   - ./external-dns-charts.yaml
   - ./grafana-charts.yaml
   - ./influxdata-charts.yaml
-  - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
   - ./itzg-minecraft-server-charts.yaml
   - ./jameswynn-charts.yaml

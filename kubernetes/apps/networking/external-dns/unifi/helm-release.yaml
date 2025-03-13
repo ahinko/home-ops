@@ -56,14 +56,13 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    extraArgs:
-      - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["ingress", "service"]
+    sources: ["gateway-httproute", "service"]
     txtOwnerId: mainframe
     txtPrefix: k8s.mainframe.
     domainFilters:
       - "hemma.dev"
+      - "selfy.social"
     serviceMonitor:
       enabled: true

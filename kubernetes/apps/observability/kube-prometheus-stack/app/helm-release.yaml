@@ -100,13 +100,6 @@ spec:
     ### Prometheus instance values
     ###
     prometheus:
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - prometheus.hemma.dev
-        pathType: Prefix
-
       prometheusSpec:
         alertingEndpoints:
           - namespace: observability

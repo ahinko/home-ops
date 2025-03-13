@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: multi-scrobbler
+  name: &app multi-scrobbler
 spec:
   chartRef:
     kind: OCIRepository
@@ -66,27 +66,20 @@ spec:
         controller: multiscrobbler
         ports:
           http:
-            port: 9078
+            port: &port 9078
 
-    ingress:
+
+    route:
       app:
-        className: "nginx"
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Scrobble music
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: sh-multi-scrobbler.png
-          gethomepage.dev/name: Multi-scrobbler
-        hosts:
-          - host: &host multiscrobbler.hemma.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

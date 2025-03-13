@@ -73,27 +73,19 @@ spec:
         controller: gramps
         ports:
           http:
-            port: 5000
-    ingress:
+            port: &port 5000
+
+    route:
       app:
-        className: nginx
-        annotations:
-          #   external-dns.alpha.kubernetes.io/target: ipv4.${SECRET_DOMAIN}
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Genealogy
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-gramps.svg
-          gethomepage.dev/name: Gramps
-        hosts:
-          - host: &host "gramps.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

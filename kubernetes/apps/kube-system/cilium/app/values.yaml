@@ -3,13 +3,13 @@ autoDirectNodeRoutes: true
 bandwidthManager:
   bbr: true
   enabled: true
+bgpControlPlane:
+  enabled: true
 bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
-  tproxy: true
-bgpControlPlane:
-  enabled: true
+  #tproxy: true
 cgroup:
   automount:
     enabled: false
@@ -19,11 +19,17 @@ cluster:
   name: mainframe
 cni:
   exclusive: false
+dashboards:
+  enabled: true
 enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
 envoy:
   enabled: false
+gatewayAPI:
+  enableAlpn: true
+  enabled: true
+  xffNumTrustedHops: 1
 hubble:
   enabled: false
 ipam:
@@ -40,21 +46,19 @@ loadBalancer:
   mode: dsr
 localRedirectPolicy: true
 operator:
+  dashboards:
+    enabled: true
   prometheus:
     enabled: true
     serviceMonitor:
       enabled: true
   replicas: 2
   rollOutPods: true
-  dashboards:
-    enabled: true
 prometheus:
   enabled: true
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
-dashboards:
-  enabled: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:

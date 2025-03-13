@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ocis
+  name: &app ocis
 spec:
   interval: 30m
   chartRef:
@@ -78,29 +78,21 @@ spec:
         controller: ocis
         ports:
           http:
-            port: 9200
+            port: &port 9200
 
-    ingress:
+    route:
       app:
-        className: "nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: File sync
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-owncloud.svg
-          gethomepage.dev/name: ownCloud
-        hosts:
-          - host: &hostName files.hemma.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *hostName
+        hostnames: ["files.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

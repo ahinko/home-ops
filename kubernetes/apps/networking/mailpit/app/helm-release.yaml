@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: mailpit
+  name: &app mailpit
 spec:
   interval: 30m
   chartRef:
@@ -47,26 +47,18 @@ spec:
           lbipam.cilium.io/ips: 192.168.20.208
         ports:
           http:
-            port: 8025
+            port: &port 8025
           smtp:
             port: 1025
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Catch all mail from the cluster
-          gethomepage.dev/group: Tools
-          gethomepage.dev/icon: sh-mail-in-a-box.svg
-          gethomepage.dev/name: Mailpit
-        hosts:
-          - host: &host "mailpit.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: &app jellyfin
 spec:
   interval: 1h
   chartRef:
@@ -51,31 +51,22 @@ spec:
         controller: main
         ports:
           http:
-            port: 8096
+            port: &port 8096
           discovery:
             port: 7359
             protocol: UDP
 
-    ingress:
-      main:
-        enabled: true
-        className: nginx
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Watch TV Series and Movies
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: sh-jellyfin.png
-          gethomepage.dev/name: Jellyfin
-        hosts:
-          - host: &host "{{ .Release.Name }}.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: http
-        tls:
-          - hosts:
-              - *host
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       tmpfs:

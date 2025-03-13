@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: esphome
+  name: &app esphome
 spec:
   interval: 30m
   chartRef:
@@ -51,27 +51,19 @@ spec:
         controller: esphome
         ports:
           http:
-            port: 6052
+            port: &port 6052
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: ESPHome dashboard
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-esphome.svg
-          gethomepage.dev/name: ESPHome
-        hosts:
-          - host: &host "esphome.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

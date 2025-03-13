@@ -33,22 +33,6 @@ spec:
       enabled: true
       createPrometheusRules: true
 
-    ingress:
-      dashboard:
-        ingressClassName: nginx
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Manage Rook-Ceph
-          gethomepage.dev/group: Tools
-          gethomepage.dev/icon: sh-rook.svg
-          gethomepage.dev/name: Rook/Ceph
-        host:
-          name: &host rook.hemma.dev
-          path: "/"
-        tls:
-          - hosts:
-              - *host
-
     cephClusterSpec:
       cephConfig:
         global:
@@ -251,10 +235,3 @@ spec:
             region: us-east-1
         ingress:
           enabled: false
-          ingressClassName: nginx
-          annotations:
-            nginx.ingress.kubernetes.io/proxy-body-size: "0"
-            nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          host:
-            name: rgw.hemma.dev
-            path: /

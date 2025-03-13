@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: navidrome
+  name: &app navidrome
 spec:
   chartRef:
     kind: OCIRepository
@@ -79,26 +79,17 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Listen to music
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: sh-navidrome.png
-          gethomepage.dev/name: Navidrome
-        hosts:
-          - host: &host navidrome.hemma.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

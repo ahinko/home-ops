@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: it-tools
+  name: &app it-tools
 spec:
   interval: 30m
   chartRef:
@@ -51,24 +51,16 @@ spec:
         controller: it-tools
         ports:
           http:
-            port: 80
+            port: &port 80
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Tools and services for IT
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-it-tools.svg
-          gethomepage.dev/name: IT Tools
-        hosts:
-          - host: &host "it-tools.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

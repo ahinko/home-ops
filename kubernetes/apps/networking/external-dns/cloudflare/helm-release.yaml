@@ -35,8 +35,7 @@ spec:
 
     interval: 60m
     logLevel: warning
-    provider:
-      name: cloudflare
+    provider: cloudflare
 
     env:
       - name: CF_API_TOKEN
@@ -46,22 +45,20 @@ spec:
             key: cloudflare_api_token
 
     extraArgs:
-      - --cloudflare-proxied
       - --cloudflare-dns-records-per-page=1000
-      - --annotation-filter=external-dns.alpha.kubernetes.io/target
-      - --ignore-ingress-tls-spec
+      - --cloudflare-proxied
+      - --gateway-label-filter=gateway==external
 
     triggerLoopOnEvent: true
     policy: sync
 
-    sources: ["ingress", "service"]
+    sources: ["gateway-httproute"]
 
     txtPrefix: "k8s."
     txtOwnerId: "default"
 
     domainFilters:
       - "hemma.dev"
-      - "selfy.social"
 
     serviceMonitor:
       enabled: true

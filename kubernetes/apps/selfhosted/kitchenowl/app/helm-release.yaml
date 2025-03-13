@@ -97,28 +97,19 @@ spec:
         controller: kitchenowl
         ports:
           http:
-            port: 8080
+            port: &port 8080
 
-    ingress:
+    route:
       app:
-        className: nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Shopping list
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-kitchenowl.png
-          gethomepage.dev/name: Kitchen Owl
-        hosts:
-          - host: &host "kitchenowl.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

@@ -98,22 +98,14 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        className: nginx
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: RSS Reader
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-miniflux.svg
-          gethomepage.dev/name: Miniflux
-        hosts:
-          - host: &host "rss.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["rss.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

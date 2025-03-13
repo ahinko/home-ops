@@ -111,27 +111,28 @@ spec:
             runAsNonRoot: true
             fsGroup: 999
             fsGroupChangePolicy: OnRootMismatch
-    ingress:
-      app:
-        className: nginx
-        hosts:
-          - host: &host "{{ .Release.Name }}.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-    persistence:
-      config:
-        type: emptyDir
-        globalMounts:
-          - path: *configDir
+
     service:
       app:
         controller: *app
         ports:
           http:
             port: *apiPort
+
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *apiPort
+
+    persistence:
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: *configDir

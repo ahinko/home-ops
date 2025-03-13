@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
+  - ./httproute.yaml

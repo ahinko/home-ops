@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radicale
+  name: &app radicale
 spec:
   interval: 30m
   chartRef:
@@ -52,31 +52,19 @@ spec:
         controller: radicale
         ports:
           http:
-            port: 5232
+            port: &port 5232
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
-          nginx.org/proxy-connect-timeout: 600s
-          nginx.org/proxy-read-timeout: 600s
-          nginx.org/proxy-send-timeout: 600s
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Calendars
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-radicale.svg
-          gethomepage.dev/name: Radicale
-        hosts:
-          - host: &host "radicale.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

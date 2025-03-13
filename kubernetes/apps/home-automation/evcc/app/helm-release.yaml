@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: evcc
+  name: &app evcc
 spec:
   interval: 30m
   chartRef:
@@ -50,7 +50,7 @@ spec:
         controller: evcc
         ports:
           http:
-            port: 7070
+            port: &port 7070
           tcp8887:
             enabled: true
             port: 8887
@@ -63,25 +63,17 @@ spec:
             port: 9522
             protocol: UDP
 
-    ingress:
+    route:
       app:
-        className: nginx
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: EV Charging
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-evcc.svg
-          gethomepage.dev/name: EVCC
-        hosts:
-          - host: &host "evcc.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config-file:

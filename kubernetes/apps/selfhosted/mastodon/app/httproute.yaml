@@ -1,0 +1,28 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mastodon
+spec:
+  hostnames: ["toot.selfy.social"]
+  parentRefs:
+    - name: social
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: mastodon-web
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/v1/streaming
+      backendRefs:
+        - name: mastodon-streaming
+          port: 80
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Forwarded-Proto
+                value: https

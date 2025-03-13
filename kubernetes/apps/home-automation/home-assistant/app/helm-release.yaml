@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
 spec:
   interval: 30m
   chartRef:
@@ -105,7 +105,9 @@ spec:
             enabled: true
             port: 1400
           http:
-            port: 8123
+            port: &port 8123
+            primary: true
+            appProtocol: kubernetes.io/wss
           govee:
             enabled: true
             port: 4003
@@ -113,49 +115,28 @@ spec:
           code-server:
             port: 8080
 
-    ingress:
+    route:
       app:
-        className: nginx
-        annotations:
-          nginx.org/websocket-services: home-assistant
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Smart home and automations
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-home-assistant.svg
-          gethomepage.dev/name: Home Assistant
-          gethomepage.dev/app: home-assistant
-        hosts:
-          - host: &host "hass.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["hass.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
       code-server:
-        enabled: true
-        className: nginx
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Code editor for Home Assistant
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-visual-studio-code.svg
-          gethomepage.dev/name: VS Code
-          gethomepage.dev/app: code-server
-        hosts:
-          - host: &code-host "code.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code-server
-        tls:
-          - hosts:
-              - *code-host
+        hostnames: ["code.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: 8080
 
     persistence:
       config:

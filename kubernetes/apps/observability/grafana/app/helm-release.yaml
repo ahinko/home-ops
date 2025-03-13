@@ -56,14 +56,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/ceph
-          - name: flux
-            orgId: 1
-            folder: Flux
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/flux
           - name: emqx
             orgId: 1
             folder: EMQX
@@ -72,14 +64,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/emqx
-          - name: nginx
-            orgId: 1
-            folder: Nginx
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/nginx
           - name: kubernetes
             disableDeletion: false
             editable: true
@@ -288,22 +272,6 @@ spec:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/rule-engine-rate.json
           datasource: Prometheus
 
-      flux:
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
-          datasource: Prometheus
-
-      nginx:
-        nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-          datasource: Prometheus
-
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -376,21 +344,6 @@ spec:
 
     imageRenderer:
       enabled: true
-
-    ingress:
-      enabled: true
-      ingressClassName: nginx
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Metrics and charts
-        gethomepage.dev/group: Observability
-        gethomepage.dev/icon: sh-grafana.svg
-        gethomepage.dev/name: Grafana
-      hosts:
-        - &host grafana.hemma.dev
-      tls:
-        - hosts:
-            - *host
 
     persistence:
       enabled: false

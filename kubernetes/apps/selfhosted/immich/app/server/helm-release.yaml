@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: immich-server
+  name: &app immich-server
 spec:
   interval: 30m
   chartRef:
@@ -112,29 +112,17 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        className: nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
-          nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/proxy-body-size: "0"
-          nginx.ingress.kubernetes.io/upstream-hash-by: "$client_ip"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Photo management and backup
-          gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: sh-immich.svg
-          gethomepage.dev/name: Immich
-        hosts:
-          - host: &host photos.hemma.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["photos.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       library:

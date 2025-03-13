@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: pocket-id
+  name: &app pocket-id
 spec:
   interval: 30m
   chartRef:
@@ -74,27 +74,19 @@ spec:
         controller: main
         ports:
           http:
-            port: 80
+            port: &port 80
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: OICD Authentication
-          gethomepage.dev/group: Tools
-          gethomepage.dev/icon: sh-pocket-id.png
-          gethomepage.dev/name: Pocket-ID
-        hosts:
-          - host: "pid.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - "pid.hemma.dev"
+        hostnames: ["pid.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

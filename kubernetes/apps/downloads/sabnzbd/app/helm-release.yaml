@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: &app sabnzbd
 spec:
   interval: 30m
   chartRef:
@@ -89,26 +89,17 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        className: "nginx"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ipv4.hemma.dev
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Usenet downloads
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: sh-sabnzbd.svg
-          gethomepage.dev/name: Sabnzbd
-        hosts:
-          - host: &host "{{ .Release.Name }}.hemma.dev"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

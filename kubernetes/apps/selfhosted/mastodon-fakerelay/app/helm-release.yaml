@@ -54,34 +54,19 @@ spec:
         controller: fakerelay
         ports:
           http:
-            port: 5000
+            port: &port 5000
 
-    ingress:
-      main:
-        className: nginx
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: ingress.selfy.social
-          nginx.ingress.kubernetes.io/proxy-max-temp-file-size: "0"
-          nginx.ingress.kubernetes.io/server-snippets: |
-            location / {
-              proxy_set_header Host $host;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto https;
-              proxy_set_header Proxy "";
-            }
-        hosts:
-          - host: &host "fakerelay.selfy.social"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: mastodon-fakerelay-tls
+    route:
+      app:
+        hostnames: ["fakerelay.selfy.social"]
+        parentRefs:
+          - name: social
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:
