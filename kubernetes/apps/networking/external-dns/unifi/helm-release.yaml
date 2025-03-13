@@ -58,7 +58,7 @@ spec:
           timeoutSeconds: 5
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["gateway-httproute", "service"]
+    sources: ["gateway-httproute"]
     txtOwnerId: mainframe
     txtPrefix: k8s.mainframe.
     domainFilters:
