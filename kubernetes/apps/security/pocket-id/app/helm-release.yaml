@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v0.39.0
+              tag: v0.40.0
 
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
 
