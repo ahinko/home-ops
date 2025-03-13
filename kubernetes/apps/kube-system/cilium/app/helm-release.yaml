@@ -26,7 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/cilium/cilium/blob/master/install/kubernetes/cilium/values.yaml
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values

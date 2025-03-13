@@ -25,7 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/influxdata/helm-charts/blob/master/charts/influxdb2/values.yaml
   values:
     image:
       repository: influxdb

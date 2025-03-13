@@ -27,7 +27,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
   values:
     master:
       replicaCount: 2

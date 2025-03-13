@@ -25,7 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # Values link: https://github.com/emqx/emqx-operator/blob/main/deploy/charts/emqx-operator/values.yaml
   values:
     skipCRDs: false
 

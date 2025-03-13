@@ -39,7 +39,8 @@
     "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json": "**/helm-release.yaml",
     "https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json": "**/prometheus-rule.yaml",
     "https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1beta1.json": "**/external-secrets.yaml",
-    "https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json": "**/pod-monitor.yaml"
+    "https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json": "**/pod-monitor.yaml",
+    "https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json": "**/httproute.yaml",
   },
   "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,
