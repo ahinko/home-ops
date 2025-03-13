@@ -307,6 +307,7 @@ controlPlane:
           hostDNS:
             enabled: true
             resolveMemberNames: true
+            # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
             forwardKubeDNSToHost: false
 
     # Disable default API server admission plugins.
@@ -319,7 +320,9 @@ controlPlane:
       machine:
         kubelet:
           extraConfig:
-            maxPods: 150
+            maxParallelImagePulls: 10
+            maxPods: 200
+            serializeImagePulls: false
           nodeIP:
             validSubnets:
                 - 192.168.20.0/24
