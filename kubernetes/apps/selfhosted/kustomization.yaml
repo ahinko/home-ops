@@ -6,7 +6,6 @@ resources:
   - ./atuin/install.yaml
   - ./birdnet/install.yaml
   - ./gramps/install.yaml
-  - ./homepage/install.yaml
   - ./immich/install.yaml
   - ./it-tools/install.yaml
   - ./kitchenowl/install.yaml
