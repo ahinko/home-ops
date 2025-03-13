@@ -39,6 +39,8 @@ spec:
         enabled: true
 
     enableDiscoveryDaemon: true
+    image:
+      repository: ghcr.io/rook/ceph
     monitoring:
       enabled: true
 
