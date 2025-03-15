@@ -2,22 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": "Auto merge GitHub Actions",
+      "description": ["Auto-merge GitHub Actions"],
       "matchManagers": ["github-actions"],
-      "matchDatasources": ["github-tags"],
       "automerge": true,
-      "ignoreTests": true,
       "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"]
-    },
-    {
-      "description": "Auto merge pre-commit hooks",
-      "matchManagers": ["pre-commit"],
-      "matchDatasources": ["github-tags"],
-      "automerge": true,
-      "ignoreTests": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"]
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "minimumReleaseAge": "3 days",
+      "ignoreTests": true
     },
   ]
 }

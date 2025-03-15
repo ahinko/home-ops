@@ -10,35 +10,37 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
+    },
+    {
+      "description": ["Cilium Group"],
+      "groupName": "Cilium",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/cilium/"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group",
+      },
     },
     {
       description: "Cert manager chart and CRDs",
+      groupName: "cert-manager",
       matchDatasources: ["helm", "github-releases", "docker"],
       matchPackageNames: [
         "cert-manager",
         "cert-manager/cert-manager",
         "quay.io/jetstack/cert-manager-controller",
       ],
-      groupName: "cert-manager",
-      additionalBranchPrefix: "",
-      separateMinorPatch: true,
     },
     {
       description: "Rook/Ceph chart & images",
       matchDatasources: ["helm", "docker", "github-releases"],
       matchPackagePatterns: ["^rook"],
       groupName: "rook-ceph-suite",
-      additionalBranchPrefix: "",
-      separateMinorPatch: true,
     },
     {
       description: "Talos releases",
       matchDatasources: ["docker", "github-releases"],
       matchPackageNames: ["ghcr.io/siderolabs/installer", "siderolabs/talos"],
       groupName: "siderolabs/talos",
-      additionalBranchPrefix: "",
-      separateMinorPatch: true,
     },
     {
       description: "Node feature discovery docker, chart and CRDs",
@@ -49,8 +51,6 @@
         "k8s.gcr.io/nfd/node-feature-discovery",
       ],
       groupName: "node-feature-discovery",
-      additionalBranchPrefix: "",
-      separateMinorPatch: true,
     },
     {
       description: "Immich Group",
@@ -60,7 +60,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["Actions Runner Controller Group"],
@@ -73,7 +72,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["1Password Connect Group"],
@@ -83,7 +81,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["EMQX Operator Group"],
@@ -93,7 +90,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
       description: ["Mastodon Group"],
@@ -103,7 +99,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
   ],
 }
