@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 9.2.6
+      version: 9.2.7
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
@@ -33,7 +33,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/mastodon
-      tag: 4.3.5
+      tag: 4.3.6
 
     environment: production
     adminUser: "peter"
