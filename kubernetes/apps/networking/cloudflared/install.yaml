@@ -13,6 +13,10 @@ spec:
       namespace: security
   interval: 30m
   path: "./kubernetes/apps/networking/cloudflared/app"
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cloudflare-tunnel-id-secret
   prune: true
   sourceRef:
     kind: GitRepository
