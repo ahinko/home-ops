@@ -342,6 +342,20 @@ spec:
       server:
         root_url: https://grafana.hemma.dev
 
+      auth.generic_oauth:
+        allow_assign_grafana_admin: true
+        api_url: https://pid.hemma.dev/api/oidc/userinfo
+        auth_url: https://pid.hemma.dev/authorize
+        client_id: $__env{OIDC_CLIENT_ID}
+        client_secret: $__env{OIDC_CLIENT_SECRET}
+        enabled: true
+        name: Pocket ID
+        role_attribute_path: grafanaRole
+        scopes: openid profile email groups
+        signout_redirect_url: https://pid.hemma.dev/api/oidc/end-session
+        token_url: https://pid.hemma.dev/api/oidc/token
+        use_pkce: true
+
     imageRenderer:
       enabled: true
 
