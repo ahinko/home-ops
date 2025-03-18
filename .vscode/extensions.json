@@ -1,17 +1,9 @@
 {
   "recommendations": [
-      "usernamehw.errorlens",
-      "mrmlnc.vscode-json5",
-      "paulvarache.vscode-taskfile",
-      "albert.TabOut",
-      "britesnow.vscode-toggle-quotes",
-      "fcrespo82.markdown-table-formatter",
-      "mitchdenny.ecdc",
-      "redhat.ansible",
-      "redhat.vscode-yaml",
-      "will-stone.in-any-case",
-      "BriteSnow.vscode-toggle-quotes",
-      "HashiCorp.terraform",
-      "PKief.material-icon-theme",
+    "blueglassblock.better-json5",
+    "irongeek.vscode-env",
+    "redhat.vscode-yaml",
+    "paulvarache.vscode-taskfile",
+    "PKief.material-icon-theme"
   ]
 }

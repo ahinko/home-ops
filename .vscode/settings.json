@@ -1,32 +1,30 @@
 {
-  "ansible.validation.lint.arguments": "-c .github/linters/.ansible-lint",
   "files.associations": {
     "*.json5": "json5",
     "**/infrastructure/ansible/**/*.yaml": "ansible",
     "**/infrastructure/**/inventory/**/*.yaml": "yaml",
   },
   "material-icon-theme.folders.associations": {
-    ".taskfiles": "utils",
-    "dashboard": "app",
-    "dbms": "database",
-    "dev": "less",
-    "flux-system": "kubernetes",
-    "flux": "kubernetes",
-    "media": "video",
-    "security": "keys",
-    "setup": "import",
-    "hack": "scripts",
-    "config": "environment",
-    "terraforms": "terraform",
-    "vars": "other",
+    // top level
+    ".github/workflows": "ci",
+    ".private": "archive",
+    ".renovate": "robot",
+    "bootstrap": "seeders",
+    "flux": "pipe",
+    "talos": "linux",
+    // namespaces
+    "actions-runner-system": "github",
     "cert-manager": "guard",
-    "external-secrets": "keys",
+    "home-automation": "home",
+    "security": "secure",
+    "flux-system": "pipe",
     "kube-system": "kubernetes",
-    "kube-tools": "kubernetes",
-    "monitoring": "event",
     "networking": "connection",
+    "observability": "event",
+    "openebs-system": "base",
     "rook-ceph": "dump",
-    "home-automation": "home"
+    "selfhosted": "server",
+    "storage": "aws"
   },
   "prettier.configPath": ".github/linters/.prettierrc.yaml",
   "prettier.ignorePath": ".github/linters/.prettierignore",
@@ -53,5 +51,4 @@
   "editor.rulers": [100],
   "explorer.autoReveal": false,
   "files.trimTrailingWhitespace": true,
-  "ansible.python.interpreterPath": "/opt/homebrew/bin/python3"
 }
