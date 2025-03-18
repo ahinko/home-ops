@@ -6,8 +6,6 @@ metadata:
   name: social
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname ingress.selfy.social
-  labels:
-    gateway: social
 spec:
   gatewayClassName: cilium
   addresses:
