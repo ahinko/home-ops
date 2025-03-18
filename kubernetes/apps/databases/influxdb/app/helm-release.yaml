@@ -27,8 +27,8 @@ spec:
     keepHistory: false
   values:
     image:
-      repository: influxdb
-      tag: 2.7.11-alpine
+      repository: ghcr.io/ahinko/influxdb
+      tag: 2.7.11
 
     pdb:
       create: false

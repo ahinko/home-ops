@@ -28,7 +28,7 @@ spec:
         initContainers:
           init-config:
             image:
-              repository: docker.io/owncloud/ocis
+              repository: ghcr.io/ahinko/ocis
               tag: 7.1.1
             command:
               - /bin/sh
@@ -42,7 +42,7 @@ spec:
         containers:
           ocis:
             image:
-              repository: docker.io/owncloud/ocis
+              repository: ghcr.io/ahinko/ocis
               tag: 7.1.1
             env:
               DEMO_USERS: false

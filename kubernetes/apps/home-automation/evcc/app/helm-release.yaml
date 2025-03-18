@@ -27,7 +27,7 @@ spec:
         containers:
           app:
             image:
-              repository: evcc/evcc
+              repository: ghcr.io/ahinko/evcc
               tag: 0.201.0
 
             probes:

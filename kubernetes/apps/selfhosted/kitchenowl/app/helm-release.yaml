@@ -49,7 +49,7 @@ spec:
         containers:
           app:
             image:
-              repository: tombursch/kitchenowl
+              repository: ghcr.io/ahinko/kitchenowl
               tag: v0.6.11
 
             envFrom:

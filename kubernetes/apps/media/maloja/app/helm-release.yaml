@@ -29,7 +29,7 @@ spec:
         containers:
           app:
             image:
-              repository: krateng/maloja
+              repository: ghcr.io/ahinko/maloja
               tag: 3.2.4
 
             envFrom:

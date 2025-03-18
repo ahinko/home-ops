@@ -30,8 +30,8 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/oetiker/znapzend
-              tag: v0.23.2
+              repository: ghcr.io/ahinko/znapzend
+              tag: 0.23.2
 
             securityContext:
               privileged: true

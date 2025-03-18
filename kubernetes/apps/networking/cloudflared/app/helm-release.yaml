@@ -31,7 +31,7 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/cloudflare/cloudflared
+              repository: ghcr.io/ahinko/cloudflared
               tag: 2025.2.1
             env:
               NO_AUTOUPDATE: "true"
