@@ -2,100 +2,136 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: "Flux Group",
-      groupName: "Flux",
-      matchPackagePatterns: ["^flux", "^ghcr.io/fluxcd/"],
-      matchDatasources: ["docker", "github-tags"],
-      versioning: "semver",
+      description: "Talos Group",
+      groupName: "Talos",
+      matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["/siderolabs/talos/", "/siderolabs/installer/", "/siderolabs/talosctl/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
     {
-      "description": ["Cilium Group"],
-      "groupName": "Cilium",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/cilium/"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group",
-      },
-    },
-    {
-      description: "Cert manager chart and CRDs",
-      groupName: "cert-manager",
-      matchDatasources: ["helm", "github-releases", "docker"],
-      matchPackageNames: [
-        "cert-manager",
-        "cert-manager/cert-manager",
-        "quay.io/jetstack/cert-manager-controller",
-      ],
-    },
-    {
-      description: "Rook/Ceph chart & images",
-      matchDatasources: ["helm", "docker", "github-releases"],
-      matchPackagePatterns: ["^rook"],
-      groupName: "rook-ceph-suite",
-    },
-    {
-      description: "Talos releases",
-      matchDatasources: ["docker", "github-releases"],
-      matchPackageNames: ["ghcr.io/siderolabs/installer", "siderolabs/talos"],
-      groupName: "siderolabs/talos",
-    },
-    {
-      description: "Node feature discovery docker, chart and CRDs",
+      description: "Node Feature Discovery Group",
+      groupName: "Node Feature Discovery",
       matchDatasources: ["helm", "kustomization", "docker"],
-      matchPackageNames: [
-        "node-feature-discovery",
-        "kubernetes-sigs/node-feature-discovery",
-        "k8s.gcr.io/nfd/node-feature-discovery",
-      ],
-      groupName: "node-feature-discovery",
+      matchPackageNames: ["/node-feature-discovery/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
     },
     {
       description: "Immich Group",
       groupName: "Immich",
-      matchPackagePatterns: ["immich"],
       matchDatasources: ["docker"],
+      matchPackageNames: ["/immich/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
     {
-      description: ["Actions Runner Controller Group"],
-      groupName: "Actions Runner Controller",
-      matchPackagePatterns: [
-        "gha-runner-scale-set-controller",
-        "gha-runner-scale-set",
-      ],
-      matchDatasources: ["docker", "helm"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-    },
-    {
-      description: ["1Password Connect Group"],
-      groupName: "1Password Connnect",
-      matchPackagePatterns: ["1password/connect"],
+      description: "1Password Connect Group",
+      groupName: "1Password Connect",
       matchDatasources: ["docker"],
+      matchPackageNames: ["/1password/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
     {
-      description: ["EMQX Operator Group"],
-      groupName: "EMQX Operator",
-      matchPackagePatterns: ["ghcr.io/emqx/emqx-operator", "emqx-operator"],
+      description: "EMQX Group",
+      groupName: "EMQX",
       matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["/emqx/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
     {
-      description: ["Mastodon Group"],
+      description: "Mastodon Group",
       groupName: "Mastodon",
-      matchPackagePatterns: ["docker.io/bitnami/mastodon", "mastodon"],
       matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["/mastodon/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Actions Runner Controller Group",
+      groupName: "Actions Runner Controller",
+      matchDatasources: ["docker", "helm"],
+      matchPackageNames: ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Cert-Manager Group",
+      groupName: "Cert-Manager",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/cert-manager/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Cilium Group",
+      groupName: "Cilium",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/cilium/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "CoreDNS Group",
+      groupName: "CoreDNS",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/coredns/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "External Secrets Operator Group",
+      groupName: "External Secrets Operator",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/external-secrets/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Flux Operator Group",
+      groupName: "Flux Operator",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Intel Device Plugins Group",
+      groupName: "Intel-Device-Plugins",
+      matchDatasources: ["helm"],
+      matchPackageNames: ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Rook-Ceph Group",
+      groupName: "Rook-Ceph",
+      matchDatasources: ["helm"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Spegel Group",
+      groupName: "Spegel",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/spegel/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
