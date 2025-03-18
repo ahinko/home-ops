@@ -41,8 +41,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/drag0n141/lidarr
-              tag: 2.9.6.4552
+              repository: ghcr.io/home-operations/lidarr
+              tag: 2.10.1.4589
             env:
               LIDARR__INSTANCE_NAME: Lidarr
               LIDARR__PORT: &port 8686
