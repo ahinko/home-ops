@@ -41,7 +41,7 @@ spec:
 
     existingSecret: "mastodon-secret"
 
-    enableSearches: true
+    enableSearches: false
     enableS3: false
     useSecureWebSocket: true
     local_https: true
@@ -149,7 +149,7 @@ spec:
       password: ""
 
     elasticsearch:
-      enabled: true
+      enabled: false
       sysctlImage:
         enabled: true
       security:
