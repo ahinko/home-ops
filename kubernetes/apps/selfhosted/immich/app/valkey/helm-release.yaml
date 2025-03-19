@@ -26,7 +26,7 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/valkey/valkey
+              repository: ghcr.io/ahinko/valkey
               tag: 8.0.2
     service:
       app:

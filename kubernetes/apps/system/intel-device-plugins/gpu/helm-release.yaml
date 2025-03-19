@@ -26,6 +26,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    image:
+      hub: ghcr.io/ahinko
+      tag: 0.32.0
+
     name: intel-gpu-plugin
     sharedDevNum: 3
     nodeFeatureRule: false

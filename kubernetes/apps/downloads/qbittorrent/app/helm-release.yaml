@@ -31,7 +31,7 @@ spec:
         initContainers:
           dnsdist:
             image:
-              repository: docker.io/powerdns/dnsdist-19
+              repository: ghcr.io/ahinko/dnsdist
               tag: 1.9.8
             restartPolicy: Always
 

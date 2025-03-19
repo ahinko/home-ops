@@ -58,7 +58,7 @@ spec:
         containers:
           restic:
             image:
-              repository: restic/restic
+              repository: ghcr.io/ahinko/restic
               tag: 0.17.3
             workingDir: /data
             args:

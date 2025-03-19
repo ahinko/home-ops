@@ -27,3 +27,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+
+  values:
+    manager:
+      image:
+        hub: ghcr.io/ahinko
+        tag: 0.32.0

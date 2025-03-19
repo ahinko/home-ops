@@ -27,6 +27,11 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    image:
+      registry: ghcr.io
+      repository: ahinko/grafana
+      tag: 11.5.2
+
     replicas: 1
     rbac:
       pspEnabled: false
@@ -358,6 +363,15 @@ spec:
 
     imageRenderer:
       enabled: true
+      image:
+        registry: ghcr.io
+        repository: ahinko/grafana-image-renderer
+        tag: 3.12.3
+
+    downloadDashboardsImage:
+      registry: ghcr.io
+      repository: ahinko/curl
+      tag: 8.9.1
 
     persistence:
       enabled: false
