@@ -1,35 +1,46 @@
 {
-    $schema: "https://docs.renovatebot.com/renovate-schema.json",
-    extends: [
-      "config:recommended",
-      "docker:enableMajor",
-      "helpers:pinGitHubActionDigests",
-      "github>ahinko/home-ops//.renovate/allowedVersions.json5",
-      "github>ahinko/home-ops//.renovate/autoMerge.json5",
-      "github>ahinko/home-ops//.renovate/grafanadashboards.json5",
-      "github>ahinko/home-ops//.renovate/groups.json5",
-      "github>ahinko/home-ops//.renovate/labels.json5",
-      "github>ahinko/home-ops//.renovate/regexManagers.json5",
-      "github>ahinko/home-ops//.renovate/semanticCommits.json5",
-      "github>ahinko/home-ops//.renovate/versioning.json5",
-      ":automergeBranch",
-      ":disableRateLimiting",
-      ":dependencyDashboard",
-      ":semanticCommits",
-      ":timezone(Europe/Stockholm)",
-    ],
-    dependencyDashboardTitle: "🤖 Renovate Dashboard",
-    suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
-    flux: {
-      fileMatch: ["kubernetes/.+\\.yaml$"],
-    },
-    "helm-values": {
-      fileMatch: ["kubernetes/.+\\.yaml$"],
-    },
-    kubernetes: {
-      fileMatch: [
-        "kubernetes/.+\\.yaml$",
-        "backups/.+\\.yaml$",
-      ],
-    },
-  }
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  commitBodyTable: true,
+  dependencyDashboardTitle: "🤖 Renovate Dashboard",
+  extends: [
+    ":automergeBranch",
+    "config:recommended",
+    ":dependencyDashboard",
+    ":disableRateLimiting",
+    "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
+    "github>ahinko/home-ops//.renovate/allowedVersions.json5",
+    "github>ahinko/home-ops//.renovate/autoMerge.json5",
+    "github>ahinko/home-ops//.renovate/grafanadashboards.json5",
+    "github>ahinko/home-ops//.renovate/groups.json5",
+    "github>ahinko/home-ops//.renovate/labels.json5",
+    "github>ahinko/home-ops//.renovate/regexManagers.json5",
+    "github>ahinko/home-ops//.renovate/semanticCommits.json5",
+    "github>ahinko/home-ops//.renovate/versioning.json5",
+    ":semanticCommits",
+    ":skipStatusChecks",
+  ],
+  flux: {
+    fileMatch: [
+      "kubernetes/.+\\.yaml$"
+    ]
+  },
+  "helm-values": {
+    fileMatch: [
+      "kubernetes/.+\\.yaml$"
+    ]
+  },
+  kubernetes: {
+    fileMatch: [
+      "kubernetes/.+\\.yaml$",
+      "backups/.+\\.yaml$"
+    ]
+  },
+  platformCommit: "enabled",
+  rebaseWhen: "auto",
+  suppressNotifications: [
+    "prEditedNotification",
+    "prIgnoreNotification"
+  ],
+  timezone: "Europe/Stockholm"
+}

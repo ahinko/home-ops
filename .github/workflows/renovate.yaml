@@ -1,5 +1,5 @@
 ---
-name: Schedule - Renovate
+name: Renovate
 
 on: # yamllint disable-line rule:truthy
   workflow_dispatch:
@@ -13,14 +13,14 @@ on: # yamllint disable-line rule:truthy
         default: "debug"
         required: false
   schedule:
-    - cron: "0 9,12,17 * * *"
+    - cron: "0 */2 * * *" # Run every 2 hours
   push:
     branches:
       - main
     paths:
       - ".renovaterc.json5"
       - ".renovate/**.json5"
-      - ".github/workflows/schedule-renovate.yaml"
+      - ".github/workflows/renovate.yaml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -55,7 +55,7 @@ jobs:
           token: "${{ steps.generate-token.outputs.token }}"
 
       - name: Renovate
-        uses: renovatebot/github-action@02f4fdeb479bbb229caa7ad82cb5e691c07e80b3 # v41.0.14
+        uses: renovatebot/github-action@08ed9fa83e24bfe6222557f9e221395c57972127 # v41.0.16
         with:
           configurationFile: .renovaterc.json5
           token: "${{ steps.generate-token.outputs.token }}"
