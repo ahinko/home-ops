@@ -81,7 +81,8 @@ spec:
           - path: /media
 
       config:
-        type: hostPath
-        hostPath: /var/mnt/tank/jellyfin/config
-        globalMounts:
-          - path: /config
+        existingClaim: jellyfin-config
+        advancedMounts:
+          jellyfin:
+            app:
+              - path: /config
