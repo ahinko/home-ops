@@ -119,6 +119,6 @@ spec:
 
       media:
         type: hostPath
-        hostPath: /var/mnt/tank/games
+        hostPath: /var/mnt/pool/games
         globalMounts:
           - path: /romm/library

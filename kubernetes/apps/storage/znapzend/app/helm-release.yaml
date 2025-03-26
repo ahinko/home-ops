@@ -62,11 +62,11 @@ spec:
       knownhosts:
         type: secret
         name: znapzend-known-hosts-secret
-        defaultMode: 384
+        #defaultMode: 384
         globalMounts:
           - path: /root/.ssh/known_hosts
             subPath: known_hosts
-            readOnly: true
+            readOnly: false
 
     service:
       app:

@@ -65,13 +65,13 @@ spec:
 
       timemachine:
         type: hostPath
-        hostPath: /var/mnt/tank/samba/timemachine
+        hostPath: /var/mnt/pool/samba/timemachine
         globalMounts:
           - path: /opt
 
       shares:
         type: hostPath
-        hostPath: /var/mnt/tank/samba/shares
+        hostPath: /var/mnt/pool/samba/shares
         globalMounts:
           - path: /shares
 

@@ -126,6 +126,6 @@ spec:
     persistence:
       library:
         type: hostPath
-        hostPath: /var/mnt/tank/immich
+        hostPath: /var/mnt/pool/immich
         globalMounts:
           - path: *mediaLocation
