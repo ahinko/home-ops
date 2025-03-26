@@ -3,10 +3,10 @@
   commitBodyTable: true,
   dependencyDashboardTitle: "🤖 Renovate Dashboard",
   extends: [
-    ":automergeBranch",
     "config:recommended",
+    ":automergeBranch",
     ":dependencyDashboard",
-    ":disableRateLimiting",
+    ":enablePreCommit",
     "docker:enableMajor",
     "helpers:pinGitHubActionDigests",
     "github>ahinko/home-ops//.renovate/allowedVersions.json5",
