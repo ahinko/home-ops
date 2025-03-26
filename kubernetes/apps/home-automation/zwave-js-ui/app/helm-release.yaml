@@ -62,7 +62,7 @@ spec:
 
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        hostnames: ["zwavejs.hemma.dev"]
         parentRefs:
           - name: internal
             namespace: kube-system

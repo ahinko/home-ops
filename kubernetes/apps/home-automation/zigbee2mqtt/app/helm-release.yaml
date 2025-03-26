@@ -91,7 +91,7 @@ spec:
 
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        hostnames: ["zigbee.hemma.dev"]
         parentRefs:
           - name: internal
             namespace: kube-system
