@@ -24,26 +24,15 @@ spec:
     fullnameOverride: *app
 
     image:
-      repository: ghcr.io/joryirving/smartctl_exporter
-      tag: 0.13.0
-
-    config:
-      devices:
-        - /dev/sda
-        - /dev/sdb
-        - /dev/sdc
-        - /dev/sdd
-        - /dev/sde
-        - /dev/sdf
-        - /dev/sdg
-        - /dev/sdh
-        - /dev/sdi
-        - /dev/sdj
-        - /dev/sdk
-        - /dev/sdl
+      registry: quay.io
 
     serviceMonitor:
       enabled: true
+      relabelings:
+        - action: labeldrop
+          regex: (pod)
 
     prometheusRules:
       enabled: false
+
+    tolerations: {}
