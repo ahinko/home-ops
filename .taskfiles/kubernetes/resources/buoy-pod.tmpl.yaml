@@ -10,10 +10,16 @@ spec:
       tty: true
       securityContext:
         allowPrivilegeEscalation: true
+        capabilities:
+          add:
+            - ALL
         privileged: true
+        fsGroup: 0
       volumeMounts:
         - mountPath: /rootfs
           name: rootfs
+        - name: dev
+          mountPath: /dev
         - mountPath: /sys/firmware/efi/efivars
           name: efivars
         - mountPath: /run/containerd
@@ -25,6 +31,9 @@ spec:
   nodeName: ${node}
   restartPolicy: Never
   volumes:
+    - name: dev
+      hostPath:
+        path: /dev
     - name: rootfs
       hostPath:
         path: /
