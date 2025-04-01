@@ -33,6 +33,10 @@ spec:
               tag: 0.23.2
 
             securityContext:
+              allowPrivilegeEscalation: true
+              capabilities:
+                add:
+                  - ALL
               privileged: true
               fsGroup: 0
 
@@ -45,9 +49,9 @@ spec:
     persistence:
       zfs:
         type: hostPath
-        hostPath: /dev/zfs
+        hostPath: /dev
         globalMounts:
-          - path: /dev/zfs
+          - path: /dev
 
       idrsa:
         type: secret
