@@ -39,6 +39,7 @@
     "https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1beta1.json": "**/external-secrets.yaml",
     "https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json": "**/pod-monitor.yaml",
     "https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json": "**/httproute.yaml",
+    "https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json": "**/oci-repository.yaml"
   },
   "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontLigatures": true,
