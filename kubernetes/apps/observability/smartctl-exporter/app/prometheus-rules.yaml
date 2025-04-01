@@ -39,9 +39,6 @@ spec:
           for: 15m
           labels:
             severity: critical
-        #
-        # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-smartctl-exporter/rules/rules.txt
-        #
         - alert: SmartDeviceMediaErrors
           annotations:
             summary:
@@ -67,6 +64,16 @@ spec:
               interface is slower then it should be.
           expr: |
             smartctl_device_interface_speed{speed_type="current"} != on(device, instance, namespace, pod) smartctl_device_interface_speed{speed_type="max"}
+          for: 15m
+          labels:
+            severity: critical
+        - alert: SmartDeviceOldAge
+          annotations:
+            summary:
+              Device {{ $labels.device }} on instance {{ $labels.instance }}
+              is older than 6 years
+          expr: |
+            smartctl_device_power_on_seconds > 189341556
           for: 15m
           labels:
             severity: critical
