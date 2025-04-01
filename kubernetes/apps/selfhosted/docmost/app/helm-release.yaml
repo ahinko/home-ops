@@ -1,0 +1,91 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app docmost
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      docmost:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: docmost/docmost
+              tag: 0.9.0
+
+            env:
+              APP_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: docmost-secret
+                    key: APP_SECRET
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-docmost-user
+                    key: POSTGRES_URL
+              REDIS_URL: "redis://dragonfly.databases.svc.cluster.local:6379/5"
+              APP_URL: "https://docs.hemma.dev"
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+            resources:
+              requests:
+                memory: 512M
+                cpu: 10m
+              limits:
+                memory: 1024M
+
+    service:
+      app:
+        controller: docmost
+        ports:
+          http:
+            port: &port 3000
+
+    route:
+      app:
+        hostnames: ["docs.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
+    persistence:
+      app:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          docmost:
+            app:
+              - path: /app/data/storage
