@@ -43,9 +43,8 @@ spec:
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
 
             env:
-              DB_PATH: /data/pocket-id.db
+              DB_CONNECTION_STRING: file:/data/pocket-id.db?_journal_mode=WAL&_busy_timeout=2500&_txlock=immediate
               PUBLIC_APP_URL: https://pid.hemma.dev
-              SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
               TZ: Europe/Stockholm
               UPLOAD_PATH: /data/uploads
