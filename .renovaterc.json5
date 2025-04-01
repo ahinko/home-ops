@@ -6,9 +6,12 @@
     "config:recommended",
     ":automergeBranch",
     ":dependencyDashboard",
-    ":enablePreCommit",
+    ":disableRateLimiting",
     "docker:enableMajor",
+    ":enablePreCommit",
     "helpers:pinGitHubActionDigests",
+    ":semanticCommits",
+    ":skipStatusChecks",
     "github>ahinko/home-ops//.renovate/allowedVersions.json5",
     "github>ahinko/home-ops//.renovate/autoMerge.json5",
     "github>ahinko/home-ops//.renovate/grafanadashboards.json5",
@@ -17,8 +20,6 @@
     "github>ahinko/home-ops//.renovate/regexManagers.json5",
     "github>ahinko/home-ops//.renovate/semanticCommits.json5",
     "github>ahinko/home-ops//.renovate/versioning.json5",
-    ":semanticCommits",
-    ":skipStatusChecks",
   ],
   flux: {
     fileMatch: [

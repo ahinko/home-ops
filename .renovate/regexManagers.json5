@@ -34,12 +34,24 @@
     },
     {
       customType: "regex",
-      description: "Process CLI versions",
-      fileMatch: [".taskfiles/.+\\.yaml$", "infrastructure/.+\\.yaml$"],
+      description: "Process raw GitHub URLs",
+      fileMatch: ["kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
       matchStrings: [
-        "github.com/(?<depName>.*?)/releases/download/(?<currentValue>[a-z0-9.]*)",
+        "https:\\/\\/raw.githubusercontent.com\\/(?<depName>[\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*"
       ],
       datasourceTemplate: "github-releases",
+      versioningTemplate: "semver"
     },
+    {
+      customType: "regex",
+      description: "Process GitHub release URLs",
+      fileMatch: ["kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
+      matchStrings: [
+        "https:\\/\\/github.com\\/(?<depName>[\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/releases\\/download\\/v(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*",
+        "https:\\/\\/github.com\\/(?<depName>[\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/releases\\/download\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*"
+      ],
+      datasourceTemplate: "github-releases",
+      versioningTemplate: "semver"
+    }
   ],
 }
