@@ -21,4 +21,3 @@ resources:
   - ./kubernetes-sigs-metrics-server-charts.yaml
   - ./kubernetes-sigs-node-feature-discovery-charts.yaml
   - ./openebs-charts.yaml
-  - ./piraeus-charts.yaml
