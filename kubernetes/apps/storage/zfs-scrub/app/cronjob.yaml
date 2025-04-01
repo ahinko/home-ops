@@ -29,35 +29,3 @@ spec:
               securityContext:
                 privileged: true
                 runAsUser: 0
-
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: zfs-scrub-tank
-spec:
-  schedule: "0 2 2 * *" # 02:00 on the 2st of every month
-  concurrencyPolicy: "Forbid"
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 5
-  startingDeadlineSeconds: 10
-  jobTemplate:
-    spec:
-      backoffLimit: 1
-      ttlSecondsAfterFinished: 300
-      template:
-        spec:
-          restartPolicy: Never
-          nodeSelector:
-            kubernetes.io/hostname: s01
-          containers:
-            - name: scrub-tank
-              image: ghcr.io/ahinko/buoy:1.2.11
-              imagePullPolicy: IfNotPresent
-              command:
-                - /bin/sh
-                - -c
-                - zpool scrub tank
-              securityContext:
-                privileged: true
-                runAsUser: 0
