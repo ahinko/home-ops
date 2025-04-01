@@ -2,15 +2,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: spegel
-  namespace: flux-system
+  name: reloader
 spec:
   interval: 1h
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.1.0
-  url: oci://ghcr.io/spegel-org/helm-charts/spegel
-  verify:
-    provider: cosign
+    tag: 2.0.0
+  url: oci://ghcr.io/stakater/charts/reloader

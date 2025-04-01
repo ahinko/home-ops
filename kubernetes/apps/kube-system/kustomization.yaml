@@ -10,4 +10,5 @@ resources:
   - ./metrics-server/install.yaml
 components:
   - ../../components/namespace
+  - ../../components/repos/app-template
   - ../../components/alerts

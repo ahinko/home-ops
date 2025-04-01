@@ -8,7 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kube-state-metrics
-    namespace: flux-system
   values:
     fullnameOverride: kube-state-metrics
 

@@ -7,7 +7,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: coredns
-    namespace: flux-system
   interval: 30m
 
   valuesFrom:

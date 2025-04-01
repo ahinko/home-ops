@@ -8,7 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: dragonfly-operator
-    namespace: flux-system
   install:
     remediation:
       retries: 3

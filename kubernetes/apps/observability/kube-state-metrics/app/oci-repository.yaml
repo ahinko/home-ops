@@ -2,15 +2,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: coredns
-  namespace: flux-system
+  name: kube-state-metrics
 spec:
   interval: 1h
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
-  url: oci://ghcr.io/coredns/charts/coredns
   ref:
-    tag: 1.39.2
-  verify:
-    provider: cosign
+    tag: 5.31.0
+  url: oci://ghcr.io/prometheus-community/charts/kube-state-metrics

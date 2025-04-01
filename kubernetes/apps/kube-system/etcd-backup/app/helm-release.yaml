@@ -8,7 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
-    namespace: flux-system
   install:
     remediation:
       retries: 3
@@ -46,7 +45,7 @@ spec:
           restic:
             image:
               repository: ghcr.io/ahinko/restic
-              tag: 0.17.3
+              tag: 0.18.0
             workingDir: /data
             args:
               - backup
@@ -82,7 +81,7 @@ spec:
           restic:
             image:
               repository: restic/restic
-              tag: 0.17.3
+              tag: 0.18.0
             args:
               - forget
               - --keep-last=7 # change me - set retention policy

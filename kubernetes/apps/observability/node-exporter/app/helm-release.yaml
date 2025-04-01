@@ -9,8 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: prometheus-node-exporter
-    namespace: flux-system
-
   values:
     fullnameOverride: node-exporter
 
