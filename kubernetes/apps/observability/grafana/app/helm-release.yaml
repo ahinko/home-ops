@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      version: 8.11.1
+      version: 8.11.3
   interval: 60m
   timeout: 20m
   maxHistory: 2
@@ -371,7 +371,7 @@ spec:
     downloadDashboardsImage:
       registry: ghcr.io
       repository: ahinko/curl
-      tag: 8.12.1
+      tag: 8.13.0
 
     persistence:
       enabled: false
