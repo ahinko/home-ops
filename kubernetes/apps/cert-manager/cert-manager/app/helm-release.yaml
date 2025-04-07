@@ -4,15 +4,10 @@ kind: HelmRelease
 metadata:
   name: &app cert-manager
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: *app
-      version: v1.17.1
-      sourceRef:
-        kind: HelmRepository
-        name: jetstack-charts
-        namespace: flux-system
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: cert-manager
   install:
     remediation:
       retries: 3
