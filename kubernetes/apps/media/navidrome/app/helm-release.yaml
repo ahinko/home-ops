@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/navidrome/navidrome
-              tag: 0.55.1
+              tag: 0.55.2
 
             env:
               ND_ENABLEINSIGHTSCOLLECTOR: "false"
