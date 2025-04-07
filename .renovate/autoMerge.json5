@@ -7,7 +7,6 @@
       automerge: true,
       automergeType: "branch",
       matchUpdateTypes: ["minor", "patch", "digest"],
-      minimumReleaseAge: "3 days",
       ignoreTests: true
     },
   ]
