@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: docmost/docmost
-              tag: 0.9.0
+              tag: 0.10.2
 
             env:
               APP_SECRET:
