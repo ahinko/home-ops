@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/miniflux/miniflux
-              tag: 2.2.7
+              tag: 2.2.8
 
             env:
               BASE_URL: https://rss.hemma.dev
