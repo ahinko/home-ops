@@ -121,6 +121,13 @@ spec:
             - name: VAR_REPLICATIONDESTNAME
               value: ".*-bootstrap"
 
+        emqx:
+          # renovate: depName="EMQX"
+          gnetId: 17446
+          revision: 2
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
