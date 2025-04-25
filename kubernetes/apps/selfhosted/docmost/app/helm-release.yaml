@@ -28,7 +28,7 @@ spec:
         containers:
           app:
             image:
-              repository: docmost/docmost
+              repository: ghcr.io/ahinko/docmost
               tag: 0.20.3
 
             env:
