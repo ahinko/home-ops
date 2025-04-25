@@ -9,7 +9,6 @@ bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
-  #tproxy: true
 cgroup:
   automount:
     enabled: false
@@ -25,7 +24,11 @@ enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  enabled: true
+  rollOutPods: true
+  prometheus:
+    serviceMonitor:
+      enabled: true
 gatewayAPI:
   enableAlpn: true
   enabled: true

@@ -111,6 +111,13 @@ spec:
           revision: 3
           datasource: Prometheus
 
+        envoy:
+          # renovate: dashboardNam="Envoy Proxy Monitoring gRPC"
+          gnetId: 23239
+          revision: 1
+          datasource:
+            - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
+
         volsync:
           # removate: depName="VolSync Dashboard"
           gnetId: 21356
