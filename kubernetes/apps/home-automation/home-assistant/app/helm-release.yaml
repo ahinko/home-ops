@@ -57,7 +57,7 @@ spec:
                 cpu: 100m
                 memory: 500M
               limits:
-                memory: 1000M
+                memory: 2024M
 
           code-server:
             image:
