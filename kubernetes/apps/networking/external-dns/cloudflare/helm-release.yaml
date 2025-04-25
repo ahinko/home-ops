@@ -33,9 +33,9 @@ spec:
     podAnnotations:
       reloader.stakater.com/auto: "true"
 
-    interval: 60m
     logLevel: warning
-    provider: cloudflare
+    provider:
+      name: cloudflare
 
     env:
       - name: CF_API_TOKEN
