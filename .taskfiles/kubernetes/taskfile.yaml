@@ -12,6 +12,11 @@ tasks:
       - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
       - kubectl delete pods --field-selector status.phase=Succeeded -A --ignore-not-found=true
 
+  list-not-running-pods:
+    desc: Lists pods that are not running
+    cmds:
+      - viddy --disable_auto_save 'kubectl get pods --field-selector status.phase!=Running -A'
+
   node-shell:
     desc: Open a shell to a node [NODE=required]
     interactive: true

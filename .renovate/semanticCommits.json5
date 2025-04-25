@@ -34,6 +34,12 @@
       commitMessageTopic: "chart {{depName}}",
     },
     {
+      matchDatasources: ["docker"],
+      semanticCommitScope: "helm",
+      commitMessageTopic: "chart {{depName}}",
+      matchPackageNames: ["/chart/"],
+    },
+    {
       matchDatasources: ["helm"],
       semanticCommitScope: "helm",
       commitMessageTopic: "chart {{depName}}",
