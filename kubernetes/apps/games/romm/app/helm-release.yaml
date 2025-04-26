@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/rommapp/romm
-              tag: 3.8.3
+              tag: 3.9.0
 
             env:
               DB_HOST:
