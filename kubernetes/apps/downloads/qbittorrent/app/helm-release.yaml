@@ -30,7 +30,7 @@ spec:
           dnsdist:
             image:
               repository: ghcr.io/ahinko/dnsdist
-              tag: 1.9.8
+              tag: 1.9.9
             restartPolicy: Always
 
           gluetun:
