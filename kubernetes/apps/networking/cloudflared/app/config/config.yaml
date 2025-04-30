@@ -9,7 +9,7 @@ ingress:
     originRequest:
       originServerName: ingress.selfy.social
   - hostname: "*.selfy.social"
-    service: &svc https://cilium-gateway-social.kube-system.svc.cluster.local
+    service: *svc
     originRequest:
       originServerName: ingress.selfy.social
   - service: http_status:404
