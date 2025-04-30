@@ -20,7 +20,7 @@ spec:
       namespace: databases
     - name: volsync
       namespace: storage
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/home-automation/home-assistant/app"
   postBuild:
     substitute:

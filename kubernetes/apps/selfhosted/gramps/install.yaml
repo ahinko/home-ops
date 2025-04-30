@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: dragonfly-cluster
       namespace: databases
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/selfhosted/gramps/app"
   postBuild:
     substitute:

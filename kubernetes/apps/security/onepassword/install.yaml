@@ -11,7 +11,7 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/security/onepassword/app"
   prune: true
   sourceRef:
@@ -34,7 +34,7 @@ spec:
   dependsOn:
     - name: external-secrets
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/security/onepassword/store"
   prune: true
   sourceRef:

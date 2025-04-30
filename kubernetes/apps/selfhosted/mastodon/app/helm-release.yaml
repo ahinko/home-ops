@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: &app mastodon
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: *app
@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: bitnami-charts
         namespace: flux-system
-      interval: 30m
+      interval: 1h
   maxHistory: 2
   timeout: 30m
   install:

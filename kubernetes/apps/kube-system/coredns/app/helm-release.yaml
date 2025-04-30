@@ -7,7 +7,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: coredns
-  interval: 30m
+  interval: 1h
 
   valuesFrom:
     - kind: ConfigMap

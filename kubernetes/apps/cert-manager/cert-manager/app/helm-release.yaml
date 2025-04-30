@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: &app cert-manager
 spec:
-  interval: 15m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: cert-manager

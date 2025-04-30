@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: actions-runner-controller
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: gha-runner-scale-set-controller
@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller-charts
         namespace: flux-system
-      interval: 30m
+      interval: 1h
   maxHistory: 2
   install:
     createNamespace: true

@@ -13,7 +13,7 @@ spec:
       namespace: security
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/observability/gatus/app"
   prune: true
   sourceRef:

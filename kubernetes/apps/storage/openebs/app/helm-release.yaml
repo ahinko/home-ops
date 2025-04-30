@@ -4,12 +4,12 @@ kind: HelmRelease
 metadata:
   name: openebs
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: openebs
       version: 4.2.0
-      interval: 30m
+      interval: 1h
       sourceRef:
         kind: HelmRepository
         name: openebs-charts

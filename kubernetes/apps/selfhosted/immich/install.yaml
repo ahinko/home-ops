@@ -17,7 +17,7 @@ spec:
       namespace: security
     - name: dragonfly-cluster
       namespace: databases
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/selfhosted/immich/app"
   prune: true
   sourceRef:

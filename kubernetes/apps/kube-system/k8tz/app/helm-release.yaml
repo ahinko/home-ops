@@ -8,12 +8,12 @@ spec:
     spec:
       chart: k8tz
       version: 0.18.0
-      interval: 30m
+      interval: 1h
       sourceRef:
         kind: HelmRepository
         name: k8tz-charts
         namespace: flux-system
-  interval: 30m
+  interval: 1h
   values:
     namespace: kube-system
 

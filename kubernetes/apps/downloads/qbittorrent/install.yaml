@@ -19,7 +19,7 @@ spec:
       namespace: storage
     - name: onepassword-store
       namespace: security
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/downloads/qbittorrent/app"
   postBuild:
     substitute:

@@ -5,7 +5,7 @@ metadata:
   name: &app mastodon-fakerelay
   namespace: selfhosted
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: app-template

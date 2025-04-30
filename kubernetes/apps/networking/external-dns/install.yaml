@@ -8,7 +8,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname-cf
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/networking/external-dns/cloudflare"
   prune: true
   sourceRef:
@@ -28,7 +28,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname-unifi
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/networking/external-dns/unifi"
   prune: true
   sourceRef:

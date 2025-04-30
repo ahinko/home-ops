@@ -11,7 +11,7 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/kube-system/k8tz/app"
   prune: true
   sourceRef:

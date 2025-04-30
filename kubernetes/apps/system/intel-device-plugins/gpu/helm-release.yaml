@@ -4,12 +4,12 @@ kind: HelmRelease
 metadata:
   name: intel-device-plugins-gpu
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: intel-device-plugins-gpu
       version: 0.32.0
-      interval: 30m
+      interval: 1h
       sourceRef:
         kind: HelmRepository
         name: intel-charts

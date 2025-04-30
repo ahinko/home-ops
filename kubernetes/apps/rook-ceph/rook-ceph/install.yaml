@@ -8,7 +8,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/rook-ceph/rook-ceph/operator"
   prune: true
   sourceRef:
@@ -31,7 +31,7 @@ spec:
   dependsOn:
     - name: rook-ceph-operator
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/rook-ceph/rook-ceph/cluster"
   prune: true
   sourceRef:

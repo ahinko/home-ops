@@ -17,7 +17,7 @@ spec:
       namespace: storage
     - name: external-secrets
       namespace: security
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/databases/influxdb/app"
   postBuild:
     substitute:

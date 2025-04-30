@@ -11,7 +11,7 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: security
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/actions-runner-system/actions-runner-controller/operator"
   prune: true
   sourceRef:
@@ -37,7 +37,7 @@ spec:
       namespace: actions-runner-system
     - name: openebs
       namespace: storage
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/actions-runner-system/actions-runner-controller/runners"
   prune: true
   sourceRef:

@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: &app sonarr
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: app-template

@@ -15,7 +15,7 @@ spec:
       namespace: databases
     - name: postgres-cluster
       namespace: databases
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/apps/selfhosted/docmost/app"
   postBuild:
     substitute:
