@@ -62,7 +62,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.99.3
+              tag: 4.99.4
             args:
               [
                 "--auth",
