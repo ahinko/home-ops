@@ -4,9 +4,6 @@ replicaCount: 2
 leaderElect: true
 image:
   repository: ghcr.io/external-secrets/external-secrets
-serviceMonitor:
-  enabled: true
-  interval: 1m
 certController:
   image:
     repository: ghcr.io/external-secrets/external-secrets
@@ -19,3 +16,8 @@ webhook:
   serviceMonitor:
     enabled: true
     interval: 1m
+serviceMonitor:
+  enabled: true
+  interval: 1m
+grafanaDashboard:
+  enabled: true

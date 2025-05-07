@@ -111,13 +111,6 @@ spec:
           revision: 3
           datasource: Prometheus
 
-        external-secrets:
-          # renovate: depName="External Secrets"
-          gnetId: 21640
-          revision: 4
-          datasource:
-            - { name: DS_METRICS, value: Prometheus }
-
         envoy:
           # renovate: dashboardNam="Envoy Proxy Monitoring gRPC"
           gnetId: 23239
@@ -153,7 +146,8 @@ spec:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
           revision: 40
-          datasource: Prometheus
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
@@ -163,15 +157,14 @@ spec:
           gnetId: 13665
           revision: 4
           datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         smartctl-exporter:
           # renovate: depName="SMARTctl Exporter Dashboard"
           gnetId: 22604
           revision: 2
           datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         zfs:
           # renovate: depName="ZFS"
