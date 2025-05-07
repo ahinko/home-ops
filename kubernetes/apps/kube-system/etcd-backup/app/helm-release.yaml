@@ -30,7 +30,7 @@ spec:
           talosctl:
             image:
               repository: ghcr.io/siderolabs/talosctl
-              tag: v1.9.5
+              tag: v1.10.1
             args:
               - -n
               - "$(CP_NODE_IP)"
