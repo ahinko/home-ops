@@ -23,6 +23,7 @@ spec:
       daily: 7
       hourly: 24
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
+    unlock: u1
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
