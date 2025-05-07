@@ -72,8 +72,8 @@ spec:
 
     persistence:
       library:
-        type: hostPath
-        hostPath: /var/mnt/pool/immich
+        type: persistentVolumeClaim
+        existingClaim: immich-media
         globalMounts:
           - path: *mediaLocation
 

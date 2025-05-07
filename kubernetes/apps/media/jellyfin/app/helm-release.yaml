@@ -74,8 +74,8 @@ spec:
           - path: /cache
 
       media:
-        type: hostPath
-        hostPath: /var/mnt/pool/media
+        type: persistentVolumeClaim
+        existingClaim: media-data
         globalMounts:
           - path: /media
 

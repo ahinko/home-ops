@@ -1,0 +1,47 @@
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: games
+  finalizers:
+    - cluster.local/data-protection
+spec:
+  capacity: "63771674411008"
+  ownerNodeID: s01
+  volumeType: DATASET
+  recordsize: "128k"
+  fsType: "zfs"
+  shared: "yes"
+  poolName: "pool"
+  compression: "on"
+  dedup: "off"
+  thinProvision: "yes"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: storage-zfs-games
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/cas-type: localpv-zfs
+      openebs.io/poolname: pool
+    volumeHandle: games
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: openebs.io/nodeid
+              operator: In
+              values:
+                - s01
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem

@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./configs
   - ./helm-release.yaml
+  - ./pvc.yaml

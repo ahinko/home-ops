@@ -40,7 +40,17 @@ spec:
           keep: false
 
     zfs-localpv:
-      enabled: false
+      enabled: true
+      zfsNode:
+        encrKeysDir: "/var/zfs"
+      analytics:
+        enabled: false
+      zfs:
+        bin: /usr/local/sbin/zfs
+      crds:
+        csi:
+          volumeSnapshots:
+            enabled: false
 
     lvm-localpv:
       enabled: false
@@ -53,7 +63,7 @@ spec:
         lvm:
           enabled: false
         zfs:
-          enabled: false
+          enabled: true
       replicated:
         mayastor:
           enabled: false

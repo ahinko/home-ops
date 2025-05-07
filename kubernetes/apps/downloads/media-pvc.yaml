@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Ti
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: storage-zfs-downloads

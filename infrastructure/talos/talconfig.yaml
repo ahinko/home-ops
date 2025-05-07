@@ -169,6 +169,8 @@ nodes:
         addresses:
           - 192.168.20.37/24
         dhcp: true
+    nodeLabels:
+      openebs.io/nodeid: s01
     kernelModules:
       - name: zfs
     schematic:

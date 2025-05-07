@@ -117,7 +117,7 @@ spec:
               - path: /romm
 
       media:
-        type: hostPath
-        hostPath: /var/mnt/pool/games
+        type: persistentVolumeClaim
+        existingClaim: romm-games
         globalMounts:
           - path: /romm/library

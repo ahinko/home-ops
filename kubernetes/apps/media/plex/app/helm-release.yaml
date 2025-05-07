@@ -120,8 +120,8 @@ spec:
               - path: /config/Library/Application Support/Plex Media Server/Logs
 
       media:
-        type: hostPath
-        hostPath: /var/mnt/pool/media
+        type: persistentVolumeClaim
+        existingClaim: media-data
         globalMounts:
           - path: /data/media
 

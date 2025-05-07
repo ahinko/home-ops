@@ -85,7 +85,7 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
 
       media:
-        type: hostPath
-        hostPath: /var/mnt/pool/media
+        type: persistentVolumeClaim
+        existingClaim: downloads-media
         globalMounts:
           - path: /media

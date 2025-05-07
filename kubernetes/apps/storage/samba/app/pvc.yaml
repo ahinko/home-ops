@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: samba-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Ti
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: storage-zfs-samba

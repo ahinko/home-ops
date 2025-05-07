@@ -13,3 +13,4 @@ resources:
   - ./valkey
   - ./server
   - ./machine-learning
+  - ./pvc.yaml
