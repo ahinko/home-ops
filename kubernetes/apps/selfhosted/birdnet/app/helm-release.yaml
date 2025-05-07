@@ -26,8 +26,6 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
-            securityContext:
-              privileged: true
 
     service:
       app:

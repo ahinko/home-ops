@@ -58,7 +58,7 @@ tasks:
     desc: Wait for services in cluster to be healthy
     cmds:
       # Ensure CephCluster is healthy
-      # - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
       # Ensure CloudNative-PG cluster has 3 ready instances
       - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres16
       - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres17
@@ -116,7 +116,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with amd64 machines
     silent: true
     cmds:
-      - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.9.5/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
+      - "curl -LOC - https://factory.talos.dev/image/dafae93fc4a2c32184af894f78c74d04f1ccabd000f0d2b2bb951628c97ac5c8/v1.10.1/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"
@@ -131,7 +131,7 @@ tasks:
     desc: Write Talos image to USB drive to be used with Raspberry Pi 4
     silent: true
     cmds:
-      - "curl -LO https://factory.talos.dev/image/1f4ca7d6d118680158e6e1ae5101242fdf37c81b555960afe17f18a0ecf8ecca/v1.9.5/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
+      - "curl -LO https://factory.talos.dev/image/1f4ca7d6d118680158e6e1ae5101242fdf37c81b555960afe17f18a0ecf8ecca/v1.10.1/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
       - "diskutil list"
       - |
         echo "Path to USB drive:"

@@ -36,7 +36,6 @@ spec:
               limits:
                 memory: 64Mi
             securityContext:
-              # privileged: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
