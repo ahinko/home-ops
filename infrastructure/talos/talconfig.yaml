@@ -34,12 +34,16 @@ nodes:
         name: rpi_generic
       customization:
         extraKernelArgs:
-          - apparmor=0 # Less security, more speed
-          - init_on_alloc=0 # Less security, more speed
-          - init_on_free=0 # Less security, more speed
-          - mitigations=off # Less security, more speed
-          - security=none # Less security, more speed
-          - net.ifnames=1 # Enable predictable NIC naming
+          - -selinux                            # Less security, faster puter
+          - -init_on_alloc                      # Less security, faster puter
+          - -init_on_free                       # Less security, faster puter
+          - apparmor=0                          # Less security, faster puter
+          - init_on_alloc=0                     # Less security, faster puter
+          - init_on_free=0                      # Less security, faster puter
+          - mitigations=off                     # Less security, faster puter
+          - security=none                       # Less security, faster puter
+          - talos.auditd.disabled=1             # Less security, faster puter
+          - net.ifnames=1                       # Enable predictable NIC naming
 
   - hostname: cp02
     ipAddress: 192.168.20.32
@@ -83,14 +87,18 @@ nodes:
     schematic: &nuc-schematic
       customization:
         extraKernelArgs:
-          - apparmor=0 # Less security, more speed
-          - init_on_alloc=0 # Less security, more speed
-          - init_on_free=0 # Less security, more speed
-          - intel_iommu=on # PCI Passthrough
-          - iommu=pt # PCI Passthrough
-          - mitigations=off # Less security, more speed
-          - security=none # Less security, more speed
-          - net.ifnames=1 # Enable predictable NIC naming
+          - -selinux                            # Less security, faster puter
+          - -init_on_alloc                      # Less security, faster puter
+          - -init_on_free                       # Less security, faster puter
+          - apparmor=0                          # Less security, faster puter
+          - init_on_alloc=0                     # Less security, faster puter
+          - init_on_free=0                      # Less security, faster puter
+          - intel_iommu=on                      # PCI Passthrough
+          - iommu=pt                            # PCI Passthrough
+          - mitigations=off                     # Less security, faster puter
+          - security=none                       # Less security, faster puter
+          - talos.auditd.disabled=1             # Less security, faster puter
+          - net.ifnames=1                       # Enable predictable NIC naming
         systemExtensions:
           officialExtensions:
             - siderolabs/usb-modem-drivers
@@ -176,14 +184,18 @@ nodes:
     schematic:
       customization:
         extraKernelArgs:
-          - apparmor=0 # Less security, more speed
-          - init_on_alloc=0 # Less security, more speed
-          - init_on_free=0 # Less security, more speed
-          - intel_iommu=on # PCI Passthrough
-          - iommu=pt # PCI Passthrough
-          - mitigations=off # Less security, more speed
-          - security=none # Less security, more speed
-          - net.ifnames=1 # Enable predictable NIC naming
+          - -selinux                            # Less security, faster puter
+          - -init_on_alloc                      # Less security, faster puter
+          - -init_on_free                       # Less security, faster puter
+          - apparmor=0                          # Less security, faster puter
+          - init_on_alloc=0                     # Less security, faster puter
+          - init_on_free=0                      # Less security, faster puter
+          - intel_iommu=on                      # PCI Passthrough
+          - iommu=pt                            # PCI Passthrough
+          - mitigations=off                     # Less security, faster puter
+          - security=none                       # Less security, faster puter
+          - talos.auditd.disabled=1             # Less security, faster puter
+          - net.ifnames=1                       # Enable predictable NIC naming
         systemExtensions:
           officialExtensions:
             - siderolabs/i915
