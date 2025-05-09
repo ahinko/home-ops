@@ -1,47 +1,47 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   commitBodyTable: true,
-  dependencyDashboardTitle: "🤖 Renovate Dashboard",
+  dependencyDashboardTitle: '🤖 Renovate Dashboard',
   extends: [
-    "config:recommended",
-    ":automergeBranch",
-    ":dependencyDashboard",
-    ":disableRateLimiting",
-    "docker:enableMajor",
-    ":enablePreCommit",
-    "helpers:pinGitHubActionDigests",
-    ":semanticCommits",
-    ":skipStatusChecks",
-    "github>ahinko/home-ops//.renovate/allowedVersions.json5",
-    "github>ahinko/home-ops//.renovate/autoMerge.json5",
-    "github>ahinko/home-ops//.renovate/grafanadashboards.json5",
-    "github>ahinko/home-ops//.renovate/groups.json5",
-    "github>ahinko/home-ops//.renovate/labels.json5",
-    "github>ahinko/home-ops//.renovate/regexManagers.json5",
-    "github>ahinko/home-ops//.renovate/semanticCommits.json5",
-    "github>ahinko/home-ops//.renovate/versioning.json5",
+    'config:recommended',
+    ':automergeBranch',
+    ':dependencyDashboard',
+    ':disableRateLimiting',
+    'docker:enableMajor',
+    ':enablePreCommit',
+    'helpers:pinGitHubActionDigests',
+    ':semanticCommits',
+    ':skipStatusChecks',
+    'github>ahinko/home-ops//.renovate/allowedVersions.json5',
+    'github>ahinko/home-ops//.renovate/autoMerge.json5',
+    'github>ahinko/home-ops//.renovate/grafanadashboards.json5',
+    'github>ahinko/home-ops//.renovate/groups.json5',
+    'github>ahinko/home-ops//.renovate/labels.json5',
+    'github>ahinko/home-ops//.renovate/regexManagers.json5',
+    'github>ahinko/home-ops//.renovate/semanticCommits.json5',
+    'github>ahinko/home-ops//.renovate/versioning.json5',
   ],
   flux: {
-    fileMatch: [
-      "kubernetes/.+\\.yaml$"
-    ]
+    managerFilePatterns: [
+      '/kubernetes/.+\\.yaml$/',
+    ],
   },
-  "helm-values": {
-    fileMatch: [
-      "kubernetes/.+\\.yaml$"
-    ]
+  'helm-values': {
+    managerFilePatterns: [
+      '/kubernetes/.+\\.yaml$/',
+    ],
   },
   kubernetes: {
-    fileMatch: [
-      "kubernetes/.+\\.yaml$",
-      "backups/.+\\.yaml$"
-    ]
+    managerFilePatterns: [
+      '/kubernetes/.+\\.yaml$/',
+      '/backups/.+\\.yaml$/',
+    ],
   },
-  platformCommit: "enabled",
-  rebaseWhen: "auto",
+  platformCommit: 'enabled',
+  rebaseWhen: 'auto',
   suppressNotifications: [
-    "prEditedNotification",
-    "prIgnoreNotification"
+    'prEditedNotification',
+    'prIgnoreNotification',
   ],
-  timezone: "Europe/Stockholm"
+  timezone: 'Europe/Stockholm',
 }
