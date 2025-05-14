@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "flux-operator-mcp": {
+      "command": "/opt/homebrew/bin/flux-operator-mcp",
+      "args": ["serve"],
+      "env": {
+        "KUBECONFIG": "/Users/peter/.kube/configs/mainframe"
+      }
+    }
+  }
+ }

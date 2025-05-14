@@ -2,6 +2,7 @@
 tap "fluxcd/tap"
 tap "go-task/tap"
 tap "siderolabs/tap"
+tap "controlplaneio-fluxcd/tap"
 
 # Terminal
 brew "fish"
@@ -32,6 +33,7 @@ brew "talhelper"
 brew "siderolabs/tap/talosctl"
 brew "helmfile"
 brew "krew"
+brew "controlplaneio-fluxcd/tap/flux-operator-mcp"
 
 # git signed commit
 brew "gpg2"
