@@ -69,7 +69,7 @@ spec:
                 memory: 1024Mi
     service:
       app:
-        controller: gramps
+        controller: *app
         ports:
           http:
             port: &port 5000
@@ -83,7 +83,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

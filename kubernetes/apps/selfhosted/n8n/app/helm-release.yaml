@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: n8n
+  name: &app n8n
 spec:
   interval: 1h
   chartRef:
@@ -63,7 +63,7 @@ spec:
 
     service:
       app:
-        controller: n8n
+        controller: *app
         ports:
           http:
             port: *port
@@ -86,7 +86,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: n8n
+              - identifier: app
                 port: *port
       # webhooks:
       #   hostnames:
@@ -100,5 +100,5 @@ spec:
       #         - path:
       #             value: /webhook
       #       backendRefs:
-      #         - name: n8n
+      #         - identifier: app
       #           port: *port

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: karakeep
+  name: &app karakeep
 spec:
   interval: 1h
   chartRef:
@@ -143,7 +143,7 @@ spec:
     service:
       app:
         primary: true
-        controller: karakeep
+        controller: *app
         ports:
           http:
             port: &httpPort 3000
@@ -181,5 +181,5 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: karakeep
+              - identifier: app
                 port: *httpPort

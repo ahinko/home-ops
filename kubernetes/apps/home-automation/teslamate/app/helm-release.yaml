@@ -49,7 +49,7 @@ spec:
 
     service:
       app:
-        controller: teslamate
+        controller: *app
         ports:
           http:
             port: &port 4000
@@ -63,5 +63,5 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port

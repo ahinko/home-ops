@@ -95,7 +95,7 @@ spec:
 
     service:
       app:
-        controller: home-assistant
+        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.20.201
@@ -123,7 +123,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
       code-server:
@@ -134,7 +134,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: 8080
 
     persistence:

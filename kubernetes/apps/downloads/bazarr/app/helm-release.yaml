@@ -63,7 +63,7 @@ spec:
 
     service:
       app:
-        controller: bazarr
+        controller: *app
         ports:
           http:
             port: &port 6767
@@ -77,7 +77,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

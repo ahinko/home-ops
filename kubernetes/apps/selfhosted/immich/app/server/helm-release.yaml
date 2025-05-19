@@ -104,7 +104,7 @@ spec:
 
     service:
       app:
-        controller: immich-server
+        controller: *app
         ports:
           http:
             port: *port
@@ -118,7 +118,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

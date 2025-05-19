@@ -15,7 +15,7 @@ spec:
       namespace: security
     - name: volsync
       namespace: storage
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/selfhosted/karakeep/app
   postBuild:
     substitute:

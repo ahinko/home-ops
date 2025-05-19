@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cloudflared
+  name: &app cloudflared
 spec:
   interval: 1h
   chartRef:
@@ -82,7 +82,7 @@ spec:
 
     service:
       app:
-        controller: cloudflared
+        controller: *app
         ports:
           http:
             port: 8080

@@ -83,16 +83,19 @@ spec:
               METHOD: SLEEP
             resources: *resources
 
+        serviceAccount:
+          identifier: gatus
+
     service:
       app:
-        controller: gatus
+        controller: *app
         ports:
           http:
             port: *port
 
     serviceMonitor:
       app:
-        serviceName: gatus
+        serviceName: *app
         endpoints:
           - port: http
 
@@ -105,16 +108,15 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     serviceAccount:
-      create: true
-      name: gatus
+      gatus: {}
 
     persistence:
       config:
-        existingClaim: gatus
+        existingClaim: *app
 
       config-file:
         type: configMap

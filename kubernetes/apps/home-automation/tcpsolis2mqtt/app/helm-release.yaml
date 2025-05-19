@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: tcpsolis2mqtt
+  name: &app tcpsolis2mqtt
 spec:
   interval: 1h
   chartRef:
@@ -58,7 +58,7 @@ spec:
 
     service:
       app:
-        controller: tcpsolis2mqtt
+        controller: *app
         enabled: false
 
     persistence:

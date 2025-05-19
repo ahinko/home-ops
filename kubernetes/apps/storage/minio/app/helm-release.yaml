@@ -79,7 +79,7 @@ spec:
 
     service:
       app:
-        controller: minio
+        controller: *app
         ports:
           http:
             port: &port-console 9001
@@ -89,7 +89,7 @@ spec:
 
     serviceMonitor:
       app:
-        serviceName: minio
+        serviceName: *app
         endpoints:
           - port: s3
             scheme: http
@@ -106,7 +106,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port-console
 
       s3:
@@ -117,7 +117,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port-api
 
     persistence:

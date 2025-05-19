@@ -65,7 +65,7 @@ spec:
 
     service:
       app:
-        controller: plex
+        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.20.202
@@ -83,7 +83,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
             filters:
               - type: RequestHeaderModifier
@@ -94,7 +94,7 @@ spec:
                   type: PathPrefix
                   value: /library/streams
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

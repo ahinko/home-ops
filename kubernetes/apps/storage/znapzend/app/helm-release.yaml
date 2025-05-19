@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: znapzend
+  name: &app znapzend
 spec:
   interval: 1h
   chartRef:
@@ -20,14 +20,14 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      znapzend:
         pod:
           nodeSelector:
             kubernetes.io/hostname: s01
 
         replicas: 1
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/ahinko/znapzend
               tag: 0.23.2
@@ -73,5 +73,5 @@ spec:
 
     service:
       app:
-        controller: main
+        controller: *app
         enabled: false

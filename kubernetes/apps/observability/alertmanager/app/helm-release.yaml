@@ -51,7 +51,7 @@ spec:
 
     service:
       app:
-        controller: alertmanager
+        controller: *app
         ports:
           http:
             port: &port 9093
@@ -65,7 +65,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

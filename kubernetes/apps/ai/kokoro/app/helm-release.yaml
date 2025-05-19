@@ -27,7 +27,7 @@ spec:
 
     service:
       app:
-        controller: kokoro
+        controller: *app
         ports:
           http:
             port: &port 8880
@@ -41,5 +41,5 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port

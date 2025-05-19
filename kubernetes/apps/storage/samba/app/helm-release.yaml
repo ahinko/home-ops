@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: samba
+  name: &app samba
 spec:
   interval: 1h
   chartRef:
@@ -20,7 +20,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      samba:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -29,7 +29,7 @@ spec:
             kubernetes.io/hostname: s01
 
         containers:
-          main:
+          app:
             image:
               repository: mbentley/timemachine
               tag: smb@sha256:9ead45913f63f15a6eef41f6beabf886eb7970b9206c47fe3b8aaf3bcdb30244
@@ -77,8 +77,8 @@ spec:
           - path: /run/samba
 
     service:
-      main:
-        controller: main
+      app:
+        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.20.223

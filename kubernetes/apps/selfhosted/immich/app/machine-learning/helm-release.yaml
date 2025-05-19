@@ -65,7 +65,7 @@ spec:
 
     service:
       app:
-        controller: immich-machine-learning
+        controller: *app
         ports:
           http:
             port: *port

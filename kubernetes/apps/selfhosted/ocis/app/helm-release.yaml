@@ -38,7 +38,7 @@ spec:
               OCIS_INSECURE: true
 
         containers:
-          ocis:
+          app:
             image:
               repository: ghcr.io/ahinko/ocis
               tag: 7.1.2
@@ -73,7 +73,7 @@ spec:
 
     service:
       app:
-        controller: ocis
+        controller: *app
         ports:
           http:
             port: &port 9200
@@ -89,7 +89,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

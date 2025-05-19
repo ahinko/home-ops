@@ -48,7 +48,7 @@ spec:
 
     service:
       app:
-        controller: radicale
+        controller: *app
         ports:
           http:
             port: &port 5232
@@ -62,7 +62,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

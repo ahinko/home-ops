@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: immich-valkey
+  name: &app immich-valkey
 spec:
   interval: 1h
   chartRef:
@@ -29,7 +29,7 @@ spec:
               tag: 8.1.1
     service:
       app:
-        controller: immich-valkey
+        controller: *app
         ports:
           http:
             port: 6379

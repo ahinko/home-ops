@@ -58,7 +58,7 @@ spec:
 
     service:
       app:
-        controller: maloja
+        controller: *app
         ports:
           http:
             port: &port 42010
@@ -72,7 +72,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:

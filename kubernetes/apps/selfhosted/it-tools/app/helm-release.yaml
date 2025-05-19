@@ -46,7 +46,7 @@ spec:
 
     service:
       app:
-        controller: it-tools
+        controller: *app
         ports:
           http:
             port: &port 80
@@ -60,5 +60,5 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port

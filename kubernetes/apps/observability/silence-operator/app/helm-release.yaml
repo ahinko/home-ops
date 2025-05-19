@@ -17,7 +17,7 @@ spec:
             runAsNonRoot: true
 
         containers:
-          silence-operator:
+          app:
             image:
               repository: quay.io/giantswarm/silence-operator
               tag: 0.15.0
@@ -54,6 +54,8 @@ spec:
                 drop:
                   - ALL
 
+        serviceAccount:
+          silence-operator: {}
+
     serviceAccount:
-      create: true
-      name: silence-operator
+      silence-operator: {}
