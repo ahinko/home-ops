@@ -9,8 +9,8 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   dependsOn:
-    - name: emqx-cluster
-      namespace: home-automation
+    - name: vernemq
+      namespace: databases
   interval: 1h
   path: "./kubernetes/apps/home-automation/tcpsolis2mqtt/app"
   prune: true

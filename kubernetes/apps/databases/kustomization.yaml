@@ -8,6 +8,8 @@ resources:
   - ./ext-postgres-operator/install.yaml
   - ./influxdb/install.yaml
   - ./postgres-backup/install.yaml
+  - ./vernemq/install.yaml
 components:
   - ../../components/namespace
+  - ../../components/repos/app-template
   - ../../components/alerts

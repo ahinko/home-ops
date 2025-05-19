@@ -38,15 +38,6 @@
       },
     },
     {
-      description: "EMQX Group",
-      groupName: "EMQX",
-      matchDatasources: ["docker", "helm"],
-      matchPackageNames: ["/emqx/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-    },
-    {
       description: "Mastodon Group",
       groupName: "Mastodon",
       matchDatasources: ["docker", "helm"],

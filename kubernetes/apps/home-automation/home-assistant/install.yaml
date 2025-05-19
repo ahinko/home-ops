@@ -14,8 +14,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: emqx-cluster
-      namespace: home-automation
+    - name: vernemq
+      namespace: databases
     - name: postgres-cluster
       namespace: databases
     - name: volsync

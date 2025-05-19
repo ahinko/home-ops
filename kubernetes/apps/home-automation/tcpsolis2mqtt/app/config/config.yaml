@@ -16,7 +16,7 @@ inverter:
   model: S5-GR3P15K
 mqtt:
   enabled: True
-  host: emqx-listeners
+  host: vernemq-app.databases.svc.cluster.local
   port: 1883
   topic_prefix: tcpsolis2mqtt
   client_id: tcpsolis2mqtt

@@ -11,8 +11,8 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: databases
-    - name: emqx-cluster
-      namespace: home-automation
+    - name: vernemq
+      namespace: databases
   interval: 1h
   path: "./kubernetes/apps/home-automation/teslamate/app"
   prune: true

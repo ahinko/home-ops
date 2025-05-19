@@ -2,28 +2,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname birdnet
-  namespace: &namespace selfhosted
+  name: &appname vernemq
+  namespace: &namespace databases
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/volsync
   dependsOn:
-    - name: vernemq
-      namespace: databases
-    - name: external-secrets
+    - name: onepassword-store
       namespace: security
-    - name: volsync
-      namespace: storage
   interval: 1h
-  path: "./kubernetes/apps/selfhosted/birdnet/app"
+  path: "./kubernetes/apps/databases/vernemq/app"
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_CLAIM: *appname
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,4 +23,4 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: true
+  wait: false
