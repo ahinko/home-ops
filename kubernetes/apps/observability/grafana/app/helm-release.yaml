@@ -61,14 +61,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/ceph
-          - name: emqx
-            orgId: 1
-            folder: EMQX
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/emqx
           - name: kubernetes
             disableDeletion: false
             editable: true
@@ -127,13 +119,6 @@ spec:
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
               value: ".*-bootstrap"
-
-        emqx:
-          # renovate: depName="EMQX"
-          gnetId: 17446
-          revision: 2
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
 
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
