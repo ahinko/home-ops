@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: hoppscotch-db
+spec:
+  database: hoppscotch
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: hoppscotch-user
+spec:
+  role: hoppscotch
+  database: hoppscotch-db
+  secretName: database
+  privileges: OWNER
