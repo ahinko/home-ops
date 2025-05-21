@@ -18,7 +18,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: cloudflare-ddns
-              image: ghcr.io/ahinko/buoy:1.4.2
+              image: ghcr.io/ahinko/buoy:1.4.6
               envFrom:
                 - secretRef:
                     name: cloudflare-ddns
