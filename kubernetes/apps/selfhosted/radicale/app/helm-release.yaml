@@ -36,8 +36,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/ahinko/docker-radicale
-              tag: 3.5.3
+              repository: ghcr.io/ahinko/radicale
+              tag: 3.5.3@sha256:7856761d882abaec9d2fa627ef2447c293b19fc539fd3e2f728ce8a6be031c23
 
             resources:
               requests:
