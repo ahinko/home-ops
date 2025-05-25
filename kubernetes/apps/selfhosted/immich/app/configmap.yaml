@@ -8,7 +8,10 @@ data:
   IMMICH_WEB_URL: http://immich-web.selfhosted:3000
   IMMICH_SERVER_URL: http://immich-server.selfhosted:3001
   PUBLIC_IMMICH_SERVER_URL: https://photos.hemma.dev
-
+  IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.selfhosted:3003
   # REDIS
   REDIS_HOSTNAME: "immich-valkey.selfhosted"
   REDIS_PORT: "6379"
+  # General
+  NODE_ENV: "production"
+  LOG_LEVEL: warn

@@ -5,7 +5,7 @@ metadata:
   name: postgres17-loadbalancer
   namespace: databases
   labels:
-    cnpg.io/cluster: postgres16
+    cnpg.io/cluster: postgres17
   annotations:
     lbipam.cilium.io/ips: 192.168.20.217
 spec:

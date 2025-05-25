@@ -7,10 +7,9 @@ labels:
       app.kubernetes.io/instance: immich
       app.kubernetes.io/part-of: immich
 resources:
-  - ./external-secret.yaml
-  - ./database.yaml
   - ./configmap.yaml
-  - ./valkey
-  - ./server
-  - ./machine-learning
+  - ./database.yaml
+  - ./external-secret.yaml
+  - ./helm-release.yaml
+  - ./ml-pvc.yaml
   - ./pvc.yaml
