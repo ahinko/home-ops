@@ -341,7 +341,7 @@ spec:
       image:
         registry: ghcr.io
         repository: ahinko/grafana-image-renderer
-        tag: 3.12.5
+        tag: 3.12.6
 
     downloadDashboardsImage:
       registry: ghcr.io
