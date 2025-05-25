@@ -8,6 +8,3 @@ spec:
     - name: alertname
       value: KubePersistentVolumeFillingUp
       isRegex: false
-    - name: persistentvolumeclaim
-      value: data-thanos-compact-0
-      isRegex: false
