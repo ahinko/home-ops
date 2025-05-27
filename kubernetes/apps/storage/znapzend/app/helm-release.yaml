@@ -53,24 +53,6 @@ spec:
         globalMounts:
           - path: /dev
 
-      idrsa:
-        type: secret
-        name: znapzend-id-rsa-secret
-        defaultMode: 384
-        globalMounts:
-          - path: /root/.ssh/id_rsa
-            subPath: id_rsa
-            readOnly: true
-
-      knownhosts:
-        type: secret
-        name: znapzend-known-hosts-secret
-        #defaultMode: 384
-        globalMounts:
-          - path: /root/.ssh/known_hosts
-            subPath: known_hosts
-            readOnly: false
-
     service:
       app:
         controller: *app

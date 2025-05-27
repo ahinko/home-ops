@@ -1,27 +1,65 @@
 #!/bin/bash
 
-kubectl config use-context main
-kubectl apply -f ./deployment.yaml
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <config_file.yaml>"
+    exit 1
+fi
 
-echo "Waiting for pod..."
-sleep 3
+CONFIG_FILE="$1"
 
-POD=$(kubectl get pod -l app=zfs-backup -o jsonpath="{.items[0].metadata.name}")
+NUM_JOBS=$(yq eval '.jobs | length' "$CONFIG_FILE")
 
-kubectl wait --for=condition=Ready pod/${POD}
+for ((i=0; i<NUM_JOBS; i++)); do
+    NAMESPACE=$(yq eval ".jobs[$i].namespace" "$CONFIG_FILE")
+    PVC=$(yq eval ".jobs[$i].pvc" "$CONFIG_FILE")
+    DESTINATION_PATH=$(yq eval ".jobs[$i].destination_path" "$CONFIG_FILE")
 
-DATASETS=( minio samba immich/library games )
-TARGET_PATH=/Volumes/Backup
+    # Verify destination path exists
+    if [ ! -d "$DESTINATION_PATH" ]; then
+        echo "Error: Destination path '$DESTINATION_PATH' does not exist. Skipping this job."
+        continue
+    fi
 
-# Loop through datasets
-for dataset in "${DATASETS[@]}";
-do
-        echo "Rysnc ${dataset} to ${TARGET_PATH}"
-        kubectl rsync -- -a -v --progress --delete ${POD}:/backup/${dataset} ${TARGET_PATH}
+    echo "Backing up ${NAMESPACE}/${PVC} to ${DESTINATION_PATH}"
+
+    # Apply the Pod manifest directly from stdin
+    cat <<EOF | kubectl apply -f - -n ${NAMESPACE}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zfs-backup-${PVC}
+  labels:
+    app: zfs-backup-${PVC}
+spec:
+  nodeName: s01
+  containers:
+  - name: zfs-backup
+    image: ghcr.io/ahinko/buoy:1.4.6
+    command: ["/bin/bash", "-c", "--"]
+    args: ["while true; do sleep 30; done;"]
+    volumeMounts:
+    - name: data
+      mountPath: /data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: ${PVC}
+EOF
+
+    echo "Waiting for pod..."
+    sleep 5
+
+    POD=$(kubectl get pod -n ${NAMESPACE} -l app=zfs-backup-${PVC} -o jsonpath="{.items[0].metadata.name}")
+
+    kubectl wait --for=condition=Ready pod/${POD} -n ${NAMESPACE}
+
+    echo "Rysnc data to ${DESTINATION_PATH}"
+    kubectl rsync -n ${NAMESPACE} -- -a -v --progress --delete ${POD}:/data/ ${DESTINATION_PATH}
+
+    sleep 10
+
+    # Delete the Pod after backup
+    kubectl delete pod ${POD} -n ${NAMESPACE}
+
+    echo "Backup done!"
 done
-
-sleep 15
-
-kubectl delete -f ./deployment.yaml
-
-echo "Backup done!"
