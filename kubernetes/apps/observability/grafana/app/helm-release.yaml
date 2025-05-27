@@ -337,7 +337,7 @@ spec:
         use_pkce: true
 
     imageRenderer:
-      enabled: true
+      enabled: false
       image:
         registry: ghcr.io
         repository: ahinko/grafana-image-renderer
