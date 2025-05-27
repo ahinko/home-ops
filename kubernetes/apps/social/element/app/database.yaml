@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: synapse-db
+spec:
+  database: synapse
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: synapse-user
+spec:
+  role: synapse
+  database: synapse-db
+  secretName: database
+  privileges: OWNER

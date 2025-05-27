@@ -1,0 +1,96 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: element
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      synapse:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65539
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/element-hq/synapse
+              tag: v1.130.0
+            env:
+              SYNAPSE_CONFIG_DIR: /data
+              SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+              SYNAPSE_DATA_DIR: /data
+              TZ: Europe/Stockholm
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+
+    service:
+      synapse:
+        controller: synapse
+        ports:
+          http:
+            port: &port 8008
+
+    route:
+      synapse:
+        hostnames: ["matrix.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: synapse
+                port: *port
+
+    persistence:
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          synapse:
+            main:
+              - path: /data
+
+      config:
+        type: secret
+        name: element-secret
+        advancedMounts:
+          synapse:
+            main:
+              - path: /data/homeserver.yaml
+                subPath: homeserver.yaml
+                readOnly: true
+              - path: /data/matrix.hemma.dev.signing.key
+                subPath: matrix.hemma.dev.signing.key
+                readOnly: true
+              - path: /data/matrix.hemma.dev.log.config
+                subPath: matrix.hemma.dev.log.config
+                readOnly: true
