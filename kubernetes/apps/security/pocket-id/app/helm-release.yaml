@@ -38,16 +38,14 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v0.53.0
-
-            command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
+              tag: v1.0.0
 
             env:
-              DB_CONNECTION_STRING: file:/data/pocket-id.db?_journal_mode=WAL&_busy_timeout=2500&_txlock=immediate
-              PUBLIC_APP_URL: https://pid.hemma.dev
+              DB_CONNECTION_STRING: file:/app/data/pocket-id.db?_journal_mode=WAL&_busy_timeout=2500&_txlock=immediate
+              APP_URL: https://pid.hemma.dev
               TRUST_PROXY: true
               TZ: Europe/Stockholm
-              UPLOAD_PATH: /data/uploads
+              UPLOAD_PATH: /app/data/uploads
 
             probes:
               liveness:
@@ -72,7 +70,7 @@ spec:
         controller: main
         ports:
           http:
-            port: &port 80
+            port: &port 1411
 
     route:
       app:
@@ -90,9 +88,7 @@ spec:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
-          - path: /data
-          - path: /app/backend/data
-            subPath: backend
+          - path: /app/data
 
       var:
         type: emptyDir
