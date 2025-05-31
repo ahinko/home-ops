@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/radicale
-              tag: v3.5.4@sha256:a6dfba8ec616a91be5ff4d69658366987b3186134fa4608dc2de0722a19a7bfc
+              tag: v3.5.4@sha256:60afebcd49161ee55652a6be54780a3941e92b800f5527911d1a57a3138642d1
 
             resources:
               requests:
