@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app ocis
+  name: &app opencloud
 spec:
   interval: 1h
   chartRef:
@@ -10,7 +10,7 @@ spec:
     name: app-template
   values:
     controllers:
-      ocis:
+      opencloud:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -23,36 +23,28 @@ spec:
             supplementalGroups:
               - 65542 # gladius:external-services
 
-        initContainers:
-          init-config:
-            image:
-              repository: ghcr.io/ahinko/ocis
-              tag: 7.1.3
-            command:
-              - /bin/sh
-              - -c
-            args:
-              - |
-                if [ ! -f /etc/ocis/ocis.yaml ]; then ocis init; else exit 0; fi
-            env:
-              OCIS_INSECURE: true
-
         containers:
           app:
             image:
-              repository: ghcr.io/ahinko/ocis
-              tag: 7.1.3
+              repository: opencloudeu/opencloud-rolling
+              tag: 2.3.0
+            command: ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
             env:
-              DEMO_USERS: false
-              OCIS_LOG_COLOR: true
-              OCIS_LOG_LEVEL: info
-              OCIS_LOG_PRETTY: true
-              OCIS_URL: https://files.hemma.dev
+              OC_INSECURE: true
+              OC_URL: https://files.hemma.dev
               PROXY_TLS: false
+              IDM_CREATE_DEMO_USERS: false
+              IDM_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencloud-secret
+                    key: idm-admin-password
+              GATEWAY_GRPC_ADDR: 0.0.0.0:9142
+              OC_ENABLE_OCM: false
 
             envFrom:
               - secretRef:
-                  name: ocis-secret
+                  name: opencloud-secret
             probes:
               liveness:
                 enabled: true
@@ -63,7 +55,7 @@ spec:
                 cpu: 50m
                 memory: 128Mi
               limits:
-                memory: 512Mi
+                memory: 1Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -93,19 +85,12 @@ spec:
                 port: *port
 
     persistence:
-      config:
-        type: configMap
-        name: ocis-configmap
-        globalMounts:
-          - path: /etc/ocis/web.yaml
-            subPath: web.yaml
-            readOnly: true
       data:
-        existingClaim: ocis-data
+        existingClaim: opencloud-data
         globalMounts:
-          - path: /var/lib/ocis
+          - path: /var/lib/opencloud
             subPath: data
-          - path: /etc/ocis
+          - path: /etc/opencloud
             subPath: config
       tmpfs:
         type: emptyDir
