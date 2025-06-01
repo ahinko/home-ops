@@ -43,7 +43,7 @@ spec:
                 cpu: 20m
                 memory: 64M
               limits:
-                memory: 2048M
+                memory: 4Gi
 
     service:
       app:
