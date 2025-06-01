@@ -157,6 +157,13 @@ spec:
           revision: 4
           datasource: Prometheus
 
+        vernemq:
+          # renovate: dashboardName="VerneMQ Cluster"
+          gnetId: 23485
+          revision: 2
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+
       ceph:
         ceph-cluster:
           # renovate: depName="Ceph Cluster"

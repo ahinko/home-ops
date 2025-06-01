@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: vernemq-scrape
+spec:
+  staticConfigs:
+    - targets: ["vernemq.databases.svc.cluster.local:8888"]
+  metricsPath: /metrics
+  scheme: HTTP
+  relabelings:
+    - action: replace
+      targetLabel: job
+      replacement: vernemq

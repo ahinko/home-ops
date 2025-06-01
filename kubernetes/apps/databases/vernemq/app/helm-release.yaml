@@ -13,7 +13,7 @@ spec:
       vernemq:
         type: statefulset
         strategy: RollingUpdate
-        replicas: 2
+        replicas: 3
         annotations:
           secret.reloader.stakater.com/reload: vernemq-auth-secret
         pod:
@@ -95,6 +95,8 @@ spec:
             port: 1883
           ws:
             port: 8080
+          metrics:
+            port: 8888
       headless:
         forceRename: "{{ .Release.Name }}" # TODO: Fix this when app-template 4.1.0 is released
         publishNotReadyAddresses: true
@@ -104,6 +106,8 @@ spec:
             port: 1883
           ws:
             port: 8080
+          metrics:
+            port: 8888
 
     persistence:
       data:
