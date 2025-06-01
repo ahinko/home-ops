@@ -18,7 +18,6 @@ resources:
   - ./miniflux/install.yaml
   - ./n8n/install.yaml
   - ./ocis/install.yaml
-  - ./outpin/install.yaml
   - ./radicale/install.yaml
 components:
   - ../../components/namespace
