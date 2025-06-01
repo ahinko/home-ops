@@ -67,6 +67,6 @@ releases:
     version: 0.21.0
     wait: false
     values:
-      - ../apps/flux-system/operator/instance/helm-values.yaml
+      - ../apps/flux-system/operator/instance/helm/values.yaml
     needs:
       - flux-system/flux-operator
