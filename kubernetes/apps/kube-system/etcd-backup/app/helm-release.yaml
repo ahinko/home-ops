@@ -54,10 +54,10 @@ spec:
               - . # use workingDir to get relative paths in backup
             envFrom:
               - secretRef:
-                  name: talos-etcd-s3-keys
+                  name: talos-etcd-restic-keys
             env:
               - name: RESTIC_REPOSITORY
-                value: s3:https://s3.hemma.dev/backups/etcd
+                value: rest:https://restic.hemma.dev/etcd
 
         pod:
           hostNetwork: true
@@ -89,10 +89,10 @@ spec:
               - --prune
             envFrom:
               - secretRef:
-                  name: talos-etcd-s3-keys
+                  name: talos-etcd-restic-keys
             env:
               - name: RESTIC_REPOSITORY
-                value: s3:https://s3.hemma.dev/backups/etcd
+                value: rest:https://restic.hemma.dev/etcd
 
     persistence:
       backupdata:

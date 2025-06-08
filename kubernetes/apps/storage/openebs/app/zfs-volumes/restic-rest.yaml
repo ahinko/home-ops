@@ -2,7 +2,7 @@
 apiVersion: zfs.openebs.io/v1
 kind: ZFSVolume
 metadata:
-  name: minio
+  name: restic-rest
   finalizers:
     - cluster.local/data-protection
 spec:
@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: storage-zfs-minio
+  name: storage-zfs-restic-rest
 spec:
   accessModes:
     - ReadWriteOnce
@@ -33,7 +33,7 @@ spec:
     volumeAttributes:
       openebs.io/cas-type: localpv-zfs
       openebs.io/poolname: pool
-    volumeHandle: minio
+    volumeHandle: restic-rest
   nodeAffinity:
     required:
       nodeSelectorTerms:

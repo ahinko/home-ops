@@ -5,5 +5,5 @@ resources:
   - ./games.yaml
   - ./immich.yaml
   - ./media.yaml
-  - ./minio.yaml
+  - ./restic-rest.yaml
   - ./samba.yaml

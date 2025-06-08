@@ -1,0 +1,104 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: restic-rest
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: s01
+
+        containers:
+          main:
+            image:
+              repository: "docker.io/restic/rest-server"
+              tag: "0.14.0@sha256:d2aff06f47eb38637dff580c3e6bce4af98f386c396a25d32eb6727ec96214a5"
+            env:
+              TZ: "Europe/Stockholm"
+              OPTIONS: "--prometheus --prometheus-no-auth"
+              DATA_DIRECTORY: &data "/data"
+              PASSWORD_FILE: &htpasswd "/secrets/.htpasswd"
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: "10m"
+                memory: "128Mi"
+              limits:
+                cpu: "3000m"
+                memory: "6000Mi"
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: &port 8000
+
+    route:
+      main:
+        hostnames: ["restic.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: main
+                port: *port
+
+    persistence:
+      htpasswd:
+        enabled: true
+        type: secret
+        name: "restic-rest-secrets"
+        advancedMounts:
+          main:
+            main:
+              - subPath: "htpasswd"
+                path: *htpasswd
+                readOnly: true
+
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: restic-rest-data
+        advancedMounts:
+          main:
+            main:
+              - subPath: data
+                path: *data
+
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: &uid 1000 # TODO: change this
+        runAsGroup: *uid
+        fsGroup: *uid
+        fsGroupChangePolicy: "Always"
+        seccompProfile: {type: "RuntimeDefault"}

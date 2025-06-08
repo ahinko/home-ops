@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minio-data
+  name: restic-rest-data
 spec:
   accessModes:
     - ReadWriteOnce
@@ -11,4 +11,4 @@ spec:
       storage: 20Ti
   storageClassName: ""
   volumeMode: Filesystem
-  volumeName: storage-zfs-minio
+  volumeName: storage-zfs-restic-rest

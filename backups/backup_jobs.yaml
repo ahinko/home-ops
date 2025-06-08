@@ -4,10 +4,6 @@ jobs:
     pvc: romm-games
     destination_path: /Volumes/Backup/games
 
-  - namespace: storage
-    pvc: minio-data
-    destination_path: /Volumes/Backup/minio
-
   - namespace: selfhosted
     pvc: immich-media
     destination_path: /Volumes/Backup/immich
@@ -15,3 +11,7 @@ jobs:
   - namespace: storage
     pvc: samba-data
     destination_path: /Volumes/Backup/samba
+
+  - namespace: storage
+    pvc: restic-rest-data
+    destination_path: /Volumes/Backup/restic

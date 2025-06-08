@@ -43,18 +43,28 @@ data:
       fruit:time machine = yes
       fruit:time machine max size = 400 G
 
-    [peters share]
-      path = /shares/peter
-      inherit permissions = no
-      read only = no
-      browseable = yes
-      valid users = peter
-      vfs objects = acl_xattr fruit streams_xattr
-
     [ellens share]
       path = /shares/ellen
       inherit permissions = no
       read only = no
       browseable = yes
       valid users = ellen
+      vfs objects = acl_xattr fruit streams_xattr
+
+    [peters timemachine]
+      path = /opt/peter
+      inherit permissions = no
+      read only = no
+      browseable = yes
+      valid users = peter
+      vfs objects = acl_xattr fruit streams_xattr
+      fruit:time machine = yes
+      fruit:time machine max size = 400 G
+
+    [peters share]
+      path = /shares/peter
+      inherit permissions = no
+      read only = no
+      browseable = yes
+      valid users = peter
       vfs objects = acl_xattr fruit streams_xattr
