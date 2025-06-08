@@ -22,7 +22,6 @@ spec:
   values:
     controllers:
       synapse:
-        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
