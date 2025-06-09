@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v1.2.0
+              tag: v1.3.1
 
             env:
               DB_CONNECTION_STRING: file:/app/data/pocket-id.db?_journal_mode=WAL&_busy_timeout=2500&_txlock=immediate
