@@ -114,7 +114,7 @@ spec:
                         operator: In
                         values:
                           - karakeep
-                      - key: app.kubernetes.io/component
+                      - key: app.kubernetes.io/instance
                         operator: In
                         values:
                           - karakeep
