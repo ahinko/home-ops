@@ -48,13 +48,6 @@ I ran in to an issue where I had to reset the Rook-Ceph cluster due to restructu
 * Reset nodes and reboot: `talosctl reset --system-labels-to-wipe=STATE,EPHEMERAL --reboot --graceful=true -n <IP>`
   * Apply config again: `talosctl apply-config -n <IP> -f infrastructure/talos/clusterconfig/<CONFIG FILE>.yaml --insecure`
 
-## /var is filling up
-
-I had an issue where the /var directory on some of my nodes was filling up. Seems to have been containerd cache that didn't clear correctly. I fixed this by reseting the node and applying the Talos config again:
-
-* Reset nodes and reboot: `talosctl reset --system-labels-to-wipe=STATE,EPHEMERAL --reboot --graceful=true -n <IP>`
-* Apply config again: `talosctl apply-config -n <IP> -f infrastructure/talos/clusterconfig/<CONFIG FILE>.yaml --insecure`
-
 ## Upgrade Tube's Zigbee Gateway firmware
 
 > Note to self: do not update over WIFI and remember to scale down zigbee2mqtt pod in the cluster
