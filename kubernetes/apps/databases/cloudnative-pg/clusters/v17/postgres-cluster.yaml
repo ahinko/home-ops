@@ -5,7 +5,7 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/ahinko/postgres17:17.5.1@sha256:5f246168bcbbc5aaef2b3b5f00566d18a6d412ae8baa25fdf88e8061fe448e34
+  imageName: ghcr.io/ahinko/postgres17:17.5.7
   primaryUpdateStrategy: unsupervised
   storage:
     size: 50Gi
