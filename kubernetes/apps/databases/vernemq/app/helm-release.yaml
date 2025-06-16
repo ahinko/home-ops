@@ -21,6 +21,10 @@ spec:
             runAsUser: 10000
             runAsNonRoot: true
 
+        statefulset:
+          serviceName:
+            identifier: headless
+
         containers:
           app:
             image:
@@ -34,9 +38,9 @@ spec:
               DOCKER_VERNEMQ_ACCEPT_EULA: "yes"
               DOCKER_VERNEMQ_DISCOVERY_KUBERNETES: 1
               DOCKER_VERNEMQ_KUBERNETES_LABEL_SELECTOR: "app.kubernetes.io/name=vernemq"
-              DOCKER_VERNEMQ_LEVELDB__MAXIMUM_MEMORY: "10485760" # in bytes
-              DOCKER_VERNEMQ_LEVELDB__WRITE_BUFFER_SIZE_MIN: "1048576"
-              DOCKER_VERNEMQ_LEVELDB__WRITE_BUFFER_SIZE_MAX: "2097152"
+              DOCKER_VERNEMQ_LEVELDB__MAXIMUM_MEMORY: "128000000"
+              DOCKER_VERNEMQ_LEVELDB__WRITE_BUFFER_SIZE_MIN: "2500000"
+              DOCKER_VERNEMQ_LEVELDB__WRITE_BUFFER_SIZE_MAX: "7500000"
               # allow clients to failover when pods are restarting
               DOCKER_VERNEMQ_ALLOW_REGISTER_DURING_NETSPLIT: "on"
               DOCKER_VERNEMQ_ALLOW_PUBLISH_DURING_NETSPLIT: "on"
@@ -82,10 +86,10 @@ spec:
               capabilities:
                 drop:
                   - ALL
-        serviceAccount:
-          identifier: vernemq
+
     service:
       app:
+        primary: true
         type: LoadBalancer
         sessionAffinity: ClientIP
         annotations:
@@ -95,10 +99,7 @@ spec:
             port: 1883
           ws:
             port: 8080
-          metrics:
-            port: 8888
       headless:
-        forceRename: "{{ .Release.Name }}" # TODO: Fix this when app-template 4.1.0 is released
         publishNotReadyAddresses: true
         clusterIP: None
         ports:
@@ -106,8 +107,21 @@ spec:
             port: 1883
           ws:
             port: 8080
-          metrics:
+      http:
+        ports:
+          http:
             port: 8888
+
+    serviceMonitor:
+      app:
+        service:
+          identifier: http
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 10s
+            scrapeTimeout: 1s
 
     persistence:
       data:
@@ -123,8 +137,10 @@ spec:
                 subPath: log
               - path: /tmp
                 subPath: tmp
+
     serviceAccount:
       vernemq: {}
+
     rbac:
       roles:
         vernemq:

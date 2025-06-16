@@ -7,4 +7,3 @@ resources:
   - ./httproute.yaml
   - ./alerts
   - ./prometheusrules
-  - ./scrapes
