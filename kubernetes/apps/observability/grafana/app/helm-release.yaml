@@ -82,7 +82,7 @@ spec:
     dashboards:
       default:
         spegel:
-          # renovate: depName="Spegel"
+          # renovate: dashboardName="Spegel"
           gnetId: 18089
           revision: 1
           datasource:
@@ -90,7 +90,7 @@ spec:
               value: Prometheus
 
         cert-manager:
-          # renovate: depName="cert-manager"
+          # renovate: dashboardName="cert-manager"
           gnetId: 20340
           revision: 1
           datasource:
@@ -98,20 +98,20 @@ spec:
               value: Prometheus
 
         external-dns:
-          # renovate: depName="External-dns"
+          # renovate: dashboardName="External-dns"
           gnetId: 15038
           revision: 3
           datasource: Prometheus
 
         envoy:
-          # renovate: dashboardNam="Envoy Proxy Monitoring gRPC"
+          # renovate: dashboardName="Envoy Proxy Monitoring gRPC"
           gnetId: 23239
           revision: 1
           datasource:
             - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
 
         volsync:
-          # removate: depName="VolSync Dashboard"
+          # removate: dashboardName="VolSync Dashboard"
           gnetId: 21356
           revision: 3
           datasource:
@@ -121,16 +121,16 @@ spec:
               value: ".*-bootstrap"
 
         cloudflared:
-          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
 
         node-exporter-full:
-          # renovate: depName="Node Exporter Full"
+          # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
-          revision: 41
+          revision: 40
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
 
@@ -139,20 +139,21 @@ spec:
           datasource: Prometheus
 
         speedtest-exporter-hub:
+          # renovate: dashboardName="Speedtest-Exporter Dashboard"
           gnetId: 13665
           revision: 4
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
 
         smartctl-exporter:
-          # renovate: depName="SMARTctl Exporter Dashboard"
+          # renovate: dashboardName="SMARTctl Exporter Dashboard"
           gnetId: 22604
           revision: 2
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
 
         zfs:
-          # renovate: depName="ZFS"
+          # renovate: dashboardName="ZFS"
           gnetId: 7845
           revision: 4
           datasource: Prometheus
@@ -166,54 +167,54 @@ spec:
 
       ceph:
         ceph-cluster:
-          # renovate: depName="Ceph Cluster"
+          # renovate: dashboardName="Ceph Cluster"
           gnetId: 2842
           revision: 18
           datasource: Prometheus
         ceph-osd:
-          # renovate: depName="Ceph - OSD (Single)"
+          # renovate: dashboardName="Ceph - OSD (Single)"
           gnetId: 5336
           revision: 9
           datasource: Prometheus
         ceph-pools:
-          # renovate: depName="Ceph - Pools"
+          # renovate: dashboardName="Ceph - Pools"
           gnetId: 5342
           revision: 9
           datasource: Prometheus
 
       kubernetes:
         kubernetes-api-server:
-          # renovate: depName="Kubernetes / System / API Server"
+          # renovate: dashboardName="Kubernetes / System / API Server"
           gnetId: 15761
           revision: 19
           datasource: Prometheus
         kubernetes-coredns:
-          # renovate: depName="Kubernetes / System / CoreDNS"
+          # renovate: dashboardName="Kubernetes / System / CoreDNS"
           gnetId: 15762
           revision: 20
           datasource: Prometheus
         kubernetes-global:
-          # renovate: depName="Kubernetes / Views / Global"
+          # renovate: dashboardName="Kubernetes / Views / Global"
           gnetId: 15757
           revision: 43
           datasource: Prometheus
         kubernetes-namespaces:
-          # renovate: depName="Kubernetes / Views / Namespaces"
+          # renovate: dashboardName="Kubernetes / Views / Namespaces"
           gnetId: 15758
           revision: 42
           datasource: Prometheus
         kubernetes-nodes:
-          # renovate: depName="Kubernetes / Views / Nodes"
+          # renovate: dashboardName="Kubernetes / Views / Nodes"
           gnetId: 15759
           revision: 35
           datasource: Prometheus
         kubernetes-pods:
-          # renovate: depName="Kubernetes / Views / Pods"
+          # renovate: dashboardName="Kubernetes / Views / Pods"
           gNetId: 15760
           revision: 21
           datasource: Prometheus
         kubernetes-volumes:
-          # renovate: depName="K8s / Storage / Volumes / Cluster"
+          # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
           revision: 14
           datasource: Prometheus
