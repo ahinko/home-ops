@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app gatus
+  name: gatus
 spec:
   interval: 1h
   chartRef:
@@ -83,19 +83,14 @@ spec:
               METHOD: SLEEP
             resources: *resources
 
-        serviceAccount:
-          identifier: gatus
-
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
 
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: http
 
@@ -106,17 +101,13 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     serviceAccount:
       gatus: {}
 
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: gatus
 
       config-file:
         type: configMap

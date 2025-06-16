@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app mastodon-fakerelay
+  name: mastodon-fakerelay
   namespace: selfhosted
 spec:
   interval: 1h
@@ -50,10 +50,9 @@ spec:
 
     service:
       app:
-        controller: fakerelay
         ports:
           http:
-            port: &port 5000
+            port: 5000
 
     route:
       app:
@@ -62,14 +61,10 @@ spec:
           - name: social
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       data:
         type: persistentVolumeClaim
-        existingClaim: *app
+        existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /data

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app znapzend
+  name: znapzend
 spec:
   interval: 1h
   chartRef:
@@ -55,5 +55,4 @@ spec:
 
     service:
       app:
-        controller: *app
         enabled: false

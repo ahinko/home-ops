@@ -53,10 +53,9 @@ spec:
 
     service:
       main:
-        controller: main
         ports:
           http:
-            port: &port 8000
+            port: 8000
 
     route:
       main:
@@ -65,10 +64,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: main
-                port: *port
 
     persistence:
       htpasswd:

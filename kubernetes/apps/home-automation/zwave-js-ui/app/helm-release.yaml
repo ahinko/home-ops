@@ -52,7 +52,6 @@ spec:
 
     service:
       app:
-        controller: zwavejs
         ports:
           http:
             port: *httpPort

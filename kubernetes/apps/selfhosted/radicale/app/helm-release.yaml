@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app radicale
+  name: radicale
 spec:
   interval: 1h
   chartRef:
@@ -48,10 +48,9 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
-            port: &port 5232
+            port: 5232
 
     route:
       app:
@@ -60,10 +59,6 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       config:

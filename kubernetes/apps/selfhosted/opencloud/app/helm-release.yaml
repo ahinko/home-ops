@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app opencloud
+  name: opencloud
 spec:
   interval: 1h
   chartRef:
@@ -65,10 +65,9 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
-            port: &port 9200
+            port: 9200
 
     route:
       app:
@@ -79,10 +78,6 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       data:

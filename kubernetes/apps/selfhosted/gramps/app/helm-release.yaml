@@ -69,10 +69,9 @@ spec:
                 memory: 1024Mi
     service:
       app:
-        controller: *app
         ports:
           http:
-            port: &port 5000
+            port: 5000
 
     route:
       app:
@@ -81,10 +80,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       data:

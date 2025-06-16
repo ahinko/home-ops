@@ -53,10 +53,9 @@ spec:
 
     service:
       synapse:
-        controller: synapse
         ports:
           http:
-            port: &port 8008
+            port: 8008
 
     route:
       synapse:
@@ -65,10 +64,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: synapse
-                port: *port
 
     persistence:
       data:

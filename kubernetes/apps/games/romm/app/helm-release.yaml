@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app romm
+  name: romm
 spec:
   interval: 1h
   chartRef:
@@ -91,10 +91,9 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
-            port: &port 8080
+            port: 8080
 
     route:
       app:
@@ -103,10 +102,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       config:

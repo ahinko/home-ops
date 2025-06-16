@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app jellyfin
+  name: jellyfin
 spec:
   interval: 1h
   chartRef:
@@ -47,7 +47,6 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.20.222
-        controller: main
         ports:
           http:
             port: &port 8096

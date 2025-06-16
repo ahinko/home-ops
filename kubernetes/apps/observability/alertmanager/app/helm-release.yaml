@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app alertmanager
+  name: alertmanager
 spec:
   interval: 60m
   chartRef:
@@ -51,10 +51,9 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
-            port: &port 9093
+            port: 9093
 
     route:
       app:
@@ -63,10 +62,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       config:

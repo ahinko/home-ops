@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app birdnet
+  name: birdnet
 spec:
   interval: 1h
   chartRef:
@@ -29,7 +29,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: &port 8080
@@ -38,7 +37,6 @@ spec:
 
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http

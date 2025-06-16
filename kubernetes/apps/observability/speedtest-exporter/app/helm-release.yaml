@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app speedtest-exporter
+  name: speedtest-exporter
 spec:
   interval: 60m
   chartRef:
@@ -37,14 +37,12 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 9798
 
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: http
             scheme: http

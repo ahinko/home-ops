@@ -93,10 +93,9 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
-            port: &port 8080
+            port: 8080
 
     route:
       app:
@@ -105,10 +104,6 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
 
     persistence:
       data:

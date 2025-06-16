@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app hoppscotch
+  name: hoppscotch
 spec:
   interval: 1h
   chartRef:
@@ -93,7 +93,6 @@ spec:
                 memory: 256Mi
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -105,7 +104,3 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port

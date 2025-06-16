@@ -67,10 +67,9 @@ spec:
 
     service:
       app:
-        controller: main
         ports:
           http:
-            port: &port 1411
+            port: 1411
 
     route:
       app:
@@ -79,10 +78,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       config:
