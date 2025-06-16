@@ -29,6 +29,7 @@ spec:
     keepHistory: false
   values:
     fullnameOverride: gha-runner-scale-set-controller
+    namespaceOverride: actions-runner-system
     replicaCount: 2
     resources:
       requests:
