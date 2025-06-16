@@ -32,7 +32,7 @@ spec:
               tag: 17.5.7@sha256:012c15271c39e451f0d9387bb35c3d306c9ff1478998f84f2926a71f968b0cd7
             env:
               - name: POSTGRES_DB
-                value: "atuin,miniflux,kitchenowl,teslamate,mastodon,homeassistant,romm,docmost,hoppscotch,immich"
+                value: "aliasvault,atuin,miniflux,kitchenowl,teslamate,mastodon,homeassistant,romm,docmost,hoppscotch,immich"
               - name: POSTGRES_HOST
                 value: "postgres17-rw.databases"
               - name: POSTGRES_EXTRA_OPTS

@@ -1,0 +1,198 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app aliasvault
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      client:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/lanedirt/aliasvault-client
+              tag: 0.19.0
+
+            env: &envs
+              HOSTNAME: aliasvault.hemma.dev
+              PUBLIC_REGISTRATION_ENABLED: false
+              IP_LOGGING_ENABLED: true
+              ADMIN_PASSWORD_GENERATED: "2025-06-10T00:00:00Z"
+              SMTP_PORT: &smtpPort 25
+              SMTP_TLS_ENABLED: false
+              SMTP_TLS_PORT: &smtpTlsPort 587
+              # Example: PRIVATE_EMAIL_DOMAINS=example.com,example2.org
+              PRIVATE_EMAIL_DOMAINS: DISABLED.TLD
+
+            envFrom:
+              - secretRef:
+                  name: aliasvault-secret
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+
+      api:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/lanedirt/aliasvault-api
+              tag: 0.19.0
+
+            env: *envs
+
+            envFrom:
+              - secretRef:
+                  name: aliasvault-secret
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+
+      admin:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/lanedirt/aliasvault-admin
+              tag: 0.19.0
+
+            env: *envs
+
+            envFrom:
+              - secretRef:
+                  name: aliasvault-secret
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+
+      smtp:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/lanedirt/aliasvault-smtp
+              tag: 0.19.0
+
+            env: *envs
+
+            envFrom:
+              - secretRef:
+                  name: aliasvault-secret
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+
+      taskRunner:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/lanedirt/aliasvault-task-runner
+              tag: 0.19.0
+
+            env: *envs
+
+            envFrom:
+              - secretRef:
+                  name: aliasvault-secret
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+
+    service:
+      client:
+        controller: client
+        ports:
+          http:
+            port: &clientPort 3000
+      api:
+        controller: api
+        ports:
+          http:
+            port: &apiPort 3001
+      admin:
+        controller: admin
+        ports:
+          http:
+            port: &adminPort 3002
+      smtp:
+        controller: smtp
+        ports:
+          smtp:
+            port: *smtpPort
+          smtp-tls:
+            port: *smtpTlsPort
+
+    route:
+      client:
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: admin
+                port: *adminPort
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /admin
+          - backendRefs:
+              - identifier: api
+                port: *apiPort
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+          - backendRefs:
+              - identifier: client
+                port: *clientPort
+
+    persistence:
+      logs:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /logs
+
+      app-certs:
+        enabled: true
+        existingClaim: aliasvault-data
+        advancedMounts:
+          admin:
+            main:
+              - path: /certificates/app
+          api:
+            main:
+              - path: /certificates/app

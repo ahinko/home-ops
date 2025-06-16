@@ -1,0 +1,17 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: aliasvault-db
+spec:
+  database: aliasvault
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: aliasvault-user
+spec:
+  role: aliasvault
+  database: aliasvault-db
+  secretName: database
+  privileges: OWNER
