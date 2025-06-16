@@ -58,6 +58,12 @@ spec:
     mayastor:
       enabled: false
 
+    loki:
+      enabled: false
+
+    alloy:
+      enabled: false
+
     engines:
       local:
         lvm:
