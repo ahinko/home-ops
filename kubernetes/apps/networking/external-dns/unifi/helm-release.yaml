@@ -25,9 +25,7 @@ spec:
     fullnameOverride: *app
     podAnnotations:
       secret.reloader.stakater.com/reload: &secret external-dns-unifi-secret
-    image: # TODO: Remove this block when new chart version is released
-      repository: registry.k8s.io/external-dns/external-dns
-      tag: v0.17.0
+
     provider:
       name: webhook
       webhook:
