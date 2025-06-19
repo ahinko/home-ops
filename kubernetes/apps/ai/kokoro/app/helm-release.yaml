@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/remsky/kokoro-fastapi-cpu
-              tag: v0.2.2
+              tag: v0.2.4
             resources:
               requests:
                 cpu: 10m
