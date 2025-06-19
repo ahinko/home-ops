@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: ghcr.io/ahinko/influxdb
-      tag: 2.7.11
+      tag: 2.7.12
 
     pdb:
       create: false
