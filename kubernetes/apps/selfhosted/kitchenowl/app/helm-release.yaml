@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/kitchenowl
-              tag: 0.6.15
+              tag: 0.7.1
 
             envFrom:
               - secretRef:
