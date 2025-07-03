@@ -1,5 +1,5 @@
 ---
-apiVersion: monitoring.giantswarm.io/v1alpha1
+apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
 metadata:
   name: smartctldinterfaceslow
@@ -7,7 +7,5 @@ spec:
   matchers:
     - name: alertname
       value: SmartCTLDInterfaceSlow
-      isRegex: false
     - name: device
       value: sda
-      isRegex: false
