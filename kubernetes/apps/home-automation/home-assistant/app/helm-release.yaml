@@ -55,9 +55,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 500M
+                memory: 2Gi
               limits:
-                memory: 2024M
+                memory: 2Gi
 
           code-server:
             image:
@@ -89,9 +89,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 100M
+                memory: 1Gi
               limits:
-                memory: 500M
+                memory: 1Gi
 
     service:
       app:
