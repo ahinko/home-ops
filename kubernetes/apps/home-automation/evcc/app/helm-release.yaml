@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/evcc
-              tag: 0.204.5
+              tag: 0.205.0
 
             probes:
               liveness:
