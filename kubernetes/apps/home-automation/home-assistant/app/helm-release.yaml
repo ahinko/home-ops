@@ -59,39 +59,39 @@ spec:
               limits:
                 memory: 2Gi
 
-          code-server:
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.102.0
-            args:
-              [
-                "--auth",
-                "none",
-                "--disable-telemetry",
-                "--disable-update-check",
-                "--user-data-dir",
-                "/config/.vscode",
-                "--extensions-dir",
-                "/config/.vscode",
-                "--port",
-                "8080",
-                "/config",
-              ]
+          # code-server:
+          #   image:
+          #     repository: ghcr.io/coder/code-server
+          #     tag: 4.101.2
+          #   args:
+          #     [
+          #       "--auth",
+          #       "none",
+          #       "--disable-telemetry",
+          #       "--disable-update-check",
+          #       "--user-data-dir",
+          #       "/config/.vscode",
+          #       "--extensions-dir",
+          #       "/config/.vscode",
+          #       "--port",
+          #       "8080",
+          #       "/config",
+          #     ]
 
-            env:
-              HASS_SERVER: http://localhost:8123
-              HASS_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: home-assistant-secret
-                    key: VSCODE_TOKEN
+          #   env:
+          #     HASS_SERVER: http://localhost:8123
+          #     HASS_TOKEN:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: home-assistant-secret
+          #           key: VSCODE_TOKEN
 
-            resources:
-              requests:
-                cpu: 10m
-                memory: 1Gi
-              limits:
-                memory: 1Gi
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #       memory: 1Gi
+          #     limits:
+          #       memory: 1Gi
 
     service:
       app:
@@ -110,8 +110,8 @@ spec:
             enabled: true
             port: 4003
             protocol: UDP
-          code-server:
-            port: 8080
+          # code-server:
+          #   port: 8080
 
     route:
       app:
@@ -125,16 +125,16 @@ spec:
               - identifier: app
                 port: *port
 
-      code-server:
-        hostnames: ["code.hemma.dev"]
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: 8080
+      # code-server:
+      #   hostnames: ["code.hemma.dev"]
+      #   parentRefs:
+      #     - name: internal
+      #       namespace: kube-system
+      #       sectionName: https
+      #   rules:
+      #     - backendRefs:
+      #         - identifier: app
+      #           port: 8080
 
     persistence:
       config:
@@ -143,8 +143,8 @@ spec:
           home-assistant:
             app:
               - path: /config
-            code-server:
-              - path: /config
+            # code-server:
+            #   - path: /config
 
       # https://community.home-assistant.io/t/wth-is-going-on-with-docker-container-installs-and-third-party-integrations-that-need-python-modules/806430/6
       hack:
