@@ -46,6 +46,26 @@ spec:
               DOCKER_VERNEMQ_ALLOW_PUBLISH_DURING_NETSPLIT: "on"
               DOCKER_VERNEMQ_ALLOW_SUBSCRIBE_DURING_NETSPLIT: "on"
               DOCKER_VERNEMQ_ALLOW_UNSUBSCRIBE_DURING_NETSPLIT: "on"
+
+              # Kubernetes namespace (required for discovery)
+              DOCKER_VERNEMQ_KUBERNETES_NAMESPACE: "databases"
+              # Kubernetes service account and RBAC permissions
+              DOCKER_VERNEMQ_KUBERNETES_USE_LONGNAMES: "true"
+              # Cluster formation settings
+              DOCKER_VERNEMQ_NODENAME: "VerneMQ@$(MY_POD_NAME).vernemq-headless.databases.svc.cluster.local"
+              # This should force cleanup of dead nodes
+              #DOCKER_VERNEMQ_CLUSTER_LEAVE_NODE_ON_UNSUBSCRIBE: "on"
+              #DOCKER_VERNEMQ_CLUSTER_TRADE_CONSISTENCY: "on"
+              # Add this to handle node removal during updates
+              #DOCKER_VERNEMQ_CLUSTER_PURGE_OFFLINE_NODES_AFTER: "60000" # 60 seconds
+              # Increase clustering timeouts
+              #DOCKER_VERNEMQ_CLUSTER_FORMATION_TIMEOUT: "120000" # 2 minutes
+              #DOCKER_VERNEMQ_CLUSTER_JOIN_TIMEOUT: "60000" # 1 minute
+              # Add Erlang distribution settings
+              #DOCKER_VERNEMQ_ERLANG__DISTRIBUTION__PORT_RANGE__MINIMUM: "44053"
+              #DOCKER_VERNEMQ_ERLANG__DISTRIBUTION__PORT_RANGE__MAXIMUM: "44053"
+              DOCKER_VERNEMQ_LOG__CONSOLE__LEVEL: "debug"
+
             envFrom:
               - secretRef:
                   name: vernemq-auth-secret
