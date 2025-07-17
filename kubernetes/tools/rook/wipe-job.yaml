@@ -9,7 +9,7 @@ spec:
   nodeName: w04
   containers:
     - name: disk-wipe-w04
-      image: public.ecr.aws/docker/library/alpine:3.22.0
+      image: public.ecr.aws/docker/library/alpine:3.22.1
       securityContext:
         privileged: true
       command: ["/bin/sh", "-c"]
