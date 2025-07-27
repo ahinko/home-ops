@@ -6,4 +6,3 @@ resources:
   - ./external-secret.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
-  - ./httproute.yaml

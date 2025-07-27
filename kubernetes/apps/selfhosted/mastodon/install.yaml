@@ -27,5 +27,5 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 25m
+  timeout: 5m
   wait: true
