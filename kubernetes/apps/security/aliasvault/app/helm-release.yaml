@@ -70,6 +70,16 @@ spec:
                 memory: 256Mi
 
       admin:
+        pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: aliasvault
+                      app.kubernetes.io/instance: aliasvault
+                      app.kubernetes.io/controller: api
+                  topologyKey: kubernetes.io/hostname
         containers:
           main:
             image:
@@ -147,6 +157,9 @@ spec:
             port: &adminPort 3002
       smtp:
         controller: smtp
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.20.203
         ports:
           smtp:
             port: *smtpPort
