@@ -2,17 +2,26 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname atuin
+  name: &app atuin
   namespace: &namespace selfhosted
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
   dependsOn:
-    - name: postgres-cluster
-      namespace: databases
+    - name: volsync
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/selfhosted/atuin/app
+  postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "2000"
+      APP_GID: "2000"
+      VOLSYNC_CLAIM: atuin-config
+      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

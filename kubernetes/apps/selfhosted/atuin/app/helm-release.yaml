@@ -15,15 +15,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          enableServiceLinks: false
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-
         containers:
           app:
             image:
@@ -33,23 +24,26 @@ spec:
               - server
               - start
             env:
-              ATUIN_DB_URI:
-                valueFrom:
-                  secretKeyRef:
-                    name: database-atuin-user
-                    key: POSTGRES_URL
+              ATUIN_DB_URI: "sqlite:///config/atuin.db"
               ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 8888
               ATUIN_OPEN_REGISTRATION: false
-              ATUIN_TLS__CERT_PATH: ""
-              ATUIN_TLS__PKEY_PATH: ""
-              RUST_LOG: info
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
               limits:
-                memory: 512Mi
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -67,4 +61,4 @@ spec:
 
     persistence:
       config:
-        type: emptyDir
+        existingClaim: "${VOLSYNC_CLAIM}"
