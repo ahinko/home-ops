@@ -32,7 +32,7 @@ spec:
               tag: 17.5.19
             env:
               - name: POSTGRES_DB
-                value: "aliasvault,atuin,miniflux,kitchenowl,teslamate,mastodon,homeassistant,romm,docmost,hoppscotch,immich"
+                value: "aliasvault,miniflux,kitchenowl,teslamate,mastodon,homeassistant,romm,docmost,immich"
               - name: POSTGRES_HOST
                 value: "postgres17-rw.databases"
               - name: POSTGRES_EXTRA_OPTS
