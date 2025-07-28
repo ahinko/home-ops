@@ -27,7 +27,7 @@ spec:
           api:
             image:
               repository: ghcr.io/ahinko/onepassword-connect-api
-              tag: 1.7.3
+              tag: 1.7.4
             env:
               XDG_DATA_HOME: &configDir /config
               OP_HTTP_PORT: &apiPort 80
