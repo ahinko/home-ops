@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: ghcr.io/foxxmd/multi-scrobbler
-              tag: 0.9.8
+              tag: 0.9.9
 
             envFrom:
               - secretRef:
