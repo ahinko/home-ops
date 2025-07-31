@@ -25,7 +25,7 @@ spec:
           main:
             image:
               repository: ghcr.io/lanedirt/aliasvault-client
-              tag: 0.20.2
+              tag: 0.21.1
 
             env: &envs
               HOSTNAME: aliasvault.hemma.dev
@@ -54,7 +54,7 @@ spec:
           main:
             image:
               repository: ghcr.io/lanedirt/aliasvault-api
-              tag: 0.20.2
+              tag: 0.21.1
 
             env: *envs
 
@@ -84,7 +84,7 @@ spec:
           main:
             image:
               repository: ghcr.io/lanedirt/aliasvault-admin
-              tag: 0.20.2
+              tag: 0.21.1
 
             env: *envs
 
@@ -104,7 +104,7 @@ spec:
           main:
             image:
               repository: ghcr.io/lanedirt/aliasvault-smtp
-              tag: 0.20.2
+              tag: 0.21.1
 
             env: *envs
 
@@ -124,7 +124,7 @@ spec:
           main:
             image:
               repository: ghcr.io/lanedirt/aliasvault-task-runner
-              tag: 0.20.2
+              tag: 0.21.1
 
             env: *envs
 
