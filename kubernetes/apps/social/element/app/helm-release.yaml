@@ -38,7 +38,7 @@ spec:
           main:
             image:
               repository: ghcr.io/element-hq/synapse
-              tag: v1.134.0
+              tag: v1.135.0
             env:
               SYNAPSE_CONFIG_DIR: /data
               SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
