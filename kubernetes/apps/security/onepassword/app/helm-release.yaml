@@ -26,7 +26,7 @@ spec:
         containers:
           api:
             image:
-              repository: ghcr.io/ahinko/onepassword-connect-api
+              repository: ghcr.io/1password/connect-api
               tag: 1.7.4
             env:
               XDG_DATA_HOME: &configDir /config
@@ -70,7 +70,7 @@ spec:
                   - ALL
           sync:
             image:
-              repository: ghcr.io/ahinko/onepassword-connect-sync
+              repository: ghcr.io/1password/connect-sync
               tag: 1.7.4
             env:
               XDG_DATA_HOME: *configDir
