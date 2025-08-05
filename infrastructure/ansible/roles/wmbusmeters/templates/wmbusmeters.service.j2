@@ -1,0 +1,33 @@
+[Unit]
+Description=wmbusmeters - Read wireless M-Bus utility meter readings
+Documentation=https://github.com/wmbusmeters/wmbusmeters
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ wmbusmeters_user }}
+Group={{ wmbusmeters_group }}
+# Wait for network and MQTT broker to be available
+ExecStartPre=/bin/sleep 30
+{% if ha_discovery_enabled %}
+# Run Home Assistant discovery before starting wmbusmeters
+ExecStartPre={{ wmbusmeters_home }}/send_ha_discovery.sh
+{% endif %}
+ExecStart=/usr/local/bin/wmbusmeters --useconfig=/etc
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=wmbusmeters
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths={{ wmbusmeters_log_dir }} {{ wmbusmeters_home }}
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

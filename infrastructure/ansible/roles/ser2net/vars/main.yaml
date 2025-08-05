@@ -1,7 +1,6 @@
 ---
-
 ser2net_ports:
-  - device: /dev/ttyUSB0
+  - device: /dev/zwave_stick
     baud: 115200
     tcpport: 3333
     state: raw

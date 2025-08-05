@@ -1,0 +1,20 @@
+---
+- name: Create USB udev rules for automatic device detection
+  copy:
+    content: |
+      # Wireless M-Bus USB device rules
+      # Creates consistent device symlinks regardless of USB port
+
+      # IMST iU891A-XL USB stick (Cypress chipset)
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="0003", ATTRS{manufacturer}=="IMST", SYMLINK+="wmbus_stick", GROUP="dialout", MODE="0664"
+
+      # Aeotec Z-Wave USB Stick Gen7 (Silicon Labs CP2102N chipset)
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{manufacturer}=="Silicon Labs", SYMLINK+="zwave_stick", GROUP="dialout", MODE="0664"
+    dest: /etc/udev/rules.d/99-usbdevices.rules
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
+  notify:
+    - reload udev
+    - trigger udev

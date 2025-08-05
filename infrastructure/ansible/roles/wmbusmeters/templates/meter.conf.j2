@@ -1,0 +1,9 @@
+name={{ item.name }}
+type={{ item.type }}
+id={{ item.id }}
+key={{ item.key }}
+{% if mqtt_username and mqtt_password %}
+shell=/usr/bin/mosquitto_pub -h {{ mqtt_broker_host }} -p {{ mqtt_broker_port }} -u "{{ mqtt_username }}" -P "{{ mqtt_password }}" -t wmbusmeters/$METER_ID -m "$METER_JSON"
+{% else %}
+shell=/usr/bin/mosquitto_pub -h {{ mqtt_broker_host }} -p {{ mqtt_broker_port }} -t wmbusmeters/$METER_ID -m "$METER_JSON"
+{% endif %}

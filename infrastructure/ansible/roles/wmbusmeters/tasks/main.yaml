@@ -1,0 +1,142 @@
+---
+- name: Install required system packages
+  apt:
+    name:
+      - build-essential
+      - cmake
+      - git
+      - mosquitto-clients
+      - librtlsdr-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - pkg-config
+      - udev
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Create wmbusmeters group
+  group:
+    name: wmbusmeters
+    system: yes
+
+- name: Create wmbusmeters user
+  user:
+    name: "{{ wmbusmeters_user }}"
+    group: "{{ wmbusmeters_group }}"
+    system: yes
+    home: "{{ wmbusmeters_home }}"
+    shell: /bin/false
+    create_home: yes
+  become: yes
+
+- name: Add wmbusmeters user to dialout group for USB access
+  user:
+    name: "{{ wmbusmeters_user }}"
+    groups: dialout
+    append: yes
+  become: yes
+
+- name: Create wmbusmeters directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ wmbusmeters_user }}"
+    group: "{{ wmbusmeters_group }}"
+    mode: "0755"
+  loop:
+    - "{{ wmbusmeters_home }}"
+    - "{{ wmbusmeters_log_dir }}"
+    - "{{ wmbusmeters_config_dir }}"
+    - "/etc/wmbusmeters.d"
+  become: yes
+
+- name: Clone wmbusmeters repository
+  git:
+    repo: https://github.com/wmbusmeters/wmbusmeters.git
+    dest: "{{ wmbusmeters_home }}/wmbusmeters-src"
+    version: master
+    force: yes
+  become: yes
+
+- name: Change ownership of wmbusmeters source
+  file:
+    path: "{{ wmbusmeters_home }}/wmbusmeters-src"
+    owner: "{{ wmbusmeters_user }}"
+    group: "{{ wmbusmeters_group }}"
+    recurse: yes
+  become: yes
+
+- name: Build wmbusmeters
+  make:
+    chdir: "{{ wmbusmeters_home }}/wmbusmeters-src"
+    jobs: "{{ ansible_processor_cores }}"
+  become: yes
+  environment:
+    HOME: "{{ wmbusmeters_home }}"
+  vars:
+    ansible_ssh_pipelining: yes
+
+- name: Install wmbusmeters binary
+  copy:
+    src: "{{ wmbusmeters_home }}/wmbusmeters-src/build/wmbusmeters"
+    dest: /usr/local/bin/wmbusmeters
+    mode: "0755"
+    owner: root
+    group: root
+    remote_src: yes
+  become: yes
+  notify: restart wmbusmeters
+
+- name: Create wmbusmeters main configuration
+  template:
+    src: wmbusmeters.conf.j2
+    dest: /etc/wmbusmeters.conf
+    owner: "{{ wmbusmeters_user }}"
+    group: "{{ wmbusmeters_group }}"
+    mode: "0644"
+  become: yes
+  notify: restart wmbusmeters
+
+- name: Create meter configurations
+  template:
+    src: meter.conf.j2
+    dest: "/etc/wmbusmeters.d/{{ item.name }}.conf"
+    owner: "{{ wmbusmeters_user }}"
+    group: "{{ wmbusmeters_group }}"
+    mode: "0600" # Secure because it contains encryption keys
+  loop: "{{ wmbusmeters_meters }}"
+  become: yes
+  notify: restart wmbusmeters
+
+- name: Create Home Assistant discovery script
+  template:
+    src: send_ha_discovery.sh.j2
+    dest: "{{ wmbusmeters_home }}/send_ha_discovery.sh"
+    owner: "{{ wmbusmeters_user }}"
+    group: "{{ wmbusmeters_group }}"
+    mode: "0755"
+  become: yes
+  when: ha_discovery_enabled
+  notify:
+    - restart wmbusmeters
+
+- name: Create systemd service file
+  template:
+    src: wmbusmeters.service.j2
+    dest: /etc/systemd/system/wmbusmeters.service
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
+  notify:
+    - reload systemd
+    - restart wmbusmeters
+
+- name: Enable and start wmbusmeters service
+  systemd:
+    name: wmbusmeters
+    enabled: yes
+    state: started
+    daemon_reload: yes
+  become: yes

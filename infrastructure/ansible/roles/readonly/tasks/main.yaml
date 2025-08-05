@@ -1,133 +1,234 @@
 ---
-- name: Disable swap and filesystem check and make read only
-  ansible.builtin.replace:
-    dest: /boot/cmdline.txt
-    regexp: '(rootwait(?!.*\b{{ cmdline_add }}\b).*)$'
-    replace: '\1 {{ cmdline_add }}'
-
-- name: Update mount boot to be read only
-  ansible.posix.mount:
-    path: /boot
-    src: PARTUUID={{ partuuid_boot }}
-    fstype: vfat
-    opts: defaults,ro
+- name: Install required packages for read-only filesystem
+  apt:
+    name:
+      - rsync
+      - busybox-syslogd
     state: present
-    passno: 2
+    update_cache: yes
+  become: yes
 
-- name: Update mount root to be read only
-  ansible.posix.mount:
-    backup: true
-    path: /
-    src: PARTUUID={{ partuuid_root }}
-    fstype: ext4
-    opts: defaults,noatime,ro
-    state: present
-    passno: 1
-
-- name: Add mount for tmp
-  ansible.posix.mount:
-    backup: true
-    path: /tmp
-    src: tmpfs
-    fstype: tmpfs
-    opts: nosuid,nodev
-    state: present
-    passno: 0
-
-- name: Add mount for var/log
-  ansible.posix.mount:
-    backup: true
-    path: /var/log
-    src: tmpfs
-    fstype: tmpfs
-    opts: nosuid,nodev
-    state: present
-    passno: 0
-
-- name: Add mount for var/tmp
-  ansible.posix.mount:
-    backup: true
-    path: /var/tmp
-    src: tmpfs
-    fstype: tmpfs
-    opts: nosuid,nodev
-    state: present
-    passno: 0
-
-- name: Remove some files
-  ansible.builtin.file:
-    path: "{{ item }}"
+- name: Remove rsyslog to avoid conflicts with busybox-syslogd
+  apt:
+    name: rsyslog
     state: absent
-  with_items:
-    - /var/lib/dhcp
-    - /var/lib/dhcpcd5
-    - /var/spool
-    - /etc/resolv.conf
-    - /var/lib/systemd/random-seed
+    purge: yes
+  become: yes
 
-- name: Touch needed files
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: touch
-    mode: u=rw,g=r,o=r
-  with_items:
-    - /tmp/dhcpcd.resolv.conf
-    - /tmp/random-seed
+- name: Backup original fstab
+  copy:
+    src: /etc/fstab
+    dest: /etc/fstab.backup
+    remote_src: yes
+    backup: yes
+  become: yes
 
-- name: Create tmp folders
-  ansible.builtin.file:
-    path: "/tmp/{{ item }}"
-    state: directory
-    mode: u=rw,g=r,o=r
-  with_items:
-    - /var/lib/dhcp
-    - /var/lib/dhcpcd5
-    - /var/spool
-
-- name: Create a symbolic links
-  ansible.builtin.file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    state: link
-    force: true
-  with_items:
-    - {dest: "/var/lib/dhcp", src: "/tmp/var/lib/dhcp"}
-    - {dest: "/var/lib/dhcpcd5", src: "/tmp/var/lib/dhcpcd5"}
-    - {dest: "/var/spool", src: "/tmp/var/spool"}
-    - {dest: "/etc/resolv.conf", src: "/tmp/dhcpcd.resolv.conf"}
-    - {dest: "/var/lib/systemd/random-seed", src: "/tmp/random-seed"}
-
-- name: Update systemd-random-seed
-  community.general.ini_file:
-    path: /lib/systemd/system/systemd-random-seed.service
-    section: Service
-    option: ExecStartPre
-    values:
-      - '/bin/echo "" >/tmp/random-seed'
-    mode: "0600"
-    state: present
-
-- name: Update bash.bashrc
-  ansible.builtin.blockinfile:
-    path: /etc/bash.bashrc
-    create: true
-    mode: "0644"
+- name: Configure fstab for read-only filesystem with tmpfs mounts
+  blockinfile:
+    path: /etc/fstab
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - Read-only filesystem"
     block: |
-      set_bash_prompt() {
-        fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")
-        PS1='\[\033[01;32m\]\u@\h${fs_mode:+($fs_mode)}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-      }
-      alias ro='sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'
-      alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'
-      PROMPT_COMMAND=set_bash_prompt
+      # Tmpfs mounts for writable areas that don't need persistence
+      tmpfs /tmp tmpfs defaults,noatime,nosuid,size=100m 0 0
+      tmpfs /var/log tmpfs defaults,noatime,nosuid,size=100m 0 0
+      tmpfs /var/tmp tmpfs defaults,noatime,nosuid,size=50m 0 0
+      tmpfs /var/run tmpfs defaults,noatime,nosuid,size=20m 0 0
+      tmpfs /var/lock tmpfs defaults,noatime,nosuid,size=10m 0 0
+  become: yes
 
-- name: Update bash.bash_logout
-  ansible.builtin.blockinfile:
-    path: /etc/bash.bash_logout
-    create: true
-    mode: "0644"
-    block: |
+- name: Update root partition mount options in fstab to read-only
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^(PARTUUID=\S+)\s+/\s+ext4\s+.*'
+    line: '\1 / ext4 defaults,ro,noatime 0 1'
+    backrefs: yes
+  become: yes
+
+- name: Update boot partition mount options in fstab to read-only
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^(PARTUUID=\S+)\s+/boot/firmware\s+vfat\s+.*'
+    line: '\1 /boot/firmware vfat defaults,ro 0 2'
+    backrefs: yes
+  become: yes
+
+- name: Create read-only helper scripts
+  copy:
+    dest: /usr/local/bin/rw
+    content: |
+      #!/bin/bash
+      # Script to temporarily make filesystem writable
+      echo "Making filesystem writable..."
+      sudo mount -o remount,rw /
+      sudo mount -o remount,rw /boot/firmware
+      echo "Reloading systemd daemon..."
+      sudo systemctl daemon-reload
+      echo "Filesystem is now writable. Use 'ro' command to make it read-only again."
+    mode: "0755"
+  become: yes
+
+- name: Create read-only restoration script
+  copy:
+    dest: /usr/local/bin/ro
+    content: |
+      #!/bin/bash
+      # Script to make filesystem read-only again
+      echo "Syncing filesystem..."
+      sync
+      echo "Making filesystem read-only..."
       sudo mount -o remount,ro /
-      sudo mount -o remount,ro /boot
+      sudo mount -o remount,ro /boot/firmware
+      echo "Filesystem is now read-only."
+    mode: "0755"
+  become: yes
+
+- name: Disable swap to prevent writes
+  command: dphys-swapfile swapoff
+  become: yes
+  ignore_errors: yes
+
+- name: Disable swap service
+  systemd:
+    name: dphys-swapfile
+    enabled: no
+    state: stopped
+  become: yes
+  ignore_errors: yes
+
+- name: Configure systemd to reduce writes
+  lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "^#?Storage="
+    line: "Storage=volatile"
+  become: yes
+
+- name: Configure systemd journal size
+  lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "^#?RuntimeMaxUse="
+    line: "RuntimeMaxUse=30M"
+  become: yes
+
+- name: Configure logrotate for tmpfs log management
+  copy:
+    dest: /etc/logrotate.d/tmpfs-logs
+    content: |
+      # Aggressive log rotation for tmpfs-mounted logs
+      /var/log/*.log {
+          size 10M
+          rotate 2
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0644 root root
+      }
+
+      /var/log/*/*.log {
+          size 5M
+          rotate 1
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0644 root root
+      }
+    mode: "0644"
+  become: yes
+
+- name: Configure logrotate to run more frequently
+  copy:
+    dest: /etc/systemd/system/logrotate.timer
+    content: |
+      [Unit]
+      Description=Rotate log files
+
+      [Timer]
+      OnCalendar=*:0/30
+      Persistent=true
+
+      [Install]
+      WantedBy=timers.target
+    mode: "0644"
+  become: yes
+
+- name: Enable frequent logrotate timer
+  systemd:
+    name: logrotate.timer
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+- name: Create service to set up wmbusmeters log directory
+  copy:
+    dest: /etc/systemd/system/setup-wmbusmeters-log.service
+    content: |
+      [Unit]
+      Description=Create wmbusmeters log directory with correct permissions
+      After=local-fs.target
+      Before=wmbusmeters.service
+
+      [Service]
+      Type=oneshot
+      ExecStart=/bin/mkdir -p /var/log/wmbusmeters
+      ExecStart=/bin/chown wmbusmeters:wmbusmeters /var/log/wmbusmeters
+      ExecStart=/bin/chmod 755 /var/log/wmbusmeters
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+  become: yes
+
+- name: Enable setup-wmbusmeters-log service
+  systemd:
+    name: setup-wmbusmeters-log
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+- name: Disable unnecessary services that write to disk
+  systemd:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  become: yes
+  ignore_errors: yes
+  loop:
+    - apt-daily.service
+    - apt-daily.timer
+    - apt-daily-upgrade.service
+    - apt-daily-upgrade.timer
+    - man-db.service
+    - man-db.timer
+
+- name: Ensure SSH host keys exist before making filesystem read-only
+  command: ssh-keygen -A
+  args:
+    creates: /etc/ssh/ssh_host_rsa_key
+  become: yes
+
+- name: Display important information
+  debug:
+    msg: |
+      ===============================================
+      READ-ONLY FILESYSTEM CONFIGURATION COMPLETE
+      ===============================================
+
+      IMPORTANT: After reboot, the filesystem will be read-only!
+
+      Helper commands available:
+      - 'rw' - Make filesystem temporarily writable
+      - 'ro' - Make filesystem read-only again
+
+      What was configured:
+      - Root and boot partitions set to read-only
+      - tmpfs mounted for: /tmp, /var/log, /var/cache, /var/spool, /var/lock, /var/run, /home
+      - Swap disabled
+      - systemd journal configured for volatile storage
+      - SSH host keys will be regenerated on each boot
+      - Unnecessary services disabled
+
+      REBOOT REQUIRED to activate read-only mode!
+
+      To revert changes, restore /etc/fstab.backup and remove systemd services.
+      ===============================================

@@ -1,0 +1,13 @@
+---
+# wmbusmeters configuration
+wmbusmeters_version: "latest"
+wmbusmeters_user: "wmbusmeters"
+wmbusmeters_group: "wmbusmeters"
+wmbusmeters_home: "/var/lib/wmbusmeters"
+wmbusmeters_log_dir: "/var/log/wmbusmeters"
+wmbusmeters_config_dir: "/etc/wmbusmeters.d"
+
+# Device configuration - Uses udev symlink for reliability
+wmbusmeters_device_path: "/dev/wmbus_stick:iu891a:c1,t1"
+wmbusmeters_log_level: "normal"
+wmbusmeters_no_device_exit: true

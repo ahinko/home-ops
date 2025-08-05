@@ -1,0 +1,8 @@
+---
+- name: reload udev
+  command: udevadm control --reload-rules
+  become: yes
+
+- name: trigger udev
+  command: udevadm trigger
+  become: yes

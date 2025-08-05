@@ -1,11 +1,13 @@
 ---
-- name: IOT provision Zwave Coordinator
+- name: IOT provision Zwave and wmbus Coordinator
   hosts:
-    - zwave-coordinator
-  remote_user: zwave
+    - zwave
+  remote_user: peter
   become: true
   become_method: ansible.builtin.sudo
   roles:
     - role: apt
+    - role: udev
     - role: ser2net
+    - role: wmbusmeters
     - role: readonly

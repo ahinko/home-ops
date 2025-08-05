@@ -1,0 +1,9 @@
+loglevel={{ wmbusmeters_log_level }}
+device={{ wmbusmeters_device_path }}
+{% if wmbusmeters_no_device_exit %}
+nodeviceexit=true
+{% endif %}
+format=json
+logfile={{ wmbusmeters_log_dir }}/wmbusmeters.log
+logtelegrams=false
+ignoreduplicates=false
