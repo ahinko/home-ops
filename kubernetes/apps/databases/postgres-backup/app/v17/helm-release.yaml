@@ -29,7 +29,7 @@ spec:
           postgres:
             image:
               repository: ghcr.io/ahinko/postgres17
-              tag: 17.5.20
+              tag: 17.5.21
             env:
               - name: POSTGRES_DB
                 value: "aliasvault,miniflux,kitchenowl,teslamate,mastodon,homeassistant,romm,docmost,immich"
