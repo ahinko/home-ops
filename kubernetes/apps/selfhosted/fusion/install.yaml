@@ -2,12 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app fusion
+  name: &appname fusion
   namespace: &namespace selfhosted
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -17,9 +17,9 @@ spec:
   path: ./kubernetes/apps/selfhosted/fusion/app
   postBuild:
     substitute:
-      APP: *app
+      APP: *appname
       VOLSYNC_CAPACITY: 1Gi
-      VOLSYNC_CLAIM: *app
+      VOLSYNC_CLAIM: *appname
   prune: true
   retryInterval: 2m
   sourceRef:

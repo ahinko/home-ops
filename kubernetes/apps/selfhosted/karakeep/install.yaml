@@ -2,12 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app karakeep
+  name: &appname karakeep
   namespace: &namespace selfhosted
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -19,7 +19,7 @@ spec:
   path: ./kubernetes/apps/selfhosted/karakeep/app
   postBuild:
     substitute:
-      APP: *app
+      APP: *appname
       VOLSYNC_CLAIM: karakeep-data
   prune: true
   sourceRef:
