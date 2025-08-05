@@ -23,17 +23,24 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          dnsConfig:
-            options:
-              - { name: ndots, value: "1" }
-
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+        initContainers:
+          init-config:
+            image:
+              repository: ghcr.io/home-operations/k8s-sidecar
+              tag: 1.30.7@sha256:3b6444d91c6e69a9e07c5e55419452d967d18c833d88b36277dc2021b708f621
+            env:
+              FOLDER: /config
+              LABEL: gatus.io/enabled
+              NAMESPACE: ALL
+              RESOURCE: both
+              UNIQUE_FILENAMES: true
+              METHOD: WATCH
+            restartPolicy: Always
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
 
         containers:
           app:
@@ -41,9 +48,10 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.21.0
             env:
-              TZ: Europe/Stockholm
+              TZ: America/New_York
               GATUS_CONFIG_PATH: /config
-              CUSTOM_WEB_PORT: &port 80
+              GATUS_DELAY_START_SECONDS: 5
+              GATUS_WEB_PORT: &port 80
 
             probes:
               liveness: &probes
@@ -64,24 +72,17 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources: &resources
+            resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 128Mi
 
-          config-sync:
-            image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.30.7
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: both
-              UNIQUE_FILENAMES: true
-              METHOD: SLEEP
-            resources: *resources
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
 
     service:
       app:
@@ -102,12 +103,27 @@ spec:
             namespace: kube-system
             sectionName: https
 
+    rbac:
+      roles:
+        gatus:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: ["configmaps", "secrets"]
+              verbs: ["get", "watch", "list"]
+      bindings:
+        gatus:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: gatus
+          subjects:
+            - identifier: gatus
     serviceAccount:
       gatus: {}
 
     persistence:
       config:
-        existingClaim: gatus
+        type: emptyDir
 
       config-file:
         type: configMap

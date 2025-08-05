@@ -1,19 +1,31 @@
 ---
+web:
+  port: 80
+
+metrics: true
+
+ui:
+  title: Status | Gatus
+  header: Status
+  logo: https://avatars.githubusercontent.com/u/7915158
+  link: https://github.com/ahinko
+  buttons:
+    - name: Github
+      link: https://github.com/ahinko
+    - name: Homelab
+      link: https://github.com/ahinko/home-ops
+
 connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
 
-metrics: true
-
-storage:
-  type: sqlite
-  path: /config/sqlite.db
-  caching: true
-
-ui:
-  title: Status | Gatus
-  header: Status
-
-web:
-  port: 80
+endpoints:
+  - name: flux-webhook
+    group: external
+    url: https://flux-webhook.hemma.dev
+    interval: 1m
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 404"
