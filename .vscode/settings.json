@@ -30,8 +30,7 @@
   "prettier.ignorePath": ".github/linters/.prettierignore",
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
-    "ansible": "ansible/**/*.yml",
-    "kubernetes": "kubernetes/*.yaml",
+    "ansible": "infrastructure/ansible/**/*.yaml",
     "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json": "**/kustomization.yaml",
     "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json": "**/install.yaml",
     "https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json": "**/helm-release.yaml",
