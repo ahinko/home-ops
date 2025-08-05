@@ -29,7 +29,3 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
-
-  values:
-    operator:
-      tolerations: []
