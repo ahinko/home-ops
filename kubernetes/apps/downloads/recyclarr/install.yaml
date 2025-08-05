@@ -8,11 +8,19 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: volsync
+      namespace: storage
   interval: 1h
   path: "./kubernetes/apps/downloads/recyclarr/app"
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: recyclarr-config
   prune: true
   sourceRef:
     kind: GitRepository
