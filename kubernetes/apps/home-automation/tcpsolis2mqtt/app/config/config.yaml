@@ -3,7 +3,7 @@ debug: True
 datalogger:
   host: 192.168.71.135
   port: 502
-  slave_id: 1
+  device_id: 1
   poll_interval: 30
   poll_interval_if_off: 600
   poll_retries: 20
