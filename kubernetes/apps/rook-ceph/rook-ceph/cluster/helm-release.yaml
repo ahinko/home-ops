@@ -60,6 +60,10 @@ spec:
       crashCollector:
         disable: false
 
+      csi:
+        readAffinity:
+          enabled: true
+
       dashboard:
         enabled: true
         urlPrefix: /
@@ -179,15 +183,18 @@ spec:
           reclaimPolicy: Delete
           allowVolumeExpansion: true
           volumeBindingMode: Immediate
+          mountOptions:
+            - discard
           parameters:
             imageFormat: "2"
-            imageFeatures: layering # TODO: append on next cluster rebuild ,fast-diff,object-map,deep-flatten,exclusive-lock
+            # TODO: append on next cluster rebuild ,fast-diff,object-map,deep-flatten,exclusive-lock
+            imageFeatures: layering
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/fstype: ext4
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
