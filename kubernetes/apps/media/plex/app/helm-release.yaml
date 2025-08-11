@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/plex
-              tag: 1.41.9.9961@sha256:6c86319bb3275135f5da5aec71b45e48305669ecbceee0f88d335bebf0d0f218
+              tag: 1.42.1.10060@sha256:04563be281364ba2462285aacb2ca13d7ef7e1d0b19e1203f4c19b4a56840c5c
             env:
               PLEX_ADVERTISE_URL: https://192.168.20.202:32400,https://{{ .Release.Name }}.hemma.dev:443
               PLEX_NO_AUTH_NETWORKS: 192.168.0.0/16
