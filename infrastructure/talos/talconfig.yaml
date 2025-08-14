@@ -121,21 +121,6 @@ nodes:
                   - rshared
                   - rw
 
-  - hostname: w02
-    ipAddress: 192.168.20.35
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 20:7b:d2:b1:b8:7c
-        addresses:
-          - 192.168.20.35/24
-        dhcp: true
-    schematic: *nuc-schematic
-    patches:
-      - *nuc-patches
-
   - hostname: w03
     ipAddress: 192.168.20.36
     controlPlane: false
@@ -224,6 +209,51 @@ nodes:
             rules:
               # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
               - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
+
+  - hostname: n01
+    ipAddress: 192.168.20.21
+    controlPlane: false
+    installDiskSelector:
+      type: ssd
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: 88:ae:dd:65:a5:49
+        addresses:
+          - 192.168.20.21/24
+        dhcp: true
+    schematic: &nuc14-schematic
+      customization:
+        extraKernelArgs:
+          - -init_on_alloc # Less security, faster puter
+          - -init_on_free # Less security, faster puter
+          - -selinux # Less security, faster puter
+          - apparmor=0 # Less security, faster puter
+          - i915.enable_guc=3 # Meteor Lake CPU / iGPU
+          - init_on_alloc=0 # Less security, faster puter
+          - init_on_free=0 # Less security, faster puter
+          - intel_iommu=on # PCI Passthrough
+          - iommu=pt # PCI Passthrough
+          - mitigations=off # Less security, faster puter
+          - security=none # Less security, faster puter
+          - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+          - talos.auditd.disabled=1 # Less security, faster puter
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/mei
+    patches:
+      - &nuc14-patches |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/openebs/local
+                type: bind
+                source: /var/openebs/local
+                options:
+                  - bind
+                  - rshared
+                  - rw
 
 controlPlane:
   patches:
