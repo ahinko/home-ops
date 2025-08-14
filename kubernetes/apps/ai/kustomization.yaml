@@ -5,6 +5,7 @@ namespace: ai
 resources:
   - ./kokoro/install.yaml
   - ./ollama/install.yaml
+  - ./sdnext/install.yaml
 components:
   - ../../components/namespace
   - ../../components/repos/app-template
