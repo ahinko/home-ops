@@ -10,7 +10,6 @@ resources:
   - ./gramps/install.yaml
   - ./homepage/install.yaml
   - ./immich/install.yaml
-  - ./it-tools/install.yaml
   - ./karakeep/install.yaml
   - ./kitchenowl/install.yaml
   - ./mastodon/install.yaml
