@@ -60,6 +60,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Control your Z-Wave devices through a web interface.
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-z-wave-js-ui.svg
+          gethomepage.dev/name: Z-Wave JS UI
+          gethomepage.dev/app: zwave-js-ui
         hostnames: ["zwavejs.hemma.dev"]
         parentRefs:
           - name: internal

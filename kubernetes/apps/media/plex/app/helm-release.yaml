@@ -74,6 +74,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Media server
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-plex.svg
+          gethomepage.dev/name: Plex
+          gethomepage.dev/app: plex
         hostnames:
           - "{{ .Release.Name }}.hemma.dev"
         parentRefs:

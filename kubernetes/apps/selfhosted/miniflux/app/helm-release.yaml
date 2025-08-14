@@ -91,6 +91,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: RSS feed reader
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: sh-miniflux.svg
+          gethomepage.dev/name: Miniflux
+          gethomepage.dev/app: miniflux
         hostnames: ["rss.hemma.dev"]
         parentRefs:
           - name: internal

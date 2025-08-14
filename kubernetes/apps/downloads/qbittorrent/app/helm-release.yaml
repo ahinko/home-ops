@@ -129,6 +129,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Bittorrent client
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-qbittorrent.svg
+          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/app: qbittorrent
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

@@ -79,6 +79,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Music server
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-navidrome.svg
+          gethomepage.dev/name: Navidrome
+          gethomepage.dev/app: navidrome
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: external

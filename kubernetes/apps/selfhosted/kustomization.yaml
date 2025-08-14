@@ -8,6 +8,7 @@ resources:
   - ./docmost/install.yaml
   - ./fusion/install.yaml
   - ./gramps/install.yaml
+  - ./homepage/install.yaml
   - ./immich/install.yaml
   - ./it-tools/install.yaml
   - ./karakeep/install.yaml

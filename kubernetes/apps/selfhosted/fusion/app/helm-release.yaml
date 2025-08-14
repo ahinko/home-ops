@@ -55,8 +55,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames:
-          - feeds.hemma.dev
+        hostnames: ["feeds.hemma.dev"]
         parentRefs:
           - name: internal
             namespace: kube-system

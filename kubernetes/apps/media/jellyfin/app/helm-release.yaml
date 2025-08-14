@@ -56,6 +56,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Media server
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-jellyfin.svg
+          gethomepage.dev/name: Jellyfin
+          gethomepage.dev/app: jellyfin
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

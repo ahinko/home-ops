@@ -63,6 +63,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Control your EVCC through a web interface.
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-evcc.svg
+          gethomepage.dev/name: EVCC
+          gethomepage.dev/app: evcc
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

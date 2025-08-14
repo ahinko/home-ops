@@ -71,6 +71,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Documentation platform
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: sh-docmost.svg
+          gethomepage.dev/name: Docmost
+          gethomepage.dev/app: docmost
         hostnames: ["docs.hemma.dev"]
         parentRefs:
           - name: internal

@@ -76,6 +76,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Automatic downloads of music
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-lidarr.svg
+          gethomepage.dev/name: Lidarr
+          gethomepage.dev/app: lidarr
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

@@ -66,9 +66,15 @@ spec:
           http:
             port: 9078
 
-
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Music scrobbler
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-multi-scrobbler.svg
+          gethomepage.dev/name: Multiscrobbler
+          gethomepage.dev/app: multiscrobbler
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

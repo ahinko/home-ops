@@ -79,6 +79,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Automatic downloads of movies
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-radarr.svg
+          gethomepage.dev/name: Radarr
+          gethomepage.dev/app: radarr
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

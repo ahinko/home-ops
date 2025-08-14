@@ -46,6 +46,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Identify and classify bird species
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-birdnet.svg
+          gethomepage.dev/name: BirdNet
+          gethomepage.dev/app: birdnet
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

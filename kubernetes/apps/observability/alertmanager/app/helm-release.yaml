@@ -57,6 +57,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Monitoring and observability platform
+          gethomepage.dev/group: Kubernetes
+          gethomepage.dev/icon: sh-alertmanager.svg
+          gethomepage.dev/name: Alertmanager
+          gethomepage.dev/app: alertmanager
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

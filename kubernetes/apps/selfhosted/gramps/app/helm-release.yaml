@@ -68,6 +68,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Genealogy research tool
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: sh-gramps.svg
+          gethomepage.dev/name: Gramps
+          gethomepage.dev/app: gramps
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

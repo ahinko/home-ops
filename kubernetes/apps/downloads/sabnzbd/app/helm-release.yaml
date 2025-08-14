@@ -89,6 +89,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Usenet client
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-sabnzbd.svg
+          gethomepage.dev/name: Sabnzbd
+          gethomepage.dev/app: sabnzbd
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: external
