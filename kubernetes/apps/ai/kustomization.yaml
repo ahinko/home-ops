@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: ai
 resources:
   - ./kokoro/install.yaml
+  - ./ollama/install.yaml
 components:
   - ../../components/namespace
   - ../../components/repos/app-template

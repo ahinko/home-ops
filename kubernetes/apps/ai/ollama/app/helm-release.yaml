@@ -1,0 +1,129 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ollama
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      ollama:
+        pod:
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu-product: "arc"
+
+        containers:
+          app:
+            image:
+              repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              tag: 2.3.0-SNAPSHOT
+
+            command:
+              - sh
+              - -c
+              - >-
+                mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+
+            env:
+              OLLAMA_MODELS: &modelPath /models
+              OLLAMA_HOST: "0.0.0.0"
+              no_proxy: "localhost,127.0.0.1"
+              DEVICE: "Arc"
+              OLLAMA_INTEL_GPU: "true"
+              OLLAMA_NUM_GPU: "999"
+              ZES_ENABLE_SYSMAN: "1"
+
+            resources:
+              requests:
+                cpu: "2"
+                memory: "8Gi"
+                gpu.intel.com/i915: 1
+              limits:
+                cpu: "8"
+                memory: "16Gi"
+                gpu.intel.com/i915: 1
+            securityContext:
+              privileged: false
+              capabilities:
+                add:
+                  - SYS_ADMIN
+
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 11434
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 11434
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              startup: *probe
+
+    service:
+      app:
+        ports:
+          http:
+            port: &port 11434
+
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
+    persistence:
+      models:
+        type: custom
+        volumeSpec:
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                storageClassName: "openebs-hostpath"
+                resources:
+                  requests:
+                    storage: 50Gi
+        advancedMounts:
+          ollama:
+            app:
+              - path: /root/.ollama
+                subPath: .ollama
+              - path: *modelPath
+                subPath: models
+
+      dev:
+        type: hostPath
+        hostPath: /dev/dri
+        globalMounts:
+          - readOnly: true
