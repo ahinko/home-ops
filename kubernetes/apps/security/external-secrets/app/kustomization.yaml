@@ -7,5 +7,5 @@ configMapGenerator:
   - name: external-secrets-helm-values
     files:
       - values.yaml=./helm-values.yaml
-configurations:
-  - kustomizeconfig.yaml
+generatorOptions:
+  disableNameSuffixHash: true

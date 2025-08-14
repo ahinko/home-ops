@@ -8,11 +8,20 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       kokoro:
-        strategy: RollingUpdate
-
         containers:
           app:
             image:
@@ -33,6 +42,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Text to speech using LLMs
+          gethomepage.dev/group: LLM/Ai
+          gethomepage.dev/icon: sh-kokoro.svg
+          gethomepage.dev/name: Kokoro
+          gethomepage.dev/app: kokoro
         hostnames: ["tts.hemma.dev"]
         parentRefs:
           - name: internal
