@@ -19,6 +19,6 @@ spec:
     image:
       registry: quay.io
       name: giantswarm/silence-operator
-      tag: 0.16.1
+      tag: 0.18.0
     networkPolicy:
       enabled: false
