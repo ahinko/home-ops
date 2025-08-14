@@ -6,6 +6,7 @@ resources:
   - ./kokoro/install.yaml
   - ./ollama/install.yaml
   - ./sdnext/install.yaml
+  - ./searxng/install.yaml
 components:
   - ../../components/namespace
   - ../../components/repos/app-template
