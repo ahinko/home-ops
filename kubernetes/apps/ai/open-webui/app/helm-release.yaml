@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: open-webui
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      open-webui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: 0.6.22
+            env:
+              # Open-webui settings
+              ENABLE_OPENAI_API: "False"
+              ENABLE_OLLAMA_API: "True"
+              OLLAMA_BASE_URL: http://ollama:11434
+              ENABLE_RAG_WEB_SEARCH: true
+              ENABLE_SEARCH_QUERY: true
+              RAG_WEB_SEARCH_ENGINE: searxng
+              SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+              ENABLE_WEBSOCKET_SUPPORT: "true"
+              WEBSOCKET_MANAGER: "redis"
+              WEBSOCKET_REDIS_URL: "redis://dragonfly.databases.svc.cluster.local:6379/6"
+              # Auth
+              ENABLE_OAUTH_SIGNUP: "false"
+              OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
+              OAUTH_PROVIDER_NAME: "Pocket ID"
+              OPENID_PROVIDER_URL: "https://pid.hemma.dev/.well-known/openid-configuration"
+              ENABLE_OAUTH_ROLE_MANAGEMENT: "true"
+              ENABLE_OAUTH_GROUP_MANAGEMENT: "true"
+              ENABLE_OAUTH_GROUP_CREATION: "true"
+              OAUTH_ALLOWED_ROLES: "users, admins"
+              OAUTH_ADMIN_ROLES: "admins"
+              OAUTH_ROLES_CLAIM: "groups"
+              OAUTH_SCOPES: "openid email profile groups"
+              DEFAULT_USER_ROLE: "user"
+              ENABLE_LOGIN_FORM: "false"
+              OAUTH_UPDATE_PICTURE_ON_LOGIN: "true"
+              # Image Generation
+              ENABLE_IMAGE_GENERATION: True
+              IMAGE_GENERATION_ENGINE: automatic1111
+              IMAGE_GENERATION_MODEL: dreamshaper_8
+              IMAGE_SIZE: 400x400
+              IMAGE_STEPS: 8
+              AUTOMATIC1111_BASE_URL: http://sdnext:7860/
+              AUTOMATIC1111_CFG_SCALE: 2
+              AUTOMATIC1111_SAMPLER: DPM++ SDE
+              AUTOMATIC1111_SCHEDULER: Karras
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+
+    service:
+      app:
+        ports:
+          http:
+            port: &port 8080
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Interact with your AI models
+          gethomepage.dev/group: LLM/Ai
+          gethomepage.dev/icon: sh-open-webui.svg
+          gethomepage.dev/name: Open WebUI
+          gethomepage.dev/app: open-webui
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/backend/data
