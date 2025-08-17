@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/axllent/mailpit
-              tag: v1.27.4
+              tag: v1.27.5
 
             env:
               MP_SMTP_AUTH_ACCEPT_ANY: "true"
