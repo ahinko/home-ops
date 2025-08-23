@@ -32,7 +32,7 @@ spec:
                 memory: 100M
                 cpu: 30m
               limits:
-                memory: 256M
+                memory: 512M
 
             probes:
               liveness: &probes
