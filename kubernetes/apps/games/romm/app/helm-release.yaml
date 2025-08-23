@@ -111,6 +111,13 @@ spec:
             app:
               - path: /romm
 
+      config-file:
+        type: configMap
+        name: romm-config
+        globalMounts:
+          - subPath: config.yml
+            path: /romm/config/config.yml
+
       media:
         type: persistentVolumeClaim
         existingClaim: romm-games
