@@ -123,7 +123,7 @@ spec:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.18.0
+              tag: v1.18.0@sha256:a66ac20819e33193c351164fea63fe892fdfdf2fb89ae26b35e67bf14c0f7e2a
             args:
               - /bin/meilisearch
               - --experimental-dumpless-upgrade
@@ -166,6 +166,8 @@ spec:
             app:
               - path: /data
                 subPath: karakeep
+              - path: /meili_data
+                subPath: meilisearch
           meilisearch:
             app:
               - path: /meili_data
@@ -173,6 +175,13 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Read it later
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: sh-karakeep.svg
+          gethomepage.dev/name: Karakeep
+          gethomepage.dev/app: karakeep
         hostnames:
           - karakeep.hemma.dev
         parentRefs:
