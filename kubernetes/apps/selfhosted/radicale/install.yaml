@@ -23,8 +23,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_GID: "568"
-      APP_UID: "568"
       GATUS_SUBDOMAIN: radicale
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CLAIM: radicale-data

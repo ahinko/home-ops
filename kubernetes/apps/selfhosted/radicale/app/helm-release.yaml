@@ -25,19 +25,11 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          enableServiceLinks: false
-          securityContext:
-            runAsUser: ${APP_UID}
-            runAsGroup: ${APP_GID}
-            fsGroup: ${APP_GID}
-            fsGroupChangePolicy: "OnRootMismatch"
-
         containers:
           app:
             image:
-              repository: ghcr.io/ahinko/radicale
-              tag: v3.5.4@sha256:5c09e3466bc533032f6baf93e17752ec91ca8b6ee0ddcd6b3b682df355e934e9
+              repository: ghcr.io/kozea/radicale
+              tag: 3.5.5
 
             resources:
               requests:
@@ -72,7 +64,7 @@ spec:
         type: configMap
         name: radicale-config
         globalMounts:
-          - path: /config/config
+          - path: /etc/radicale/config
             subPath: config.cfg
             readOnly: true
 
