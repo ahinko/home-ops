@@ -24,11 +24,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_ACCESSMODES: ReadWriteMany
       VOLSYNC_CAPACITY: 2Gi
-      VOLSYNC_CLAIM: qbittorrent-config
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
-      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_CLAIM: qbittorrent
   prune: true
   sourceRef:
     kind: GitRepository
