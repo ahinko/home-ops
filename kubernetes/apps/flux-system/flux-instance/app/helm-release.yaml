@@ -30,7 +30,7 @@ spec:
         - notification-controller
       sync:
         kind: GitRepository
-        url: ssh://git@github.com/ahinko/homelab
+        url: ssh://git@github.com/ahinko/home-ops
         ref: refs/heads/main
         path: kubernetes/flux/cluster
         pullSecret: homelab-flux-secret
