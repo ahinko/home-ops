@@ -16,6 +16,13 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  valuesFrom:
-    - kind: ConfigMap
-      name: cert-manager-helm-values
+  values:
+    crds:
+      enabled: true
+    replicaCount: 2
+    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
+    dns01RecursiveNameserversOnly: true
+    prometheus:
+      enabled: true
+      servicemonitor:
+        enabled: true

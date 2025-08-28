@@ -13,7 +13,7 @@
     {
       customType: "regex",
       description: "Process Kubernetes versions",
-      fileMatch: ["infrastructure/talos/talconfig.yaml"],
+      fileMatch: ["kubernetes/talos/talconfig.yaml"],
       matchStrings: ["kubernetesVersion: (?<currentValue>.*)"],
       depNameTemplate: "ghcr.io/siderolabs/kubelet",
       datasourceTemplate: "docker",
@@ -22,7 +22,7 @@
       customType: "regex",
       description: "Process Talos versions",
       fileMatch: [
-        "infrastructure/talos/talconfig.yaml",
+        "kubernetes/talos/talconfig.yaml",
         ".taskfiles/talos/taskfile.yaml",
       ],
       matchStrings: [
@@ -46,8 +46,7 @@
       customType: "regex",
       description: "Process GitHub release URLs",
       fileMatch: [
-        "kubernetes/.+\\.ya?ml(?:\\.j2)?$",
-        "infrastructure/.+\\.ya?ml(?:\\.j2)?$"
+        "kubernetes/.+\\.ya?ml(?:\\.j2)?$"
       ],
       matchStrings: [
         "https:\\/\\/github.com\\/(?<depName>[\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/releases\\/download\\/v(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*",

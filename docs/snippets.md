@@ -46,7 +46,7 @@ I ran in to an issue where I had to reset the Rook-Ceph cluster due to restructu
 * Delete all CRDs that starts with ceph*
 * Wipe disks: `kubectl apply -f kubernetes/tools/rook/wipe-job.yaml`
 * Reset nodes and reboot: `talosctl reset --system-labels-to-wipe=STATE,EPHEMERAL --reboot --graceful=true -n <IP>`
-  * Apply config again: `talosctl apply-config -n <IP> -f infrastructure/talos/clusterconfig/<CONFIG FILE>.yaml --insecure`
+  * Apply config again: `talosctl apply-config -n <IP> -f kubernetes/talos/clusterconfig/<CONFIG FILE>.yaml --insecure`
 
 ## Upgrade Tube's Zigbee Gateway firmware
 

@@ -2,12 +2,11 @@
 /.github/
 /.taskfiles/
 /.vscode/
-/infrastructure/
+/ansible/
 /docs/
 /.env
 /.gitattributes
 /.gitignore
-/.pre-commit-config.yaml
 /LICENSE
 /README.md
 /Taskfile.yaml

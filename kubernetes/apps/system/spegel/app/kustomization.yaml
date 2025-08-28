@@ -4,9 +4,3 @@ kind: Kustomization
 resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
-configMapGenerator:
-  - name: spegel-helm-values
-    files:
-      - values.yaml=./values.yaml
-generatorOptions:
-  disableNameSuffixHash: true

@@ -1,0 +1,1 @@
+{{ exec "yq" (list "select(.kind == \"HelmRelease\").spec.values" (printf "../../apps/%s/%s/app/helm-release.yaml" .Release.Namespace .Release.Name)) }}

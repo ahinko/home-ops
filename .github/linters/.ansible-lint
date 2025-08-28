@@ -1,9 +1,0 @@
-# .ansible-lint
-skip_list:
-  - yaml[line-length]
-  - no-changed-when
-  - deprecated-command-syntax
-
-warn_list:
-  - command-instead-of-shell
-  - template-instead-of-copy

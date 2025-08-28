@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "infrastructure/talos/talconfig.yaml"
+      - "kubernetes/talos/talconfig.yaml"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

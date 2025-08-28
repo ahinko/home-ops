@@ -2,15 +2,16 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: 3
 
-vars:
-  KUBERNETES_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/kubernetes/resources"
-
 tasks:
-  delete-failed-succeeded-pods:
-    desc: Deletes pods with Failed and Succeeded phase
+  delete-pods:
+    desc: Cleanse pods with a Failed/Pending/Succeeded phase
     cmds:
-      - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
-      - kubectl delete pods --field-selector status.phase=Succeeded -A --ignore-not-found=true
+      - for:
+          matrix:
+            PHASE: [Failed, Pending, Succeeded]
+        cmd: kubectl delete pods --all-namespaces --field-selector status.phase={{.ITEM.PHASE}} --ignore-not-found=true
+    preconditions:
+      - which kubectl
 
   list-not-running-pods:
     desc: Lists pods that are not running
@@ -28,12 +29,13 @@ tasks:
       - kubectl node-shell --version
       - which kubectl
 
-  buoy:
-    desc: Run a buoy shell (privileged pod)
-    cmd: |
-      kubectl run buoy-{{.node}} -i --rm --image=null \
-        --overrides="$(yq {{.KUBERNETES_RESOURCES_DIR}}/buoy-pod.tmpl.yaml -o=json | envsubst)"
-    env:
-      node: "{{.node}}"
+  upgrade-arc:
+    desc: Upgrade the ARC
+    cmds:
+      - helm -n actions-runner-system uninstall arc-homelab
+      - helm -n actions-runner-system uninstall actions-runner-controller
+      - sleep 30
+      - flux -n actions-runner-system reconcile hr actions-runner-controller
+      - flux -n actions-runner-system reconcile hr arc-homelab
     preconditions:
-      - test -f {{.KUBERNETES_RESOURCES_DIR}}/buoy-pod.tmpl.yaml
+      - which flux helm

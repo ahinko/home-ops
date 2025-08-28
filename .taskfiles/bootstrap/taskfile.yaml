@@ -2,12 +2,48 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  CONTEXT:
+    sh: talosctl config info --output json | jq --raw-output '.context'
+  CONTROLLER:
+    sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+
 tasks:
-  cluster:
-    desc: Bootstrap Talos and K8s cluster
+  talos:
+    desc: Bootstrap Talos
+    preconditions:
+      - talosctl config info
+      - talosctl --nodes {{.CONTROLLER}} get machineconfig
+      - which jq talosctl
     cmds:
-      - task: :tools:brew
-      - task: :tools:krew
-      - task: :talos:bootstrap
-      - task: :rook:wipe
-      - task: :flux:bootstrap
+      - until talosctl --nodes {{.CONTROLLER}} bootstrap; do sleep 5; done
+      - task: kubeconfig
+
+  kubeconfig:
+    desc: Generate kubeconfig
+    cmds:
+      - talosctl kubeconfig --nodes {{.CONTROLLER}} --force --force-context-name {{.CONTEXT}} {{.KUBECONFIG}}
+      - kubectl config set-cluster {{.CONTEXT}} --server https://{{.CONTROLLER}}:6443
+    vars:
+      CONTROLLER:
+        sh: talosctl config info --output yaml | yq --exit-status '.endpoints[0]'
+    preconditions:
+      - talosctl --nodes {{.CONTROLLER}} get machineconfig
+      - which talosctl yq
+
+  apps:
+    desc: Bootstrap Kubernetes Apps
+    preconditions:
+      - which helmfile yq jq kubectl op talosctl
+      - test -f {{.K8S_DIR}}/bootstrap/helmfile.d/00-crds.yaml
+      - test -f {{.K8S_DIR}}/bootstrap/helmfile.d/01-apps.yaml
+      - test -f {{.K8S_DIR}}/bootstrap/resources.yaml.j2
+      - op user get --me
+      - talosctl config info
+      - talosctl --nodes {{.CONTROLLER}} get machineconfig
+    cmds:
+      - task: kubeconfig
+      - op run --env-file {{.K8S_DIR}}/bootstrap/resources.env --no-masking --
+        minijinja-cli {{.K8S_DIR}}/bootstrap/resources.yaml.j2 | kubectl apply --server-side --filename -
+      - helmfile --quiet --file {{.K8S_DIR}}/bootstrap/helmfile.d/00-crds.yaml template | kubectl apply --server-side --filename -
+      - helmfile --file {{.K8S_DIR}}/bootstrap/helmfile.d/01-apps.yaml sync --hide-notes

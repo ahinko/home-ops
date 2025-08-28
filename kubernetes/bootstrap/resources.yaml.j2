@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: onepassword-connect-secret
+  namespace: dev #security
+stringData:
+  1password-credentials.json: { { ENV.ONEPASSWORD_CONNECT_CREDENTIALS } }
+  token: { { ENV.ONEPASSWORD_CONNECT_TOKEN } }
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: homelab-flux-secret
+  namespace: dev #flux-system
+stringData:
+  identity.pub: { { ENV.FLUX_IDENTITY_PUB } }
+  known_hosts: { { ENV.FLUX_KNOWN_HOSTS } }
+  identity: |
+    {{ ENV.FLUX_GITHUB_DEPLOY_KEY | indent(4) }}

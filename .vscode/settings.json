@@ -1,17 +1,18 @@
 {
   "files.associations": {
     "*.json5": "json5",
-    "**/infrastructure/ansible/**/*.yaml": "ansible",
-    "**/infrastructure/**/inventory/**/*.yaml": "yaml",
+    "**/ansible/**/*.yaml": "ansible",
+    "**/**/inventory/**/*.yaml": "yaml",
   },
   "material-icon-theme.folders.associations": {
-    // top level
+    "*.gotmpl": "smarty",
     ".github/workflows": "ci",
     ".private": "archive",
     ".renovate": "robot",
     "bootstrap": "seeders",
     "flux": "pipe",
     "talos": "linux",
+    "bootstrap/helmfile.d": "helm",
     // namespaces
     "actions-runner-system": "github",
     "cert-manager": "guard",

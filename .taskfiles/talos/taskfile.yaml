@@ -3,56 +3,10 @@
 version: "3"
 
 vars:
-  TALOS_CONTROLLER:
+  CONTROLLER:
     sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
 
 tasks:
-  generate:
-    desc: Generate Talos machine configurations
-    dir: "{{.TALOS_DIR}}"
-    env:
-      VAULT: "Homelab"
-    cmds:
-      - op run --env-file="./op.env" -- talhelper genconfig
-    sources:
-      - talconfig.yaml
-      - talsecret.yaml
-    generates:
-      - clusterconfig/*.yaml
-      - clusterconfig/talosconfig
-
-  apply-config:
-    desc: Apply Talos config on a node
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - task: generate
-      - task: wait_for_health
-        vars: { TIMEOUT: 30s }
-      - talhelper gencommand apply -n {{.node}} | bash
-    requires:
-      vars: ["node"]
-
-  upgrade-talos:
-    desc: Upgrade Talos on a node
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - task: generate
-      - task: wait_for_health
-        vars: { TIMEOUT: 30s }
-      - talhelper gencommand upgrade -n {{.node}} --extra-flags=--stage | bash
-    requires:
-      vars: ["node"]
-
-  upgrade-k8s:
-    desc: Upgrade Kubernetes
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - task: generate
-      - task: wait_for_health
-        vars: { TIMEOUT: 30s }
-      - talosctl -n {{.TALOS_CONTROLLER}} etcd snapshot etcd.backup
-      - talhelper gencommand upgrade-k8s | bash
-
   wait_for_health:
     internal: True
     desc: Wait for services in cluster to be healthy
@@ -62,60 +16,72 @@ tasks:
       # Ensure CloudNative-PG cluster has 3 ready instances
       - kubectl -n databases wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres17
 
-  bootstrap:
-    desc: Bootstrap Talos
-
-    cmds:
-      - task: :talos:generate
-      - task: :talos:bootstrap-apply-config
-      - task: :talos:bootstrap-etcd
-      - task: :talos:kubeconfig
-      - task: :talos:bootstrap-core-apps
-
-  bootstrap-apply-config:
-    desc: Apply Talos config on all nodes
-    dir: "{{.TALOS_DIR}}"
-    cmds:
-      - talhelper gencommand apply --extra-flags=--insecure | bash
-
-  bootstrap-etcd:
-    desc: Bootstrap etcd
-    cmds:
-      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 10; done
-
   talosconfig:
     desc: Get an updated version of talosconfig
     cmds:
-      - cp infrastructure/talos/clusterconfig/talosconfig ~/.talos/config
+      - cp {{ .TALOS_DIR }}/clusterconfig/talosconfig {{ .TALOSCONFIG }}
 
-  kubeconfig:
-    desc: Get an updated version of kubeconfig with updated/rotated certificates
+  generate:
+    desc: Generate Talos machine configurations
+    dir: "{{.TALOS_DIR}}"
     cmds:
-      - talosctl kubeconfig ~/.kube/configs/mainframe -n {{.TALOS_CONTROLLER}}
-      - kubectl config rename-context admin@mainframe mainframe
+      - op run --env-file="./talsecret.env" -- talhelper genconfig
+    sources:
+      - talconfig.yaml
+      - talsecret.yaml
+    generates:
+      - clusterconfig/*.yaml
+      - clusterconfig/talosconfig
 
-  bootstrap-core-apps:
-    desc: Bootstrap core helm apps
+  apply:
+    desc: Apply Talos config on a node, NODE=required
+    requires:
+      vars:
+        - NODE
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - task: generate
+      - task: wait_for_health
+        vars: { TIMEOUT: 30s }
+      - talhelper gencommand apply -n {{.NODE}} | bash
+
+  upgrade:
+    desc: Upgrade Talos on a node, NODE=required
+    requires:
+      vars:
+        - NODE
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - task: generate
+      - task: wait_for_health
+        vars: { TIMEOUT: 30s }
+      - talhelper gencommand upgrade -n {{.NODE}} --extra-flags=--stage | bash
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
+      - which talosctl yq
+
+  upgrade:k8s:
+    desc: Upgrade Kubernetes
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+      - task: generate
+      - task: wait_for_health
+        vars: { TIMEOUT: 30s }
+      - talosctl -n {{.CONTROLLER}} etcd snapshot etcd.backup
+      - talhelper gencommand upgrade-k8s | bash
+
+  write-to-usb:
+    desc: Write Talos image to USB drive, use configuration to determine architecture and schematic, NODE=required
+    dir: "{{.TALOS_DIR}}"
+    requires:
+      vars:
+        - NODE
     vars:
-      BOOTSTRAP_TEMPLATES:
-        sh: ls {{.CLUSTER_DIR}}/bootstrap/secrets/*.j2
-    env:
-      VAULT: "Homelab"
+      IMAGE_URL:
+        sh: talhelper genurl image -n {{.NODE}} -c {{.TALOS_DIR}}/talconfig.yaml
     cmds:
-      - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - for: { var: BOOTSTRAP_TEMPLATES }
-        cmd: >
-          op run --env-file {{.CLUSTER_DIR}}/bootstrap/op.env --no-masking --
-          minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none {{.ITEM}}
-          | kubectl apply --server-side --filename -
-      - helmfile --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
-
-  write-talos-amd64-to-usb:
-    desc: Write Talos image to USB drive to be used with amd64 machines
-    silent: true
-    cmds:
-      - "curl -LOC - https://factory.talos.dev/image/07fc545562cc6c5d76cf282c30a95d10b86286cd345bac2fa963c786397475cd/v1.10.7/metal-amd64.raw.xz && xz -d metal-amd64.raw.xz"
+      - echo "Downloading image from {{.IMAGE_URL}}"
+      - curl -L -o {{.ROOT_DIR}}/talos-{{.NODE}}.raw.xz {{.IMAGE_URL}} && xz -d {{.ROOT_DIR}}/talos-{{.NODE}}.raw.xz
       - "diskutil list"
       - |
         echo "Path to USB drive:"
@@ -123,20 +89,5 @@ tasks:
         diskutil unmount ${path} || true
         diskutil unmountDisk ${path} || true
         echo "Writing image to: ${path}";
-        sudo dd if=metal-amd64.raw of=${path} bs=4m && sync
-      - "rm metal-amd64.raw"
-
-  write-talos-arm64-to-usb:
-    desc: Write Talos image to USB drive to be used with Raspberry Pi 4
-    silent: true
-    cmds:
-      - "curl -LO https://factory.talos.dev/image/7688f6b5647f1a548661fc91e8bec62277dc0e3028bbace8547a21998563b4b0/v1.10.7/metal-arm64.raw.xz && xz -d metal-arm64.raw.xz"
-      - "diskutil list"
-      - |
-        echo "Path to USB drive:"
-        read path;
-        diskutil unmount ${path} || true
-        diskutil unmountDisk ${path} || true
-        echo "Writing image to: ${path}";
-        sudo dd if=metal-arm64.raw of=${path} conv=fsync bs=4M
-      - "rm metal-arm64.raw"
+        sudo dd if={{.ROOT_DIR}}/talos-{{.NODE}}.raw of=${path} conv=fsync bs=4M
+      - "rm {{.ROOT_DIR}}/talos-{{.NODE}}.raw"

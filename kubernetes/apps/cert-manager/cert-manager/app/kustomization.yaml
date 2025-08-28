@@ -5,9 +5,3 @@ resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
   - ./prometheus-rules.yaml
-configMapGenerator:
-  - name: cert-manager-helm-values
-    files:
-      - values.yaml=./helm-values.yaml
-generatorOptions:
-  disableNameSuffixHash: true

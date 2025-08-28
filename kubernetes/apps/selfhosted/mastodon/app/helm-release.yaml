@@ -180,7 +180,7 @@ spec:
     persistence:
       data:
         type: persistentVolumeClaim
-        existingClaim: mastodon
+        existingClaim: mastodon-data
         advancedMounts:
           sidekiq:
             main:

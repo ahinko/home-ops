@@ -1,7 +1,7 @@
 ---
 area/ansible:
   - changed-files:
-      - any-glob-to-any-file: "infrastructure/ansible/**/*"
+      - any-glob-to-any-file: "ansible/**/*"
 area/ci:
   - changed-files:
       - any-glob-to-any-file: ".github/**/*"
@@ -14,6 +14,3 @@ area/docker:
 area/kubernetes:
   - changed-files:
       - any-glob-to-any-file: "kubernetes/**/*"
-area/terraform:
-  - changed-files:
-      - any-glob-to-any-file: "infrastructure/terraform/**/*"
