@@ -57,7 +57,7 @@ spec:
               ENABLE_LOGIN_FORM: "false"
               OAUTH_UPDATE_PICTURE_ON_LOGIN: "true"
               # Image Generation
-              ENABLE_IMAGE_GENERATION: True
+              ENABLE_IMAGE_GENERATION: false
               IMAGE_GENERATION_ENGINE: automatic1111
               IMAGE_GENERATION_MODEL: dreamshaper_8
               IMAGE_SIZE: 400x400

@@ -6,7 +6,6 @@ resources:
   - ./kokoro/install.yaml
   - ./ollama/install.yaml
   - ./open-webui/install.yaml
-  - ./sdnext/install.yaml
   - ./searxng/install.yaml
 components:
   - ../../components/namespace
