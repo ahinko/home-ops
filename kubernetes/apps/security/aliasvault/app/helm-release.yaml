@@ -168,6 +168,13 @@ spec:
 
     route:
       client:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Password and alias manager
+          gethomepage.dev/group: Security
+          gethomepage.dev/icon: sh-aliasvault.svg
+          gethomepage.dev/name: AliasVault
+          gethomepage.dev/app: aliasvault
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal
