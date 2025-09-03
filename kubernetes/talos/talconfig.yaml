@@ -382,6 +382,9 @@ controlPlane:
     - &kubeletPatch |-
       machine:
         kubelet:
+          extraArgs:
+            image-gc-high-threshold: 70
+            image-gc-low-threshold: 65
           extraConfig:
             maxParallelImagePulls: 10
             maxPods: 200
