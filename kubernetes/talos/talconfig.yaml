@@ -37,18 +37,18 @@ nodes:
       overlay:
         image: siderolabs/sbc-raspberrypi
         name: rpi_generic
-      # customization:
-      #   extraKernelArgs:
-      #     - -selinux                            # Less security, faster puter
-      #     - -init_on_alloc                      # Less security, faster puter
-      #     - -init_on_free                       # Less security, faster puter
-      #     - apparmor=0                          # Less security, faster puter
-      #     - init_on_alloc=0                     # Less security, faster puter
-      #     - init_on_free=0                      # Less security, faster puter
-      #     - mitigations=off                     # Less security, faster puter
-      #     - security=none                       # Less security, faster puter
-      #     - talos.auditd.disabled=1             # Less security, faster puter
-      #     - net.ifnames=1                       # Enable predictable NIC naming
+      customization:
+        extraKernelArgs:
+          - -selinux # Less security, faster puter
+          - -init_on_alloc # Less security, faster puter
+          - -init_on_free # Less security, faster puter
+          - apparmor=0 # Less security, faster puter
+          - init_on_alloc=0 # Less security, faster puter
+          - init_on_free=0 # Less security, faster puter
+          - mitigations=off # Less security, faster puter
+          - security=none # Less security, faster puter
+          - talos.auditd.disabled=1 # Less security, faster puter
+          - net.ifnames=1 # Enable predictable NIC naming
 
   - hostname: cp02
     ipAddress: 192.168.20.32
@@ -320,8 +320,8 @@ controlPlane:
       cluster:
         apiServer:
           extraArgs:
-            runtime-config: admissionregistration.k8s.io/v1alpha1=true
-            feature-gates: MutatingAdmissionPolicy=true
+            enable-aggregator-routing: "true"
+            runtime-config: admissionregistration.k8s.io/v1beta1=true
 
     # Cluster configuration
     - |-
