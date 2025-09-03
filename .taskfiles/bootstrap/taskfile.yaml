@@ -45,5 +45,5 @@ tasks:
       - task: kubeconfig
       - op run --env-file {{.K8S_DIR}}/bootstrap/resources.env --no-masking --
         minijinja-cli {{.K8S_DIR}}/bootstrap/resources.yaml.j2 | kubectl apply --server-side --filename -
-      - helmfile --quiet --file {{.K8S_DIR}}/bootstrap/helmfile.d/00-crds.yaml template | kubectl apply --server-side --filename -
+      - helmfile --quiet --file {{.K8S_DIR}}/bootstrap/helmfile.d/00-crds.yaml template | kubectl apply --server-side --filename - --validate=false
       - helmfile --file {{.K8S_DIR}}/bootstrap/helmfile.d/01-apps.yaml sync --hide-notes
