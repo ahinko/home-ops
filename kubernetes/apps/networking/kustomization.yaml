@@ -8,5 +8,4 @@ resources:
   - ./mailpit/install.yaml
 components:
   - ../../components/namespace
-  - ../../components/repos/app-template
   - ../../components/alerts

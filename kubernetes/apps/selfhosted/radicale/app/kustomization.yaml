@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
+  - ./oci-repository.yaml
 commonLabels:
   app.kubernetes.io/name: radicale
   app.kubernetes.io/instance: radicale

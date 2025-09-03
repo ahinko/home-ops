@@ -12,4 +12,5 @@ resources:
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ./ml-pvc.yaml
+  - ./oci-repository.yaml
   - ./pvc.yaml
