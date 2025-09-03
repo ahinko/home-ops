@@ -5,4 +5,3 @@ resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
   - ./ceph-object-store-user-pg.yaml
-  - ./httproute.yaml
