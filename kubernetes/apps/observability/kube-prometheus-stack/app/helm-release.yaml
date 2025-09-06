@@ -18,9 +18,6 @@ spec:
       enabled: false
     cleanPrometheusOperatorObjectNames: true
 
-    ###
-    ### Component values
-    ###
     alertmanager:
       enabled: false
 
@@ -72,11 +69,6 @@ spec:
 
     grafana:
       enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          annotations:
-            grafana_folder: Kubernetes
 
     ###
     ### Prometheus operator values
