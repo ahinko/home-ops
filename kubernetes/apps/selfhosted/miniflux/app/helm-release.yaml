@@ -101,5 +101,5 @@ spec:
         hostnames: ["rss.hemma.dev"]
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: networking
             sectionName: https

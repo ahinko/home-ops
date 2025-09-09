@@ -52,15 +52,9 @@ spec:
     endpointRoutes:
       enabled: true
     envoy:
-      enabled: true
-      rollOutPods: true
-      prometheus:
-        serviceMonitor:
-          enabled: true
+      enabled: false
     gatewayAPI:
-      enableAlpn: true
-      enabled: true
-      xffNumTrustedHops: 1
+      enabled: false
     hubble:
       enabled: false
     ipam:

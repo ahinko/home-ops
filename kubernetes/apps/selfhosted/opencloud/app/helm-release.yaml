@@ -83,7 +83,7 @@ spec:
         hostnames: ["files.hemma.dev"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
 
     persistence:

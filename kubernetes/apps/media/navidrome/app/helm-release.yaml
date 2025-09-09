@@ -89,7 +89,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
 
     persistence:

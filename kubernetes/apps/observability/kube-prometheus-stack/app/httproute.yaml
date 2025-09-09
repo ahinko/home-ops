@@ -7,7 +7,7 @@ spec:
   hostnames: ["prometheus.hemma.dev"]
   parentRefs:
     - name: internal
-      namespace: kube-system
+      namespace: networking
       sectionName: https
   rules:
     - backendRefs:

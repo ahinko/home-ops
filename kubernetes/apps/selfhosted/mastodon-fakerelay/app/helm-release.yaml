@@ -59,7 +59,7 @@ spec:
         hostnames: ["fakerelay.selfy.social"]
         parentRefs:
           - name: social
-            namespace: kube-system
+            namespace: networking
             sectionName: https
 
     persistence:

@@ -125,7 +125,7 @@ spec:
         hostnames: ["hass.hemma.dev"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:
