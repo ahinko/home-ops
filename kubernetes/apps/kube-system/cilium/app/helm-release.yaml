@@ -4,28 +4,19 @@ kind: HelmRelease
 metadata:
   name: &app cilium
 spec:
+  chartRef:
+    kind: OCIRepository
+    name: cilium
   interval: 1h
-  chart:
-    spec:
-      chart: *app
-      version: 1.18.1
-      sourceRef:
-        kind: HelmRepository
-        name: cilium-charts
-        namespace: flux-system
-      interval: 1h
-  timeout: 15m
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
+  timeout: 15m
   values:
     autoDirectNodeRoutes: true
     bandwidthManager:
