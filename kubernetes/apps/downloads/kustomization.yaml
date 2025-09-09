@@ -12,6 +12,7 @@ resources:
   - ./sabnzbd/install.yaml
   - ./slskd/install.yaml
   - ./sonarr/install.yaml
+  - ./qui/install.yaml
 components:
   - ../../components/namespace
   - ../../components/alerts
