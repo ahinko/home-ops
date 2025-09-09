@@ -5,22 +5,9 @@ metadata:
   name: &app external-dns-unifi
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: external-dns
-      version: 1.19.0
-      sourceRef:
-        kind: HelmRepository
-        name: external-dns-charts
-        namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  chartRef:
+    kind: OCIRepository
+    name: external-dns
   values:
     fullnameOverride: *app
     podAnnotations:
