@@ -9,7 +9,6 @@ resources:
   - ./grafana-charts.yaml
   - ./influxdata-charts.yaml
   - ./intel-charts.yaml
-  - ./jameswynn-charts.yaml
   - ./k8tz-charts.yaml
   - ./kubernetes-sigs-descheduler-charts.yaml
   - ./kubernetes-sigs-metrics-server-charts.yaml
