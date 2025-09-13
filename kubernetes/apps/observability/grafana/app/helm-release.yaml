@@ -355,7 +355,7 @@ spec:
     downloadDashboardsImage:
       registry: ghcr.io
       repository: ahinko/curl
-      tag: 8.15.0
+      tag: 8.16.0
 
     persistence:
       enabled: false
