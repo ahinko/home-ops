@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
-              tag: 11.2.1
+              tag: 11.3.0
 
             resources:
               requests:
