@@ -25,7 +25,7 @@ spec:
           main:
             image:
               repository: ghcr.io/aliasvault/client
-              tag: 0.23.1
+              tag: 0.23.2
 
             env: &envs
               POSTGRES_HOST:
@@ -63,7 +63,7 @@ spec:
           main:
             image:
               repository: ghcr.io/aliasvault/api
-              tag: 0.23.1
+              tag: 0.23.2
 
             env: *envs
 
@@ -89,7 +89,7 @@ spec:
           main:
             image:
               repository: ghcr.io/aliasvault/admin
-              tag: 0.23.1
+              tag: 0.23.2
 
             env: *envs
 
@@ -105,7 +105,7 @@ spec:
           main:
             image:
               repository: ghcr.io/aliasvault/smtp
-              tag: 0.23.1
+              tag: 0.23.2
 
             env: *envs
 
@@ -121,7 +121,7 @@ spec:
           main:
             image:
               repository: ghcr.io/aliasvault/task-runner
-              tag: 0.23.1
+              tag: 0.23.2
 
             env: *envs
 
