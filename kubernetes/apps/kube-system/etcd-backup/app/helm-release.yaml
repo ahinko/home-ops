@@ -81,7 +81,7 @@ spec:
           restic:
             image:
               repository: restic/restic
-              tag: 0.18.0
+              tag: 0.18.1
             args:
               - forget
               - --keep-last=7 # change me - set retention policy
