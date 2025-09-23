@@ -45,7 +45,7 @@ spec:
           restic:
             image:
               repository: ghcr.io/ahinko/restic
-              tag: 0.18.0
+              tag: 0.18.1
             workingDir: /data
             args:
               - backup
