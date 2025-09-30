@@ -32,21 +32,24 @@ spec:
             - name: RemoveFailedPods
               args:
                 reasons:
-                  - "NodeAffinity"
-                  - "Terminated"
+                  - ContainerStatusUnknown
+                  - NodeAffinity
+                  - NodeShutdown
+                  - Terminated
+                  - UnexpectedAdmissionError
                 includingInitContainers: true
                 excludeOwnerKinds:
-                  - "Job"
-                minPodLifetimeSeconds: 3600
+                  - Job
+                minPodLifetimeSeconds: 1800
             - name: RemovePodsHavingTooManyRestarts
               args:
-                podRestartThreshold: 100
+                podRestartThreshold: 10
                 includingInitContainers: true
             - name: RemovePodsViolatingNodeAffinity
               args:
                 nodeAffinityType:
                   - requiredDuringSchedulingIgnoredDuringExecution
-            #- name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingNodeTaints
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingTopologySpreadConstraint
           plugins:
@@ -57,7 +60,7 @@ spec:
               enabled:
                 - RemoveFailedPods
                 - RemovePodsHavingTooManyRestarts
-                #- RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeTaints
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingInterPodAntiAffinity
     service:
