@@ -63,6 +63,15 @@ spec:
             subPath: known_hosts
             readOnly: false
 
+      sshconfig:
+        type: secret
+        name: znapzend-ssh-config-secret
+        defaultMode: 384
+        globalMounts:
+          - path: /root/.ssh/config
+            subPath: ssh_config
+            readOnly: false
+
     service:
       app:
         enabled: false
