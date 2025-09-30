@@ -3,6 +3,8 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: docmost-db
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   database: docmost
 ---
@@ -10,6 +12,8 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: docmost-user
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   role: docmost
   database: docmost-db

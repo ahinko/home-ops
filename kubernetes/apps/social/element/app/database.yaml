@@ -3,6 +3,8 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: synapse-db
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   database: synapse
 ---
@@ -10,6 +12,8 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: synapse-user
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   role: synapse
   database: synapse-db

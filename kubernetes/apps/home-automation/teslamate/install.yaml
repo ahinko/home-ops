@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   dependsOn:
-    - name: postgres-cluster
+    - name: postgres18
       namespace: databases
     - name: vernemq
       namespace: databases

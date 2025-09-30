@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: dragonfly-cluster
       namespace: databases
-    - name: postgres-cluster
+    - name: postgres18
       namespace: databases
   interval: 1h
   path: "./kubernetes/apps/selfhosted/docmost/app"

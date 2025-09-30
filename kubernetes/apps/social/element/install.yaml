@@ -9,7 +9,6 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-  #  - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -18,6 +17,8 @@ spec:
       namespace: storage
     - name: onepassword-store
       namespace: security
+    - name: postgres18
+      namespace: databases
   interval: 1h
   path: "./kubernetes/apps/social/element/app"
   postBuild:

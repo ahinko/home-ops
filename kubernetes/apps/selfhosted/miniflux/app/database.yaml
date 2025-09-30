@@ -3,6 +3,8 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: miniflux-db
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   database: miniflux
 ---
@@ -10,6 +12,8 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: miniflux-user
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   role: miniflux
   database: miniflux-db

@@ -15,7 +15,7 @@ spec:
       namespace: storage
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: postgres-cluster
+    - name: postgres18
       namespace: databases
     - name: onepassword-store
       namespace: security

@@ -25,7 +25,7 @@ spec:
               tag: 17.6.6
             env:
               - name: POSTGRES_DB
-                value: "aliasvault,miniflux,kitchenowl,teslamate,mastodon,homeassistant,romm,docmost,immich"
+                value: "immich"
               - name: POSTGRES_HOST
                 value: "postgres17-rw.databases"
               - name: POSTGRES_EXTRA_OPTS
@@ -120,30 +120,6 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *app
-
-      purne:
-        type: cronjob
-        cronjob:
-          schedule: "32 5 1 * *" # change me - 1st of month at 05:32
-          successfulJobsHistory: 1
-          failedJobsHistory: 1
-
-        containers:
-          restic:
-            image:
-              repository: restic/restic
-              tag: 0.18.1
-            args:
-              - forget
-              - --keep-last=7 # change me - set retention policy
-              - --keep-weekly=4 # see: https://restic.readthedocs.io/en/latest/060_forget.html
-              - --prune
-            envFrom:
-              - secretRef:
-                  name: postgres17-backup-secret
-            env:
-              - name: RESTIC_REPOSITORY
-                value: rest:https://restic.hemma.dev/postgres
 
     persistence:
       backupdata:
