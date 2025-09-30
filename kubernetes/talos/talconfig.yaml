@@ -26,8 +26,6 @@ nodes:
         addresses:
           - 192.168.20.31/24
         dhcp: true
-        vip:
-          ip: *clusterEndpointIp
     machineSpec: &rpi-spec
       mode: metal
       arch: arm64
@@ -60,8 +58,6 @@ nodes:
         addresses:
           - 192.168.20.32/24
         dhcp: true
-        vip:
-          ip: *clusterEndpointIp
     machineSpec: *rpi-spec
     schematic: *rpi-schematic
 
@@ -75,8 +71,6 @@ nodes:
         addresses:
           - 192.168.20.38/24
         dhcp: true
-        vip:
-          ip: *clusterEndpointIp
     machineSpec: *rpi-spec
     schematic: *rpi-schematic
 
