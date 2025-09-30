@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: media
 resources:
   - ./media-pvc.yaml
-  #- ./jellyfin/install.yaml
+  - ./jellyfin/install.yaml
   - ./maloja/install.yaml
   - ./multiscrobbler/install.yaml
   - ./navidrome/install.yaml
