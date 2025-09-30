@@ -1,0 +1,22 @@
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: postgres18-local-ceph
+spec:
+  configuration:
+    data:
+      compression: bzip2
+    destinationPath: s3://postgres18/
+    endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+    s3Credentials:
+      accessKeyId:
+        name: postgres18-obc
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: postgres18-obc
+        key: AWS_SECRET_ACCESS_KEY
+    wal:
+      compression: bzip2
+      maxParallel: 2
+  retentionPolicy: 30d

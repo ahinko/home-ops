@@ -1,0 +1,75 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres18-recovery
+spec:
+  template:
+    spec:
+      containers:
+        - name: rclone
+          image: docker.io/rclone/rclone:1.71.1@sha256:d5971950c2b370fb04dd3292541b5bda6d9103143fd7e345aeb435a399388afc
+          imagePullPolicy: IfNotPresent
+          workingDir: /data
+          args:
+            - sync
+            - "cloudflare:postgres18"
+            - "ceph:postgres18"
+          env:
+            - name: RCLONE_VERBOSE
+              value: "1"
+            - name: RCLONE_CONFIG_CLOUDFLARE_TYPE
+              value: "s3"
+            - name: RCLONE_CONFIG_CLOUDFLARE_PROVIDER
+              value: "Cloudflare"
+            - name: RCLONE_CONFIG_CLOUDFLARE_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: postgres18-backup
+                  key: ACCESS_KEY_ID
+            - name: RCLONE_CONFIG_CLOUDFLARE_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres18-backup
+                  key: SECRET_ACCESS_KEY
+            - name: RCLONE_CONFIG_CLOUDFLARE_REGION
+              value: "auto"
+            - name: RCLONE_CONFIG_CLOUDFLARE_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres18-backup
+                  key: ENDPOINT
+            - name: RCLONE_CONFIG_CLOUDFLARE_ACL
+              value: "private"
+            - name: RCLONE_CONFIG_CLOUDFLARE_NO_CHECK_BUCKET
+              value: "true"
+            - name: RCLONE_CONFIG_CEPH_TYPE
+              value: "s3"
+            - name: RCLONE_CONFIG_CEPH_PROVIDER
+              value: "Ceph"
+            - name: RCLONE_CONFIG_CEPH_ENV_AUTH
+              value: "false"
+            - name: RCLONE_CONFIG_CEPH_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: postgres18-obc
+                  key: AWS_ACCESS_KEY_ID
+            - name: RCLONE_CONFIG_CEPH_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: postgres18-obc
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: RCLONE_CONFIG_CEPH_ENDPOINT
+              value: "http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
+            readOnlyRootFilesystem: true
+            seccompProfile: { type: RuntimeDefault }
+      restartPolicy: OnFailure
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000

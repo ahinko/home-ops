@@ -1,0 +1,152 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app postgres18-backup-rest
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    controllers:
+      postgres18-backup-rest:
+        type: cronjob
+        cronjob:
+          schedule: "0 4 * * *"
+          parallelism: 1
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+
+        initContainers:
+          postgres:
+            image:
+              repository: ghcr.io/ahinko/postgres18
+              tag: 18.0.1
+            env:
+              - name: POSTGRES_DB
+                value: "aliasvault,docmost,miniflux,teslamate,synapse,mastodon,homeassistant"
+              - name: POSTGRES_HOST
+                value: "postgres18-rw.databases"
+              - name: POSTGRES_EXTRA_OPTS
+                value: "-b -C -c --inserts"
+              - name: COMPRESS
+                value: "true"
+              - name: VERIFY_COMPRESSION
+                value: "true"
+            envFrom:
+              - secretRef:
+                  name: postgres18-backup-secret
+            workingDir: /data
+            command:
+              - /bin/bash
+              - -ec
+              - |
+                set -o nounset
+                set -o errexit
+
+                POSTGRES_PORT=${POSTGRES_PORT:-5432}
+                POSTGRES_EXTRA_OPTS=${POSTGRES_EXTRA_OPTS:-""}
+                COMPRESS=${COMPRESS:-false}
+                VERIFY_COMPRESSION=${VERIFY_COMPRESSION:-false}
+
+                POSTGRES_DBS=$(echo "${POSTGRES_DB}" | tr , " ")
+
+                export PGUSER="${POSTGRES_USER}"
+                export PGPASSWORD="${POSTGRES_PASSWORD}"
+                export PGHOST="${POSTGRES_HOST}"
+                export PGPORT="${POSTGRES_PORT}"
+
+                for DB in ${POSTGRES_DBS}; do
+                  BACKUP_FILENAME=${DB}-$(date +%Y%m%d_%H%M%S)
+                  BACKUP_PATH=${BACKUP_FILENAME}.sql
+
+                  echo "Backup $DB"
+
+                  # Dump database
+                  pg_dump -d ${DB} ${POSTGRES_EXTRA_OPTS} > ${BACKUP_PATH}
+
+                  # Check for errors
+                  if [ $? != 0 ] ; then
+                      echo "Failed to backup $DB"
+                      exit 1;
+                  fi
+
+                  if [ ${COMPRESS} == true ]; then
+                      gzip -9 ${BACKUP_PATH}
+
+                      # Change file extension since we have compressed it
+                      BACKUP_PATH=${BACKUP_PATH}.gz
+                  fi
+
+                  # Verify compression
+                  if [[ ${COMPRESS} == true && ${VERIFY_COMPRESSION} == true ]]; then
+                    gunzip -c ${BACKUP_PATH} > ${BACKUP_FILENAME}.sql
+
+                    if [ $? != 0 ] ; then
+                      echo "Failed to decompress backup"
+                      exit 1;
+                    fi
+
+                    rm ${BACKUP_FILENAME}.sql
+                  fi
+                done
+
+        containers:
+          restic:
+            image:
+              repository: ghcr.io/ahinko/restic
+              tag: 0.18.1
+            workingDir: /data
+            args:
+              - backup
+              - --host
+              - kubernetes # set a consistent hostname to avoid restic rescans
+              - . # use workingDir to get relative paths in backup
+            envFrom:
+              - secretRef:
+                  name: postgres18-backup-secret
+            env:
+              - name: RESTIC_REPOSITORY
+                value: rest:https://restic.hemma.dev/postgres
+
+        pod:
+          hostNetwork: true
+          hostPID: true
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+
+      prune:
+        type: cronjob
+        cronjob:
+          schedule: "32 6 */7 * *"
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+
+        containers:
+          restic:
+            image:
+              repository: ghcr.io/ahinko/restic
+              tag: 0.18.1
+            args:
+              - forget
+              - --keep-last=7 # change me - set retention policy
+              - --keep-weekly=4 # see: https://restic.readthedocs.io/en/latest/060_forget.html
+              - --prune
+            envFrom:
+              - secretRef:
+                  name: postgres18-backup-secret
+            env:
+              - name: RESTIC_REPOSITORY
+                value: rest:https://restic.hemma.dev/postgres
+
+    persistence:
+      backupdata:
+        type: emptyDir
+        globalMounts:
+          - path: /data

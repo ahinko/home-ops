@@ -1,0 +1,10 @@
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: postgres18-obc
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  bucketName: postgres18
+  storageClassName: ceph-bucket

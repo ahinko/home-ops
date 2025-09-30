@@ -1,0 +1,13 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./cluster.yaml
+  - ./cronjob.yaml
+  - ./external-secret.yaml
+  - ./gatus.yaml
+  - ./loadbalancer.yaml
+  - ./objectbucket-claim.yaml
+  - ./objectstore.yaml
+  - ./prometheus-rule.yaml
+  - ./scheduled-backup.yaml
