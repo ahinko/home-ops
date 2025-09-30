@@ -5,7 +5,6 @@ namespace: flux-system
 resources:
   - ./actions-runner-controller-charts.yaml
   - ./backube-charts.yaml
-  - ./ext-postgres-operator-charts.yaml
   - ./grafana-charts.yaml
   - ./influxdata-charts.yaml
   - ./intel-charts.yaml
