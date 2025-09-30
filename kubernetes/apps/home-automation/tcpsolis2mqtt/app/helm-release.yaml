@@ -11,10 +11,9 @@ spec:
   values:
     controllers:
       tcpsolis2mqtt:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           securityContext:
             runAsUser: 568
             runAsGroup: 568

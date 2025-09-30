@@ -11,8 +11,9 @@ spec:
   values:
     controllers:
       open-webui:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
         containers:
           app:
             image:

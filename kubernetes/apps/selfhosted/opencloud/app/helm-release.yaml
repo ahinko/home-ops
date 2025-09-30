@@ -11,9 +11,9 @@ spec:
   values:
     controllers:
       opencloud:
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000

@@ -19,8 +19,9 @@ spec:
 
     controllers:
       karakeep:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -71,8 +72,9 @@ spec:
                 memory: 1Gi
 
       chrome:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -99,9 +101,9 @@ spec:
                 memory: 1Gi
 
       meilisearch:
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

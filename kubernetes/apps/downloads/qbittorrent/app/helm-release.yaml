@@ -11,10 +11,9 @@ spec:
   values:
     controllers:
       qbittorrent:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           nodeSelector:
             kubernetes.io/hostname: s01
 

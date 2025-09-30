@@ -11,9 +11,9 @@ spec:
   values:
     controllers:
       qui:
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           securityContext:
             runAsNonRoot: true
             runAsUser: 2000

@@ -11,10 +11,9 @@ spec:
   values:
     controllers:
       slskd:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}

@@ -11,10 +11,9 @@ spec:
   values:
     controllers:
       home-assistant:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           securityContext:
             runAsUser: 0 # Change when starting from scratch
             runAsGroup: 568

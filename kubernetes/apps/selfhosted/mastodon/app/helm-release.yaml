@@ -11,8 +11,9 @@ spec:
   values:
     controllers:
       sidekiq:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
 
         containers:
           main:
@@ -60,8 +61,9 @@ spec:
                 memory: 500Mi
 
       streaming:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
 
         containers:
           main:
@@ -81,9 +83,6 @@ spec:
                 memory: 500Mi
 
       web:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         containers:
           main:
             image:
@@ -102,6 +101,8 @@ spec:
                 memory: 500Mi
 
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

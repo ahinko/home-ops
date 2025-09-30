@@ -12,10 +12,9 @@ spec:
     controllers:
       miniflux:
         strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           enableServiceLinks: false
           securityContext:
             runAsUser: 568

@@ -12,8 +12,9 @@ spec:
     controllers:
       alertmanager:
         type: statefulset
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
 
         statefulset:
           volumeClaimTemplates:

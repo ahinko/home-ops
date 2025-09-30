@@ -12,6 +12,8 @@ spec:
     controllers:
       znapzend:
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           nodeSelector:
             kubernetes.io/hostname: s01
 

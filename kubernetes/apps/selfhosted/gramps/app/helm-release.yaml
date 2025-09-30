@@ -11,10 +11,9 @@ spec:
   values:
     controllers:
       gramps:
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
-          enableServiceLinks: false
+          annotations:
+            reloader.stakater.com/auto: "true"
         containers:
           app:
             image: &image

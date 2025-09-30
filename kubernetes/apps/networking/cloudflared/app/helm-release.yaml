@@ -14,10 +14,9 @@ spec:
         replicas: 2
         strategy: RollingUpdate
 
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
           topologySpreadConstraints:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname

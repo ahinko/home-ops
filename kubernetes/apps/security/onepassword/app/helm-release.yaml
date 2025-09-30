@@ -13,8 +13,9 @@ spec:
       onepassword-connect:
         strategy: RollingUpdate
         replicas: 2
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
         containers:
           api:
             image:

@@ -12,10 +12,9 @@ spec:
     controllers:
       server:
         strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
-          enableServiceLinks: false
+          annotations:
+            reloader.stakater.com/auto: "true"
           nodeSelector:
             kubernetes.io/hostname: s01
 
@@ -53,10 +52,9 @@ spec:
 
       machine-learning:
         strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
-          enableServiceLinks: false
+          annotations:
+            reloader.stakater.com/auto: "true"
           nodeSelector:
             kubernetes.io/hostname: s01
 

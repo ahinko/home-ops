@@ -11,8 +11,9 @@ spec:
   values:
     controllers:
       gatus:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
 
         initContainers:
           init-config:
