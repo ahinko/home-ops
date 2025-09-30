@@ -16,7 +16,6 @@ resources:
   - ./mastodon-fakerelay/install.yaml
   - ./mastodon-getmoarfediverse/install.yaml
   - ./miniflux/install.yaml
-  - ./n8n/install.yaml
   - ./opencloud/install.yaml
   - ./radicale/install.yaml
 components:
