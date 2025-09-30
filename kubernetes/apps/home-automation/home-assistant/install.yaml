@@ -16,7 +16,7 @@ spec:
       namespace: rook-ceph
     - name: vernemq
       namespace: databases
-    - name: postgres-cluster
+    - name: postgres18
       namespace: databases
     - name: volsync
       namespace: storage
