@@ -3,15 +3,6 @@
   customManagers: [
     {
       customType: "regex",
-      description: "Cloudnative Postgres container",
-      fileMatch: [
-        "kubernetes/apps/databases/cloudnative-pg/clusters/v17/.+\\.yaml$",
-      ],
-      matchStrings: ["imageName: (?<depName>.*?):(?<currentValue>.*)"],
-      datasourceTemplate: "docker",
-    },
-    {
-      customType: "regex",
       description: "Process Kubernetes versions",
       fileMatch: ["kubernetes/talos/talconfig.yaml"],
       matchStrings: ["kubernetesVersion: (?<currentValue>.*)"],
@@ -68,6 +59,17 @@
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)",
       ],
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+    },
+    {
+      customType: "regex",
+      description: "Process OCI dependencies",
+      managerFilePatterns: [
+        "/\\.yaml(?:\\.j2)?$/",
+      ],
+      matchStrings: [
+        "oci://(?<depName>[^:]+):(?<currentValue>\\S+)",
+      ],
+      datasourceTemplate: "docker",
     },
   ],
 }
