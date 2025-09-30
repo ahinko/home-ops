@@ -8,16 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
       tcpsolis2mqtt:

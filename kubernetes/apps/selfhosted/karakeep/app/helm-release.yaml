@@ -8,9 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     defaultPodOptions:
       securityContext:

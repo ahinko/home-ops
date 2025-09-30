@@ -28,3 +28,37 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  retryInterval: 2m
+  timeout: 5m
+  patches:
+    - # Add HelmRelease defaults to all Kustomizations
+      patch: |-
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          patches:
+            - patch: |-
+                apiVersion: helm.toolkit.fluxcd.io/v2
+                kind: HelmRelease
+                metadata:
+                  name: not-used
+                spec:
+                  install:
+                    crds: CreateReplace
+                    strategy:
+                      name: RetryOnFailure
+                  maxHistory: 2
+                  uninstall:
+                    keepHistory: false
+                  upgrade:
+                    crds: CreateReplace
+                    strategy:
+                      name: RetryOnFailure
+              target:
+                group: helm.toolkit.fluxcd.io
+                kind: HelmRelease
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization

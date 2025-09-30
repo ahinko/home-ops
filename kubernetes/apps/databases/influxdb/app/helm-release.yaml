@@ -14,17 +14,6 @@ spec:
         name: influxdata-charts
         namespace: flux-system
       interval: 1h
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
     image:
       repository: ghcr.io/ahinko/influxdb

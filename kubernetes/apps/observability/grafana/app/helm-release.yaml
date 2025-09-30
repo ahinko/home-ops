@@ -14,18 +14,6 @@ spec:
         namespace: flux-system
       version: 10.0.0
   interval: 60m
-  timeout: 20m
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
     image:
       registry: ghcr.io

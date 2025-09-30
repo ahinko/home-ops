@@ -8,15 +8,6 @@ spec:
     kind: OCIRepository
     name: cilium
   interval: 1h
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-  timeout: 15m
   values:
     autoDirectNodeRoutes: true
     bandwidthManager:
