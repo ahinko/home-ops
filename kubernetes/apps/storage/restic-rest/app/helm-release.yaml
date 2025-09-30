@@ -85,4 +85,4 @@ spec:
         runAsGroup: *uid
         fsGroup: *uid
         fsGroupChangePolicy: "Always"
-        seccompProfile: {type: "RuntimeDefault"}
+        seccompProfile: { type: "RuntimeDefault" }

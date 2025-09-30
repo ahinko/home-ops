@@ -72,7 +72,7 @@ spec:
         containers:
           restic:
             image:
-              repository: restic/restic
+              repository: ghcr.io/ahinko/restic
               tag: 0.18.1
             args:
               - forget

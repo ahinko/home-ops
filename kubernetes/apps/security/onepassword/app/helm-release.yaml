@@ -16,6 +16,13 @@ spec:
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            runAsNonRoot: true
+            fsGroup: 999
+            fsGroupChangePolicy: OnRootMismatch
+
         containers:
           api:
             image:
@@ -96,13 +103,6 @@ spec:
                   initialDelaySeconds: 15
             resources: *resources
             securityContext: *securityContext
-        pod:
-          securityContext:
-            runAsUser: 999
-            runAsGroup: 999
-            runAsNonRoot: true
-            fsGroup: 999
-            fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:

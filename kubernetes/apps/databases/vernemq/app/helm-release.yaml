@@ -111,7 +111,6 @@ spec:
       app:
         primary: true
         type: LoadBalancer
-        sessionAffinity: ClientIP
         annotations:
           lbipam.cilium.io/ips: 192.168.20.213
         ports:
