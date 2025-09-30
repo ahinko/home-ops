@@ -9,6 +9,7 @@ resources:
   - ./multiscrobbler/install.yaml
   - ./navidrome/install.yaml
   - ./plex/install.yaml
+  - ./watchstate/install.yaml
 components:
   - ../../components/namespace
   - ../../components/alerts
