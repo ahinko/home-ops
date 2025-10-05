@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/lidarr
-              tag: 2.14.4.4809
+              tag: 2.14.5.4824
             env:
               LIDARR__INSTANCE_NAME: Lidarr
               LIDARR__PORT: &port 8686
