@@ -22,7 +22,7 @@ spec:
           postgres:
             image:
               repository: ghcr.io/ahinko/postgres17
-              tag: 17.6.7
+              tag: 17.6.8
             env:
               - name: POSTGRES_DB
                 value: "immich"
