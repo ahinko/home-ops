@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./nodefeaturerule.yaml
+  - ./oci-repository.yaml
