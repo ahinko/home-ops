@@ -2,24 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-meta
-  namespace: flux-system
-spec:
-  interval: 1h
-  path: ./kubernetes/flux/meta
-  prune: true
-  wait: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
+  deletionPolicy: WaitForTermination
   interval: 1h
   path: ./kubernetes/apps
   prune: true
@@ -31,13 +17,16 @@ spec:
   retryInterval: 2m
   timeout: 5m
   patches:
-    - # Add HelmRelease defaults to all Kustomizations
+    - # Add Kustomization defaults for all child Kustomizations
       patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
         metadata:
           name: not-used
         spec:
+          decryption:
+            provider: sops
+          deletionPolicy: WaitForTermination
           patches:
             - patch: |-
                 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -49,13 +38,17 @@ spec:
                     crds: CreateReplace
                     strategy:
                       name: RetryOnFailure
-                  maxHistory: 2
-                  uninstall:
-                    keepHistory: false
+                  rollback:
+                    cleanupOnFail: true
+                    recreate: true
                   upgrade:
+                    cleanupOnFail: true
                     crds: CreateReplace
                     strategy:
-                      name: RetryOnFailure
+                      name: RemediateOnFailure
+                    remediation:
+                      remediateLastFailure: true
+                      retries: 2
               target:
                 group: helm.toolkit.fluxcd.io
                 kind: HelmRelease

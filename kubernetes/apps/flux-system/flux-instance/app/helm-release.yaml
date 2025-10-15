@@ -26,9 +26,6 @@ spec:
         ref: refs/heads/main
         path: kubernetes/flux/cluster
         pullSecret: homelab-flux-secret
-      commonMetadata:
-        labels:
-          app.kubernetes.io/name: flux
       kustomize:
         patches:
           # Allow flux components to run on control plane nodes
