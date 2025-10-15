@@ -4,16 +4,10 @@ kind: HelmRelease
 metadata:
   name: grafana
 spec:
-  chart:
-    spec:
-      chart: grafana
-      interval: 60m
-      sourceRef:
-        kind: HelmRepository
-        name: grafana-charts
-        namespace: flux-system
-      version: 10.1.1
-  interval: 60m
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: grafana
   values:
     image:
       registry: ghcr.io
@@ -335,14 +329,10 @@ spec:
 
     imageRenderer:
       enabled: false
-      image:
-        registry: ghcr.io
-        repository: ahinko/grafana-image-renderer
-        tag: 3.12.6
 
     downloadDashboardsImage:
-      registry: ghcr.io
-      repository: ahinko/curl
+      registry: quay.io
+      repository: curl/curl
       tag: 8.16.0
 
     persistence:
