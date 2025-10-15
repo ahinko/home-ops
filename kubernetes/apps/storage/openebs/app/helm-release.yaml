@@ -5,15 +5,9 @@ metadata:
   name: openebs
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: openebs
-      version: 4.3.3
-      interval: 1h
-      sourceRef:
-        kind: HelmRepository
-        name: openebs-charts
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: openebs
   values:
     localpv-provisioner:
       rbac:
