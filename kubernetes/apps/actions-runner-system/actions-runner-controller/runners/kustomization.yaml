@@ -5,3 +5,4 @@ resources:
   - ./external-secret.yaml
   - ./rbac.yaml
   - ./homelab.yaml
+  - ./oci-repoistory.yaml
