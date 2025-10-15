@@ -5,7 +5,6 @@ namespace: system
 resources:
   - ./descheduler/install.yaml
   - ./fstrim/install.yaml
-  - ./generic-device-plugin/install.yaml
   - ./intel-device-plugins/install.yaml
   - ./node-feature-discovery/install.yaml
   - ./reloader/install.yaml
