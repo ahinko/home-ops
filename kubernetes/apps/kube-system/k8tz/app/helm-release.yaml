@@ -4,16 +4,10 @@ kind: HelmRelease
 metadata:
   name: k8tz
 spec:
-  chart:
-    spec:
-      chart: k8tz
-      version: 0.18.0
-      interval: 1h
-      sourceRef:
-        kind: HelmRepository
-        name: k8tz-charts
-        namespace: flux-system
   interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: k8tz
   values:
     namespace: kube-system
 

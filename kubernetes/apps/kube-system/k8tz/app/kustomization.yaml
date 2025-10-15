@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./pki.yaml
   - ./helm-release.yaml
+  - ./oci-repository.yaml
