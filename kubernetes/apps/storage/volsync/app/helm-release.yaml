@@ -5,15 +5,9 @@ metadata:
   name: volsync
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: volsync
-      version: 0.13.1
-      sourceRef:
-        kind: HelmRepository
-        name: backube-charts
-        namespace: flux-system
-      interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: volsync
   values:
     manageCRDs: true
     metrics:
