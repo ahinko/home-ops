@@ -82,7 +82,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/ahinko/valkey
+              repository: ghcr.io/valkey-io/valkey
               tag: 8.1.4
 
     service:
