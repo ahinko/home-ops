@@ -7,6 +7,11 @@ tap "siderolabs/tap"
 brew "fish"
 brew "viddy"
 
+# LLM Ai
+cask "coderabbit"
+cask "gemini"
+cask "claude-code"
+
 # Command line tools
 brew "bash"
 brew "ansible"
