@@ -9,7 +9,6 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -27,7 +26,6 @@ spec:
       APP: *appname
       APP_GID: "0"
       APP_UID: "0"
-      GATUS_SUBDOMAIN: hass
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CLAIM: home-assistant-config
   prune: true

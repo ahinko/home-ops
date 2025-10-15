@@ -112,6 +112,9 @@ spec:
 
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://{{ .Release.Name }}.hemma.dev/health
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

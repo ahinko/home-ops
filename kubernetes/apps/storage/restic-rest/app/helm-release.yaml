@@ -48,6 +48,11 @@ spec:
 
     route:
       main:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://restic.hemma.dev
+            conditions:
+              - "[CONNECTED] == true"
         hostnames: ["restic.hemma.dev"]
         parentRefs:
           - name: internal

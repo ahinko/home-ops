@@ -74,6 +74,8 @@ spec:
     route:
       app:
         annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://plex.hemma.dev/web
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Media server
           gethomepage.dev/group: Media

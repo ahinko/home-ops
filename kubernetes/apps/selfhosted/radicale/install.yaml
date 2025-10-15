@@ -9,7 +9,6 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -23,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      GATUS_SUBDOMAIN: radicale
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CLAIM: radicale-data
   prune: true

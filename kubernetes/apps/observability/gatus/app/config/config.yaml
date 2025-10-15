@@ -29,3 +29,23 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 404"
+
+  - name: postgres17
+    group: infrastructure
+    url: tcp://postgres17-rw.databases.svc.cluster.local:5432
+    interval: 1m
+    ui:
+      hide-url: true
+      hide-hostname: true
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: postgres18
+    group: infrastructure
+    url: tcp://postgres18-rw.databases.svc.cluster.local:5432
+    interval: 1m
+    ui:
+      hide-url: true
+      hide-hostname: true
+    conditions:
+      - "[CONNECTED] == true"

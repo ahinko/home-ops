@@ -24,7 +24,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      #GATUS_SUBDOMAIN: *appname
       APP_GID: "568"
       APP_UID: "568"
       VOLSYNC_CAPACITY: 40Gi

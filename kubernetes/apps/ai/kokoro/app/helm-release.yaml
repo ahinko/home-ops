@@ -27,11 +27,13 @@ spec:
       app:
         ports:
           http:
-            port: &port 8880
+            port: 8880
 
     route:
       app:
         annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://tts.hemma.dev/web
           gethomepage.dev/enabled: "true"
           gethomepage.dev/description: Text to speech using LLMs
           gethomepage.dev/group: LLM/Ai

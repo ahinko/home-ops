@@ -8,15 +8,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/gatus/internal
   interval: 1h
   path: "./kubernetes/apps/storage/restic-rest/app"
   postBuild:
     substitute:
       APP: *appname
-      GATUS_SUBDOMAIN: restic
-      GATUS_PATH: /metrics
   prune: true
   sourceRef:
     kind: GitRepository

@@ -9,7 +9,6 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/gatus/internal
     - ../../../../components/volsync
   dependsOn:
     - name: volsync
@@ -23,7 +22,6 @@ spec:
       APP: *appname
       APP_GID: "568"
       APP_UID: "568"
-      GATUS_SUBDOMAIN: pid
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CLAIM: pocket-id-config
   prune: true
