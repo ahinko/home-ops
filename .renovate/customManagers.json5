@@ -71,5 +71,15 @@
       ],
       datasourceTemplate: "docker",
     },
+    {
+      customType: "regex",
+      description: "Cloudnative Postgres container",
+      fileMatch: [
+        "kubernetes/apps/databases/cloudnative-pg/clusters/v17/.+\\.yaml$",
+        "kubernetes/apps/databases/postgres18/app/.+\\.yaml$",
+      ],
+      matchStrings: ["imageName: (?<depName>.*?):(?<currentValue>.*)"],
+      datasourceTemplate: "docker",
+    },
   ],
 }
