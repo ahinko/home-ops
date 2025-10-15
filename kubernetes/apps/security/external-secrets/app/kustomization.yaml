@@ -3,9 +3,3 @@ kind: Kustomization
 resources:
   - ./oci-repository.yaml
   - ./helm-release.yaml
-configMapGenerator:
-  - name: external-secrets-helm-values
-    files:
-      - values.yaml=./helm-values.yaml
-generatorOptions:
-  disableNameSuffixHash: true

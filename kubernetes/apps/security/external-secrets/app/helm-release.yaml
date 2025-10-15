@@ -8,6 +8,15 @@ spec:
   chartRef:
     kind: OCIRepository
     name: external-secrets
-  valuesFrom:
-    - kind: ConfigMap
-      name: external-secrets-helm-values
+  values:
+    replicaCount: 2
+    leaderElect: true
+    serviceMonitor:
+      enabled: true
+    certController:
+      serviceMonitor:
+        enabled: true
+    webhook:
+      replicaCount: 2
+      serviceMonitor:
+        enabled: true
