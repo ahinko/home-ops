@@ -12,7 +12,7 @@ spec:
     image:
       registry: ghcr.io
       repository: ahinko/grafana
-      tag: 12.2.0
+      tag: 12.2.1
 
     replicas: 1
     rbac:
