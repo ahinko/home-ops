@@ -13,8 +13,7 @@ spec:
     serviceMonitor:
       enabled: false
     grafanaDashboard:
-      enabled: false
-      folder: Data
+      enabled: true
       annotations:
         name: grafana_folder
       labels:
