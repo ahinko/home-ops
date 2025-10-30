@@ -15,6 +15,24 @@ spec:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu-product: "arc"
 
+        initContainers:
+          sync-models:
+            image:
+              repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              tag: 2.3.0-SNAPSHOT
+            command:
+              - "/bin/sh"
+              - "/scripts/sync-models.sh"
+
+            env: &envVars
+              OLLAMA_MODELS: &modelPath /models
+              OLLAMA_HOST: "0.0.0.0"
+              no_proxy: "localhost,127.0.0.1"
+              DEVICE: "Arc"
+              OLLAMA_INTEL_GPU: "true"
+              OLLAMA_NUM_GPU: "999"
+              ZES_ENABLE_SYSMAN: "1"
+
         containers:
           app:
             image:
@@ -27,14 +45,7 @@ spec:
               - >-
                 mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
 
-            env:
-              OLLAMA_MODELS: &modelPath /models
-              OLLAMA_HOST: "0.0.0.0"
-              no_proxy: "localhost,127.0.0.1"
-              DEVICE: "Arc"
-              OLLAMA_INTEL_GPU: "true"
-              OLLAMA_NUM_GPU: "999"
-              ZES_ENABLE_SYSMAN: "1"
+            env: *envVars
 
             resources:
               requests:
@@ -80,7 +91,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 11434
+            port: 11434
 
     route:
       app:
@@ -109,6 +120,25 @@ spec:
                 subPath: .ollama
               - path: *modelPath
                 subPath: models
+            sync-models:
+              - path: /root/.ollama
+                subPath: .ollama
+              - path: *modelPath
+                subPath: models
+
+      model-list:
+        type: configMap
+        name: ollama-models
+        globalMounts:
+          - path: /config/models.txt
+            subPath: models.txt
+
+      sync-script:
+        type: configMap
+        name: ollama-sync-script
+        globalMounts:
+          - path: /scripts/sync-models.sh
+            subPath: sync-models.sh
 
       dev:
         type: hostPath

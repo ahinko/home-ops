@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ollama-models
+data:
+  models.txt: |
+    zongwei/gemma3-translator:4b
+    LayOnGGUF/llama3-stheno:8b
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ollama-sync-script
+data:
+  sync-models.sh: |
+    #!/bin/sh
+    set -e
+
+    echo "🟢 Starting temporary Ollama server..."
+    mkdir -p /llm/ollama
+    cd /llm/ollama
+    init-ollama
+    ./ollama serve &
+
+    # Wait until Ollama responds
+    for i in $(seq 1 30); do
+      if ./ollama list >/dev/null 2>&1; then
+        echo "✅ Ollama is up!"
+        break
+      fi
+      echo "⏳ Waiting for Ollama to start... ($i/30)"
+      sleep 1
+    done
+
+    MODELS="$(cat /config/models.txt)"
+    echo "📜 Desired models: $MODELS"
+
+    # Get installed models (skip header)
+    INSTALLED=$(./ollama list | awk 'NR>1 {print $1}')
+
+    # Pull missing models
+    for model in $MODELS; do
+      if echo "$INSTALLED" | grep -qx "$model"; then
+        echo "✔ $model already installed"
+      else
+        echo "⬇ Pulling $model..."
+        ./ollama pull "$model"
+      fi
+    done
+
+    # Remove extra models
+    for model in $INSTALLED; do
+      if ! echo "$MODELS" | grep -qx "$model"; then
+        echo "🗑 Removing $model (not in desired list)"
+        ./ollama rm "$model"
+      fi
+    done
+
+    echo "✅ Model sync complete."
+    pkill ollama
