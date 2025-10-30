@@ -11,13 +11,12 @@ metadata:
     gethomepage.dev/name: Grafana
     gethomepage.dev/app: grafana
 spec:
-  hostnames: ["grafana.hemma.dev"]
+  hostnames:
+    - grafana.hemma.dev
   parentRefs:
-    - name: external
+    - name: internal
       namespace: networking
-      sectionName: https
   rules:
     - backendRefs:
-        - name: grafana
-          namespace: observability
-          port: 80
+        - name: grafana-service
+          port: 3000

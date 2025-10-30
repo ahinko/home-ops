@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./external-secret.yaml
   - ./dnsendpoint.yaml
+  - ./grafana-dashboard.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
 configMapGenerator:

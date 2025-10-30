@@ -3,5 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./grafana-dashboard.yaml
-  - ./helm-release.yaml
-  - ./oci-repository.yaml
+  - ./grafana-datasource.yaml
+  - ./grafana.yaml
+  - ./httproute.yaml
+  - ./servicemonitor.yaml
