@@ -4,12 +4,11 @@ kind: Kustomization
 namespace: media
 resources:
   - ./media-pvc.yaml
-  - ./jellyfin/install.yaml
+  #- ./jellyfin/install.yaml
   - ./maloja/install.yaml
   - ./multiscrobbler/install.yaml
   - ./navidrome/install.yaml
   - ./plex/install.yaml
-  - ./watchstate/install.yaml
 components:
   - ../../components/namespace
   - ../../components/alerts
