@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: games
 resources:
   - ./minecraft/install.yaml
+  - ./minecraft2/install.yaml
 components:
   - ../../components/namespace
   - ../../components/alerts

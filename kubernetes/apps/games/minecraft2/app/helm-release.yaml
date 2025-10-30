@@ -1,0 +1,52 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft2
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: itzg-minecraft-server
+  values:
+    image:
+      repository: ghcr.io/ahinko/minecraft-bedrock
+      tag: 2025.9.0
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 100m
+    strategyType: Recreate
+
+    livenessProbe:
+      initialDelaySeconds: 30
+    readinessProbe:
+      initialDelaySeconds: 30
+
+    minecraftServer:
+      eula: "TRUE"
+      version: "LATEST"
+      difficulty: peaceful
+      maxPlayers: 10
+      tickDistance: 4
+      viewDistance: 10
+      levelName: Hemma
+      levelSeed:
+      gameMode: creative
+      defaultPermission: member
+      playerIdleTimeout: 30
+      levelType: DEFAULT
+      texturepackRequired: false
+      serverName: "Den andra världen"
+      onlineMode: false
+      maxThreads: 8
+      cheats: false
+      serviceType: LoadBalancer
+
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
+
+    serviceAnnotations:
+      lbipam.cilium.io/ips: 192.168.20.232
