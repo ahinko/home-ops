@@ -25,7 +25,7 @@ spec:
               tag: v2.2.0@sha256:0bfa78b8068767bf9363fb386363bd20788487892781525ccca301ea5c62cc16
             env:
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
-              DB_HOSTNAME: "postgres17-rw.databases.svc.cluster.local"
+              DB_HOSTNAME: "postgres18-rw.databases.svc.cluster.local"
               DB_PORT: 5432
               DB_DATABASE_NAME: "immich"
               DB_USERNAME:

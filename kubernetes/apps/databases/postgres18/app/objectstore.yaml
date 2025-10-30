@@ -17,6 +17,6 @@ spec:
         name: postgres18-obc
         key: AWS_SECRET_ACCESS_KEY
     wal:
-      compression: bzip2
-      maxParallel: 2
+      compression: bzip2 # change to zstd at some point
+      maxParallel: 2 # change to 4 at some point
   retentionPolicy: 30d

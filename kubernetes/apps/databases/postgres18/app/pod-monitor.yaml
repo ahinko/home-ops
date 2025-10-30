@@ -1,0 +1,21 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    cnpg.io/cluster: postgres18
+  name: postgres18-podmonitor
+spec:
+  podMetricsEndpoints:
+    - metricRelabelings:
+        - action: replace
+          sourceLabels:
+            - cluster
+          targetLabel: cnpg_cluster
+        - action: labeldrop
+          regex: cluster
+      port: metrics
+  selector:
+    matchLabels:
+      cnpg.io/cluster: postgres18
+      cnpg.io/podRole: instance

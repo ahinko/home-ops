@@ -37,7 +37,7 @@ spec:
               TZ: "Europe/Stockholm"
               MQTT_HOST: "vernemq-app.databases.svc.cluster.local"
               DATABASE_NAME: "teslamate"
-              DATABASE_HOST: "postgres17-rw.databases.svc.cluster.local"
+              DATABASE_HOST: "postgres18-rw.databases.svc.cluster.local"
 
             resources:
               requests:

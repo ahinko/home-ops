@@ -5,8 +5,10 @@ resources:
   - ./cluster.yaml
   - ./cronjob.yaml
   - ./external-secret.yaml
+  - ./grafana-dashboard.yaml
   - ./loadbalancer.yaml
   - ./objectbucket-claim.yaml
   - ./objectstore.yaml
+  - ./pod-monitor.yaml
   - ./prometheus-rule.yaml
   - ./scheduled-backup.yaml

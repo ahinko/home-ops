@@ -25,7 +25,7 @@ spec:
               tag: 18.0.3
             env:
               - name: POSTGRES_DB
-                value: "aliasvault,docmost,miniflux,teslamate,synapse,mastodon,homeassistant"
+                value: "aliasvault,docmost,miniflux,teslamate,synapse,mastodon,homeassistant,immich"
               - name: POSTGRES_HOST
                 value: "postgres18-rw.databases"
               - name: POSTGRES_EXTRA_OPTS

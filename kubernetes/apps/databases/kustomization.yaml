@@ -6,7 +6,6 @@ resources:
   - ./cloudnative-pg/install.yaml
   - ./dragonfly/install.yaml
   - ./ext-postgres-operator/install.yaml
-  - ./postgres-backup/install.yaml
   - ./postgres18/install.yaml
   - ./vernemq/install.yaml
 components:

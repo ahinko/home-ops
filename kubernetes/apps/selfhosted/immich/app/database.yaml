@@ -3,5 +3,7 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: immich-db
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
 spec:
   database: immich

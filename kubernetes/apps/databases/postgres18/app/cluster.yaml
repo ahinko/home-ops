@@ -19,38 +19,24 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: postgres18-local-ceph
-        serverName: postgres18-v1
+        serverName: postgres18-v2
   postgresql:
     parameters:
       max_connections: "100"
       shared_buffers: 128MB
     shared_preload_libraries:
       - vchord.so
-  monitoring:
-    enablePodMonitor: true
-    # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
-    podMonitorMetricRelabelings:
-      - {
-          sourceLabels: ["cluster"],
-          targetLabel: cnpg_cluster,
-          action: replace,
-        }
-      - { regex: cluster, action: labeldrop }
-  # externalClusters:
-  #   - name: postgres16-v4
-  #     connectionParameters:
-  #       host: postgres16-rw.database.svc.cluster.local
-  #       user: postgres
-  #     password:
-  #       name: postgres16-superuser-secret
-  #       key: password
+
   bootstrap:
     initdb: {}
-      # import:
-      #   type: monolith
-      #   databases:
-      #     - "*"
-      #   roles:
-      #     - "*"
-      #   source:
-      #     externalCluster: postgres16-v4
+
+  #   recovery:
+  #     source: origin
+
+  # externalClusters:
+  #   - name: origin
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters:
+  #         barmanObjectName: postgres18-local-ceph # same as in old cluster
+  #         serverName: postgres18-v2 # same as in old cluster
