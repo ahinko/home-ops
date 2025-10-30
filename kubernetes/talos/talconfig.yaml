@@ -9,174 +9,115 @@ additionalApiServerCertSans:
   - 127.0.0.1 # KubePrism
 
 additionalMachineCertSans:
-  - &clusterEndpointIp 192.168.20.30
+  - 192.168.20.30
   - 127.0.0.1 # KubePrism
 
 cniConfig:
   name: none
 
 nodes:
-  - hostname: cp01
-    ipAddress: 192.168.20.31
+  - hostname: n01
+    ipAddress: 192.168.20.21
     controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: d8:3a:dd:b1:68:3e
+          hardwareAddr: 88:ae:dd:65:a5:49
         addresses:
-          - 192.168.20.31/24
+          - 192.168.20.21/24
         dhcp: true
-    machineSpec: &rpi-spec
-      mode: metal
-      arch: arm64
-      bootMethod: disk-image
-      imageSuffix: raw.xz
-    schematic: &rpi-schematic
-      overlay:
-        image: siderolabs/sbc-raspberrypi
-        name: rpi_generic
-      customization:
-        extraKernelArgs:
-          - -selinux # Less security, faster puter
-          - -init_on_alloc # Less security, faster puter
-          - -init_on_free # Less security, faster puter
-          - apparmor=0 # Less security, faster puter
-          - init_on_alloc=0 # Less security, faster puter
-          - init_on_free=0 # Less security, faster puter
-          - mitigations=off # Less security, faster puter
-          - security=none # Less security, faster puter
-          - talos.auditd.disabled=1 # Less security, faster puter
-          - net.ifnames=1 # Enable predictable NIC naming
-
-  - hostname: cp02
-    ipAddress: 192.168.20.32
-    controlPlane: true
-    installDisk: /dev/sda
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: e4:5f:01:86:fc:a0
-        addresses:
-          - 192.168.20.32/24
-        dhcp: true
-    machineSpec: *rpi-spec
-    schematic: *rpi-schematic
-
-  - hostname: cp03
-    ipAddress: 192.168.20.38
-    controlPlane: true
-    installDisk: /dev/sda
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 2c:cf:67:36:7f:45
-        addresses:
-          - 192.168.20.38/24
-        dhcp: true
-    machineSpec: *rpi-spec
-    schematic: *rpi-schematic
-
-  - hostname: w01
-    ipAddress: 192.168.20.34
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 20:7b:d2:c3:1f:34
-        addresses:
-          - 192.168.20.34/24
-        dhcp: true
-    machineSpec: &nuc8-spec
+    machineSpec: &machine-spec
       mode: metal
       arch: amd64
       bootMethod: disk-image
       imageSuffix: raw.xz
-    schematic: &nuc8-schematic
+    schematic: &schematic
       customization:
         extraKernelArgs:
-          - -selinux # Less security, faster puter
           - -init_on_alloc # Less security, faster puter
           - -init_on_free # Less security, faster puter
+          - -selinux # Less security, faster puter
           - apparmor=0 # Less security, faster puter
+          - i915.enable_guc=3 # Meteor Lake CPU / iGPU
           - init_on_alloc=0 # Less security, faster puter
           - init_on_free=0 # Less security, faster puter
           - intel_iommu=on # PCI Passthrough
           - iommu=pt # PCI Passthrough
           - mitigations=off # Less security, faster puter
           - security=none # Less security, faster puter
+          - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
           - talos.auditd.disabled=1 # Less security, faster puter
-          - net.ifnames=1 # Enable predictable NIC naming
+          # might fix black screen
+          # - video=HDMI-A-1:1920x1080@60D
+          # - video=HDMI-A-2:1920x1080@60D
+          # - drm_kms_helper.poll=0
         systemExtensions:
           officialExtensions:
-            - siderolabs/usb-modem-drivers
             - siderolabs/i915
             - siderolabs/intel-ucode
-    patches:
-      - &nuc8-patches |-
-        machine:
-          kernel:
-            modules:
-              - name: usbserial
-              - name: ax88179_178a
-          kubelet:
-            extraMounts:
-              - destination: /var/openebs/local
-                type: bind
-                source: /var/openebs/local
-                options:
-                  - bind
-                  - rshared
-                  - rw
+            - siderolabs/mei
+    patches: &patches
+      - |-
+        apiVersion: v1alpha1
+        kind: VolumeConfig
+        name: EPHEMERAL
+        provisioning:
+          diskSelector:
+            match: system_disk
+          grow: false
+          minSize: 100GiB
+          maxSize: 100GiB
+      - |-
+        apiVersion: v1alpha1
+        kind: UserVolumeConfig
+        name: local-hostpath
+        provisioning:
+          diskSelector:
+            match: system_disk
+          minSize: 350GiB
 
-  - hostname: w03
-    ipAddress: 192.168.20.36
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
+  - hostname: n02
+    ipAddress: 192.168.20.22
+    controlPlane: true
+    installDisk: /dev/sda
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 20:7b:d2:ae:a5:09
+          hardwareAddr: 88:ae:dd:68:a1:b6
         addresses:
-          - 192.168.20.36/24
+          - 192.168.20.22/24
         dhcp: true
-    machineSpec: *nuc8-spec
-    schematic: *nuc8-schematic
-    patches:
-      - *nuc8-patches
+    machineSpec: *machine-spec
+    schematic: *schematic
+    patches: *patches
 
-  - hostname: w04
-    ipAddress: 192.168.20.33
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
+  - hostname: n03
+    ipAddress: 192.168.20.23
+    controlPlane: true
+    installDisk: /dev/sda
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 20:7b:d2:aa:f2:bd
+          hardwareAddr: 88:ae:dd:68:a3:43
         addresses:
-          - 192.168.20.33/24
+          - 192.168.20.23/24
         dhcp: true
-    machineSpec: *nuc8-spec
-    schematic: *nuc8-schematic
-    patches:
-      - *nuc8-patches
+    machineSpec: *machine-spec
+    schematic: *schematic
+    patches: *patches
 
   - hostname: s01
-    ipAddress: 192.168.20.37
+    ipAddress: 192.168.20.24
     controlPlane: false
     installDiskSelector:
       serial: "S4EVNM0R816141L"
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: 70:85:c2:a7:61:bf
+          hardwareAddr: ec:e7:a7:17:ff:4c
         addresses:
-          - 192.168.20.37/24
+          - 192.168.20.24/24
         dhcp: true
     nodeLabels:
       openebs.io/nodeid: s01
-    machineSpec:
-      mode: metal
-      arch: amd64
-      bootMethod: disk-image
-      imageSuffix: raw.xz
+    machineSpec: *machine-spec
     kernelModules:
       - name: zfs
     schematic:
@@ -199,79 +140,7 @@ nodes:
             - siderolabs/i915
             - siderolabs/intel-ucode
             - siderolabs/zfs
-    patches:
-      - |-
-        machine:
-          kubelet:
-            extraMounts:
-              - destination: /var/mnt
-                type: bind
-                source: /var/mnt
-                options:
-                  - bind
-                  - rshared
-                  - rw
-              - destination: /var/openebs/local
-                type: bind
-                source: /var/openebs/local
-                options:
-                  - bind
-                  - rshared
-                  - rw
-          udev:
-            rules:
-              # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
-              - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
-
-  - hostname: n01
-    ipAddress: 192.168.20.21
-    controlPlane: false
-    installDiskSelector:
-      type: ssd
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 88:ae:dd:65:a5:49
-        addresses:
-          - 192.168.20.21/24
-        dhcp: true
-    machineSpec: &nuc14-spec
-      mode: metal
-      arch: amd64
-      bootMethod: disk-image
-      imageSuffix: raw.xz
-    schematic: &nuc14-schematic
-      customization:
-        extraKernelArgs:
-          - -init_on_alloc # Less security, faster puter
-          - -init_on_free # Less security, faster puter
-          - -selinux # Less security, faster puter
-          - apparmor=0 # Less security, faster puter
-          - i915.enable_guc=3 # Meteor Lake CPU / iGPU
-          - init_on_alloc=0 # Less security, faster puter
-          - init_on_free=0 # Less security, faster puter
-          - intel_iommu=on # PCI Passthrough
-          - iommu=pt # PCI Passthrough
-          - mitigations=off # Less security, faster puter
-          - security=none # Less security, faster puter
-          - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
-          - talos.auditd.disabled=1 # Less security, faster puter
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915
-            - siderolabs/intel-ucode
-            - siderolabs/mei
-    patches:
-      - &nuc14-patches |-
-        machine:
-          kubelet:
-            extraMounts:
-              - destination: /var/openebs/local
-                type: bind
-                source: /var/openebs/local
-                options:
-                  - bind
-                  - rshared
-                  - rw
+    patches: *patches
 
 controlPlane:
   patches:
@@ -320,7 +189,7 @@ controlPlane:
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnControlPlanes: false
+        allowSchedulingOnControlPlanes: true
         coreDNS:
           disabled: true
         proxy:

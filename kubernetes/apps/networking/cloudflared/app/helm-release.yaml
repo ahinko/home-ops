@@ -9,6 +9,25 @@ spec:
     kind: OCIRepository
     name: app-template
   values:
+    configMaps:
+      config:
+        data:
+          config.yaml: |-
+            originRequest:
+              http2Origin: true
+              noTLSVerify: true
+
+            ingress:
+              - hostname: selfy.social
+                service: &service https://social.networking.svc.cluster.local
+                originRequest:
+                  originServerName: ingress.selfy.social
+              - hostname: "*.selfy.social"
+                service: *service
+                originRequest:
+                  originServerName: ingress.selfy.social
+              - service: http_status:404
+
     controllers:
       cloudflared:
         replicas: 2
@@ -96,7 +115,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: cloudflared-configmap
+        name: cloudflared
         globalMounts:
           - path: /etc/cloudflared/config.yaml
             subPath: config.yaml

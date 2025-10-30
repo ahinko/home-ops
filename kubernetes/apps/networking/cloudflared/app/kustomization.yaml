@@ -7,9 +7,3 @@ resources:
   - ./grafana-dashboard.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
-configMapGenerator:
-  - name: cloudflared-configmap
-    files:
-      - ./config/config.yaml
-generatorOptions:
-  disableNameSuffixHash: true

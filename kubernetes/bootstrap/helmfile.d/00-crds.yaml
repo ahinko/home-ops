@@ -5,21 +5,30 @@
 # It is not intended to be used with helmfile apply or sync.
 
 helmDefaults:
-  args: ["--include-crds", "--no-hooks"] # Prevent helmfile apply or sync
+  cleanupOnFail: true
+  wait: true
+  waitForJobs: true
+  args:
+    - --include-crds
+    - --no-hooks
+  postRenderer: bash
+  postRendererArgs:
+    - -c
+    - yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -
 
 releases:
   - name: cloudflare-dns
-    namespace: network
+    namespace: networking
     chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
     version: 1.19.0
 
   - name: external-secrets
-    namespace: external-secrets
+    namespace: security
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
     version: 0.20.4
 
   - name: envoy-gateway
-    namespace: network
+    namespace: networking
     chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
     version: v1.5.4
 

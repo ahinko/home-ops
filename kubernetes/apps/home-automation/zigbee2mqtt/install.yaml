@@ -22,8 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_GID: "0"
-      APP_UID: "0"
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CLAIM: zigbee2mqtt-data
   prune: true

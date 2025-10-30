@@ -24,8 +24,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_GID: "0"
-      APP_UID: "0"
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CLAIM: home-assistant-config
   prune: true

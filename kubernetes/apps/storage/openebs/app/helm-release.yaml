@@ -10,12 +10,11 @@ spec:
     name: openebs
   values:
     localpv-provisioner:
+      analytics:
+        enabled: false
+
       rbac:
         create: true
-
-      localpv:
-        image:
-          registry: quay.io/
 
       helperPod:
         image:
@@ -25,7 +24,12 @@ spec:
         enabled: true
         name: openebs-hostpath
         isDefaultClass: false
-        basePath: /var/openebs/local
+        basePath: &hostPath /var/mnt/local-hostpath
+
+      localpv:
+        basePath: *hostPath
+        image:
+          registry: quay.io/
 
     openebs-crds:
       csi:

@@ -61,7 +61,7 @@ releases:
     values:
       - ../templates/values.yaml.gotmpl
     needs:
-      - "security/external-secrets"
+      - "cert-manager/cert-manager"
 
   - name: flux-instance
     namespace: flux-system
