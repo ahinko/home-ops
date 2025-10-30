@@ -195,7 +195,6 @@ spec:
         parentRefs:
           - name: social
             namespace: networking
-            sectionName: https
         rules:
           - matches:
               - path:

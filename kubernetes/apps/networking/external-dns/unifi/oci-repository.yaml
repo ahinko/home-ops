@@ -11,5 +11,3 @@ spec:
   ref:
     tag: 1.19.0
   url: oci://ghcr.io/home-operations/charts-mirror/external-dns
-  verify:
-    provider: cosign

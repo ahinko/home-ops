@@ -70,7 +70,6 @@ spec:
         parentRefs:
           - name: internal
             namespace: networking
-            sectionName: https
 
     persistence:
       config:

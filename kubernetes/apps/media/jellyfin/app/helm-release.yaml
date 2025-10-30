@@ -57,7 +57,6 @@ spec:
         parentRefs:
           - name: internal
             namespace: networking
-            sectionName: https
         rules:
           - backendRefs:
               - identifier: app

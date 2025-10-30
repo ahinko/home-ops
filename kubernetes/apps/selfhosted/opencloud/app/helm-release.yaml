@@ -84,7 +84,6 @@ spec:
         parentRefs:
           - name: external
             namespace: networking
-            sectionName: https
 
     persistence:
       data:

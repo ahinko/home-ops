@@ -11,5 +11,3 @@ spec:
   ref:
     tag: 0.34.0
   url: oci://ghcr.io/home-operations/charts-mirror/intel-device-plugins-operator
-  verify:
-    provider: cosign

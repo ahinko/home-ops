@@ -11,5 +11,3 @@ spec:
   ref:
     tag: 0.33.0
   url: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
-  verify:
-    provider: cosign

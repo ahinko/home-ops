@@ -11,5 +11,3 @@ spec:
   url: oci://ghcr.io/home-operations/charts-mirror/cilium
   ref:
     tag: 1.18.3
-  verify:
-    provider: cosign

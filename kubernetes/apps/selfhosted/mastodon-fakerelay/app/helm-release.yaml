@@ -49,7 +49,6 @@ spec:
         parentRefs:
           - name: social
             namespace: networking
-            sectionName: https
 
     persistence:
       data:

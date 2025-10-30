@@ -98,7 +98,6 @@ spec:
         parentRefs:
           - name: internal
             namespace: networking
-            sectionName: https
 
     rbac:
       roles:

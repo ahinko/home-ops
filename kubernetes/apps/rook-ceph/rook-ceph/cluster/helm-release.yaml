@@ -43,7 +43,6 @@ spec:
         parentRefs:
           - name: internal
             namespace: networking
-            sectionName: https
         rules:
           - backendRefs:
               - name: rook-ceph-mgr-dashboard

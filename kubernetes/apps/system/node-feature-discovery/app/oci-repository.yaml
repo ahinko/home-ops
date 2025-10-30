@@ -11,5 +11,3 @@ spec:
   ref:
     tag: 0.18.2
   url: oci://registry.k8s.io/nfd/charts/node-feature-discovery
-  verify:
-    provider: cosign
