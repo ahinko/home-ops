@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 2.6.2
+              tag: 2.6.3
 
             envFrom:
               - secretRef:
