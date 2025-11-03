@@ -22,7 +22,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.2.1@sha256:2c951a4063b55ec2de197fdf6a85e32b05872d3a18a18eaf851b827ff2622814
+              tag: v2.2.2@sha256:6f57cf359f57f05c89238680b39ca7cd0e135477e11247ad4beb02cc740bbfda
             env:
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
               DB_HOSTNAME: "postgres18-rw.databases.svc.cluster.local"
@@ -62,7 +62,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.2.1@sha256:590a76bba3d88ccf78b03cde0c0fb8788f7d76ae6caf90ad33a34b5b4cc35f11
+              tag: v2.2.2@sha256:848b097e1250695ceaa371824b441356847140328bcfb921bdd5e3459878d535
             envFrom:
               - secretRef:
                   name: immich-secret
