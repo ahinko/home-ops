@@ -1,6 +1,6 @@
 ---
 - name: Install required system packages
-  apt:
+  ansible.builtin.apt:
     name:
       - build-essential
       - cmake
@@ -16,12 +16,12 @@
   become: yes
 
 - name: Create wmbusmeters group
-  group:
+  ansible.builtin.group:
     name: wmbusmeters
     system: yes
 
 - name: Create wmbusmeters user
-  user:
+  ansible.builtin.user:
     name: "{{ wmbusmeters_user }}"
     group: "{{ wmbusmeters_group }}"
     system: yes
@@ -31,14 +31,14 @@
   become: yes
 
 - name: Add wmbusmeters user to dialout group for USB access
-  user:
+  ansible.builtin.user:
     name: "{{ wmbusmeters_user }}"
     groups: dialout
     append: yes
   become: yes
 
 - name: Create wmbusmeters directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ wmbusmeters_user }}"
@@ -52,7 +52,7 @@
   become: yes
 
 - name: Clone wmbusmeters repository
-  git:
+  ansible.builtin.git:
     repo: https://github.com/wmbusmeters/wmbusmeters.git
     dest: "{{ wmbusmeters_home }}/wmbusmeters-src"
     version: master
@@ -60,7 +60,7 @@
   become: yes
 
 - name: Change ownership of wmbusmeters source
-  file:
+  ansible.builtin.file:
     path: "{{ wmbusmeters_home }}/wmbusmeters-src"
     owner: "{{ wmbusmeters_user }}"
     group: "{{ wmbusmeters_group }}"
@@ -78,7 +78,7 @@
     ansible_ssh_pipelining: yes
 
 - name: Install wmbusmeters binary
-  copy:
+  ansible.builtin.copy:
     src: "{{ wmbusmeters_home }}/wmbusmeters-src/build/wmbusmeters"
     dest: /usr/local/bin/wmbusmeters
     mode: "0755"
@@ -89,7 +89,7 @@
   notify: restart wmbusmeters
 
 - name: Create wmbusmeters main configuration
-  template:
+  ansible.builtin.template:
     src: wmbusmeters.conf.j2
     dest: /etc/wmbusmeters.conf
     owner: "{{ wmbusmeters_user }}"
@@ -99,7 +99,7 @@
   notify: restart wmbusmeters
 
 - name: Create meter configurations
-  template:
+  ansible.builtin.template:
     src: meter.conf.j2
     dest: "/etc/wmbusmeters.d/{{ item.name }}.conf"
     owner: "{{ wmbusmeters_user }}"
@@ -110,7 +110,7 @@
   notify: restart wmbusmeters
 
 - name: Create Home Assistant discovery script
-  template:
+  ansible.builtin.template:
     src: send_ha_discovery.sh.j2
     dest: "{{ wmbusmeters_home }}/send_ha_discovery.sh"
     owner: "{{ wmbusmeters_user }}"
@@ -122,7 +122,7 @@
     - restart wmbusmeters
 
 - name: Create systemd service file
-  template:
+  ansible.builtin.template:
     src: wmbusmeters.service.j2
     dest: /etc/systemd/system/wmbusmeters.service
     owner: root
@@ -134,7 +134,7 @@
     - restart wmbusmeters
 
 - name: Enable and start wmbusmeters service
-  systemd:
+  ansible.builtin.systemd:
     name: wmbusmeters
     enabled: yes
     state: started

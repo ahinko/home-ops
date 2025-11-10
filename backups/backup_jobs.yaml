@@ -1,9 +1,5 @@
 ---
 jobs:
-  - namespace: games
-    pvc: romm-games
-    destination_path: /Volumes/Backup/games
-
   - namespace: selfhosted
     pvc: immich-media
     destination_path: /Volumes/Backup/immich

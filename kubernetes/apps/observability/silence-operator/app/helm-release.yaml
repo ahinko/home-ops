@@ -9,9 +9,9 @@ spec:
     name: silence-operator
   values:
     alertmanagerAddress: http://alertmanager.observability.svc.cluster.local:9093
-    image:
-      registry: quay.io
-      name: giantswarm/silence-operator
-      tag: 0.18.0
     networkPolicy:
       enabled: false
+    image:
+      registry: gsoci.azurecr.io
+      name: "giantswarm/silence-operator"
+      tag: "0.20.0"

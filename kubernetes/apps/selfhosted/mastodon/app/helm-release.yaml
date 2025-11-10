@@ -83,6 +83,22 @@ spec:
                 memory: 500Mi
 
       web:
+        initContainers:
+          init:
+            image:
+              repository: ghcr.io/mastodon/mastodon
+              tag: v4.5.0
+            command:
+              - bash
+              - -c
+              - |
+                echo "Running database migrations..."
+                bundle exec rails db:migrate
+            envFrom:
+              - secretRef:
+                  name: mastodon-secret
+            env: *env
+
         containers:
           main:
             image:
@@ -137,14 +153,8 @@ spec:
                 memory: 2048Mi
               requests:
                 memory: 500Mi
+
         pod:
-          securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
-            fsGroup: 1001
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 65539
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

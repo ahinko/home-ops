@@ -47,10 +47,6 @@ nodes:
           - security=none # Less security, faster puter
           - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
           - talos.auditd.disabled=1 # Less security, faster puter
-          # might fix black screen
-          # - video=HDMI-A-1:1920x1080@60D
-          # - video=HDMI-A-2:1920x1080@60D
-          # - drm_kms_helper.poll=0
         systemExtensions:
           officialExtensions:
             - siderolabs/i915

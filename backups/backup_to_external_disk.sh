@@ -47,7 +47,7 @@ spec:
 EOF
 
     echo "Waiting for pod..."
-    sleep 5
+    sleep 30
 
     POD=$(kubectl get pod -n ${NAMESPACE} -l app=zfs-backup-${PVC} -o jsonpath="{.items[0].metadata.name}")
 

@@ -11,6 +11,4 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  configMapRef:
-    name: spegel-dashboard
-    key: spegel.json
+  url: https://grafana.com/api/dashboards/22104/revisions/1/download
