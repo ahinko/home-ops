@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: vernemq/vernemq
-              tag: 2.1.1-alpine
+              tag: 2.1.2-alpine
             env:
               MY_POD_NAME:
                 valueFrom:
