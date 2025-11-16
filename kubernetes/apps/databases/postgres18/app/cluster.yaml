@@ -6,7 +6,7 @@ metadata:
   name: postgres18
 spec:
   instances: 3
-  imageName: ghcr.io/ahinko/postgres18:18.0.4
+  imageName: ghcr.io/ahinko/postgres18:18.0.5
   primaryUpdateStrategy: unsupervised
   storage:
     size: 100Gi
