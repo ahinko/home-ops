@@ -22,7 +22,7 @@ spec:
             nameOverride: qbittorrent
             image:
               repository: ghcr.io/home-operations/qbittorrent
-              tag: 5.1.3
+              tag: 5.1.4
             env:
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: &torrentPort 50413
