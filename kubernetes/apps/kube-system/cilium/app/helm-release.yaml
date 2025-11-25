@@ -41,7 +41,7 @@ spec:
     hubble:
       enabled: false
     ipam:
-      mode: "kubernetes"
+      mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445
@@ -52,7 +52,8 @@ spec:
     loadBalancer:
       algorithm: maglev
       mode: dsr
-    localRedirectPolicy: true
+    localRedirectPolicies:
+      enabled: true
     operator:
       dashboards:
         enabled: true
@@ -91,3 +92,6 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
+    socketLB:
+      enabled: true
+      hostNamespaceOnly: true

@@ -228,9 +228,8 @@ controlPlane:
         features:
           hostDNS:
             enabled: true
+            forwardKubeDNSToHost: true
             resolveMemberNames: true
-            # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
-            forwardKubeDNSToHost: false
 
     # Disable default API server admission plugins.
     - |-
