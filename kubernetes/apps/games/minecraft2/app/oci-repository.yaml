@@ -5,7 +5,7 @@ kind: OCIRepository
 metadata:
   name: itzg-minecraft-server
 spec:
-  interval: 1h
+  interval: 12h
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
