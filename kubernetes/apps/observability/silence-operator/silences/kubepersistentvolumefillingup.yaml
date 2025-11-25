@@ -1,9 +1,0 @@
----
-apiVersion: observability.giantswarm.io/v1alpha2
-kind: Silence
-metadata:
-  name: kubepersistentvolumefillingup
-spec:
-  matchers:
-    - name: alertname
-      value: KubePersistentVolumeFillingUp
