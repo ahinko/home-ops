@@ -25,7 +25,7 @@ releases:
   - name: external-secrets
     namespace: security
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 1.1.0
+    version: 1.1.1
 
   - name: envoy-gateway
     namespace: networking
