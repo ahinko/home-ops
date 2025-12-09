@@ -22,7 +22,7 @@ spec:
           postgres:
             image:
               repository: ghcr.io/ahinko/postgres18
-              tag: 18.0.8
+              tag: 18.0.9
             env:
               - name: POSTGRES_DB
                 value: "aliasvault,docmost,miniflux,teslamate,synapse,mastodon,homeassistant,immich"
