@@ -19,7 +19,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mastodon/mastodon
-              tag: v4.5.2
+              tag: v4.5.3
             command: ["bundle", "exec", "sidekiq"]
             envFrom:
               - secretRef:
@@ -69,7 +69,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mastodon/mastodon-streaming
-              tag: v4.5.2
+              tag: v4.5.3
             command: ["node", "./streaming/index.js"]
             envFrom:
               - secretRef:
@@ -87,7 +87,7 @@ spec:
           init:
             image:
               repository: ghcr.io/mastodon/mastodon
-              tag: v4.5.2
+              tag: v4.5.3
             command:
               - bash
               - -c
@@ -103,7 +103,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mastodon/mastodon
-              tag: v4.5.2
+              tag: v4.5.3
             command: ["bundle", "exec", "puma", "-C", "config/puma.rb"]
             envFrom:
               - secretRef:
@@ -141,7 +141,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mastodon/mastodon
-              tag: v4.5.2
+              tag: v4.5.3
             command: ["tootctl", "media", "remove", "--days=7"]
             envFrom:
               - secretRef:
