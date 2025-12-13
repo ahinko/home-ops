@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/docmost
-              tag: 0.23.2
+              tag: 0.24.0
 
             env:
               APP_SECRET:
