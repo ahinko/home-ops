@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              tag: 10.11.4
+              tag: 10.11.5
 
             resources:
               requests:
