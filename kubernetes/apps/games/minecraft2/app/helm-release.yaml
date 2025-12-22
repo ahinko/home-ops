@@ -11,7 +11,7 @@ spec:
   values:
     image:
       repository: ghcr.io/ahinko/minecraft-bedrock
-      tag: 2025.12.1
+      tag: 2025.12.2
     resources:
       requests:
         memory: 512Mi
