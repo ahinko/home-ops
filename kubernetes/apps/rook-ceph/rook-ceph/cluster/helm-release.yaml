@@ -28,6 +28,10 @@ spec:
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
 
+      csi:
+        readAffinity:
+          enabled: false
+
       dashboard:
         enabled: true
         urlPrefix: /
