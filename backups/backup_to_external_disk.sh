@@ -14,10 +14,19 @@ for ((i=0; i<NUM_JOBS; i++)); do
     PVC=$(yq eval ".jobs[$i].pvc" "$CONFIG_FILE")
     DESTINATION_PATH=$(yq eval ".jobs[$i].destination_path" "$CONFIG_FILE")
 
-    # Verify destination path exists
+    # Ensure destination path exists and is writable
     if [ ! -d "$DESTINATION_PATH" ]; then
-        echo "Error: Destination path '$DESTINATION_PATH' does not exist. Skipping this job."
+      echo "Destination path '$DESTINATION_PATH' does not exist; attempting to create it..."
+      if ! mkdir -p "$DESTINATION_PATH"; then
+        echo "Error: Failed to create destination path '$DESTINATION_PATH'. Skipping this job."
         continue
+      fi
+      echo "Created destination path '$DESTINATION_PATH'."
+    fi
+
+    if [ ! -w "$DESTINATION_PATH" ]; then
+      echo "Error: Destination path '$DESTINATION_PATH' is not writable. Skipping this job."
+      continue
     fi
 
     echo "Backing up ${NAMESPACE}/${PVC} to ${DESTINATION_PATH}"

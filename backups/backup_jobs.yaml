@@ -1,13 +1,13 @@
 ---
 jobs:
-  - namespace: selfhosted
-    pvc: immich-media
-    destination_path: /Volumes/Backup/immich
+  - namespace: storage
+    pvc: restic-rest-data
+    destination_path: /Volumes/Backup/restic
 
   - namespace: storage
     pvc: samba-data
     destination_path: /Volumes/Backup/samba
 
-  - namespace: storage
-    pvc: restic-rest-data
-    destination_path: /Volumes/Backup/restic
+  - namespace: selfhosted
+    pvc: immich-media
+    destination_path: /Volumes/Backup/immich
