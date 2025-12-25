@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: vernemq
+    - name: mosquitto
       namespace: databases
     - name: postgres18
       namespace: databases

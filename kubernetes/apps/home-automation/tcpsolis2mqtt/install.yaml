@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   dependsOn:
-    - name: vernemq
+    - name: mosquitto
       namespace: databases
   interval: 1h
   path: "./kubernetes/apps/home-automation/tcpsolis2mqtt/app"

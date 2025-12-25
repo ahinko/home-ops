@@ -11,7 +11,7 @@ spec:
   dependsOn:
     - name: postgres18
       namespace: databases
-    - name: vernemq
+    - name: mosquitto
       namespace: databases
   interval: 1h
   path: "./kubernetes/apps/home-automation/teslamate/app"
