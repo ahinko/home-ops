@@ -1,0 +1,18 @@
+---
+machine:
+  install:
+    disk: /dev/sda
+  type: controlplane
+  nodeLabels:
+    node.kubernetes.io/gpu: "true"
+    node.kubernetes.io/gpu.arc: "true"
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: n02
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: mac(link.permanent_addr) == "88:ae:dd:68:a1:b6"

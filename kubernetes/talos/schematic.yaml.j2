@@ -1,0 +1,25 @@
+---
+customization:
+  extraKernelArgs:
+    - -selinux
+    - -init_on_alloc
+    - -init_on_free
+    - apparmor=0
+    - i915.enable_guc=3
+    - init_on_alloc=0
+    - init_on_free=0
+    - intel_iommu=on
+    - iommu=pt
+    - mitigations=off
+    - security=none
+    - sysctl.kernel.kexec_load_disabled=1
+    - talos.auditd.disabled=1
+    - net.ifnames=1 # Enable predictable NIC naming
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/i915 # Intel iGPU
+      - siderolabs/intel-ucode # Intel iGPU
+      - siderolabs/mei # Intel iGPU
+{% if ENV.HAS_ZFS == "true" %}
+      - siderolabs/zfs
+{% endif %}

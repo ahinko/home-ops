@@ -3,28 +3,6 @@
   customManagers: [
     {
       customType: "regex",
-      description: "Process Kubernetes versions",
-      fileMatch: ["kubernetes/talos/talconfig.yaml"],
-      matchStrings: ["kubernetesVersion: (?<currentValue>.*)"],
-      depNameTemplate: "ghcr.io/siderolabs/kubelet",
-      datasourceTemplate: "docker",
-    },
-    {
-      customType: "regex",
-      description: "Process Talos versions",
-      fileMatch: [
-        "kubernetes/talos/talconfig.yaml",
-        ".taskfiles/talos/taskfile.yaml",
-      ],
-      matchStrings: [
-        "talosVersion: (?<currentValue>.*)",
-        "factory.talos.dev/image/[a-z0-9]*/(?<currentValue>.*)/metal",
-      ],
-      depNameTemplate: "ghcr.io/siderolabs/installer",
-      datasourceTemplate: "docker",
-    },
-    {
-      customType: "regex",
       description: "Process raw GitHub URLs",
       fileMatch: ["kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
       matchStrings: [

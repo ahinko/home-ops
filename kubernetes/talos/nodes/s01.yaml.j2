@@ -1,0 +1,22 @@
+---
+machine:
+  type: worker
+  install:
+    diskSelector:
+      serial: "S4EVNM0R816141L"
+    image: factory.talos.dev/metal-installer/4dc3f9e65093d1c47a15fa5ab9bdae7121036139f08b9709df1f0bbe3aead6d5:v1.12.0
+  kernel:
+    modules:
+      - name: zfs
+  nodeLabels:
+    node.kubernetes.io/gpu: "true"
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: s01
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: mac(link.permanent_addr) == "ec:e7:a7:17:ff:4c"

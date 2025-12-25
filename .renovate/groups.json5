@@ -130,15 +130,6 @@
       },
     },
     {
-      description: "Silence Operator Group",
-      groupName: "Silence Operator",
-      matchDatasources: ["docker", "github-releases"],
-      matchPackageNames: ["/silence-operator/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-    },
-    {
       description: "AliasVault Group",
       groupName: "AliasVault",
       matchDatasources: ["docker"],

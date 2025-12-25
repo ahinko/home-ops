@@ -1,6 +1,5 @@
 # Tap
 tap "fluxcd/tap"
-tap "go-task/tap"
 tap "siderolabs/tap"
 
 # Terminal
@@ -15,7 +14,6 @@ cask "claude-code"
 # Command line tools
 brew "bash"
 brew "ansible"
-brew "go-task/tap/go-task"
 brew "just"
 brew "git"
 brew "nano"

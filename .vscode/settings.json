@@ -3,6 +3,7 @@
     "*.json5": "json5",
     "**/ansible/**/*.yaml": "ansible",
     "**/**/inventory/**/*.yaml": "yaml",
+    "mod.just": "just",
   },
   "material-icon-theme.folders.associations": {
     "*.gotmpl": "smarty",
