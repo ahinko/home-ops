@@ -4,20 +4,28 @@
     {
       description: "Talos Group",
       groupName: "Talos",
-      matchDatasources: ["docker", "helm"],
-      matchPackageNames: ["/siderolabs/talos/", "/siderolabs/installer/", "/siderolabs/talosctl/"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/installer/", "/talosctl/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
+      minimumGroupSize: 2,
     },
     {
-      description: "Node Feature Discovery Group",
-      groupName: "Node Feature Discovery",
-      matchDatasources: ["helm", "kustomization", "docker"],
-      matchPackageNames: ["/node-feature-discovery/"],
+      description: "Kubernetes Group",
+      groupName: "Kubernetes",
+      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "/kube-apiserver/",
+        "/kube-controller-manager/",
+        "/kube-proxy/",
+        "/kube-scheduler/",
+        "/kubelet/",
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
+      minimumGroupSize: 5,
     },
     {
       description: "Immich Group",
@@ -101,15 +109,6 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 3,
-    },
-    {
-      description: "Intel Device Plugins Group",
-      groupName: "Intel-Device-Plugins",
-      matchDatasources: ["helm"],
-      matchPackageNames: ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
     },
     {
       description: "Rook-Ceph Group",
