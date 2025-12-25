@@ -5,5 +5,4 @@ resources:
   - ./grafana-dashboard.yaml
   - ./grafana-datasource.yaml
   - ./grafana.yaml
-  - ./httproute.yaml
   - ./servicemonitor.yaml

@@ -96,6 +96,22 @@ spec:
             - name: grafana-data
               persistentVolumeClaim:
                 claimName: grafana-pvc
+
+  httpRoute:
+    metadata:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/description: Monitoring and observability platform
+        gethomepage.dev/group: Kubernetes
+        gethomepage.dev/icon: sh-grafana.svg
+        gethomepage.dev/name: Grafana
+        gethomepage.dev/app: grafana
+    spec:
+      parentRefs:
+        - name: internal
+          namespace: networking
+      hostnames:
+        - grafana.hemma.dev
   persistentVolumeClaim:
     spec:
       accessModes:
