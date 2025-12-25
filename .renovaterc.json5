@@ -22,20 +22,13 @@
     'github>ahinko/home-ops//.renovate/semanticCommits.json5',
   ],
   flux: {
-    managerFilePatterns: [
-      '/kubernetes/.+\\.yaml$/',
-    ],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
-  'helm-values': {
-    managerFilePatterns: [
-      '/kubernetes/.+\\.yaml$/',
-    ],
+  "helm-values": {
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   kubernetes: {
-    managerFilePatterns: [
-      '/kubernetes/.+\\.yaml$/',
-      '/backups/.+\\.yaml$/',
-    ],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   platformCommit: 'enabled',
   rebaseWhen: 'auto',

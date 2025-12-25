@@ -39,6 +39,9 @@ data:
       Apps:
         style: column
         icon: immich
+      Development:
+        style: column
+        icon: code-server
       Security:
         style: column
         icon: pocket-id

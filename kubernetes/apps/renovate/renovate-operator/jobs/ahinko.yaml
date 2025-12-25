@@ -1,0 +1,64 @@
+---
+apiVersion: generators.external-secrets.io/v1alpha1
+kind: GithubAccessToken
+metadata:
+  name: homeops-bot-auth-token
+spec:
+  appID: "192632"
+  installID: "25062050"
+  auth:
+    privateKey:
+      secretRef:
+        name: homeops-bot-pem # reference secret from step 1.
+        key: private_key_pem
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: homeops-bot-auth-token
+spec:
+  refreshInterval: "30m0s"
+  target:
+    name: homeops-bot-ahinko
+    template:
+      type: Opaque
+      engineVersion: v2
+      data:
+        GITHUB_COM_TOKEN: "{{ .token }}"
+        GITHUB_COM_USER: YWhpbmtv
+        RENOVATE_TOKEN: "{{ .token }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: GithubAccessToken
+          name: homeops-bot-auth-token
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: ahinko
+  namespace: renovate
+spec:
+  discoveryFilter: ahinko/*
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_ALLOWED_COMMANDS
+      value: '["pnpm run bundle"]'
+    - name: RENOVATE_ENDPOINT
+      value: https://api.github.com/
+    - name: RENOVATE_PLATFORM
+      value: github
+    - name: RENOVATE_PLATFORM_COMMIT
+      value: "true"
+  image: ghcr.io/renovatebot/renovate:42.59.1
+  parallelism: 5
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  schedule: 0 */2 * * * # Run every 2 hours
+  secretRef: homeops-bot-ahinko
+  webhook:
+    enabled: true

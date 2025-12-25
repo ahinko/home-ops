@@ -9,5 +9,17 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       ignoreTests: true
     },
+    {
+      description: "Auto merge minors and patches after minimumReleaseAge",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: [
+        "ghcr.io/renovatebot/renovate",
+      ],
+      "minimumReleaseAge": "3 days",
+      ignoreTests: false,
+    },
   ]
 }
