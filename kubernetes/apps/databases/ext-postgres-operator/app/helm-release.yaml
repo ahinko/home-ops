@@ -15,7 +15,7 @@ spec:
     existingSecret: ext-postgres-operator-secret
 
     env:
-      POSTGRES_HOST: "postgres18-rw.databases.svc.cluster.local"
+      POSTGRES_HOST: "postgres18-rw.databases.svc.cluster.local:5432"
       POSTGRES_DEFAULT_DATABASE: "postgres"
       POSTGRES_URI_ARGS: ""
       POSTGRES_CLOUD_PROVIDER: ""
