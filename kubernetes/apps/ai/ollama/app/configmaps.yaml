@@ -7,6 +7,7 @@ data:
   models.txt: |
     zongwei/gemma3-translator:4b
     LayOnGGUF/llama3-stheno:8b
+    qwen3:4b
 
 ---
 apiVersion: v1

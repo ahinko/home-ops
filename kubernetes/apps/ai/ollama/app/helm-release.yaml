@@ -13,7 +13,7 @@ spec:
       ollama:
         pod:
           nodeSelector:
-            intel.feature.node.kubernetes.io/gpu-product: "arc"
+            node.kubernetes.io/gpu.arc: "true"
 
         initContainers:
           sync-models:
@@ -48,14 +48,14 @@ spec:
             env: *envVars
 
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: "2"
                 memory: "8Gi"
-                gpu.intel.com/i915: 1
               limits:
                 cpu: "8"
                 memory: "16Gi"
-                gpu.intel.com/i915: 1
             securityContext:
               privileged: false
               capabilities:
@@ -86,6 +86,11 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               startup: *probe
+
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: ollama
 
     service:
       app:
