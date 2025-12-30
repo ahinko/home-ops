@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   # renovate: datasource=github-releases depName=cloudnative-pg/plugin-barman-cloud
-  - https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.9.0/manifest.yaml
+  - https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.10.0/manifest.yaml
   - ./external-secret.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
