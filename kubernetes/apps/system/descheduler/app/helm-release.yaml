@@ -46,7 +46,7 @@ spec:
               args:
                 nodeAffinityType:
                   - requiredDuringSchedulingIgnoredDuringExecution
-            - name: RemovePodsViolatingNodeTaints
+            #- name: RemovePodsViolatingNodeTaints
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingTopologySpreadConstraint
           plugins:
@@ -57,7 +57,7 @@ spec:
               enabled:
                 - RemoveFailedPods
                 - RemovePodsHavingTooManyRestarts
-                - RemovePodsViolatingNodeTaints
+                #- RemovePodsViolatingNodeTaints
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingInterPodAntiAffinity
     service:
