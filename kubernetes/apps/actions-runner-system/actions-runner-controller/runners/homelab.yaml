@@ -9,9 +9,6 @@ spec:
     kind: OCIRepository
     name: gha-runner-scale-set
   values:
-    runnerScaleSetName: &runnerScaleSetName arc-runner-set-homelab
-    namespaceOverride: actions-runner-system
-
     githubConfigUrl: https://github.com/ahinko/home-ops
     githubConfigSecret: home-ops-runner-secret
 
@@ -19,7 +16,7 @@ spec:
     maxRunners: 3
 
     containerMode:
-      type: dind
+      type: kubernetes
       kubernetesModeWorkVolumeClaim:
         accessModes:
           - ReadWriteOnce
@@ -27,6 +24,10 @@ spec:
         resources:
           requests:
             storage: 5Gi
+
+    controllerServiceAccount:
+      name: gha-runner-scale-set-controller
+      namespace: actions-runner-system
 
     template:
       spec:
@@ -51,26 +52,3 @@ spec:
           - name: talos
             secret:
               secretName: actions-runner
-
-        topologySpreadConstraints:
-          - maxSkew: 1
-            topologyKey: kubernetes.io/hostname
-            whenUnsatisfiable: DoNotSchedule
-            labelSelector:
-              matchLabels:
-                app.kubernetes.io/name: *runnerScaleSetName
-
-        affinity:
-          nodeAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 1
-                preference:
-                  matchExpressions:
-                    - key: kubernetes.io/hostname
-                      operator: In
-                      values:
-                        - s01
-
-    controllerServiceAccount:
-      name: gha-runner-scale-set-controller
-      namespace: actions-runner-system
