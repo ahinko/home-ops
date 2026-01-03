@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Find current Talos version .taskfiles/sidero.yaml
-TALOS_VERSION="$(sed -n 's/.*talosVersion: \([v0-9.]*\)/\1/p' kubernetes/talos/talconfig.yaml)"
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+version=v1.12.0
 
 # Get file from Talos repo that includes default Kubernetes version
-SOURCE_CONSTANTS=$(curl -s https://raw.githubusercontent.com/siderolabs/talos/$TALOS_VERSION/pkg/machinery/constants/constants.go)
+SOURCE_CONSTANTS=$(curl -s https://raw.githubusercontent.com/siderolabs/talos/$version/pkg/machinery/constants/constants.go)
 
 # Find kubernetes version
 TALOS_K8S_VERSION=$(expr "$SOURCE_CONSTANTS" : '.*DefaultKubernetesVersion = "\([0-9.]*\)"')
