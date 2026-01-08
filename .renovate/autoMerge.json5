@@ -18,7 +18,6 @@
       matchPackageNames: [
         "ghcr.io/renovatebot/renovate",
       ],
-      "minimumReleaseAge": "3 days",
       ignoreTests: false,
     },
   ]
