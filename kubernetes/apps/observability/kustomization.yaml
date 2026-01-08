@@ -6,6 +6,7 @@ resources:
   - ./alertmanager/install.yaml
   - ./gatus/install.yaml
   - ./grafana/install.yaml
+  - ./headlamp/install.yaml
   - ./kube-prometheus-stack/install.yaml
   - ./kube-state-metrics/install.yaml
   - ./node-exporter/install.yaml
