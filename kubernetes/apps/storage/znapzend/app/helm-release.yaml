@@ -21,8 +21,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/ahinko/znapzend
-              tag: 0.23.2
+              repository: oetiker/znapzend
+              tag: v0.23.2
 
             securityContext:
               allowPrivilegeEscalation: true

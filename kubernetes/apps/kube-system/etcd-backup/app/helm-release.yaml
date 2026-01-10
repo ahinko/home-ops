@@ -36,7 +36,7 @@ spec:
         containers:
           restic:
             image:
-              repository: ghcr.io/ahinko/restic
+              repository: restic/restic
               tag: 0.18.1
             workingDir: /data
             args:
@@ -72,7 +72,7 @@ spec:
         containers:
           restic:
             image:
-              repository: ghcr.io/ahinko/restic
+              repository: restic/restic
               tag: 0.18.1
             args:
               - forget

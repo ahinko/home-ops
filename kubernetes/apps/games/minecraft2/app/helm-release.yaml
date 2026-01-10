@@ -10,7 +10,7 @@ spec:
     name: itzg-minecraft-server
   values:
     image:
-      repository: ghcr.io/ahinko/minecraft-bedrock
+      repository: ghcr.io/itzg/minecraft-bedrock-server
       tag: 2025.12.2
     resources:
       requests:
