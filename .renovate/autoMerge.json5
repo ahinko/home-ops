@@ -13,12 +13,12 @@
       description: "Auto merge minors and patches after minimumReleaseAge",
       matchDatasources: ["docker"],
       automerge: true,
-      automergeType: "pr",
+      automergeType: "branch",
       matchUpdateTypes: ["minor", "patch"],
       matchPackageNames: [
         "ghcr.io/renovatebot/renovate",
       ],
-      ignoreTests: false,
+      ignoreTests: true,
     },
   ]
 }

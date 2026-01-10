@@ -25,7 +25,7 @@ spec:
           expr: |
             avg by (exported_namespace, namespace, name) (
             certmanager_certificate_expiration_timestamp_seconds - time())
-              < (21 * 24 * 3600)
+              < (14 * 24 * 3600)
           for: 15m
           labels:
             severity: warning

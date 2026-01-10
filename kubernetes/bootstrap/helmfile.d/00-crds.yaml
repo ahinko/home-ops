@@ -8,13 +8,7 @@ helmDefaults:
   cleanupOnFail: true
   wait: true
   waitForJobs: true
-  args:
-    - --include-crds
-    - --no-hooks
-  postRenderer: bash
-  postRendererArgs:
-    - -c
-    - yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -
+  args: ["--include-crds", "--no-hooks"] # Prevent helmfile apply or sync
 
 releases:
   - name: cloudflare-dns
