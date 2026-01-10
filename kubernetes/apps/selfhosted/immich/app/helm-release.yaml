@@ -11,7 +11,6 @@ spec:
   values:
     controllers:
       server:
-        strategy: RollingUpdate
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
@@ -24,24 +23,19 @@ spec:
               repository: ghcr.io/immich-app/immich-server
               tag: v2.4.1
             env:
+              TZ: "Europe/Stockholm"
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
+              IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.selfhosted:3003
+              DISABLE_REVERSE_GEOCODING: "true"
+              REDIS_HOSTNAME: &redisHost "dragonfly.databases.svc.cluster.local"
+              REDIS_DBINDEX: &redisDB "2"
               DB_HOSTNAME: "postgres18-rw.databases.svc.cluster.local"
               DB_PORT: 5432
               DB_DATABASE_NAME: "immich"
-              DB_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: immich-secret
-                    key: DB_USERNAME
-              DB_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: immich-secret
-                    key: DB_PASSWORD
 
             envFrom:
-              - configMapRef:
-                  name: immich-configmap
+              - secretRef:
+                  name: immich-secret
 
             resources:
               requests:
@@ -51,7 +45,6 @@ spec:
                 memory: 4096Mi
 
       machine-learning:
-        strategy: RollingUpdate
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
@@ -63,14 +56,16 @@ spec:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v2.4.1
-            envFrom:
-              - secretRef:
-                  name: immich-secret
-              - configMapRef:
-                  name: immich-configmap
             env:
+              TZ: "Europe/Stockholm"
+              REDIS_HOSTNAME: *redisHost
+              REDIS_DBINDEX: *redisDB
               MPLCONFIGDIR: "/cache/matplotlib"
+              # ML cache folder paths
+              MACHINE_LEARNING_CACHE_FOLDER: "/cache"
+              TRANSFORMERS_CACHE: "/cache"
               IMMICH_MEDIA_LOCATION: *mediaLocation
+
             resources:
               requests:
                 cpu: 100m
@@ -78,12 +73,12 @@ spec:
               limits:
                 memory: 3949M
 
-      valkey:
-        containers:
-          app:
-            image:
-              repository: ghcr.io/valkey-io/valkey
-              tag: 9.0.1
+      # valkey:
+      #   containers:
+      #     app:
+      #       image:
+      #         repository: ghcr.io/valkey-io/valkey
+      #         tag: 9.0.1
 
     service:
       server:
@@ -91,16 +86,32 @@ spec:
         ports:
           http:
             port: &port 2283
+          metrics-api:
+            port: 8081
+          metrics-ms:
+            port: 8082
       machine-learning:
         controller: machine-learning
         ports:
           http:
             port: 3003
-      valkey:
-        controller: valkey
-        ports:
-          http:
-            port: 6379
+      # valkey:
+      #   controller: valkey
+      #   ports:
+      #     http:
+      #       port: 6379
+
+    serviceMonitor:
+      server:
+        enabled: true
+        serviceName: server
+        endpoints:
+          - port: metrics-api
+            scheme: http
+            path: /metrics
+          - port: metrics-ms
+            scheme: http
+            path: /metrics
 
     route:
       server:
@@ -134,14 +145,23 @@ spec:
         globalMounts:
           - path: *mediaLocation
 
-      cache:
+      machine-learning-cache:
         type: persistentVolumeClaim
-        existingClaim: immich-machine-learning-cache
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 50Gi
+        advancedMounts:
+          machine-learning:
+            main:
+              - path: /cache
+                subPath: cache
+              - path: /.cache
+                subPath: dotCache
+
+      tmp:
+        type: emptyDir
         globalMounts:
-          - path: /cache
-            subPath: cache
-          - path: /.cache
-            subPath: dotCache
+          - path: /tmp
 
       tmpfs:
         type: emptyDir

@@ -7,10 +7,8 @@ labels:
       app.kubernetes.io/instance: immich
       app.kubernetes.io/part-of: immich
 resources:
-  - ./configmap.yaml
   - ./database.yaml
   - ./external-secret.yaml
   - ./helm-release.yaml
-  - ./ml-pvc.yaml
   - ./oci-repository.yaml
   - ./pvc.yaml

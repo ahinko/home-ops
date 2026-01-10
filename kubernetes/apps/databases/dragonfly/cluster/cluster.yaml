@@ -12,7 +12,8 @@ spec:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
-    - --lock_on_hashtags
+    - --default_lua_flags=allow-undeclared-keys
+    - --shard_repl_backlog_len=8192
   env:
     - name: MAX_MEMORY
       valueFrom:
@@ -22,17 +23,17 @@ spec:
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
-    limits:
       memory: 512Mi
+    limits:
+      memory: 1Gi
   serviceSpec:
     type: LoadBalancer
     annotations:
       lbipam.cilium.io/ips: 192.168.20.207
   topologySpreadConstraints:
     - maxSkew: 1
-      topologyKey: "kubernetes.io/hostname"
-      whenUnsatisfiable: "DoNotSchedule"
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
       labelSelector:
         matchLabels:
           app.kubernetes.io/part-of: dragonfly
