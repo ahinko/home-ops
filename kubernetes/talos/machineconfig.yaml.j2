@@ -156,8 +156,8 @@ provisioning:
   diskSelector:
     match: system_disk
   grow: false
-  minSize: 100GiB
-  maxSize: 100GiB
+  minSize: 300GiB
+  maxSize: 300GiB
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
@@ -165,4 +165,4 @@ name: local-hostpath
 provisioning:
   diskSelector:
     match: system_disk
-  minSize: 350GiB
+  minSize: 650GiB

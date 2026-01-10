@@ -1,7 +1,8 @@
 ---
 machine:
   install:
-    disk: /dev/sda
+    diskSelector:
+      model: Sabrent SB-2142-1TB
   type: controlplane
   nodeLabels:
     node.kubernetes.io/gpu: "true"
