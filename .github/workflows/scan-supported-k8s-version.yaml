@@ -7,7 +7,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "kubernetes/talos/talconfig.yaml"
+      - "kubernetes/talos/machineconfig.yaml.j2"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
