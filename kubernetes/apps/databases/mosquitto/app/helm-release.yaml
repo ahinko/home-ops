@@ -54,8 +54,6 @@ spec:
                 drop:
                   - ALL
     persistence:
-      config:
-        existingClaim: "{{ .Release.Name }}-cache"
       config-file:
         type: configMap
         identifier: config
