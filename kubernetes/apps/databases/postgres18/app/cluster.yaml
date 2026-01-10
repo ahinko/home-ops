@@ -6,8 +6,8 @@ metadata:
   name: postgres18
 spec:
   instances: 3
-  imageName: ghcr.io/ahinko/postgres18:18.1.3
-  primaryUpdateStrategy: unsupervised
+  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1-202601050807-standard-trixie
   storage:
     size: 100Gi
     storageClass: openebs-hostpath
@@ -21,6 +21,15 @@ spec:
         barmanObjectName: postgres18-local-ceph
         serverName: postgres18-v2
   postgresql:
+    extensions:
+      - name: vchord
+        image:
+          # renovate: datasource=docker depName=ghcr.io/tensorchord/vchord-scratch
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v0.5.3
+        dynamic_library_path:
+          - /usr/lib/postgresql/18/lib/
+        extension_control_path:
+          - /usr/share/postgresql/18/
     parameters:
       max_connections: "100"
       shared_buffers: 128MB

@@ -57,6 +57,7 @@
       ],
       matchStrings: ["imageName: (?<depName>.*?):(?<currentValue>.*)"],
       datasourceTemplate: "docker",
+      versioningTemplate: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)-(?<patch>\\d+)-(?<compatibility>.*)$",
     },
   ],
 }
