@@ -112,6 +112,10 @@ spec:
           namespace: networking
       hostnames:
         - grafana.hemma.dev
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
   persistentVolumeClaim:
     spec:
       accessModes:

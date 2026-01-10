@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: grafana
+  name: grafana-operator
   namespace: observability
 spec:
   dependsOn:
@@ -26,7 +26,7 @@ metadata:
   namespace: observability
 spec:
   dependsOn:
-    - name: grafana
+    - name: grafana-operator
       namespace: observability
     - name: rook-ceph-cluster
       namespace: rook-ceph

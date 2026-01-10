@@ -9,14 +9,19 @@ spec:
     kind: OCIRepository
     name: spegel
   values:
-    spegel:
-      appendMirrors: true
-      containerdSock: /run/containerd/containerd.sock
-      containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+    grafanaDashboard:
+      enabled: true
+      mode: GrafanaOperator
+      grafanaOperator:
+        matchLabels:
+          grafana.internal/instance: grafana
     service:
       registry:
         hostPort: 29999
-    grafanaDashboard:
-      enabled: true
     serviceMonitor:
       enabled: true
+    spegel:
+      containerdSock: /run/containerd/containerd.sock
+      containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+      registryFilters:
+        - ".*:latest$"

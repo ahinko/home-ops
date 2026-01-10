@@ -22,4 +22,4 @@ spec:
           sourceLabels: ["__name__"]
           regex: controller_runtime_reconcile_time_seconds_bucket
       grafanaDashboard:
-        create: true
+        create: false
