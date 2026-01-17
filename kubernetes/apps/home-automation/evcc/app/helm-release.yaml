@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: evcc/evcc
-              tag: 0.300.3
+              tag: 0.300.4
 
             probes:
               liveness:
