@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: v1.8.0
+              tag: v1.9.0
             env:
               HOMEPAGE_ALLOWED_HOSTS: &host "start.hemma.dev"
             # envFrom:
