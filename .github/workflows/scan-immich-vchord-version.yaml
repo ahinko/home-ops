@@ -1,5 +1,5 @@
 ---
-name: Scan supported k8s versions in Talos
+name: Scan supported VChord versions in Immich
 
 on: # yamllint disable-line rule:truthy
   workflow_dispatch:
@@ -7,7 +7,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - ".github/scripts/kubernetes-version.sh"
+      - ".github/scripts/immich-vchord-allowed-version.sh"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   scan-versions:
-    name: Check if we should allow newer Kubernetes versions
+    name: Check if we should allow newer VChord versions
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,16 +30,16 @@ jobs:
 
       - name: Scan files
         run: |
-          .github/scripts/kubernetes-version.sh
+          .github/scripts/immich-vchord-allowed-version.sh
 
       - uses: gr2m/create-or-update-pull-request-action@v1
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
         with:
-          title: "feat(k8s): update allowed Kubernetes version"
-          body: "Talos supports a new Kubernetes version. The allowedVersions file has been updated with this new minor version."
-          branch: "update-allowed-kubernetes-version"
+          title: "feat(immich): update allowed VChord version"
+          body: "Immich supports a new VChord version. The allowedVersions file has been updated."
+          branch: "update-allowed-vchord-version"
           path: ".renovate/allowedVersions.json5"
-          commit-message: "Update allowedVersions.json5 with new minor version of Kubernetes."
-          labels: size/XS, area/kubernetes, type/minor
+          commit-message: "Update allowedVersions.json5 with new VChord version."
+          labels: size/XS, area/database, type/minor
           update-pull-request-title-and-body: true

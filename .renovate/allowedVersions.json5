@@ -9,5 +9,12 @@
         "registry.k8s.io/kubectl",
       ],
     },
+    {
+      allowedVersions: "<0.6", // immich dependency
+      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "ghcr.io/tensorchord/vchord-scratch",
+      ],
+    },
   ],
 }

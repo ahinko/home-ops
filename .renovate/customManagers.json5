@@ -59,5 +59,15 @@
       datasourceTemplate: "docker",
       versioningTemplate: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)-(?<patch>\\d+)-(?<compatibility>.*)$",
     },
+    {
+      customType: "regex",
+      description: "Tensorchord Vchord container",
+      fileMatch: [
+        "kubernetes/apps/databases/postgres18/app/.+\\.yaml$",
+      ],
+      matchStrings: ["reference: (?<depName>.*?):(?<currentValue>.*)"],
+      datasourceTemplate: "docker",
+      versioningTemplate: "regex:^pg18-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+    },
   ],
 }
