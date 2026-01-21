@@ -32,6 +32,8 @@ spec:
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
+              CRAWLER_NUM_WORKERS: 1
+              CRAWLER_SCREENSHOT_TIMEOUT_SEC: 30
               DATA_DIR: /data
               DISABLE_SIGNUPS: true
               MEILI_ADDR: http://karakeep-meilisearch.selfhosted.svc.cluster.local:7700
@@ -83,13 +85,19 @@ spec:
             command:
               - chromium-browser
             args:
-              - --headless
+              - --disable-audio
+              - --disable-audio-output
+              - --disable-bluetooth
+              - --disable-dev-shm-usage
+              - --disable-gpu
+              - --headless=new
+              - --hide-scrollbars
+              - --mute-audio
               - --no-sandbox
               - --disable-gpu
               - --disable-dev-shm-usage
               - --remote-debugging-address=0.0.0.0
               - --remote-debugging-port=9222
-              - --hide-scrollbars
             securityContext:
               capabilities:
                 drop:
