@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-rules
+  namespace: observability
+spec:
+  groups:
+    - name: node-alerts
+      rules:
+        - alert: NodeRebooted
+          expr: changes(node_boot_time_seconds[10m]) > 0
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Node {{ $labels.instance }} has rebooted"
+            description: 'Node {{ $labels.instance }} rebooted at {{ with query "node_boot_time_seconds{instance=''{{ $labels.instance }}''}" }}{{ . | first | value | humanizeTimestamp }}{{ end }}'
