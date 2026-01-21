@@ -31,7 +31,6 @@ brew "zx"
 brew "fluxcd/tap/flux"
 brew "kubernetes-cli"
 brew "kustomize"
-brew "talhelper"
 brew "siderolabs/tap/talosctl"
 brew "helmfile"
 brew "krew"
@@ -64,7 +63,5 @@ cask "1password-cli"
 brew "mas"
 
 # App store
-#mas "1password", id: 1333542190
 mas "Amphetamine", id: 937984704
-mas "MQTT Explorer", id: 1455214828
 mas "Unsplash Wallpapers", id: 1284863847

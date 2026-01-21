@@ -128,14 +128,5 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
-    {
-      description: "AliasVault Group",
-      groupName: "AliasVault",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/aliasvault/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-    },
   ],
 }
