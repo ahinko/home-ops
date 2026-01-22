@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-version=v1.12.1
+version=v1.12.2
 
 # Get file from Talos repo that includes default Kubernetes version
 SOURCE_CONSTANTS=$(curl -s https://raw.githubusercontent.com/siderolabs/talos/$version/pkg/machinery/constants/constants.go)
