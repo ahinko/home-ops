@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: quay.io/prometheus/alertmanager
-              tag: v0.30.1
+              tag: v0.31.0
             ports:
               - name: http
                 containerPort: 9093
