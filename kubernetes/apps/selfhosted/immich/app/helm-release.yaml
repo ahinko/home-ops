@@ -21,7 +21,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.5.2
+              tag: v2.5.3
             env:
               TZ: "Europe/Stockholm"
               IMMICH_MEDIA_LOCATION: &mediaLocation /usr/src/app/upload
@@ -55,7 +55,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.5.2
+              tag: v2.5.3
             env:
               TZ: "Europe/Stockholm"
               REDIS_HOSTNAME: *redisHost
