@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-version=v2.5.2
+version=v2.5.3
 
 # Get file from immich repo that includes VectorChord version range
 SOURCE_CONSTANTS=$(curl -s https://raw.githubusercontent.com/immich-app/immich/$version/server/src/constants.ts)
