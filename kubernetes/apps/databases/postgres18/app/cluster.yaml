@@ -22,10 +22,16 @@ spec:
         serverName: postgres18-v2
   postgresql:
     extensions:
+      - name: postgis
+        image:
+          # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgis-extension
+          reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.1-18-trixie
+        ld_library_path:
+          - system
       - name: vchord
         image:
           # renovate: datasource=docker depName=ghcr.io/tensorchord/vchord-scratch
-          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v0.5.3
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.0.0
         dynamic_library_path:
           - /usr/lib/postgresql/18/lib/
         extension_control_path:
