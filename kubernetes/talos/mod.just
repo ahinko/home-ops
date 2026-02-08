@@ -12,6 +12,7 @@ default:
 
 [doc('Apply Talos config to a node')]
 apply-node node *args:
+  just log info "Applying Talos machineconfig" "node" "{{ node }}";
   just talos render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
 
 [doc('Reboot a node')]
@@ -35,7 +36,7 @@ upgrade-k8s version:
 
 [doc('Upgrade Talos version on a node')]
 upgrade-node node *args:
-    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m {{ args }}
+    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image {{ node }})" -m powercycle --timeout=10m {{ args }}
 
 [private]
 machine-controller node:
@@ -44,7 +45,7 @@ machine-controller node:
 [doc('Get the machine image for a given node')]
 [private]
 machine-image node:
-  talosctl --nodes {{ node }} get machineconfig --output=jsonpath='{.spec}' | yq -e 'select(.machine) | .machine.install.image'
+  just talos render-config {{ node }} | yq -e 'select(.machine) | .machine.install.image'
 
 [doc('Generate schematic ID from Talos schematic')]
 gen-schematic-id node:
