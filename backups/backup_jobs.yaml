@@ -1,13 +1,13 @@
 ---
 jobs:
-  - namespace: storage
-    pvc: restic-rest-data
+  - host: kronos
+    source_path: /pool/restic-rest
     destination_path: /Volumes/Backup/restic
 
-  - namespace: storage
-    pvc: samba-data
-    destination_path: /Volumes/Backup/samba
+  - host: kronos
+    source_path: /pool/immich/library
+    destination_path: /Volumes/Backup/immich/library
 
-  - namespace: selfhosted
-    pvc: immich-media
-    destination_path: /Volumes/Backup/immich
+  - host: kronos
+    source_path: /pool/samba
+    destination_path: /Volumes/Backup/samba
