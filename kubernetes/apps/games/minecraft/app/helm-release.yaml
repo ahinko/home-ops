@@ -13,7 +13,7 @@ spec:
     # ref: https://hub.docker.com/r/itzg/minecraft-server/
     image:
       repository: ghcr.io/itzg/minecraft-bedrock-server
-      tag: 2025.12.2
+      tag: 2026.2.0
 
     ## Configure resource requests and limits
     ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
