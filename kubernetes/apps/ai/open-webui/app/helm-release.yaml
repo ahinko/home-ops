@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: 0.7.2
+              tag: v0.8.0
             env:
               # Open-webui settings
               ENABLE_OPENAI_API: "False"
