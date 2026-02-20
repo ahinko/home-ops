@@ -19,7 +19,7 @@ releases:
   - name: external-secrets
     namespace: security
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 2.0.0
+    version: 2.0.1
 
   - name: envoy-gateway
     namespace: networking
