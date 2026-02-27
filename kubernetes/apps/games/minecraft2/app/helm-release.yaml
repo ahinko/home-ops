@@ -11,7 +11,7 @@ spec:
   values:
     image:
       repository: ghcr.io/itzg/minecraft-bedrock-server
-      tag: 2026.2.1
+      tag: 2026.2.2
     resources:
       requests:
         memory: 512Mi
