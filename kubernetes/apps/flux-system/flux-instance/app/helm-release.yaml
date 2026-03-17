@@ -12,7 +12,6 @@ spec:
     instance:
       distribution:
         artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.45.0
-        version: 2.x
       cluster:
         networkPolicy: false
       components:
@@ -26,28 +25,14 @@ spec:
         ref: refs/heads/main
         path: kubernetes/flux/cluster
         pullSecret: homelab-flux-secret
+        interval: 1h
       kustomize:
         patches:
-          # Allow flux components to run on control plane nodes
-          - patch: |-
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: not-used
-              spec:
-                template:
-                  spec:
-                    tolerations:
-                      - key: node-role.kubernetes.io/control-plane
-                        operator: Exists
-                        effect: NoSchedule
-            target:
-              kind: Deployment
           - # Increase the number of workers
             patch: |-
               - op: add
                 path: /spec/template/spec/containers/0/args/-
-                value: --concurrent=10
+                value: --concurrent=20
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --requeue-dependency=5s
@@ -73,9 +58,6 @@ spec:
               name: (kustomize-controller|helm-controller|source-controller)
           - # Enable in-memory kustomize builds
             patch: |-
-              - op: add
-                path: /spec/template/spec/containers/0/args/-
-                value: --concurrent=20
               - op: replace
                 path: /spec/template/spec/volumes/0
                 value:
@@ -85,28 +67,6 @@ spec:
             target:
               kind: Deployment
               name: kustomize-controller
-          - # Enable Helm repositories caching
-            patch: |-
-              - op: add
-                path: /spec/template/spec/containers/0/args/-
-                value: --helm-cache-max-size=10
-              - op: add
-                path: /spec/template/spec/containers/0/args/-
-                value: --helm-cache-ttl=60m
-              - op: add
-                path: /spec/template/spec/containers/0/args/-
-                value: --helm-cache-purge-interval=5m
-            target:
-              kind: Deployment
-              name: source-controller
-          - # Cache Secrets and ConfigMaps
-            patch: |-
-              - op: add
-                path: /spec/template/spec/containers/0/args/-
-                value: --feature-gates=CacheSecretsAndConfigMaps=true
-            target:
-              kind: Deployment
-              name: source-controller
           - # Flux near OOM detection for Helm
             patch: |-
               - op: add
@@ -121,7 +81,15 @@ spec:
             target:
               kind: Deployment
               name: helm-controller
-          - # Watch configmaps and secrets attached to HelmReleases and Kustomizations
+          - # Cache Secrets and ConfigMaps
+            patch: |-
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --feature-gates=CacheSecretsAndConfigMaps=true
+            target:
+              kind: Deployment
+              name: source-controller
+          - # Watch ConfigMaps and Secrets attached to HelmReleases and Kustomizations
             patch: |-
               - op: add
                 path: /spec/template/spec/containers/0/args/-
@@ -129,6 +97,14 @@ spec:
             target:
               kind: Deployment
               name: (helm-controller|kustomize-controller)
+          - # Default to retry on failure and disable chart digest tracking
+            patch: |-
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --feature-gates=DefaultToRetryOnFailure=true,DisableChartDigestTracking=true
+            target:
+              kind: Deployment
+              name: helm-controller
           - # Cancel health checks on new Kustomizations revisions
             patch: |-
               - op: add
