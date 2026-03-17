@@ -5,4 +5,5 @@ resources:
   - ./configmaps.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
+  - ./pvc.yaml
   - ./resource-claim.yaml

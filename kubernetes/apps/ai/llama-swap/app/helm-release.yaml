@@ -1,0 +1,122 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: llama-swap
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    controllers:
+      llama-swap:
+        pod:
+          nodeSelector:
+            node.kubernetes.io/gpu.arc: "true"
+
+        initContainers:
+          download-models:
+            image:
+              repository: mirror.gcr.io/alpine/curl
+              tag: 8.17.0
+            command:
+              - /bin/sh
+              - /scripts/download-models.sh
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mostlygeek/llama-swap
+              tag: v198-intel-b8390
+            args:
+              - --config
+              - /config/config.yaml
+              - --watch-config
+            env:
+              ZES_ENABLE_SYSMAN: "1"
+              UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS: "1"
+              GGML_SYCL_ENABLE_FLASH_ATTN: "0"
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: "2"
+                memory: "8Gi"
+              limits:
+                cpu: "8"
+                memory: "16Gi"
+            securityContext:
+              privileged: false
+              capabilities:
+                add:
+                  - SYS_ADMIN
+            probes:
+              readiness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8080
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              liveness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  failureThreshold: 30
+
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: llama-swap
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.hemma.dev"]
+        parentRefs:
+          - name: internal
+            namespace: networking
+
+    persistence:
+      config:
+        type: configMap
+        name: llama-swap-config
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+
+      download-script:
+        type: configMap
+        name: llama-swap-download
+        advancedMounts:
+          llama-swap:
+            download-models:
+              - path: /scripts/download-models.sh
+                subPath: download-models.sh
+
+      models:
+        existingClaim: llama-swap-models
+        globalMounts:
+          - path: /models
+
+      dev:
+        type: hostPath
+        hostPath: /dev/dri
+        globalMounts:
+          - readOnly: true

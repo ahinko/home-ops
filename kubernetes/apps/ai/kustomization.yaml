@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: ai
 resources:
   - ./kokoro/install.yaml
-  - ./ollama/install.yaml
+  - ./llama-swap/install.yaml
   - ./open-webui/install.yaml
   - ./searxng/install.yaml
 components:

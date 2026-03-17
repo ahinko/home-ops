@@ -1,0 +1,85 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: llama-swap-config
+data:
+  config.yaml: |
+    healthCheckTimeout: 120
+    globalTTL: 900
+
+    macros:
+      llama_base: >-
+        /app/llama-server
+        --port ${PORT}
+        --ctx-size 8192
+        -ngl 999
+        --split-mode none
+        --main-gpu 0
+
+    models:
+      qwen3:4b:
+        cmd: "${llama_base} --model /models/Qwen3-4B-Q4_K_M.gguf"
+        proxy: "http://localhost:${PORT}"
+        aliases: ["qwen3"]
+        ttl: 900
+
+      gemma-3-4b-it:
+        cmd: "${llama_base} --model /models/gemma-3-4b-it-Q4_K_M.gguf"
+        proxy: "http://localhost:${PORT}"
+        aliases: ["gemma3-translator", "gemma3-translator:4b"]
+        ttl: 900
+
+      L3-8B-Stheno-v3.2:
+        cmd: "${llama_base} --model /models/L3-8B-Stheno-v3.2-Q4_K_M-imat.gguf"
+        proxy: "http://localhost:${PORT}"
+        aliases: ["llama3-stheno", "llama3-stheno:8b", "LayOnGGUF/llama3-stheno:8b"]
+        ttl: 900
+
+    groups:
+      gpu:
+        models:
+          - "qwen3:4b"
+          - "gemma-3-4b-it"
+          - "L3-8B-Stheno-v3.2"
+        swap: true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: llama-swap-download
+data:
+  download-models.sh: |
+    #!/bin/sh
+    set -e
+
+    MODELS_DIR="/models"
+
+    download_if_missing() {
+      local filename="$1"
+      local url="$2"
+
+      if [ -f "${MODELS_DIR}/${filename}" ]; then
+        echo "✔ ${filename} already exists"
+      else
+        echo "⬇ Downloading ${filename}..."
+        curl -fL --retry 3 --retry-delay 5 \
+          --progress-bar \
+          -o "${MODELS_DIR}/${filename}.tmp" "${url}"
+        mv "${MODELS_DIR}/${filename}.tmp" "${MODELS_DIR}/${filename}"
+        echo "✅ Downloaded ${filename}"
+      fi
+    }
+
+    download_if_missing "Qwen3-4B-Q4_K_M.gguf" \
+      "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf"
+
+    download_if_missing "gemma-3-4b-it-Q4_K_M.gguf" \
+      "https://huggingface.co/unsloth/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf"
+
+    download_if_missing "L3-8B-Stheno-v3.2-Q4_K_M-imat.gguf" \
+      "https://huggingface.co/Lewdiculous/L3-8B-Stheno-v3.2-GGUF-IQ-Imatrix/resolve/main/L3-8B-Stheno-v3.2-Q4_K_M-imat.gguf"
+
+    echo "📋 Models in ${MODELS_DIR}:"
+    ls -lh "${MODELS_DIR}"/*.gguf 2>/dev/null || echo "  (none found)"

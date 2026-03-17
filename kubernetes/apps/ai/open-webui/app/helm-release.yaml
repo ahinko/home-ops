@@ -21,9 +21,10 @@ spec:
               tag: v0.8.10
             env:
               # Open-webui settings
-              ENABLE_OPENAI_API: "False"
-              ENABLE_OLLAMA_API: "True"
-              OLLAMA_BASE_URL: http://ollama:11434
+              ENABLE_OPENAI_API: "True"
+              OPENAI_API_BASE_URLS: "http://llama-swap:8080/v1"
+              OPENAI_API_KEYS: "not-needed"
+              ENABLE_OLLAMA_API: "False"
               ENABLE_RAG_WEB_SEARCH: true
               ENABLE_SEARCH_QUERY: true
               RAG_WEB_SEARCH_ENGINE: searxng
@@ -70,7 +71,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 8080
+            port: 8080
 
     route:
       app:

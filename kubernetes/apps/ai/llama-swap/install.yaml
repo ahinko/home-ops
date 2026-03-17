@@ -2,17 +2,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app ollama
+  name: &appname llama-swap
   namespace: &namespace ai
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: *appname
   dependsOn:
     - name: openebs
       namespace: storage
   interval: 1h
-  path: "./kubernetes/apps/ai/ollama/app"
+  path: "./kubernetes/apps/ai/llama-swap/app"
   prune: true
   sourceRef:
     kind: GitRepository
