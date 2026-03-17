@@ -25,7 +25,7 @@ jobs:
 
       - name: Parse semver string
         id: semver_parser
-        if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
+        if: contains(github.event.head_commit.message, 'update kubernetes group')
         uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3 # v1.4.7
         with:
           input_string: "${{ github.event.head_commit.message }}"

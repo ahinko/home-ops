@@ -35,6 +35,8 @@ spec:
               tag: 8.5.0
             args:
               - sync
+            env:
+              RECYCLARR_DATA_DIR: /tmp
             envFrom:
               - secretRef:
                   name: sonarr-secret
@@ -67,3 +69,5 @@ spec:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
             readOnly: true
+      tmp:
+        type: emptyDir

@@ -12,7 +12,6 @@ talosconfig*
 .history
 *.dmg
 *.iso
-.task/checksum
 **/Brewfile.lock.json
 .ansible/.lock
 *.img
