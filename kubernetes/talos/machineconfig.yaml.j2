@@ -44,6 +44,8 @@ machine:
     disableManifestsDirectory: true
     extraConfig:
       serializeImagePulls: false
+      imageGCHighThresholdPercent: 70
+      imageGCLowThresholdPercent: 60
     image: ghcr.io/siderolabs/kubelet:v1.35.2
     nodeIP:
       validSubnets:
