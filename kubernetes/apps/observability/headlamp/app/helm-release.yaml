@@ -47,7 +47,7 @@ spec:
             name: sa-token
             readOnly: true
       - # Install Flux plugin
-        image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:v0.5.0@sha256:05c3df203b2ff82e09e944e31cd16ab66429f37df7566ba0d47285add7c78c5a
+        image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:v0.6.0@sha256:055377b9011dcc73235e8969c488ecd92af5cb70aa5d5df0f66c1cea667fdccb
         command:
           - /bin/sh
           - -c
