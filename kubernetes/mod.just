@@ -76,6 +76,10 @@ snapshot-all:
     just k8s snapshot "$ns" "$name"; \
   done
 
+[doc('List unhealthy pods (not Running/Succeeded)')]
+unhealthy-pods:
+  kubectl get pods -A --field-selector 'status.phase!=Running,status.phase!=Succeeded' --no-headers
+
 [private]
 render-local-ks ns ks:
   flux-local build ks --namespace "{{ ns }}" --path "{{ kubernetes_dir }}/flux/cluster" "{{ ks }}"

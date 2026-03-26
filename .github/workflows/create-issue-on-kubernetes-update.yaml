@@ -32,7 +32,7 @@ jobs:
           version_extractor_regex: "→ v([0-9.]*)"
 
       - name: Create issue if new version of Kubernetes is available
-        if: contains(github.event.head_commit.message, 'update image ghcr.io/siderolabs/kubelet')
+        if: contains(github.event.head_commit.message, 'update kubernetes group')
         uses: dacbd/create-issue-action@cdb57ab6ff8862aa09fee2be6ba77a59581921c2 # v2.0.0
         with:
           token: "${{ steps.generate-token.outputs.token }}"

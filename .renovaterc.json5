@@ -31,6 +31,9 @@
   kubernetes: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
+  "docker-compose": {
+    managerFilePatterns: ["docker/**/{compose,docker-compose*}.yaml"],
+  },
   platformCommit: 'enabled',
   rebaseWhen: 'auto',
   suppressNotifications: [
