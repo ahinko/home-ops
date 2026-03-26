@@ -37,7 +37,7 @@ spec:
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:
-  name: ahinko
+  name: github
   namespace: renovate
 spec:
   discoveryFilter: ahinko/*

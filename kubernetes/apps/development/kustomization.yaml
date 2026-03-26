@@ -5,6 +5,7 @@ namespace: development
 resources:
   - ./forgejo/install.yaml
   - ./forgejo-runner/install.yaml
+  - ./renovate/install.yaml
 components:
   - ../../components/namespace
   - ../../components/alerts

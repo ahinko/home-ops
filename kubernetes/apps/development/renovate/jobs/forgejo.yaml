@@ -1,0 +1,125 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-forgejo-token
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: renovate-forgejo-token
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      data:
+        RENOVATE_TOKEN: "{{ .token }}"
+  data:
+    - secretKey: token
+      remoteRef:
+        key: forgejo
+        property: RENOVATE_API_TOKEN
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-forgejo-api
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: renovate-forgejo-api
+    creationPolicy: Owner
+  data:
+    - secretKey: token
+      remoteRef:
+        key: forgejo
+        property: RENOVATE_API_TOKEN
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-forgejo-webhook
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: renovate-forgejo-webhook
+    creationPolicy: Owner
+  data:
+    - secretKey: token
+      remoteRef:
+        key: forgejo
+        property: RENOVATE_WEBHOOK_SECRET
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-forgejo-github-token
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: renovate-forgejo-github-token
+    creationPolicy: Owner
+  data:
+    - secretKey: token
+      remoteRef:
+        key: forgejo
+        property: GITHUB_COM_TOKEN
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: forgejo
+  namespace: renovate
+spec:
+  discoveryFilter: "*"
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_PLATFORM_COMMIT
+      value: "true"
+    - name: RENOVATE_AUTODISCOVER
+      value: "true"
+    - name: GITHUB_COM_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: renovate-forgejo-github-token
+          key: token
+  image: ghcr.io/renovatebot/renovate:43.91.6
+  parallelism: 5
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  schedule: 0 */2 * * *
+  secretRef: renovate-forgejo-token
+  webhook:
+    enabled: true
+    authentication:
+      enabled: true
+      secretRef:
+        name: renovate-forgejo-webhook
+        key: token
+    forgejo:
+      sync:
+        enabled: true
+        webhookURL: https://renovate.hemma.dev/webhook/v1/forgejo
+        topic: renovate
+        tokenSecretRef:
+          name: renovate-forgejo-api
+          key: token
+        authTokenSecretRef:
+          name: renovate-forgejo-webhook
+          key: token
+  provider:
+    name: gitea
+    endpoint: https://forgejo.hemma.dev
