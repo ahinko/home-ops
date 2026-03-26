@@ -1,0 +1,40 @@
+---
+# This file is not managed by doco-cd because it can't manage itself
+
+secrets:
+  1pw_token:
+    file: /home/peter/.config/doco-cd/1pw_token
+  git_token:
+    file: /home/peter/.config/doco-cd/git_token
+
+services:
+  app:
+    container_name: doco-cd
+    image: ghcr.io/kimdre/doco-cd:0.76.0
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Stockholm
+      LOG_LEVEL: info
+      DEPLOY_CONFIG_BASE_DIR: ./docker/rpi01/
+      SECRET_PROVIDER: 1password
+      SECRET_PROVIDER_ACCESS_TOKEN_FILE: /run/secrets/1pw_token
+      GIT_ACCESS_TOKEN_FILE: /run/secrets/git_token
+      POLL_CONFIG: |-
+        - url: https://github.com/ahinko/homelab.git
+          reference: refs/heads/main
+          interval: 300
+    secrets:
+      - 1pw_token
+      - git_token
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - data:/data
+    healthcheck:
+      test: ["CMD", "/doco-cd", "healthcheck"]
+      start_period: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  data: {}

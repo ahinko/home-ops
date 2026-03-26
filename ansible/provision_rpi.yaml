@@ -1,0 +1,91 @@
+---
+- name: Provision Raspberry Pi
+  hosts: rpi
+  remote_user: peter
+  become: true
+  gather_facts: true
+
+  # roles:
+    # - apt
+    # - hostname
+    # - timezone
+    # - users
+    # - sshkeys
+    # - sudoers
+    # - fish
+    # - docker
+
+  tasks:
+    - name: Read secrets from 1Password
+      ansible.builtin.shell: "op read 'op://{{ item.key }}' < /dev/null"
+      delegate_to: localhost
+      become: false
+      loop:
+        - key: Homelab/doco-cd/1pw-service-account-token
+          var: doco_1pw_sa_token
+        - key: Homelab/doco-cd/github-pat
+          var: doco_git_token
+      check_mode: false
+      changed_when: false
+      no_log: true
+      register: secrets_raw
+
+    - name: Set secret facts
+      ansible.builtin.set_fact:
+        doco_1pw_sa_token: "{{ secrets_raw.results[0].stdout }}"
+        doco_git_token: "{{ secrets_raw.results[1].stdout }}"
+      no_log: true
+
+    - name: Doco-cd
+      vars:
+        dococd_config_dir: /home/peter/.config/doco-cd
+      block:
+        - name: Doco-cd | Create config directory
+          ansible.builtin.file:
+            path: "{{ dococd_config_dir }}"
+            state: directory
+            owner: peter
+            group: peter
+            mode: "0700"
+
+        - name: Doco-cd | Copy compose file
+          ansible.builtin.copy:
+            src: ../docker/rpi01/.doco-cd/docker-compose.app.yaml
+            dest: "{{ dococd_config_dir }}/docker-compose.yaml"
+            owner: peter
+            group: peter
+            mode: "0644"
+          register: compose_file
+
+        - name: Doco-cd | Create secrets
+          ansible.builtin.copy:
+            dest: "{{ dococd_config_dir }}/{{ item.name }}"
+            content: |
+              {{ item.content }}
+            owner: peter
+            group: peter
+            mode: "0600"
+          no_log: true
+          loop:
+            - name: 1pw_token
+              content: "{{ doco_1pw_sa_token }}"
+            - name: git_token
+              content: "{{ doco_git_token }}"
+
+        - name: Doco-cd | Run docker compose
+          community.docker.docker_compose_v2:
+            project_src: "{{ dococd_config_dir }}"
+            files:
+              - docker-compose.yaml
+            pull: always
+            state: present
+          when: not ansible_check_mode
+
+        - name: Doco-cd | Wait for healthy
+          community.docker.docker_container_info:
+            name: doco-cd
+          register: dococd_info
+          until: dococd_info.container.State.Health.Status == "healthy"
+          retries: 30
+          delay: 10
+          when: not ansible_check_mode

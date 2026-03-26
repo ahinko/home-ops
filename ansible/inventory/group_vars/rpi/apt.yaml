@@ -1,0 +1,18 @@
+---
+apt_install_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - git
+  - hdparm
+  - htop
+  - iftop
+  - iputils-ping
+  - nano
+  - net-tools
+  - unattended-upgrades
+  - unzip
+  - wget
+
+apt_remove_packages:
+  - snapd

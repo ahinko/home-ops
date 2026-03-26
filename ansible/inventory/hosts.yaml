@@ -11,6 +11,12 @@ kvm:
       ansible_host: 192.168.20.12
       ansible_user: root
 
+rpi:
+  hosts:
+    rpi01:
+      ansible_host: 192.168.20.32
+      ansible_user: peter
+
 iot:
   hosts:
     zwave:

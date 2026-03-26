@@ -1,0 +1,6 @@
+---
+working_dir: ./docker/rpi01
+auto_discover: true
+auto_discover_opts:
+  depth: 1
+  delete: true

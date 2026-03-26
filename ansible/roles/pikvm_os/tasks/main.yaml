@@ -19,7 +19,7 @@
       ansible.builtin.hostname:
         name: "{{ inventory_hostname }}"
       when:
-        - ansible_hostname != inventory_hostname
+        - ansible_facts['hostname'] != inventory_hostname
     - name: Add additional user SSH public keys
       ansible.posix.authorized_key:
         user: "{{ ansible_user }}"

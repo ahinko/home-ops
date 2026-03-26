@@ -1,15 +1,17 @@
 ---
-- name: Add Fish repository from PPA and install its signing key on Ubuntu target
+- name: Add Fish repository from PPA (Ubuntu only)
   ansible.builtin.apt_repository:
     repo: ppa:fish-shell/release-3
     update_cache: true
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Install Fish
   ansible.builtin.apt:
     name: ["fish"]
     state: present
+    update_cache: true
 
-- name: Download starhip installer
+- name: Download starship installer
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship-installer.sh
