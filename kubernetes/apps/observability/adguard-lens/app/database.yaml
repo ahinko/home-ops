@@ -1,0 +1,21 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: adguard-lens-db
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
+spec:
+  database: adguard-lens
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: adguard-lens-user
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
+spec:
+  role: adguard-lens
+  database: adguard-lens-db
+  secretName: database
+  privileges: OWNER

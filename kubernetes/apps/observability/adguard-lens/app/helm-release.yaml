@@ -1,0 +1,94 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: adguard-lens
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    controllers:
+      adguard-lens:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+        containers:
+          app:
+            image:
+              repository: forgejo.hemma.dev/peter/adguard_lens
+              tag: 0.3.1
+            env:
+              TZ: Europe/Stockholm
+              ADGUARD_INSTANCES: "k8s=http://adguard-home-app.networking.svc.cluster.local:3000,pi=http://192.168.20.32:3000"
+              RDNS_SERVER: "192.168.0.1:53"
+              UNIFI_URL: "https://192.168.0.1"
+              VLAN_MAPPINGS: "Servers=192.168.20.0/24,Clients=192.168.30.0/24,InsecureClients=192.168.40.0/24,Kids=192.168.50.0/24,Guests=192.168.60.0/24,NoT=192.168.70.0/24,IoT=192.168.71.0/24"
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-adguard-lens-user
+                    key: POSTGRES_URL
+            envFrom:
+              - secretRef:
+                  name: adguard-lens-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8085
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+    service:
+      app:
+        controller: adguard-lens
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          dashboard.home/enabled: "true"
+          dashboard.home/name: AdGuard Lens
+          dashboard.home/description: DNS Ad blocker observability
+          dashboard.home/icon: adguard-home
+          dashboard.home/group: Infrastructure
+        hostnames:
+          - "adguard-lens.hemma.dev"
+        parentRefs:
+          - name: internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    persistence:
+      tmp:
+        type: emptyDir
