@@ -1,0 +1,28 @@
+---
+services:
+  adguard-home:
+    image: adguard/adguardhome:v0.107.73
+    container_name: adguard-home
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      TZ: Europe/Stockholm
+      ADGUARD_ADMIN_USERNAME: ${ADGUARD_ADMIN_USERNAME}
+      ADGUARD_ADMIN_PASSWORD_HASH: ${ADGUARD_ADMIN_PASSWORD_HASH}
+    volumes:
+      - ../../../adguard/AdGuardHome.yaml:/tmp/config/AdGuardHome.yaml:ro
+    tmpfs:
+      - /config
+      - /tmp/adguardhome
+    entrypoint:
+      - sh
+      - -c
+      - |
+        awk -v user="$$ADGUARD_ADMIN_USERNAME" -v hash="$$ADGUARD_ADMIN_PASSWORD_HASH" '{gsub(/\$\{ADGUARD_ADMIN_USERNAME\}/, user); gsub(/\$\{ADGUARD_ADMIN_PASSWORD_HASH\}/, hash); print}' /tmp/config/AdGuardHome.yaml > /config/AdGuardHome.yaml
+        exec /opt/adguardhome/AdGuardHome --config /config/AdGuardHome.yaml --work-dir /tmp/adguardhome --no-check-update
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

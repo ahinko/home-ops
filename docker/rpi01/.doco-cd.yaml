@@ -4,3 +4,6 @@ auto_discover: true
 auto_discover_opts:
   depth: 1
   delete: true
+external_secrets:
+  ADGUARD_ADMIN_USERNAME: op://Homelab/adguard-home/admin-username
+  ADGUARD_ADMIN_PASSWORD_HASH: op://Homelab/adguard-home/admin-password-hash
