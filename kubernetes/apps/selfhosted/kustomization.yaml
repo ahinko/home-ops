@@ -8,9 +8,6 @@ resources:
   - ./homepage/install.yaml
   - ./immich/install.yaml
   - ./karakeep/install.yaml
-  - ./mastodon/install.yaml
-  - ./mastodon-fakerelay/install.yaml
-  - ./mastodon-getmoarfediverse/install.yaml
   - ./miniflux/install.yaml
   - ./opencloud/install.yaml
   - ./radicale/install.yaml

@@ -48,6 +48,5 @@ spec:
     txtPrefix: k8s.mainframe.
     domainFilters:
       - "hemma.dev"
-      - "selfy.social"
     serviceMonitor:
       enabled: true

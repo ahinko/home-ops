@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: networking
 resources:
   - ./certificates/install.yaml
-  - ./cloudflared/install.yaml
   - ./envoy-gateway/install.yaml
   - ./external-dns/install.yaml
   - ./mailpit/install.yaml

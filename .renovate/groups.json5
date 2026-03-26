@@ -47,15 +47,6 @@
       minimumGroupSize: 2,
     },
     {
-      description: "Mastodon Group",
-      groupName: "Mastodon",
-      matchDatasources: ["docker", "helm"],
-      matchPackageNames: ["/mastodon/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-    },
-    {
       description: "Actions Runner Controller Group",
       groupName: "Actions Runner Controller",
       matchDatasources: ["docker", "helm"],
