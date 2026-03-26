@@ -76,12 +76,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Interact with your AI models
-          gethomepage.dev/group: LLM/Ai
-          gethomepage.dev/icon: sh-open-webui.svg
-          gethomepage.dev/name: Open WebUI
-          gethomepage.dev/app: open-webui
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Open WebUI
+          dashboard.home/description: Text to speech using LLMs
+          dashboard.home/icon: open-webui
+          dashboard.home/group: Apps
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

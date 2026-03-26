@@ -59,12 +59,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Monitoring and observability platform
-          gethomepage.dev/group: Kubernetes
-          gethomepage.dev/icon: sh-alertmanager.svg
-          gethomepage.dev/name: Alertmanager
-          gethomepage.dev/app: alertmanager
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Alertmanager
+          dashboard.home/description: Monitoring & observability
+          dashboard.home/icon: grafana-alerts-dashboard
+          dashboard.home/group: Infrastructure
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

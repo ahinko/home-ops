@@ -66,12 +66,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Identity provider
-          gethomepage.dev/group: Security
-          gethomepage.dev/icon: sh-pocket-id.svg
-          gethomepage.dev/name: Pocket ID
-          gethomepage.dev/app: pocket-id
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Pocket ID
+          dashboard.home/description: Identity provider
+          dashboard.home/icon: pocket-id
+          dashboard.home/group: Apps
         hostnames: ["pid.hemma.dev"]
         parentRefs:
           - name: internal

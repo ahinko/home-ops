@@ -73,12 +73,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: OpenCloud file storage
-          gethomepage.dev/group: Apps
-          gethomepage.dev/icon: sh-opencloud.svg
-          gethomepage.dev/name: OpenCloud
-          gethomepage.dev/app: opencloud
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Opencloud
+          dashboard.home/description: Cloud file storage
+          dashboard.home/icon: opencloud
+          dashboard.home/group: Apps
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hostnames: ["files.hemma.dev"]
         parentRefs:

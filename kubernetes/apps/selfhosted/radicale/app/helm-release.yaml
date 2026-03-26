@@ -43,12 +43,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Calendar sync server
-          gethomepage.dev/group: Apps
-          gethomepage.dev/icon: sh-radicale.svg
-          gethomepage.dev/name: Radicale
-          gethomepage.dev/app: radicale
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Radicale
+          dashboard.home/description: Calendar sync
+          dashboard.home/icon: radicale
+          dashboard.home/group: Apps
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: external

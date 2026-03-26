@@ -65,12 +65,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: TV series manager
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: sh-sonarr.svg
-          gethomepage.dev/name: Sonarr
-          gethomepage.dev/app: sonarr
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Sonarr
+          dashboard.home/description: Automatic TV series downloads
+          dashboard.home/icon: sonarr
+          dashboard.home/group: Downloads
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

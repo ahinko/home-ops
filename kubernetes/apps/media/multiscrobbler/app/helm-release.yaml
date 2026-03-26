@@ -59,12 +59,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Music scrobbler
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: sh-multi-scrobbler.svg
-          gethomepage.dev/name: Multiscrobbler
-          gethomepage.dev/app: multiscrobbler
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Multiscrobbler
+          dashboard.home/description: Music scrobbler
+          dashboard.home/icon: multi-scrobbler
+          dashboard.home/group: Media
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

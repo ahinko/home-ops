@@ -105,12 +105,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Smart home and automations
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-home-assistant.svg
-          gethomepage.dev/name: Home Assistant
-          gethomepage.dev/app: home-assistant
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Home Assistant
+          dashboard.home/description: Awaken your home
+          dashboard.home/icon: home-assistant
+          dashboard.home/group: Home Automation
         hostnames: ["hass.hemma.dev"]
         parentRefs:
           - name: external

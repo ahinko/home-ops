@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dashboard
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    controllers:
+      main:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: forgejo.hemma.dev/peter/dashboard
+              tag: 0.1.4
+            env:
+              STARTPAGE_TITLE: "dashboard"
+            resources:
+              requests:
+                memory: 10Mi
+                cpu: 10m
+              limits:
+                memory: 200Mi
+
+            securityContext:
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+    serviceAccount:
+      dashboard: {}
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    route:
+      internal:
+        hostnames: [dashboard.hemma.dev]
+        parentRefs:
+          - name: internal
+            namespace: networking

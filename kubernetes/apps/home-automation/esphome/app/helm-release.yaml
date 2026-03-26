@@ -44,12 +44,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Control your ESP8266/ESP32 based devices
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-esphome.svg
-          gethomepage.dev/name: ESPHome
-          gethomepage.dev/app: esphome
+          dashboard.home/enabled: "true"
+          dashboard.home/name: ESPHome
+          dashboard.home/description: Control ESP8266/ESP32 devices
+          dashboard.home/icon: esphome
+          dashboard.home/group: Home Automation
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

@@ -183,12 +183,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Read it later
-          gethomepage.dev/group: Apps
-          gethomepage.dev/icon: sh-karakeep.svg
-          gethomepage.dev/name: Karakeep
-          gethomepage.dev/app: karakeep
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Karakeep
+          dashboard.home/description: Read it later
+          dashboard.home/icon: karakeep
+          dashboard.home/group: Apps
         hostnames:
           - karakeep.hemma.dev
         parentRefs:

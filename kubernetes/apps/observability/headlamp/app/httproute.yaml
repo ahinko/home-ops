@@ -4,12 +4,11 @@ kind: HTTPRoute
 metadata:
   name: headlamp
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/description: Monitoring and observability platform
-    gethomepage.dev/group: Kubernetes
-    gethomepage.dev/icon: sh-headlamp.svg
-    gethomepage.dev/name: Headlamp
-    gethomepage.dev/app: headlamp
+    dashboard.home/enabled: "true"
+    dashboard.home/name: Headlamp
+    dashboard.home/description: Monitoring & observability
+    dashboard.home/icon: headlamp
+    dashboard.home/group: Infrastructure
 spec:
   hostnames:
     - headlamp.hemma.dev

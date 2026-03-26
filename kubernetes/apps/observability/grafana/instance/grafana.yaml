@@ -100,12 +100,11 @@ spec:
   httpRoute:
     metadata:
       annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Monitoring and observability platform
-        gethomepage.dev/group: Kubernetes
-        gethomepage.dev/icon: sh-grafana.svg
-        gethomepage.dev/name: Grafana
-        gethomepage.dev/app: grafana
+        dashboard.home/enabled: "true"
+        dashboard.home/name: Grafana
+        dashboard.home/description: Monitoring & observability
+        dashboard.home/icon: grafana
+        dashboard.home/group: Infrastructure
     spec:
       parentRefs:
         - name: internal

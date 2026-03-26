@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: selfhosted
 resources:
   - ./atuin/install.yaml
+  - ./dashboard/install.yaml
   - ./gramps/install.yaml
   - ./immich/install.yaml
   - ./karakeep/install.yaml

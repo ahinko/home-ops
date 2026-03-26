@@ -80,12 +80,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Control your Zigbee devices through a web interface.
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-zigbee2mqtt.svg
-          gethomepage.dev/name: Zigbee2MQTT
-          gethomepage.dev/app: zigbee2mqtt
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Zigbee2mqtt
+          dashboard.home/description: Controll your Zigbee devices
+          dashboard.home/icon: zigbee2mqtt
+          dashboard.home/group: Home Automation
         hostnames: ["zigbee.hemma.dev"]
         parentRefs:
           - name: internal

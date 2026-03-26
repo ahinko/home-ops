@@ -55,12 +55,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Monitor your Tesla vehicle's data and status.
-          gethomepage.dev/group: Home Automation
-          gethomepage.dev/icon: sh-teslamate.svg
-          gethomepage.dev/name: TeslaMate
-          gethomepage.dev/app: teslamate
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Teslamate
+          dashboard.home/description: Monitor your Tesla vehicle
+          dashboard.home/icon: teslamate
+          dashboard.home/group: Home Automation
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

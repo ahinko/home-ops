@@ -79,12 +79,11 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |
             url: https://plex.hemma.dev/web
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Media server
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: sh-plex.svg
-          gethomepage.dev/name: Plex
-          gethomepage.dev/app: plex
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Plex
+          dashboard.home/description: Media server
+          dashboard.home/icon: plex
+          dashboard.home/group: Media
         hostnames:
           - "{{ .Release.Name }}.hemma.dev"
         parentRefs:

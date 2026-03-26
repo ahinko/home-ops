@@ -74,12 +74,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Bittorrent client
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: sh-qbittorrent.svg
-          gethomepage.dev/name: qBittorrent
-          gethomepage.dev/app: qbittorrent
+          dashboard.home/enabled: "true"
+          dashboard.home/name: qBittorrent
+          dashboard.home/description: Bittorrent client
+          dashboard.home/icon: qbittorrent
+          dashboard.home/group: Downloads
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

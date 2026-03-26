@@ -55,12 +55,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Listening habits and stats
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: sh-maloja.svg
-          gethomepage.dev/name: Maloja
-          gethomepage.dev/app: maloja
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Maloja
+          dashboard.home/description: Music habits and stats
+          dashboard.home/icon: maloja
+          dashboard.home/group: Media
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

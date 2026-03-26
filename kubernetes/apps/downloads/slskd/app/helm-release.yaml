@@ -86,12 +86,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Soulseek client
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: sh-slskd.svg
-          gethomepage.dev/name: Slskd
-          gethomepage.dev/app: slskd
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Slskd
+          dashboard.home/description: Soulseek client
+          dashboard.home/icon: slskd
+          dashboard.home/group: Downloads
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal

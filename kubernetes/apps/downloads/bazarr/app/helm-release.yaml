@@ -59,12 +59,11 @@ spec:
     route:
       app:
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Automatic downloads of subtitles
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: sh-bazarr.png
-          gethomepage.dev/name: Bazarr
-          gethomepage.dev/app: bazarr
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Bazarr
+          dashboard.home/description: Automatic subtitle downloads
+          dashboard.home/icon: bazarr
+          dashboard.home/group: Downloads
         hostnames: ["{{ .Release.Name }}.hemma.dev"]
         parentRefs:
           - name: internal
