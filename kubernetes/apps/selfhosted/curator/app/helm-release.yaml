@@ -1,0 +1,196 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: curator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    configMaps:
+      config:
+        data:
+          sources.yaml: |
+            github_repos:
+              - owner: szinn
+                repo: k8s-homelab
+                branch: main
+              - owner: onedr0p
+                repo: home-ops
+                branch: main
+              - owner: bjw-s-labs
+                repo: home-ops
+                branch: main
+              - owner: jfroy
+                repo: flatops
+                branch: main
+              - owner: JJGadgets
+                repo: Biohazard
+                branch: main
+              - owner: rust84
+                repo: k8s-gitops
+                branch: main
+              - owner: rwlove
+                repo: home-ops
+                branch: main
+              - owner: buroa
+                repo: k8s-gitops
+                branch: main
+
+            mastodon:
+              - instance: mastodon.social
+                hashtags:
+                  [
+                    selfhosted,
+                    kubernetes,
+                    opensource,
+                    homelab,
+                    k8s,
+                    github,
+                    selfhosting,
+                    homeassistant,
+                    smarthome,
+                    esphome,
+                  ]
+              - instance: fosstodon.org
+                hashtags:
+                  [
+                    selfhosted,
+                    kubernetes,
+                    opensource,
+                    homelab,
+                    k8s,
+                    github,
+                    selfhosting,
+                    homeassistant,
+                    smarthome,
+                    esphome,
+                  ]
+              - instance: hachyderm.io
+                hashtags:
+                  [
+                    selfhosted,
+                    kubernetes,
+                    opensource,
+                    homelab,
+                    k8s,
+                    github,
+                    selfhosting,
+                    homeassistant,
+                    smarthome,
+                    esphome,
+                  ]
+
+            bluesky:
+              search_terms:
+                - homelab
+                - selfhosted
+                - github
+                - homeassistant
+
+            hackernews:
+              search_terms:
+                - homelab
+                - selfhosted
+                - self-hosted
+
+            selfhst:
+              enabled: true
+
+    controllers:
+      main:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+
+        containers:
+          app:
+            image:
+              repository: forgejo.hemma.dev/peter/curator
+              tag: 0.1.0
+            env:
+              SOURCES_FILE: "/config/sources.yaml"
+              DATABASE_PATH: "/data/curator.db"
+              POLL_INTERVAL_MINUTES: 120
+              SURFACE_THRESHOLD: 5
+              HN_MIN_SCORE: 20
+              EXPIRE_DAYS: 30
+            envFrom:
+              - secretRef:
+                  name: curator-secret
+
+            resources:
+              requests:
+                memory: 512Mi
+                cpu: 10m
+              limits:
+                memory: 512Mi
+
+            securityContext:
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          dashboard.home/enabled: "true"
+          dashboard.home/name: Curator
+          dashboard.home/description: Link discovery feed
+          dashboard.home/icon: boost-mobile
+          dashboard.home/group: Apps
+        hostnames:
+          - curator.hemma.dev
+        parentRefs:
+          - name: internal
+            namespace: networking
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        existingClaim: "${VOLSYNC_CLAIM}"
+        globalMounts:
+          - path: /data
+
+      config:
+        type: configMap
+        name: curator
+        advancedMounts:
+          main:
+            app:
+              - path: /config
+                readOnly: true
