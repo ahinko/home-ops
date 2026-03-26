@@ -30,10 +30,10 @@ data:
         aliases: ["gemma3-translator", "gemma3-translator:4b"]
         ttl: 900
 
-      L3-8B-Stheno-v3.2:
-        cmd: "${llama_base} --model /models/L3-8B-Stheno-v3.2-Q4_K_M-imat.gguf"
+      Llama-3.1-8B-Stheno-v3.4:
+        cmd: "${llama_base} --jinja --model /models/Llama-3.1-8B-Stheno-v3.4-Q4_K_M-imat.gguf"
         proxy: "http://localhost:${PORT}"
-        aliases: ["llama3-stheno", "llama3-stheno:8b", "LayOnGGUF/llama3-stheno:8b"]
+        aliases: ["llama3-stheno:8b"]
         ttl: 900
 
     groups:
@@ -41,7 +41,7 @@ data:
         models:
           - "qwen3:4b"
           - "gemma-3-4b-it"
-          - "L3-8B-Stheno-v3.2"
+          - "Llama-3.1-8B-Stheno-v3.4"
         swap: true
 
 ---
@@ -78,8 +78,8 @@ data:
     download_if_missing "gemma-3-4b-it-Q4_K_M.gguf" \
       "https://huggingface.co/unsloth/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf"
 
-    download_if_missing "L3-8B-Stheno-v3.2-Q4_K_M-imat.gguf" \
-      "https://huggingface.co/Lewdiculous/L3-8B-Stheno-v3.2-GGUF-IQ-Imatrix/resolve/main/L3-8B-Stheno-v3.2-Q4_K_M-imat.gguf"
+    download_if_missing "Llama-3.1-8B-Stheno-v3.4-Q4_K_M-imat.gguf" \
+      "https://huggingface.co/Lewdiculous/Llama-3.1-8B-Stheno-v3.4-GGUF-IQ-Imatrix/resolve/main/Llama-3.1-8B-Stheno-v3.4-Q4_K_M-imat.gguf"
 
     echo "📋 Models in ${MODELS_DIR}:"
     ls -lh "${MODELS_DIR}"/*.gguf 2>/dev/null || echo "  (none found)"
