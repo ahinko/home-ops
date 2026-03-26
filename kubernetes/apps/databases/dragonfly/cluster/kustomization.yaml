@@ -5,4 +5,5 @@ resources:
   - ./cluster.yaml
   - ./grafana-dashboard.yaml
   - ./grafana-datasource.yaml
+  - ./networkpolicy.yaml
   - ./podmonitor.yaml

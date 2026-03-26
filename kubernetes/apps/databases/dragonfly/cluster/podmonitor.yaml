@@ -3,9 +3,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: dragonfly
-  labels:
-    group: dragonfly
-    app: dragonfly
 spec:
   selector:
     matchLabels:
