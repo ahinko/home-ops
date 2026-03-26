@@ -1,0 +1,216 @@
+http:
+  pprof:
+    port: 6060
+    enabled: false
+  address: 0.0.0.0:3000
+  session_ttl: 720h
+
+users:
+  - name: ${ADGUARD_ADMIN_USERNAME}
+    password: ${ADGUARD_ADMIN_PASSWORD_HASH}
+
+dns:
+  bind_hosts:
+    - 0.0.0.0
+  port: 53
+  upstream_dns:
+    - 192.168.0.1
+  bootstrap_dns:
+    - 1.1.1.1
+    - 8.8.8.8
+  all_servers: false
+  fastest_addr: false
+  cache_size: 4194304
+  cache_ttl_min: 300
+  cache_ttl_max: 1800
+  cache_optimistic: true
+  enable_dnssec: true
+  use_private_ptr_resolvers: true
+  local_ptr_upstreams:
+    - 192.168.0.1
+  edns_client_subnet:
+    enabled: false
+
+filtering:
+  protection_enabled: true
+  filtering_enabled: true
+  safe_browsing_enabled: true
+  parental_enabled: false
+  safe_search:
+    enabled: false
+
+filters:
+  # OISD Big - ads, trackers, malware
+  - enabled: true
+    url: https://big.oisd.nl
+    name: OISD Big
+    id: 1
+  # HaGeZi Threat Intelligence Pro
+  - enabled: true
+    url: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
+    name: HaGeZi Pro
+    id: 2
+  # Phishing Army
+  - enabled: true
+    url: https://phishing.army/download/phishing_army_blocklist_extended.txt
+    name: Phishing Army
+    id: 3
+  # URLhaus malware
+  - enabled: true
+    url: https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh-online.txt
+    name: URLhaus Malware
+    id: 4
+
+user_rules:
+  # Block all punycode/IDN domains (homograph attack protection)
+  - "||xn--*^"
+
+clients:
+  runtime_sources:
+    whois: true
+    arp: true
+    rdns: true
+    dhcp: true
+    hosts: true
+  persistent:
+    # Clients VLAN - ad blocking + security
+    - name: Clients
+      ids:
+        - 192.168.30.0/24
+      tags: []
+      filtering_enabled: true
+      safebrowsing_enabled: true
+      parental_enabled: false
+      safe_search:
+        enabled: false
+      use_global_blocked_services: true
+      use_global_settings: false
+      blocked_services:
+        schedule:
+          time_zone: Europe/Stockholm
+        ids: []
+
+    # Guests VLAN - ad blocking + security
+    - name: Guests
+      ids:
+        - 192.168.60.0/24
+      tags: []
+      filtering_enabled: true
+      safebrowsing_enabled: true
+      parental_enabled: false
+      safe_search:
+        enabled: false
+      use_global_blocked_services: true
+      use_global_settings: false
+      blocked_services:
+        schedule:
+          time_zone: Europe/Stockholm
+        ids: []
+
+    # IoT VLAN - ad blocking + security
+    - name: IoT
+      ids:
+        - 192.168.71.0/24
+      tags: []
+      filtering_enabled: true
+      safebrowsing_enabled: true
+      parental_enabled: false
+      safe_search:
+        enabled: false
+      use_global_blocked_services: true
+      use_global_settings: false
+      blocked_services:
+        schedule:
+          time_zone: Europe/Stockholm
+        ids: []
+
+    # Kids VLAN - ad blocking + security + safe search + parental
+    - name: Kids
+      ids:
+        - 192.168.50.0/24
+      tags: []
+      filtering_enabled: true
+      safebrowsing_enabled: true
+      parental_enabled: true
+      safe_search:
+        enabled: true
+        bing: true
+        duckduckgo: true
+        ecosia: true
+        google: true
+        pixabay: true
+        yandex: true
+        youtube: true
+      use_global_blocked_services: true
+      use_global_settings: false
+      blocked_services:
+        schedule:
+          time_zone: Europe/Stockholm
+        ids: []
+
+    # NoT VLAN - block everything
+    - name: NoT
+      ids:
+        - 192.168.70.0/24
+      tags: []
+      filtering_enabled: true
+      safebrowsing_enabled: true
+      parental_enabled: true
+      safe_search:
+        enabled: true
+      use_global_blocked_services: true
+      use_global_settings: false
+      blocked_services:
+        schedule:
+          time_zone: Europe/Stockholm
+        ids: []
+      upstreams: []
+
+    # Default (servers, insecure clients) - no blocking
+    - name: Servers
+      ids:
+        - 192.168.20.0/24
+      tags: []
+      filtering_enabled: false
+      safebrowsing_enabled: false
+      parental_enabled: false
+      safe_search:
+        enabled: false
+      use_global_blocked_services: false
+      use_global_settings: false
+
+    - name: Insecure Clients
+      ids:
+        - 192.168.40.0/24
+      tags: []
+      filtering_enabled: false
+      safebrowsing_enabled: false
+      parental_enabled: false
+      safe_search:
+        enabled: false
+      use_global_blocked_services: false
+      use_global_settings: false
+
+querylog:
+  enabled: true
+  file_enabled: false
+  interval: 24h
+  size_memory: 1000
+  ignored: []
+
+statistics:
+  enabled: true
+  interval: 24h
+  ignored: []
+
+log:
+  enabled: true
+  file: ""
+  max_backups: 0
+  max_size: 100
+  max_age: 3
+  compress: false
+  local_time: false
+  verbose: false
+
+schema_version: 29

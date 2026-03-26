@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helm-release.yaml
+  - ./oci-repository.yaml
+configMapGenerator:
+  - name: adguard-home-config
+    files:
+      - AdGuardHome.yaml=../../../../../adguard/AdGuardHome.yaml
+    options:
+      disableNameSuffixHash: true

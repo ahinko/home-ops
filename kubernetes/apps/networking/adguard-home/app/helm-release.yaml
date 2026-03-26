@@ -1,0 +1,132 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: adguard-home
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    controllers:
+      adguard-home:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+
+        initContainers:
+          copy-config:
+            image:
+              repository: mirror.gcr.io/busybox
+              tag: latest
+            command:
+              - sh
+              - -c
+              - cp /tmp/config/AdGuardHome.yaml /config/AdGuardHome.yaml
+
+        containers:
+          app:
+            image:
+              repository: adguard/adguardhome
+              tag: v0.107.73
+            args:
+              - --config
+              - /config/AdGuardHome.yaml
+              - --work-dir
+              - /tmp/adguardhome
+              - --no-check-update
+            env:
+              TZ: Europe/Stockholm
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &httpPort 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *httpPort
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  failureThreshold: 30
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+    service:
+      app:
+        controller: adguard-home
+        ports:
+          http:
+            port: *httpPort
+      dns:
+        controller: adguard-home
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.20.220
+        ports:
+          dns-tcp:
+            port: 53
+            protocol: TCP
+          dns-udp:
+            port: 53
+            protocol: UDP
+
+    route:
+      app:
+        annotations:
+          dashboard.home/enabled: "true"
+          dashboard.home/name: AdGuard Home
+          dashboard.home/description: DNS Ad blocker
+          dashboard.home/icon: adguard-home
+          dashboard.home/group: Infrastructure
+        hostnames:
+          - "adguard.hemma.dev"
+        parentRefs:
+          - name: internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *httpPort
+
+    persistence:
+      config-template:
+        type: configMap
+        name: adguard-home-config
+        advancedMounts:
+          adguard-home:
+            copy-config:
+              - path: /tmp/config/AdGuardHome.yaml
+                subPath: AdGuardHome.yaml
+
+      config:
+        type: emptyDir
+        advancedMounts:
+          adguard-home:
+            copy-config:
+              - path: /config
+            app:
+              - path: /config
+
+      work:
+        type: emptyDir
+        advancedMounts:
+          adguard-home:
+            app:
+              - path: /tmp/adguardhome
