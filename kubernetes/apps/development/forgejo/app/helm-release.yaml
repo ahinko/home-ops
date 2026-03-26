@@ -1,0 +1,131 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: forgejo
+  values:
+    strategy:
+      type: Recreate
+
+    service:
+      http:
+        port: 3000
+      ssh:
+        type: ClusterIP
+        port: 22
+
+    httpRoute:
+      enabled: true
+      annotations:
+        dashboard.home/enabled: "true"
+        dashboard.home/name: Forgejo
+        dashboard.home/description: Beyond coding. We forge.
+        dashboard.home/icon: forgejo
+        dashboard.home/group: Development
+      hostnames:
+        - forgejo.hemma.dev
+      parentRefs:
+        - name: internal
+          namespace: networking
+
+    persistence:
+      enabled: true
+      create: false
+      claimName: forgejo-data
+
+    signing:
+      enabled: true
+      existingSecret: forgejo-gpg-key
+
+    gitea:
+      admin:
+        existingSecret: forgejo-secret
+        username: forge-admin
+        email: forgejo@hemma.dev
+        passwordMode: initialOnlyRequireReset
+
+      config:
+        server:
+          ROOT_URL: https://forgejo.hemma.dev
+          SSH_DOMAIN: forgejo.hemma.dev
+          DISABLE_SSH: true
+
+        actions:
+          ENABLED: true
+
+        repository.signing:
+          SIGNING_KEY: default
+          SIGNING_NAME: Forgejo
+          SIGNING_EMAIL: forgejo@hemma.dev
+          INITIAL_COMMIT: always
+          WIKI: always
+          CRUD_ACTIONS: always
+          MERGES: always
+          DEFAULT_TRUST_MODEL: collaborator
+
+        database:
+          DB_TYPE: postgres
+          SSL_MODE: disable
+
+        cache:
+          ADAPTER: redis
+          HOST: redis://dragonfly.databases.svc.cluster.local:6379/10
+
+        session:
+          PROVIDER: redis
+          PROVIDER_CONFIG: redis://dragonfly.databases.svc.cluster.local:6379/11
+
+        queue:
+          TYPE: redis
+          CONN_STR: redis://dragonfly.databases.svc.cluster.local:6379/12
+
+        oauth2_client:
+          ENABLE_AUTO_REGISTRATION: true
+          USERNAME: email
+          ACCOUNT_LINKING: auto
+          UPDATE_AVATAR: true
+
+        service:
+          DISABLE_REGISTRATION: true
+          ALLOW_ONLY_EXTERNAL_REGISTRATION: true
+
+      oauth:
+        - name: PocketID
+          provider: openidConnect
+          existingSecret: forgejo-secret
+          autoDiscoverUrl: https://pid.hemma.dev/.well-known/openid-configuration
+          scopes: "openid email profile"
+
+      additionalConfigFromEnvs:
+        - name: FORGEJO__server__ROOT_URL
+          value: "https://forgejo.hemma.dev"
+        - valueFrom:
+            secretKeyRef:
+              name: database-forgejo-user
+              key: HOST
+          name: FORGEJO__database__HOST
+        - valueFrom:
+            secretKeyRef:
+              name: database-forgejo-user
+              key: DATABASE_NAME
+          name: FORGEJO__database__NAME
+        - valueFrom:
+            secretKeyRef:
+              name: database-forgejo-user
+              key: LOGIN
+          name: FORGEJO__database__USER
+        - valueFrom:
+            secretKeyRef:
+              name: database-forgejo-user
+              key: PASSWORD
+          name: FORGEJO__database__PASSWD
+
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true

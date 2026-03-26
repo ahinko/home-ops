@@ -26,6 +26,7 @@ brew "yamllint"
 brew "libpq"
 brew "yq"
 brew "zx"
+brew "forgejo-cli"
 
 # Kubernetes
 brew "fluxcd/tap/flux"

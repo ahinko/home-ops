@@ -1,0 +1,21 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: forgejo-db
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
+spec:
+  database: forgejo
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: forgejo-user
+  annotations:
+    postgres.db.movetokube.com/instance: postgres18
+spec:
+  role: forgejo
+  database: forgejo-db
+  secretName: database
+  privileges: OWNER

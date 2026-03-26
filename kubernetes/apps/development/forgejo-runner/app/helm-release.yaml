@@ -1,0 +1,117 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo-runner
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  values:
+    configMaps:
+      config:
+        data:
+          config.yaml: |
+            log:
+              level: info
+            runner:
+              envs:
+                DOCKER_HOST: "tcp://localhost:2375"
+            container:
+              docker_host: "-"
+              network: "host"
+              privileged: false
+
+    controllers:
+      forgejo-runner:
+        type: statefulset
+        replicas: 3
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+
+        initContainers:
+          register:
+            image:
+              repository: code.forgejo.org/forgejo/runner
+              tag: 12.7.3
+            command:
+              - sh
+              - -c
+              - |
+                cd /data
+                rm -f .runner
+                forgejo-runner register --no-interactive \
+                  --instance "http://forgejo-http.development.svc.cluster.local:3000" \
+                  --token "$(FORGEJO_RUNNER_TOKEN)" \
+                  --name "homelab-runner-$(hostname)" \
+                  --labels "ubuntu-latest:docker://node:24-bookworm,docker-cli:docker://docker:cli"
+            envFrom:
+              - secretRef:
+                  name: forgejo-runner-secret
+
+        containers:
+          app:
+            image:
+              repository: code.forgejo.org/forgejo/runner
+              tag: 12.7.3
+            command:
+              - sh
+              - -c
+              - |
+                while ! wget -q --spider http://localhost:2375/_ping 2>/dev/null; do
+                  echo "Waiting for Docker daemon..."
+                  sleep 2
+                done
+                cd /data
+                forgejo-runner daemon --config /config/config.yaml
+            env:
+              DOCKER_HOST: tcp://localhost:2375
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+          dind:
+            image:
+              repository: docker
+              tag: 29-dind
+            securityContext:
+              privileged: true
+            env:
+              DOCKER_TLS_CERTDIR: ""
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        retain: true
+        advancedMounts:
+          forgejo-runner:
+            register:
+              - path: /data
+            app:
+              - path: /data
+
+      config:
+        type: configMap
+        name: forgejo-runner
+        advancedMounts:
+          forgejo-runner:
+            app:
+              - path: /config
+                readOnly: true
