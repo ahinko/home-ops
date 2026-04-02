@@ -94,7 +94,7 @@ spec:
         secretKeyRef:
           name: renovate-forgejo-github-token
           key: token
-  image: ghcr.io/renovatebot/renovate:43.104.0
+  image: ghcr.io/renovatebot/renovate:43.104.1
   parallelism: 5
   resources:
     requests:
