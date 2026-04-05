@@ -117,7 +117,7 @@ spec:
           app:
             image:
               repository: forgejo.hemma.dev/peter/curator
-              tag: 0.1.3
+              tag: 0.2.0
             env:
               SOURCES_FILE: "/config/sources.yaml"
               DATABASE_PATH: "/data/curator.db"
