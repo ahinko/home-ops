@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ahinko/tcpsolis2mqtt
-              tag: main@sha256:b70fd79c1d0bbb30a63112a69c9fe0d5b276afed11004160e919af6ffab0e379
+              tag: main@sha256:622162a30573877ba6f437374693bb0a84d3ed0c71353591cd09d044e92148bf
 
             envFrom:
               - secretRef:
