@@ -38,7 +38,7 @@ spec:
           register:
             image:
               repository: code.forgejo.org/forgejo/runner
-              tag: 12.8.1
+              tag: 12.8.2
             command:
               - sh
               - -c
@@ -58,7 +58,7 @@ spec:
           app:
             image:
               repository: code.forgejo.org/forgejo/runner
-              tag: 12.8.1
+              tag: 12.8.2
             command:
               - sh
               - -c
