@@ -5,7 +5,7 @@ namespace: security
 resources:
   - ./aliasvault/install.yaml
   - ./external-secrets/install.yaml
-  - ./onepassword/install.yaml
+  - ./onepassword-connect/install.yaml
   - ./pocket-id/install.yaml
 components:
   - ../../components/namespace

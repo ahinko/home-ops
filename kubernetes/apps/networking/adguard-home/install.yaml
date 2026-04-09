@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: adguard-home
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword-connect
       namespace: security
   interval: 1h
   path: "./kubernetes/apps/networking/adguard-home/secret"

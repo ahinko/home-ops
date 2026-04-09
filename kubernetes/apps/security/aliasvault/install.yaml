@@ -17,7 +17,7 @@ spec:
       namespace: rook-ceph
     - name: postgres18
       namespace: databases
-    - name: onepassword-store
+    - name: onepassword-connect
       namespace: security
   interval: 1h
   path: ./kubernetes/apps/security/aliasvault/app

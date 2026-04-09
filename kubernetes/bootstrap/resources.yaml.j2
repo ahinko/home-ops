@@ -1,22 +1,21 @@
 ---
 apiVersion: v1
-kind: Namespace
+kind: Secret
 metadata:
-  name: security
+  name: onepassword-connect-credentials-secret
+  namespace: security
+stringData:
+  1password-credentials.json: 'op://Homelab/op-connect/CREDENTIALS' # quote
+
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: onepassword-connect-secret
+  name: onepassword-connect-vault-secret
   namespace: security
 stringData:
-  1password-credentials.json: {{ ENV.ONEPASSWORD_CONNECT_CREDENTIALS }}
-  token: {{ ENV.ONEPASSWORD_CONNECT_TOKEN }}
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: flux-system
+  token: op://Homelab/op-connect/TOKEN
+
 ---
 apiVersion: v1
 kind: Secret
@@ -24,7 +23,7 @@ metadata:
   name: homelab-flux-secret
   namespace: flux-system
 stringData:
-  identity.pub: {{ ENV.FLUX_IDENTITY_PUB }}
-  known_hosts: {{ ENV.FLUX_KNOWN_HOSTS }}
-  identity: |
-    {{ ENV.FLUX_GITHUB_DEPLOY_KEY | indent(4) }}
+  identity.pub: op://Homelab/flux/FLUX_IDENTITY_PUB
+  known_hosts: op://Homelab/flux/FLUX_KNOWN_HOSTS
+data:
+  identity: op://Homelab/flux/FLUX_GITHUB_DEPLOY_KEY_B64

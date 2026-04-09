@@ -54,6 +54,36 @@ releases:
     needs:
       - kube-system/coredns
 
+  - name: external-secrets
+    namespace: security
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    version: 2.2.0
+    values:
+      - ../templates/values.yaml.gotmpl
+    needs:
+      - cert-manager/cert-manager
+
+  - name: onepassword-connect
+    namespace: security
+    chart: oci://ghcr.io/1password/connect
+    version: 2.4.1
+    values:
+      - ../templates/values.yaml.gotmpl
+    needs:
+      - security/external-secrets
+    hooks:
+      - # Apply ClusterSecretStore
+        command: kubectl
+        args:
+          - apply
+          - --server-side
+          - --field-manager=kustomize-controller
+          - --filename
+          - ../../apps/security/onepassword-connect/app/clustersecretstore.yaml
+        events:
+          - postsync
+        showlogs: true
+
   - name: flux-operator
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator

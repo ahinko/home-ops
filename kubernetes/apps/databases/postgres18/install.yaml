@@ -36,7 +36,7 @@ spec:
   dependsOn:
     - name: postgres18
       namespace: databases
-    - name: onepassword-store
+    - name: onepassword-connect
       namespace: security
   interval: 1h
   path: "./kubernetes/apps/databases/postgres18/backup-rest"

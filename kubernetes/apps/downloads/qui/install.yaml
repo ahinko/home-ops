@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: volsync
       namespace: storage
-    - name: onepassword-store
+    - name: onepassword-connect
       namespace: security
   interval: 1h
   path: "./kubernetes/apps/downloads/qui/app"

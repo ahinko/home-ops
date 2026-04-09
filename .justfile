@@ -5,6 +5,7 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 mod k8s "kubernetes"
 mod talos "kubernetes/talos"
+mod k8s-boostrap "kubernetes/bootstrap"
 
 [private]
 default:
@@ -16,12 +17,12 @@ log lvl msg *args:
 
 [private]
 template file *args:
-  minijinja-cli --config-file "{{ justfile_dir() }}/.minijinja.toml" "{{ file }}" {{ args }} | op inject
+    minijinja-cli "{{ file }}" {{ args }} | op inject
 
 [doc('Install Homebrew packages from Brewfile')]
 brew:
-  brew bundle --file "{{ justfile_dir() }}/Brewfile"
+    brew bundle --file "{{ justfile_dir() }}/Brewfile"
 
 [doc('Install kubectl krew plugins')]
 krew:
-  kubectl krew install cnpg rook-ceph browse-pvc view-secret node-shell
+    kubectl krew install cnpg rook-ceph browse-pvc view-secret node-shell

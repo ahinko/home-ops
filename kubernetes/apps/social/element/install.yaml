@@ -15,7 +15,7 @@ spec:
       namespace: rook-ceph
     - name: volsync
       namespace: storage
-    - name: onepassword-store
+    - name: onepassword-connect
       namespace: security
     - name: postgres18
       namespace: databases

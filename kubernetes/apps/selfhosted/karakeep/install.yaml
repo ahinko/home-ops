@@ -11,7 +11,7 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword-connect
       namespace: security
     - name: volsync
       namespace: storage

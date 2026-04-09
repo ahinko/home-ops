@@ -1,0 +1,20 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: onepassword-connect
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: onepassword-connect
+  interval: 1h
+  values:
+    connect:
+      api:
+        httpPort: 8080
+        imageRepository: ghcr.io/1password/connect-api
+        serviceMonitor:
+          enabled: true
+      credentialsName: onepassword-connect-credentials-secret
+      sync:
+        imageRepository: ghcr.io/1password/connect-sync
