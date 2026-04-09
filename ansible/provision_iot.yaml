@@ -9,5 +9,6 @@
     - role: apt
     - role: udev
     - role: ser2net
+    - role: usb-watchdog
     - role: wmbusmeters
     - role: readonly

@@ -1,0 +1,49 @@
+---
+- name: Install usb-watchdog script
+  ansible.builtin.template:
+    src: templates/usb-watchdog.sh.j2
+    dest: /usr/local/bin/usb-watchdog
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install usb-watchdog service
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=USB stick watchdog (Z-Wave and W-MBus)
+      After=local-fs.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/usb-watchdog
+    dest: /etc/systemd/system/usb-watchdog.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload systemd
+
+- name: Install usb-watchdog timer
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Run USB stick watchdog every 30s
+
+      [Timer]
+      OnBootSec=30
+      OnUnitActiveSec=30
+
+      [Install]
+      WantedBy=timers.target
+    dest: /etc/systemd/system/usb-watchdog.timer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload systemd
+
+- name: Enable usb-watchdog timer
+  ansible.builtin.systemd:
+    name: usb-watchdog.timer
+    enabled: true
+    state: started
+    daemon_reload: true

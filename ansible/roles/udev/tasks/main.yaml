@@ -6,10 +6,10 @@
       # Creates consistent device symlinks regardless of USB port
 
       # IMST iU891A-XL USB stick (Cypress chipset)
-      SUBSYSTEM=="tty", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="0003", ATTRS{manufacturer}=="IMST", SYMLINK+="wmbus_stick", GROUP="dialout", MODE="0664"
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="0003", ATTRS{manufacturer}=="IMST", SYMLINK+="wmbus_stick", GROUP="dialout", MODE="0664", TAG+="systemd", ENV{SYSTEMD_WANTS}+="wmbusmeters-restart.service"
 
       # Aeotec Z-Wave USB Stick Gen7 (Silicon Labs CP2102N chipset)
-      SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{manufacturer}=="Silicon Labs", SYMLINK+="zwave_stick", GROUP="dialout", MODE="0664"
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{manufacturer}=="Silicon Labs", SYMLINK+="zwave_stick", GROUP="dialout", MODE="0664", TAG+="systemd", ENV{SYSTEMD_WANTS}+="ser2net-restart.service"
     dest: /etc/udev/rules.d/99-usbdevices.rules
     owner: root
     group: root
@@ -18,3 +18,37 @@
   notify:
     - reload udev
     - trigger udev
+
+- name: Create ser2net restart service for udev trigger
+  copy:
+    content: |
+      [Unit]
+      Description=Restart ser2net after Z-Wave stick reconnect
+
+      [Service]
+      Type=oneshot
+      ExecStartPre=/bin/sleep 2
+      ExecStart=/bin/systemctl restart ser2net
+    dest: /etc/systemd/system/ser2net-restart.service
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
+  notify: reload udev
+
+- name: Create wmbusmeters restart service for udev trigger
+  copy:
+    content: |
+      [Unit]
+      Description=Restart wmbusmeters after W-MBus stick reconnect
+
+      [Service]
+      Type=oneshot
+      ExecStartPre=/bin/sleep 2
+      ExecStart=/bin/systemctl restart wmbusmeters
+    dest: /etc/systemd/system/wmbusmeters-restart.service
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
+  notify: reload udev

@@ -1,0 +1,59 @@
+#!/bin/bash
+# USB stick watchdog for Z-Wave and Wireless M-Bus dongles
+# Recovery: USB reset, then reboot if device was previously working this boot.
+
+ALIVE_DIR="/tmp/usb-watchdog"
+mkdir -p "$ALIVE_DIR"
+
+check_device() {
+    local name="$1"
+    local device="$2"
+    local vendor="$3"
+    local product="$4"
+    local service="$5"
+    local alive_flag="$ALIVE_DIR/$name"
+
+    if [ -e "$device" ]; then
+        touch "$alive_flag"
+        return 0
+    fi
+
+    logger -t usb-watchdog "$name: $device not found, attempting USB reset"
+
+    # Try USB unbind/rebind
+    for usbdev in /sys/bus/usb/devices/*/idVendor; do
+        dir=$(dirname "$usbdev")
+        if [ "$(cat "$dir/idVendor" 2>/dev/null)" = "$vendor" ] && \
+           [ "$(cat "$dir/idProduct" 2>/dev/null)" = "$product" ]; then
+            devname=$(basename "$dir")
+            echo "$devname" > /sys/bus/usb/drivers/usb/unbind 2>/dev/null
+            sleep 2
+            echo "$devname" > /sys/bus/usb/drivers/usb/bind 2>/dev/null
+            sleep 3
+            break
+        fi
+    done
+
+    if [ -e "$device" ]; then
+        logger -t usb-watchdog "$name: recovered after USB reset"
+        touch "$alive_flag"
+        systemctl restart "$service"
+        return 0
+    fi
+
+    # Only reboot if device was working before
+    if [ ! -f "$alive_flag" ]; then
+        logger -t usb-watchdog "$name: never seen since boot, not rebooting (manual intervention required)"
+        return 1
+    fi
+
+    logger -t usb-watchdog "$name: was working but not recovered, rebooting"
+    reboot
+}
+
+needs_reboot=0
+
+check_device "zwave" "/dev/zwave_stick" "10c4" "ea60" "ser2net" || needs_reboot=1
+check_device "wmbus" "/dev/wmbus_stick" "04b4" "0003" "wmbusmeters" || needs_reboot=1
+
+exit $needs_reboot

@@ -67,10 +67,16 @@
     recurse: yes
   become: yes
 
+- name: Configure wmbusmeters
+  ansible.builtin.command:
+    cmd: ./configure
+    chdir: "{{ wmbusmeters_home }}/wmbusmeters-src"
+  become: yes
+
 - name: Build wmbusmeters
   make:
     chdir: "{{ wmbusmeters_home }}/wmbusmeters-src"
-    jobs: "{{ ansible_processor_cores }}"
+    jobs: "{{ ansible_facts['processor_cores'] }}"
   become: yes
   environment:
     HOME: "{{ wmbusmeters_home }}"
