@@ -8,11 +8,15 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
   interval: 1h
   path: "./kubernetes/apps/databases/mosquitto/app"
   postBuild:
     substitute:
       APP: *appname
+      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CLAIM: *appname
   prune: true
   sourceRef:
     kind: GitRepository

@@ -54,6 +54,12 @@ spec:
                 drop:
                   - ALL
     persistence:
+      config:
+        type: persistentVolumeClaim
+        existingClaim: "${VOLSYNC_CLAIM}"
+        globalMounts:
+          - path: /config
+
       config-file:
         type: configMap
         identifier: config
