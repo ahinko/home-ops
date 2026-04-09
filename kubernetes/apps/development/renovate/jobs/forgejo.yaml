@@ -24,24 +24,6 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: renovate-forgejo-api
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword-connect
-  target:
-    name: renovate-forgejo-api
-    creationPolicy: Owner
-  data:
-    - secretKey: token
-      remoteRef:
-        key: forgejo
-        property: RENOVATE_API_TOKEN
----
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
   name: renovate-forgejo-webhook
 spec:
   refreshInterval: 1h
@@ -78,17 +60,19 @@ spec:
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:
-  name: forgejo
-  namespace: renovate
+  name: renovate-forgejo
+  namespace: development
 spec:
-  discoveryFilter: "*"
+  discoveryFilters:
+    - "*"
   extraEnv:
     - name: LOG_LEVEL
       value: debug
-    - name: RENOVATE_PLATFORM_COMMIT
-      value: "true"
     - name: RENOVATE_AUTODISCOVER
       value: "true"
+    - name: RENOVATE_ALLOWED_COMMANDS
+      value: |-
+        [pnpm ["pnpm run bundle"]
     - name: GITHUB_COM_TOKEN
       valueFrom:
         secretKeyRef:
@@ -115,11 +99,11 @@ spec:
         webhookURL: https://renovate.hemma.dev/webhook/v1/forgejo
         topic: renovate
         tokenSecretRef:
-          name: renovate-forgejo-api
+          name: renovate-forgejo-token
           key: token
         authTokenSecretRef:
           name: renovate-forgejo-webhook
           key: token
   provider:
-    name: gitea
-    endpoint: https://forgejo.hemma.dev
+    name: forgejo
+    endpoint: https://forgejo.hemma.dev/api/v1

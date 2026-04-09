@@ -12,6 +12,12 @@ spec:
     strategy:
       type: Recreate
 
+    image:
+      rootless: true
+      registry: code.forgejo.org
+      repository: forgejo/forgejo
+      tag: 14.0.3-rootless
+
     service:
       http:
         port: 3000
@@ -45,18 +51,36 @@ spec:
     gitea:
       admin:
         existingSecret: forgejo-secret
-        username: forge-admin
-        email: forgejo@hemma.dev
-        passwordMode: initialOnlyRequireReset
 
       config:
-        server:
-          ROOT_URL: https://forgejo.hemma.dev
-          SSH_DOMAIN: forgejo.hemma.dev
-          DISABLE_SSH: true
+        cache:
+          ENABLED: true
+          ADAPTER: redis
+          HOST: redis://dragonfly.databases.svc.cluster.local:6379/10
 
         actions:
           ENABLED: true
+
+        database:
+          DB_TYPE: postgres
+          SSL_MODE: disable
+
+        indexer:
+          ISSUE_INDEXER_TYPE: bleve
+          REPO_INDEXER_ENABLED: true
+
+        lfs:
+          PATH: /data/git/lfs
+
+        mailer:
+          ENABLED: false
+
+        repository:
+          DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
+          DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
+
+        repository.pull-request:
+          DEFAULT_MERGE_STYLE: squash
 
         repository.signing:
           SIGNING_KEY: default
@@ -68,13 +92,17 @@ spec:
           MERGES: always
           DEFAULT_TRUST_MODEL: collaborator
 
-        database:
-          DB_TYPE: postgres
-          SSL_MODE: disable
+        server:
+          ROOT_URL: https://forgejo.hemma.dev
+          DISABLE_SSH: true
+          APP_DATA_PATH: /data/gitea
 
-        cache:
-          ADAPTER: redis
-          HOST: redis://dragonfly.databases.svc.cluster.local:6379/10
+        service:
+          DISABLE_REGISTRATION: true
+          ALLOW_ONLY_EXTERNAL_REGISTRATION: true
+          ENABLE_INTERNAL_SIGNIN: false
+          ENABLE_PASSWORD_SIGNIN_FORM: false
+          SHOW_REGISTRATION_BUTTON: false
 
         session:
           PROVIDER: redis
@@ -89,10 +117,6 @@ spec:
           USERNAME: email
           ACCOUNT_LINKING: auto
           UPDATE_AVATAR: true
-
-        service:
-          DISABLE_REGISTRATION: true
-          ALLOW_ONLY_EXTERNAL_REGISTRATION: true
 
       oauth:
         - name: PocketID
