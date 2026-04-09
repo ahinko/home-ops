@@ -1,15 +1,15 @@
-# Tap
-tap "fluxcd/tap"
-tap "siderolabs/tap"
-
 # Terminal
 brew "fish"
 brew "viddy"
+
+tap "manaflow-ai/cmux"
+cask "cmux"
 
 # LLM Ai
 cask "coderabbit"
 cask "gemini"
 cask "claude-code"
+cask "codex"
 
 # Command line tools
 brew "bash"
@@ -29,13 +29,17 @@ brew "zx"
 brew "forgejo-cli"
 
 # Kubernetes
-brew "fluxcd/tap/flux"
 brew "kubernetes-cli"
 brew "kustomize"
-brew "siderolabs/tap/talosctl"
 brew "helmfile"
 brew "krew"
 brew "minijinja-cli"
+
+tap "fluxcd/tap"
+brew "fluxcd/tap/flux"
+
+tap "siderolabs/tap"
+brew "siderolabs/tap/talosctl"
 
 # git signed commit
 brew "gpg2"
