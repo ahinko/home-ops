@@ -25,26 +25,75 @@ spec:
                 memory: 512M
 
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /health
-                    port: &httpPort 8091
+                  exec:
+                    command:
+                      - node
+                      - -e
+                      - |
+                        const ws = new (require('ws'))('ws://localhost:3000');
+                        ws.on('message', d => {
+                          const msg = JSON.parse(d.toString());
+                          if (msg.type === 'version' && msg.homeId) { ws.close(); process.exit(0); }
+                          else { process.exit(1); }
+                        });
+                        ws.on('error', () => process.exit(1));
+                        setTimeout(() => process.exit(1), 5000);
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - node
+                      - -e
+                      - |
+                        const ws = new (require('ws'))('ws://localhost:3000');
+                        ws.on('message', d => {
+                          const msg = JSON.parse(d.toString());
+                          if (msg.type === 'version' && msg.homeId) { ws.close(); process.exit(0); }
+                          else { process.exit(1); }
+                        });
+                        ws.on('error', () => process.exit(1));
+                        setTimeout(() => process.exit(1), 5000);
                   initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 10
                   failureThreshold: 3
-              readiness: *probes
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - node
+                      - -e
+                      - |
+                        const ws = new (require('ws'))('ws://localhost:3000');
+                        ws.on('message', d => {
+                          const msg = JSON.parse(d.toString());
+                          if (msg.type === 'version' && msg.homeId) { ws.close(); process.exit(0); }
+                          else { process.exit(1); }
+                        });
+                        ws.on('error', () => process.exit(1));
+                        setTimeout(() => process.exit(1), 5000);
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 30
 
     service:
       app:
         ports:
           http:
-            port: *httpPort
+            port: &httpPort 8091
           websocket:
             port: 3000
 
