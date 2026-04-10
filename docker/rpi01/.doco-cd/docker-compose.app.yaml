@@ -10,7 +10,7 @@ secrets:
 services:
   app:
     container_name: doco-cd
-    image: ghcr.io/kimdre/doco-cd:0.77.0
+    image: ghcr.io/kimdre/doco-cd:0.79.0
     restart: unless-stopped
     environment:
       TZ: Europe/Stockholm
