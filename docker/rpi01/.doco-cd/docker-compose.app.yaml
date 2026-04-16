@@ -20,7 +20,7 @@ services:
       SECRET_PROVIDER_ACCESS_TOKEN_FILE: /run/secrets/1pw_token
       GIT_ACCESS_TOKEN_FILE: /run/secrets/git_token
       POLL_CONFIG: |-
-        - url: https://github.com/ahinko/homelab.git
+        - url: https://github.com/ahinko/home-ops.git
           reference: refs/heads/main
           interval: 300
     secrets:
