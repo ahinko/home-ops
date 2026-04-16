@@ -4,3 +4,4 @@ resources:
   - ./grafana-dashboard.yaml
   - ./helm-release.yaml
   - ./oci-repository.yaml
+  - ./prometheus-rule.yaml
