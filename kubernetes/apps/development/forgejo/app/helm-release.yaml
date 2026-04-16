@@ -107,6 +107,7 @@ spec:
         session:
           PROVIDER: redis
           PROVIDER_CONFIG: redis://dragonfly.databases.svc.cluster.local:6379/11
+          SESSION_LIFETIME: 2678400
 
         queue:
           TYPE: redis
