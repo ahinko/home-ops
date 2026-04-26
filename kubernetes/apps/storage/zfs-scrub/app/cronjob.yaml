@@ -20,7 +20,7 @@ spec:
             kubernetes.io/hostname: s01
           containers:
             - name: scrub-pool
-              image: ghcr.io/ahinko/buoy:1.5.2
+              image: ghcr.io/ahinko/buoy:1.5.3
               imagePullPolicy: IfNotPresent
               command:
                 - /bin/sh
