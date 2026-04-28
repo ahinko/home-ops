@@ -47,7 +47,7 @@ spec:
       value: debug
     - name: RENOVATE_ALLOWED_COMMANDS
       value: '["pnpm run bundle"]'
-  image: ghcr.io/renovatebot/renovate:43.145.0
+  image: ghcr.io/renovatebot/renovate:43.146.0
   parallelism: 5
   resources:
     requests:
